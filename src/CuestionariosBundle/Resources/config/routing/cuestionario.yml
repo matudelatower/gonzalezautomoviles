@@ -1,0 +1,38 @@
+cuestionarios:
+    path:     /
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:index" }
+
+cuestionarios_show:
+    path:     /{id}/show
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:show" }
+
+cuestionarios_new:
+    path:     /new
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:new" }
+
+cuestionarios_create:
+    path:     /create
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:create" }
+    methods:  POST
+
+cuestionarios_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:edit" }
+
+cuestionarios_update:
+    path:     /{id}/update
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:update" }
+    methods:  [POST, PUT]
+
+cuestionarios_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:delete" }
+    methods:  [POST, DELETE]
+
+cuestionario_ver_checklist:
+    path: /{id}/cuestionario_ver_checklist
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:verChecklist" }
+
+crear_resultado_respuesta:
+    path: /{cuestionarioId}/crear_resultado_respuesta
+    defaults: { _controller: "CuestionariosBundle:Cuestionario:crearResultadoRespuesta" }

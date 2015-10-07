@@ -1,0 +1,84 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content -%}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Listado Vehiculos</h3>
+
+                    <div class="box-tools">
+                        <div class="input-group" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control input-sm pull-right"
+                                   placeholder="Search">
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        {#<thead>#}
+                        <tr>
+                            <th>Id</th>
+                            <th>Vin</th>
+                            <th>Nombrevehiculo</th>
+                            <th>Modelo</th>
+                            <th>Aniofabricacion</th>
+                            <th>Motor</th>
+                            <th>Codigollave</th>
+                            <th>Codigoradio</th>
+                            <th>Codigoseguridad</th>
+                            <th>Codigoinmovilizador</th>
+                            <th>Colorinterno</th>
+                            <th>Colorexterno</th>
+                            <th>Kmingreso</th>
+                            <th>Observacion</th>
+                            <th>Creado</th>
+                            <th>Actualizado</th>
+                            <th>Actions</th>
+                        </tr>
+                        {#</thead>#}
+                        {#<tbody>#}
+                        {% for entity in entities %}
+                            <tr>
+                                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                <td>{{ entity.vin }}</td>
+                                <td>{{ entity.nombreVehiculo }}</td>
+                                <td>{{ entity.modelo }}</td>
+                                <td>{{ entity.anioFabricacion }}</td>
+                                <td>{{ entity.motor }}</td>
+                                <td>{{ entity.codigoLlave }}</td>
+                                <td>{{ entity.codigoRadio }}</td>
+                                <td>{{ entity.codigoSeguridad }}</td>
+                                <td>{{ entity.codigoInmovilizador }}</td>
+                                <td>{{ entity.colorInterno }}</td>
+                                <td>{{ entity.colorExterno }}</td>
+                                <td>{{ entity.kmIngreso }}</td>
+                                <td>{{ entity.observacion }}</td>
+                                <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>
+
+                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {#</tbody>#}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <a class="btn btn-primary" href="{{ path('vehiculos_new') }}">
+        Crear
+    </a>
+
+{% endblock %}

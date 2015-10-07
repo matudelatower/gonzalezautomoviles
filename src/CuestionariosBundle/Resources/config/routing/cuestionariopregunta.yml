@@ -1,0 +1,30 @@
+preguntas:
+    path:     /
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:index" }
+
+preguntas_show:
+    path:     /{id}/show
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:show" }
+
+preguntas_new:
+    path:     /new
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:new" }
+
+preguntas_create:
+    path:     /create
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:create" }
+    methods:  POST
+
+preguntas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:edit" }
+
+preguntas_update:
+    path:     /{id}/update
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:update" }
+    methods:  [POST, PUT]
+
+preguntas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CuestionariosBundle:CuestionarioPregunta:delete" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,30 @@
+tipo_pregunta:
+    path:     /
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:index" }
+
+tipo_pregunta_show:
+    path:     /{id}/show
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:show" }
+
+tipo_pregunta_new:
+    path:     /new
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:new" }
+
+tipo_pregunta_create:
+    path:     /create
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:create" }
+    methods:  POST
+
+tipo_pregunta_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:edit" }
+
+tipo_pregunta_update:
+    path:     /{id}/update
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:update" }
+    methods:  [POST, PUT]
+
+tipo_pregunta_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CuestionariosBundle:TipoPregunta:delete" }
+    methods:  [POST, DELETE]

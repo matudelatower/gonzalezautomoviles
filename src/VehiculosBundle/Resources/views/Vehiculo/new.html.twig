@@ -1,0 +1,25 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Formulario de Alta
+{% endblock %}
+
+{% block content -%}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Vehiculo</h3>
+                </div>
+
+                {{ form(form) }}
+
+
+                <a class="btn btn-default" href="{{ path('vehiculos') }}">
+                    Volver
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

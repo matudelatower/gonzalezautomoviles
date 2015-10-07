@@ -1,0 +1,44 @@
+    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Edicion Provincia' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+
+    {% block body -%}
+
+    <h4 class="page-header">Provincia</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">            
+            <div class="box-header">
+                <div class="box-name ui-draggable-handle">
+                    <i class="fa fa-search"></i>
+                    <span>Alta de Provincia</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <h4 class="page-header">{{ title }}</h4>
+                <form action="{{ path('provincia_update', { 'id': entity.id }) }}" role="form" method="post">
+                    <div class="box-body">
+                        {{ form_widget(form) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+
+                            <a class="btn btn-success" href="{{ path('provincia') }}">
+                                Volver
+                            </a>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+            {% endblock %}
+
+

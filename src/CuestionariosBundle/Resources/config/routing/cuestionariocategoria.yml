@@ -1,0 +1,42 @@
+categorias_cuestionario:
+    path:     /
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:index" }
+
+categorias_cuestionario_show:
+    path:     /{id}/show
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:show" }
+
+categorias_cuestionario_new:
+    path:     /new
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:new" }
+
+categorias_cuestionario_create:
+    path:     /create
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:create" }
+    methods:  POST
+
+categorias_cuestionario_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:edit" }
+
+categorias_cuestionario_update:
+    path:     /{id}/update
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:update" }
+    methods:  [POST, PUT]
+
+categorias_cuestionario_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:delete" }
+    methods:  [POST, DELETE]
+
+agregar_preguntas_categorias:
+    path: /{id}/agregar_preguntas_categorias
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:agregarPreguntasCategorias" }
+
+agregar_preguntas_categorias_crear:
+    path: /{id}/agregar_preguntas_categorias_crear
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:agregarPreguntasCategoriasCrear" }
+
+agregar_preguntas_categorias_actualizar:
+    path: /{id}/agregar_preguntas_categorias_actualizar
+    defaults: { _controller: "CuestionariosBundle:CuestionarioCategoria:agregarPreguntasCategoriasActualizar" }

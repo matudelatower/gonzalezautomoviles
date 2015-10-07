@@ -1,0 +1,24 @@
+<ul class="sidebar-menu">
+    <li class="header">MENU PRINCIPAL</li>
+    <li class="active treeview">
+        <a href="#">
+            <i class="fa fa-car"></i> <span>Vehiculos</span> <i
+                    class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li class="active"><a href="{{ path('vehiculos') }}"><i class="fa fa-circle-o"></i> Listado</a></li>
+            <li><a href="{{ path('vehiculos_new') }}"><i class="fa fa-circle-o"></i> Alta</a></li>
+        </ul>
+    </li>
+    <li class="treeview">
+        <a href="#">
+            <i class="fa fa-check-square-o"></i> <span>Checklist</span> <i
+                    class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li class="active"><a href="{{ path('cuestionarios') }}"><i class="fa fa-circle-o"></i> Listado</a></li>
+            <li><a href="{{ path('cuestionarios_new') }}"><i class="fa fa-circle-o"></i> Alta</a></li>
+        </ul>
+    </li>
+
+</ul>

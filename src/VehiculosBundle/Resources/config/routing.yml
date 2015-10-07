@@ -1,0 +1,15 @@
+vehiculos_tipo_estado_vehiculo:
+    resource: "@VehiculosBundle/Resources/config/routing/tipoestadovehiculo.yml"
+    prefix:   /tipo_estado_vehiculo
+
+vehiculos_tipo_compra:
+    resource: "@VehiculosBundle/Resources/config/routing/tipocompra.yml"
+    prefix:   /tipo_compra
+
+vehiculos_vehiculos:
+    resource: "@VehiculosBundle/Resources/config/routing/vehiculo.yml"
+    prefix:   /vehiculos
+
+vehiculos_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: VehiculosBundle:Default:index }

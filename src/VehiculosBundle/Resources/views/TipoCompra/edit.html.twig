@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>TipoCompra edit</h1>
+
+    {{ form(edit_form) }}
+
+        <a class="btn btn-default" href="{{ path('tipo_compra') }}">
+    Volver
+</a>
+</div>
+</div>
+</div>
+
+
+
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

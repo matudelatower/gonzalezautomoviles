@@ -1,0 +1,15 @@
+cuestionarios_preguntas:
+    resource: "@CuestionariosBundle/Resources/config/routing/cuestionariopregunta.yml"
+    prefix:   /preguntas
+
+cuestionarios_categorias_cuestionario:
+    resource: "@CuestionariosBundle/Resources/config/routing/cuestionariocategoria.yml"
+    prefix:   /categorias_cuestionario
+
+cuestionarios_tipo_pregunta:
+    resource: "@CuestionariosBundle/Resources/config/routing/tipopregunta.yml"
+    prefix:   /tipo_pregunta
+
+cuestionarios_cuestionarios:
+    resource: "@CuestionariosBundle/Resources/config/routing/cuestionario.yml"
+    prefix:   /

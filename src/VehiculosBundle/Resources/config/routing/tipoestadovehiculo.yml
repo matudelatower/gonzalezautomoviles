@@ -1,0 +1,30 @@
+tipo_estado_vehiculo:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:index" }
+
+tipo_estado_vehiculo_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:show" }
+
+tipo_estado_vehiculo_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:new" }
+
+tipo_estado_vehiculo_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:create" }
+    methods:  POST
+
+tipo_estado_vehiculo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:edit" }
+
+tipo_estado_vehiculo_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:update" }
+    methods:  [POST, PUT]
+
+tipo_estado_vehiculo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:TipoEstadoVehiculo:delete" }
+    methods:  [POST, DELETE]

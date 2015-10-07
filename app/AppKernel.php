@@ -16,6 +16,17 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new ThemeBundle\ThemeBundle(),
+            new VehiculosBundle\VehiculosBundle(),
+            new UsuariosBundle\UsuariosBundle(),
+            new ClientesBundle\ClientesBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new PersonasBundle\PersonasBundle(),
+            new EmpresasBundle\EmpresasBundle(),
+            new UbicacionBundle\UbicacionBundle(),
+            new CuestionariosBundle\CuestionariosBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new \UtilBundle\UtilBundle(),
             new AppBundle\AppBundle(),
         );
 

@@ -1,0 +1,30 @@
+vehiculos:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:Vehiculo:index" }
+
+vehiculos_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:Vehiculo:show" }
+
+vehiculos_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:Vehiculo:new" }
+
+vehiculos_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:Vehiculo:create" }
+    methods:  POST
+
+vehiculos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:Vehiculo:edit" }
+
+vehiculos_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:Vehiculo:update" }
+    methods:  [POST, PUT]
+
+vehiculos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:Vehiculo:delete" }
+    methods:  [POST, DELETE]

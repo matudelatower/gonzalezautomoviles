@@ -1,3 +1,43 @@
 app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+    resource: "@AppBundle/Resources/config/routing.yml"
+    prefix:   /
+
+cuestionarios:
+    resource: "@CuestionariosBundle/Resources/config/routing.yml"
+    prefix:   /cuestionario
+
+empresas:
+    resource: "@EmpresasBundle/Resources/config/routing.yml"
+    prefix:   /empresas
+
+personas:
+    resource: "@PersonasBundle/Resources/config/routing.yml"
+    prefix:   /personas
+
+clientes:
+    resource: "@ClientesBundle/Resources/config/routing.yml"
+    prefix:   /clientes
+
+usuarios:
+    resource: "@UsuariosBundle/Resources/config/routing.yml"
+    prefix:   /usuarios
+
+vehiculos:
+    resource: "@VehiculosBundle/Resources/config/routing.yml"
+    prefix:   /vehiculos
+
+theme:
+    resource: "@ThemeBundle/Resources/config/routing.yml"
+    prefix:   /
+
+ubicacion:
+    resource: "@UbicacionBundle/Resources/config/routing.yml"
+    prefix:   /ubicacion
+
+util:
+    resource: "@UtilBundle/Resources/config/routing.yml"
+    prefix:   /utils
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+

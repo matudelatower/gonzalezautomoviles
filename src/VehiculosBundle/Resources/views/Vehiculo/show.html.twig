@@ -1,0 +1,99 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Resumen
+{% endblock %}
+
+{% block content -%}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Vehiculo</h3>
+                </div>
+                <div class="box-body">
+
+                    <table class="record_properties">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ entity.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Vin</th>
+                            <td>{{ entity.vin }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombrevehiculo</th>
+                            <td>{{ entity.nombreVehiculo }}</td>
+                        </tr>
+                        <tr>
+                            <th>Modelo</th>
+                            <td>{{ entity.modelo }}</td>
+                        </tr>
+                        <tr>
+                            <th>Aniofabricacion</th>
+                            <td>{{ entity.anioFabricacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Motor</th>
+                            <td>{{ entity.motor }}</td>
+                        </tr>
+                        <tr>
+                            <th>Codigollave</th>
+                            <td>{{ entity.codigoLlave }}</td>
+                        </tr>
+                        <tr>
+                            <th>Codigoradio</th>
+                            <td>{{ entity.codigoRadio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Codigoseguridad</th>
+                            <td>{{ entity.codigoSeguridad }}</td>
+                        </tr>
+                        <tr>
+                            <th>Codigoinmovilizador</th>
+                            <td>{{ entity.codigoInmovilizador }}</td>
+                        </tr>
+                        <tr>
+                            <th>Colorinterno</th>
+                            <td>{{ entity.colorInterno }}</td>
+                        </tr>
+                        <tr>
+                            <th>Colorexterno</th>
+                            <td>{{ entity.colorExterno }}</td>
+                        </tr>
+                        <tr>
+                            <th>Kmingreso</th>
+                            <td>{{ entity.kmIngreso }}</td>
+                        </tr>
+                        <tr>
+                            <th>Observacion</th>
+                            <td>{{ entity.observacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Creado</th>
+                            <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Actualizado</th>
+                            <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a class="btn btn-default" href="{{ path('vehiculos') }}">
+                        Volver
+                    </a>
+                    <a class="btn btn-primary" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}">
+                        Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#{{ form(delete_form) }}#}
+
+
+{% endblock %}
