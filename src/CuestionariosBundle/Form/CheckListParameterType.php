@@ -52,9 +52,19 @@ class CheckListParameterType extends AbstractType
                 }
             }
             if ($value["type"] == 'checkbox') {
-                $arrayOptions['data'] = 'ok';
+//                $arrayOptions['data'] = 'ok';
+                $value["type"] = 'option';
             }
-            $builder->add($k, $value["type"], $arrayOptions);
+//            $builder->add($k, $value["type"], $arrayOptions);
+            $builder->add(
+                $k,
+                'checkbox',
+                array(
+                    'data' => false,
+                    'label' => $value["label"],
+                    'required' => false,
+                )
+            );
         }
     }
 
