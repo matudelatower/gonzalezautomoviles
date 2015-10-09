@@ -13,7 +13,7 @@ provincia_new:
 provincia_create:
     path:     /create
     defaults: { _controller: "UbicacionBundle:Provincia:create" }
-    requirements: { _method: post }
+    methods: POST
 
 provincia_edit:
     path:     /{id}/edit
@@ -22,9 +22,9 @@ provincia_edit:
 provincia_update:
     path:     /{id}/update
     defaults: { _controller: "UbicacionBundle:Provincia:update" }
-    requirements: { _method: post|put }
+    methods: [POST, PUT]
 
 provincia_delete:
     path:     /{id}/delete
     defaults: { _controller: "UbicacionBundle:Provincia:delete" }
-    requirements: { _method: post|delete }
+    methods: [POST, DELETE]

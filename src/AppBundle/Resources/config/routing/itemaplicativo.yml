@@ -1,0 +1,30 @@
+item_aplicativo:
+    path:     /
+    defaults: { _controller: "AppBundle:ItemAplicativo:index" }
+
+item_aplicativo_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:ItemAplicativo:show" }
+
+item_aplicativo_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:ItemAplicativo:new" }
+
+item_aplicativo_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:ItemAplicativo:create" }
+    methods:  POST
+
+item_aplicativo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:ItemAplicativo:edit" }
+
+item_aplicativo_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:ItemAplicativo:update" }
+    methods:  [POST, PUT]
+
+item_aplicativo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:ItemAplicativo:delete" }
+    methods:  [POST, DELETE]

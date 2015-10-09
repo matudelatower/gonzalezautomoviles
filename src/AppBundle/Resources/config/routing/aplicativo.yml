@@ -1,0 +1,30 @@
+aplicativo:
+    path:     /
+    defaults: { _controller: "AppBundle:Aplicativo:index" }
+
+aplicativo_show:
+    path:     /{id}/show
+    defaults: { _controller: "AppBundle:Aplicativo:show" }
+
+aplicativo_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Aplicativo:new" }
+
+aplicativo_create:
+    path:     /create
+    defaults: { _controller: "AppBundle:Aplicativo:create" }
+    methods:  POST
+
+aplicativo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AppBundle:Aplicativo:edit" }
+
+aplicativo_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:Aplicativo:update" }
+    methods:  [POST, PUT]
+
+aplicativo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:Aplicativo:delete" }
+    methods:  [POST, DELETE]

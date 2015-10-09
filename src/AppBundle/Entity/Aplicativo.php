@@ -1,17 +1,17 @@
 <?php
 
-namespace UsuariosBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * PerfilUsuario
+ * Aplicativo
  *
- * @ORM\Table(name="perfil_usuario")
+ * @ORM\Table(name="aplicacion_aplicativo")
  * @ORM\Entity
  */
-class PerfilUsuario
+class Aplicativo
 {
     /**
      * @var integer
@@ -22,22 +22,27 @@ class PerfilUsuario
      */
     private $id;
 
-    /** @ORM\ManyToOne(targetEntity="Usuario",inversedBy="perfil",cascade={"persist"})
-     *  @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $usuario;
-
-    /** @ORM\ManyToOne(targetEntity="Perfil")
-     *  @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
-     */
-    private $perfil;
+    private $nombre;
 
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="activo", type="boolean")
+     * @ORM\Column(name="descripcion", type="string", length=255,nullable=true)
      */
-    private $activo = true;
+    private $descripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icono", type="string", length=255)
+     */
+    private $icono;
+
 
     /**
      * @var datetime $creado
@@ -73,7 +78,10 @@ class PerfilUsuario
      */
     private $actualizadoPor;
 
-
+    public function __toString()
+    {
+        return $this->nombre;
+    }
 
     /**
      * Get id
@@ -86,33 +94,83 @@ class PerfilUsuario
     }
 
     /**
-     * Set activo
+     * Set nombre
      *
-     * @param boolean $activo
-     * @return PerfilUsuario
+     * @param string $nombre
+     *
+     * @return Aplicativo
      */
-    public function setActivo($activo)
+    public function setNombre($nombre)
     {
-        $this->activo = $activo;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get activo
+     * Get nombre
      *
-     * @return boolean
+     * @return string
      */
-    public function getActivo()
+    public function getNombre()
     {
-        return $this->activo;
+        return $this->nombre;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return Aplicativo
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set icono
+     *
+     * @param string $icono
+     *
+     * @return Aplicativo
+     */
+    public function setIcono($icono)
+    {
+        $this->icono = $icono;
+
+        return $this;
+    }
+
+    /**
+     * Get icono
+     *
+     * @return string
+     */
+    public function getIcono()
+    {
+        return $this->icono;
     }
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return PerfilUsuario
+     *
+     * @return Aplicativo
      */
     public function setCreado($creado)
     {
@@ -135,7 +193,8 @@ class PerfilUsuario
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return PerfilUsuario
+     *
+     * @return Aplicativo
      */
     public function setActualizado($actualizado)
     {
@@ -155,56 +214,11 @@ class PerfilUsuario
     }
 
     /**
-     * Set usuario
-     *
-     * @param \UsuariosBundle\Entity\Usuario $usuario
-     * @return PerfilUsuario
-     */
-    public function setUsuario(\UsuariosBundle\Entity\Usuario $usuario = null)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
-    }
-
-    /**
-     * Set perfil
-     *
-     * @param \UsuariosBundle\Entity\Perfil $perfil
-     * @return PerfilUsuario
-     */
-    public function setPerfil(\UsuariosBundle\Entity\Perfil $perfil = null)
-    {
-        $this->perfil = $perfil;
-
-        return $this;
-    }
-
-    /**
-     * Get perfil
-     *
-     * @return \UsuariosBundle\Entity\Perfil
-     */
-    public function getPerfil()
-    {
-        return $this->perfil;
-    }
-
-    /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
-     * @return PerfilUsuario
+     *
+     * @return Aplicativo
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -227,7 +241,8 @@ class PerfilUsuario
      * Set actualizadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return PerfilUsuario
+     *
+     * @return Aplicativo
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {

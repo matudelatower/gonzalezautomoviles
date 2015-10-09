@@ -13,7 +13,7 @@ pais_new:
 pais_create:
     path:     /create
     defaults: { _controller: "UbicacionBundle:Pais:create" }
-    requirements: { _method: post }
+    methods: POST
 
 pais_edit:
     path:     /{id}/edit
@@ -22,9 +22,9 @@ pais_edit:
 pais_update:
     path:     /{id}/update
     defaults: { _controller: "UbicacionBundle:Pais:update" }
-    requirements: { _method: post|put }
+    methods: [POST, PUT]
 
 pais_delete:
     path:     /{id}/delete
     defaults: { _controller: "UbicacionBundle:Pais:delete" }
-    requirements: { _method: post|delete }
+    methods: [POST, DELETE]

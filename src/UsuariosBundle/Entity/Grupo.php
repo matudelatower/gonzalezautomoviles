@@ -2,49 +2,35 @@
 /**
  * Created by PhpStorm.
  * User: matias
- * Date: 1/10/15
- * Time: 6:00 PM
+ * Date: 7/10/15
+ * Time: 12:14 PM
  */
 
 namespace UsuariosBundle\Entity;
 
+use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * PermisoPerfil
- *
- * @ORM\Table(name="permiso_perfil")
- * @ORM\Entity
- */
-class PermisoPerfil
-{
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="fos_group")
+ */
+class Grupo extends BaseGroup
+{
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
-    /** @ORM\ManyToOne(targetEntity="Permiso",inversedBy="permisos",cascade={"persist"})
-     * @ORM\JoinColumn(name="permiso_id", referencedColumnName="id")
-     */
-    private $permiso;
-
-    /** @ORM\ManyToOne(targetEntity="Perfil", inversedBy="permisos",cascade={"persist"})
-     * @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
-     */
-    private $perfil;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="activo", type="boolean")
+     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoAplicacion", mappedBy="grupo",cascade={"persist"})
      */
-    private $activo = true;
+    private $permisoAplicacion;
 
     /**
      * @var datetime $creado
@@ -80,44 +66,19 @@ class PermisoPerfil
      */
     private $actualizadoPor;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function __toString()
     {
-        return $this->id;
+        return $this->name;
     }
 
-    /**
-     * Set activo
-     *
-     * @param boolean $activo
-     * @return PermisoPerfil
-     */
-    public function setActivo($activo)
-    {
-        $this->activo = $activo;
-
-        return $this;
-    }
-
-    /**
-     * Get activo
-     *
-     * @return boolean
-     */
-    public function getActivo()
-    {
-        return $this->activo;
-    }
+    
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return PermisoPerfil
+     *
+     * @return Grupo
      */
     public function setCreado($creado)
     {
@@ -140,7 +101,8 @@ class PermisoPerfil
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return PermisoPerfil
+     *
+     * @return Grupo
      */
     public function setActualizado($actualizado)
     {
@@ -160,56 +122,45 @@ class PermisoPerfil
     }
 
     /**
-     * Set permiso
+     * Add permisoAplicacion
      *
-     * @param \UsuariosBundle\Entity\Permiso $permiso
-     * @return PermisoPerfil
+     * @param \UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion
+     *
+     * @return Grupo
      */
-    public function setPermiso(\UsuariosBundle\Entity\Permiso $permiso = null)
+    public function addPermisoAplicacion(\UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion)
     {
-        $this->permiso = $permiso;
+        $this->permisoAplicacion[] = $permisoAplicacion;
 
         return $this;
     }
 
     /**
-     * Get permiso
+     * Remove permisoAplicacion
      *
-     * @return \UsuariosBundle\Entity\Permiso
+     * @param \UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion
      */
-    public function getPermiso()
+    public function removePermisoAplicacion(\UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion)
     {
-        return $this->permiso;
+        $this->permisoAplicacion->removeElement($permisoAplicacion);
     }
 
     /**
-     * Set perfil
+     * Get permisoAplicacion
      *
-     * @param \UsuariosBundle\Entity\Perfil $perfil
-     * @return PermisoPerfil
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setPerfil(\UsuariosBundle\Entity\Perfil $perfil = null)
+    public function getPermisoAplicacion()
     {
-        $this->perfil = $perfil;
-
-        return $this;
-    }
-
-    /**
-     * Get perfil
-     *
-     * @return \UsuariosBundle\Entity\Perfil
-     */
-    public function getPerfil()
-    {
-        return $this->perfil;
+        return $this->permisoAplicacion;
     }
 
     /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
-     * @return PermisoPerfil
+     *
+     * @return Grupo
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -232,7 +183,8 @@ class PermisoPerfil
      * Set actualizadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return PermisoPerfil
+     *
+     * @return Grupo
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -250,5 +202,4 @@ class PermisoPerfil
     {
         return $this->actualizadoPor;
     }
-
 }

@@ -13,7 +13,7 @@ departamento_new:
 departamento_create:
     path:     /create
     defaults: { _controller: "UbicacionBundle:Departamento:create" }
-    requirements: { _method: post }
+    methods: POST
 
 departamento_edit:
     path:     /{id}/edit
@@ -22,9 +22,9 @@ departamento_edit:
 departamento_update:
     path:     /{id}/update
     defaults: { _controller: "UbicacionBundle:Departamento:update" }
-    requirements: { _method: post|put }
+    methods: [POST, PUT]
 
 departamento_delete:
     path:     /{id}/delete
     defaults: { _controller: "UbicacionBundle:Departamento:delete" }
-    requirements: { _method: post|delete }
+    methods: [POST, DELETE]

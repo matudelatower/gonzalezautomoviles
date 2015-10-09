@@ -13,7 +13,7 @@ localidad_new:
 localidad_create:
     path:     /create
     defaults: { _controller: "UbicacionBundle:Localidad:create" }
-    requirements: { _method: post }
+    methods: POST
 
 localidad_edit:
     path:     /{id}/edit
@@ -22,9 +22,9 @@ localidad_edit:
 localidad_update:
     path:     /{id}/update
     defaults: { _controller: "UbicacionBundle:Localidad:update" }
-    requirements: { _method: post|put }
+    methods: [POST, PUT]
 
 localidad_delete:
     path:     /{id}/delete
     defaults: { _controller: "UbicacionBundle:Localidad:delete" }
-    requirements: { _method: post|delete }
+    methods: [POST, DELETE]

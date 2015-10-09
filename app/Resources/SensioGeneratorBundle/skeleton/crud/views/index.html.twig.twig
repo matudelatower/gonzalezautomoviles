@@ -1,80 +1,87 @@
 {% block extends %}
-{{ "{% extends 'ThemeBundle:Default:layout_base.html.twig' %}" }}
+    {{ "{% extends 'ThemeBundle:Default:layout_base.html.twig' %}" }}
 {% endblock extends %}
 
 {% block body %}
-{{ "{% block content -%}" }}
+    {{ "{% block content -%}" }}
 
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Listado {{ entity }}</h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Listado {{ entity }}</h3>
 
-                <div class="box-tools">
-                    <div class="input-group" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control input-sm pull-right"
-                               placeholder="Search">
+                    <div class="box-tools">
+                        <div class="input-group" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control input-sm pull-right"
+                                   placeholder="Buscar">
 
-                        <div class="input-group-btn">
-                            <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+
+                        <tr>
+                            {%- for field, metadata in fields %}
+
+                                <th>{{ field|capitalize }}</th>
+
+                            {%- endfor %}
+
+                            <th>Acciones</th>
+                        </tr>
+
+                        {{ '{% for entity in entities %}' }}
+                        <tr>
+
+                            {%- for field, metadata in fields %}
+                                {%- if loop.first and ('show' in actions) %}
+
+                                    <td>
+                                        <a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity."~ identifier ~" }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a>
+                                    </td>
+
+                                {%- elseif metadata.type in ['date', 'datetime'] %}
+
+                                    <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+
+                                {%- else %}
+
+                                    <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                                {%- endif %}
+
+                                {%- if loop.last %}
+
+                                    <td>
+                                        {%- include "crud/views/others/actions.html.twig.twig" %}
+                                    </td>
+
+                                {%- endif %}
+                            {%- endfor %}
+
+                        </tr>
+                        {{ '{% endfor %}' }}
+
+                    </table>
+                </div>
+                <div class="box-footer">
+                    {% if 'new' in actions %}
+
+                        <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">
+                            Nuevo
+                        </a>
+
+                    {% endif %}
+                </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-                <table class="table table-hover">
-
-            <tr>
-            {%- for field, metadata in fields %}
-
-                <th>{{ field|capitalize }}</th>
-
-            {%- endfor %}
-
-                <th>Actions</th>
-            </tr>
-
-        {{ '{% for entity in entities %}' }}
-            <tr>
-
-        {%- for field, metadata in fields %}
-            {%- if loop.first and ('show' in actions) %}
-
-                <td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity."~ identifier ~" }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
-
-            {%- elseif metadata.type in ['date', 'datetime'] %}
-
-                <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
-
-            {%- else %}
-
-                <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
-
-            {%- endif %}
-
-            {%- if loop.last %}
-
-                <td>
-                    {%- include "crud/views/others/actions.html.twig.twig" %}
-                </td>
-
-            {%- endif %}
-        {%- endfor %}
-
-            </tr>
-        {{ '{% endfor %}' }}
-
-    </table>
-
-    {% if 'new' in actions %}
-
-            <a class="btn btn-primary" href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}">
-                Nuevo
-            </a>
-
-    {% endif %}
-{{ "{% endblock %}" }}
+        </div>
+    </div>
+    {{ "{% endblock %}" }}
 {% endblock body %}

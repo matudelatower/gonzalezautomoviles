@@ -1,0 +1,30 @@
+permiso_aplicacion:
+    path:     /
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:index" }
+
+permiso_aplicacion_show:
+    path:     /{id}/show
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:show" }
+
+permiso_aplicacion_new:
+    path:     /new
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:new" }
+
+permiso_aplicacion_create:
+    path:     /create
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:create" }
+    methods:  POST
+
+permiso_aplicacion_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:edit" }
+
+permiso_aplicacion_update:
+    path:     /{id}/update
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:update" }
+    methods:  [POST, PUT]
+
+permiso_aplicacion_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "UsuariosBundle:PermisoAplicacion:delete" }
+    methods:  [POST, DELETE]

@@ -1,20 +1,18 @@
 <?php
 
-namespace UsuariosBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * Perfil
+ * ItemAplicativo
  *
- * @ORM\Table(name="perfil")
+ * @ORM\Table(name="aplicacion_item_aplicativo")
  * @ORM\Entity
- * @UniqueEntity("nombre")
  */
-class Perfil {
-
+class ItemAplicativo
+{
     /**
      * @var integer
      *
@@ -27,23 +25,17 @@ class Perfil {
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255,unique=true)
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255, nullable=true)
+     * @ORM\Column(name="ruta", type="string", length=255)
      */
-    private $descripcion;
+    private $ruta;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="activo", type="boolean")
-     */
-    private $activo = true;
 
     /**
      * @var datetime $creado
@@ -80,17 +72,24 @@ class Perfil {
     private $actualizadoPor;
 
     /**
-     * @ORM\OneToMany(targetEntity="PermisoPerfil", mappedBy="perfil",cascade={"persist"})
-     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Aplicativo")
+     * @ORM\JoinColumn(name="aplicativo_id", referencedColumnName="id")
      */
-    private $permisos;
+    private $aplicativo;
+
+    public function __toString()
+    {
+        return $this->aplicativo." - ".$this->nombre;
+    }
+
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -98,9 +97,11 @@ class Perfil {
      * Set nombre
      *
      * @param string $nombre
-     * @return Perfil
+     *
+     * @return ItemAplicativo
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
 
         return $this;
@@ -111,59 +112,44 @@ class Perfil {
      *
      * @return string
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
     /**
-     * Set descripcion
+     * Set ruta
      *
-     * @param string $descripcion
-     * @return Perfil
+     * @param string $ruta
+     *
+     * @return ItemAplicativo
      */
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
+    public function setRuta($ruta)
+    {
+        $this->ruta = $ruta;
 
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get ruta
      *
      * @return string
      */
-    public function getDescripcion() {
-        return $this->descripcion;
-    }
-
-    /**
-     * Set activo
-     *
-     * @param boolean $activo
-     * @return Perfil
-     */
-    public function setActivo($activo) {
-        $this->activo = $activo;
-
-        return $this;
-    }
-
-    /**
-     * Get activo
-     *
-     * @return boolean
-     */
-    public function getActivo() {
-        return $this->activo;
+    public function getRuta()
+    {
+        return $this->ruta;
     }
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Perfil
+     *
+     * @return ItemAplicativo
      */
-    public function setCreado($creado) {
+    public function setCreado($creado)
+    {
         $this->creado = $creado;
 
         return $this;
@@ -174,7 +160,8 @@ class Perfil {
      *
      * @return \DateTime
      */
-    public function getCreado() {
+    public function getCreado()
+    {
         return $this->creado;
     }
 
@@ -182,9 +169,11 @@ class Perfil {
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return Perfil
+     *
+     * @return ItemAplicativo
      */
-    public function setActualizado($actualizado) {
+    public function setActualizado($actualizado)
+    {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -195,7 +184,8 @@ class Perfil {
      *
      * @return \DateTime
      */
-    public function getActualizado() {
+    public function getActualizado()
+    {
         return $this->actualizado;
     }
 
@@ -203,9 +193,11 @@ class Perfil {
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
-     * @return Perfil
+     *
+     * @return ItemAplicativo
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
+    {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -216,7 +208,8 @@ class Perfil {
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor() {
+    public function getCreadoPor()
+    {
         return $this->creadoPor;
     }
 
@@ -224,9 +217,11 @@ class Perfil {
      * Set actualizadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return Perfil
+     *
+     * @return ItemAplicativo
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
+    {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -237,45 +232,32 @@ class Perfil {
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor() {
+    public function getActualizadoPor()
+    {
         return $this->actualizadoPor;
     }
 
     /**
-     * Constructor
-     */
-    public function __construct() {
-        $this->permisos = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add permisos
+     * Set aplicativo
      *
-     * @param \UsuariosBundle\Entity\PermisoPerfil $permisos
-     * @return Perfil
+     * @param \AppBundle\Entity\Aplicativo $aplicativo
+     *
+     * @return ItemAplicativo
      */
-    public function addPermiso(\UsuariosBundle\Entity\PermisoPerfil $permisos) {
-        $this->permisos[] = $permisos;
+    public function setAplicativo(\AppBundle\Entity\Aplicativo $aplicativo = null)
+    {
+        $this->aplicativo = $aplicativo;
 
         return $this;
     }
 
     /**
-     * Remove permisos
+     * Get aplicativo
      *
-     * @param \UsuariosBundle\Entity\PermisoPerfil $permisos
+     * @return \AppBundle\Entity\Aplicativo
      */
-    public function removePermiso(\UsuariosBundle\Entity\PermisoPerfil $permisos) {
-        $this->permisos->removeElement($permisos);
+    public function getAplicativo()
+    {
+        return $this->aplicativo;
     }
-
-    /**
-     * Get permisos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPermisos() {
-        return $this->permisos;
-    }
-
 }

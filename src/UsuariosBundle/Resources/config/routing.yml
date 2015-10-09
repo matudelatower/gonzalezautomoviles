@@ -1,3 +1,16 @@
+usuarios_permiso_aplicacion:
+    resource: "@UsuariosBundle/Resources/config/routing/permisoaplicacion.yml"
+    prefix:   /permiso_aplicacion
+
+usuarios_usuario:
+    resource: "@UsuariosBundle/Resources/config/routing/usuario.yml"
+    prefix:   /
+
 usuarios_homepage:
     path:     /hello/{name}
     defaults: { _controller: UsuariosBundle:Default:index }
+
+fos_user_group_edit:
+    path:     /{groupName}/edit
+    defaults: { _controller: UsuariosBundle:Group:edit }
+    methods:  [GET, POST]

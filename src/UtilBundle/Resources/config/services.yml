@@ -40,3 +40,11 @@ services:
         tags:
             - { name: form.type, alias: verticalcollection }
 
+#    genemu.form.jquery.type.select2:
+#        class: UtilBundle\Form\Type\Select2Type
+#        arguments:
+#            entityManager: "@doctrine.orm.entity_manager"
+#            abstract: true
+#        tags:
+#            - { name: form.type, alias: jquery.type.select2 }
+
