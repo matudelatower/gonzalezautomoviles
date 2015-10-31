@@ -32,14 +32,14 @@ class Remito
     /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="text")
+     * @ORM\Column(name="observaciones", type="text", nullable=true)
      */
     private $observaciones;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero", type="text")
+     * @ORM\Column(name="numero",type="string", length=255)
      */
     private $numero;
 

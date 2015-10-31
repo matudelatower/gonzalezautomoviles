@@ -32,9 +32,16 @@ class TipoEstadoVehiculo
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="string", length=255, nullable=true)
      */
     private $descripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    private $slug;
 
     /**
      * @var datetime $creado
@@ -69,6 +76,11 @@ class TipoEstadoVehiculo
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
+
+    public function __toString()
+    {
+        return $this->estado;
+    }
 
     /**
      * Get id
@@ -222,5 +234,53 @@ class TipoEstadoVehiculo
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set tipoEstadoVehiculo
+     *
+     * @param string $tipoEstadoVehiculo
+     *
+     * @return TipoEstadoVehiculo
+     */
+    public function setTipoEstadoVehiculo($tipoEstadoVehiculo)
+    {
+        $this->tipoEstadoVehiculo = $tipoEstadoVehiculo;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoEstadoVehiculo
+     *
+     * @return string
+     */
+    public function getTipoEstadoVehiculo()
+    {
+        return $this->tipoEstadoVehiculo;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return TipoEstadoVehiculo
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

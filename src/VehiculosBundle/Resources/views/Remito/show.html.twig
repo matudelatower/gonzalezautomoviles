@@ -9,7 +9,7 @@
     <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">TipoEstadoVehiculo</h3>
+                <h3 class="box-title">Remito</h3>
             </div>
             <div class="box-body">
                 <table class="record_properties">
@@ -19,16 +19,16 @@
                             <td>{{ entity.id }}</td>
                         </tr>
                         <tr>
-                            <th>Estado</th>
-                            <td>{{ entity.estado }}</td>
+                            <th>Fecha</th>
+                            <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
                         </tr>
                         <tr>
-                            <th>Descripcion</th>
-                            <td>{{ entity.descripcion }}</td>
+                            <th>Observaciones</th>
+                            <td>{{ entity.observaciones }}</td>
                         </tr>
                         <tr>
-                            <th>Slug</th>
-                            <td>{{ entity.slug }}</td>
+                            <th>Numero</th>
+                            <td>{{ entity.numero }}</td>
                         </tr>
                         <tr>
                             <th>Creado</th>
@@ -44,12 +44,12 @@
 
 
         <div class="box-footer">
-<a class="btn btn-default" href="{{ path('tipo_estado_vehiculo') }}">
+<a class="btn btn-default" href="{{ path('remitos') }}">
     Volver
 </a>
 
 
-        <a class="btn btn-primary" href="{{ path('tipo_estado_vehiculo_edit', { 'id': entity.id }) }}">
+        <a class="btn btn-primary" href="{{ path('remitos_edit', { 'id': entity.id }) }}">
             Editar
         </a>
 

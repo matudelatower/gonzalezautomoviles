@@ -1,3 +1,7 @@
+vehiculos_remitos:
+    resource: "@VehiculosBundle/Resources/config/routing/remito.yml"
+    prefix:   /remitos
+
 vehiculos_tipo_estado_vehiculo:
     resource: "@VehiculosBundle/Resources/config/routing/tipoestadovehiculo.yml"
     prefix:   /tipo_estado_vehiculo

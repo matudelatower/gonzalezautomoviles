@@ -29,12 +29,17 @@ class Builder extends ContainerAware
             'UsuariosBundle:UsuarioGrupo'
         )->findByUsuario($usuario);
 
+        $grupo = null;
+        $permisosApp = array();
+        $aplicativo = array();
+
         foreach ($usuarioGrupos as $usuarioGrupo) {
             $grupo = $usuarioGrupo->getGrupo();
         }
 
-        $permisosApp = $grupo->getPermisoAplicacion();
-
+        if ($grupo) {
+            $permisosApp = $grupo->getPermisoAplicacion();
+        }
         $i = 0;
         foreach ($permisosApp as $permisoApp) {
             $aplicativo[$permisoApp->getItemAplicativo()->getAplicativo()->getNombre()]['icono'] =
@@ -127,41 +132,70 @@ class Builder extends ContainerAware
 //            );
 //
 //
-////        Usuarios
-//        $menu->addChild(
-//            'Usuarios',
-//            array(
-//                'childrenAttributes' => array(
-//                    'class' => 'treeview-menu',
-//                ),
-//            )
-//        )
-//            ->setUri('#')
-//            ->setExtra('icon', 'fa fa-user')
-//            ->setAttribute('class', 'treeview');
-//
-//        $menu['Usuarios']
-//            ->addChild(
-//                'Listado',
-//                array(
-//                    'route' => 'usuario',
-//                )
-//            );
-//        $menu['Usuarios']
-//            ->addChild(
-//                'Grupos',
-//                array(
-//                    'route' => 'fos_user_group_list',
-//                )
-//            );
-//        $menu['Usuarios']
-//            ->addChild(
-//                'Permisos',
-//                array(
-//                    'route' => 'permiso_aplicacion',
-//                )
-//            );
+        if ($usuario->hasRole('ROLE_ADMIN')) {
+            //administracion
+            $menu->addChild(
+                'Administracion',
+                array(
+                    'childrenAttributes' => array(
+                        'class' => 'treeview-menu',
+                    ),
+                )
+            )
+                ->setUri('#')
+                ->setExtra('icon', 'fa fa-dashboard')
+                ->setAttribute('class', 'treeview');
 
+            $menu['Administracion']
+                ->addChild(
+                    'Aplicativos',
+                    array(
+                        'route' => 'aplicativo',
+                    )
+                );
+            $menu['Administracion']
+                ->addChild(
+                    'Item Aplicativos',
+                    array(
+                        'route' => 'item_aplicativo',
+                    )
+                );
+
+//        Usuarios
+            $menu->addChild(
+                'Usuarios',
+                array(
+                    'childrenAttributes' => array(
+                        'class' => 'treeview-menu',
+                    ),
+                )
+            )
+                ->setUri('#')
+                ->setExtra('icon', 'fa fa-user')
+                ->setAttribute('class', 'treeview');
+
+            $menu['Usuarios']
+                ->addChild(
+                    'Listado',
+                    array(
+                        'route' => 'usuario',
+                    )
+                );
+            $menu['Usuarios']
+                ->addChild(
+                    'Grupos',
+                    array(
+                        'route' => 'fos_user_group_list',
+                    )
+                );
+            $menu['Usuarios']
+                ->addChild(
+                    'Permisos',
+                    array(
+                        'route' => 'permiso_aplicacion',
+                    )
+                );
+        }
 
         return $menu;
     }

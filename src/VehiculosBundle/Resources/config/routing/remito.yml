@@ -1,0 +1,30 @@
+remitos:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:Remito:index" }
+
+remitos_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:Remito:show" }
+
+remitos_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:Remito:new" }
+
+remitos_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:Remito:create" }
+    methods:  POST
+
+remitos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:Remito:edit" }
+
+remitos_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:Remito:update" }
+    methods:  [POST, PUT]
+
+remitos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:Remito:delete" }
+    methods:  [POST, DELETE]

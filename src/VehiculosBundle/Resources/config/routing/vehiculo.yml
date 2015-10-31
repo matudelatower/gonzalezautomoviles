@@ -28,3 +28,7 @@ vehiculos_delete:
     path:     /{id}/delete
     defaults: { _controller: "VehiculosBundle:Vehiculo:delete" }
     methods:  [POST, DELETE]
+
+vehiculos_alta:
+    path:     /alta
+    defaults: { _controller: "VehiculosBundle:Vehiculo:alta" }

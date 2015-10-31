@@ -23,16 +23,9 @@ class EstadoVehiculo
     private $id;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fechaEstado", type="datetime")
-     */
-    private $fechaEstado;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="observacion", type="text")
+     * @ORM\Column(name="observacion", type="text", nullable=true)
      */
     private $observacion;
 
@@ -71,7 +64,7 @@ class EstadoVehiculo
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo", inversedBy="estadoVehiculo")
      * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
      */
     private $vehiculo;
@@ -82,6 +75,8 @@ class EstadoVehiculo
      */
     private $tipoEstadoVehiculo;
 
+
+
     /**
      * Get id
      *
@@ -90,30 +85,6 @@ class EstadoVehiculo
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set fechaEstado
-     *
-     * @param \DateTime $fechaEstado
-     *
-     * @return EstadoVehiculo
-     */
-    public function setFechaEstado($fechaEstado)
-    {
-        $this->fechaEstado = $fechaEstado;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaEstado
-     *
-     * @return \DateTime
-     */
-    public function getFechaEstado()
-    {
-        return $this->fechaEstado;
     }
 
     /**

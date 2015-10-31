@@ -4,12 +4,15 @@ namespace VehiculosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Vehiculo
  *
  * @ORM\Table(name="vehiculos")
  * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\VehiculoRepository")
+ * @UniqueEntity("vin")
+ * @UniqueEntity("chasis")
  */
 class Vehiculo
 {
@@ -32,13 +35,6 @@ class Vehiculo
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_vehiculo", type="string", length=255)
-     */
-    private $nombreVehiculo;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="modelo", type="string", length=255)
      */
     private $modelo;
@@ -46,7 +42,7 @@ class Vehiculo
     /**
      * @var integer
      *
-     * @ORM\Column(name="anio_fabricacion", type="integer")
+     * @ORM\Column(name="anio_fabricacion", type="integer", nullable=true)
      */
     private $anioFabricacion;
 
@@ -60,56 +56,56 @@ class Vehiculo
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo_llave", type="string", length=255)
+     * @ORM\Column(name="codigo_llave", type="string", length=255, nullable=true)
      */
     private $codigoLlave;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo_radio", type="string", length=255)
+     * @ORM\Column(name="codigo_radio", type="string", length=255, nullable=true)
      */
     private $codigoRadio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo_seguridad", type="string", length=255)
+     * @ORM\Column(name="codigo_seguridad", type="string", length=255, nullable=true)
      */
     private $codigoSeguridad;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo_inmovilizador", type="string", length=255)
+     * @ORM\Column(name="codigo_inmovilizador", type="string", length=255, nullable=true)
      */
     private $codigoInmovilizador;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="color_interno", type="string", length=255)
+     * @ORM\Column(name="color_interno", type="string", length=255, nullable=true)
      */
     private $colorInterno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="color_externo", type="string", length=255)
+     * @ORM\Column(name="color_externo", type="string", length=255, nullable=true)
      */
     private $colorExterno;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="km_ingreso", type="string", length=255)
+     * @ORM\Column(name="km_ingreso", type="string", length=255, nullable=true)
      */
     private $kmIngreso;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observacion", type="text", nullable=true)
+     * @ORM\Column(name="observacion", type="text", nullable=true, nullable=true)
      */
     private $observacion;
 
@@ -150,7 +146,7 @@ class Vehiculo
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Remito")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Remito", cascade={"persist"})
      * @ORM\JoinColumn(name="remito_id", referencedColumnName="id",nullable=true)
      */
     private $remito;
@@ -163,7 +159,7 @@ class Vehiculo
 
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\TipoCompra")
-     * @ORM\JoinColumn(name="tipo_compra_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tipo_compra_id", referencedColumnName="id", nullable=true))
      */
     private $tipoCompra;
     /**
@@ -178,6 +174,25 @@ class Vehiculo
      */
     private $patentamiento;
 
+    /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist"})
+     *
+     */
+    private $estadoVehiculo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="chasis", type="string", length=255)
+     */
+    private $chasis;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="documento", type="string", length=255)
+     */
+    private $documento;
 
     /**
      * Get id
@@ -211,30 +226,6 @@ class Vehiculo
     public function getVin()
     {
         return $this->vin;
-    }
-
-    /**
-     * Set nombreVehiculo
-     *
-     * @param string $nombreVehiculo
-     *
-     * @return Vehiculo
-     */
-    public function setNombreVehiculo($nombreVehiculo)
-    {
-        $this->nombreVehiculo = $nombreVehiculo;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreVehiculo
-     *
-     * @return string
-     */
-    public function getNombreVehiculo()
-    {
-        return $this->nombreVehiculo;
     }
 
     /**
@@ -550,6 +541,54 @@ class Vehiculo
     }
 
     /**
+     * Set chasis
+     *
+     * @param string $chasis
+     *
+     * @return Vehiculo
+     */
+    public function setChasis($chasis)
+    {
+        $this->chasis = $chasis;
+
+        return $this;
+    }
+
+    /**
+     * Get chasis
+     *
+     * @return string
+     */
+    public function getChasis()
+    {
+        return $this->chasis;
+    }
+
+    /**
+     * Set documento
+     *
+     * @param string $documento
+     *
+     * @return Vehiculo
+     */
+    public function setDocumento($documento)
+    {
+        $this->documento = $documento;
+
+        return $this;
+    }
+
+    /**
+     * Get documento
+     *
+     * @return string
+     */
+    public function getDocumento()
+    {
+        return $this->documento;
+    }
+
+    /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
@@ -715,5 +754,46 @@ class Vehiculo
     public function getPatentamiento()
     {
         return $this->patentamiento;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add estadoVehiculo
+     *
+     * @param \VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo
+     *
+     * @return Vehiculo
+     */
+    public function addEstadoVehiculo(\VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo)
+    {
+        $this->estadoVehiculo[] = $estadoVehiculo;
+
+        return $this;
+    }
+
+    /**
+     * Remove estadoVehiculo
+     *
+     * @param \VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo
+     */
+    public function removeEstadoVehiculo(\VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo)
+    {
+        $this->estadoVehiculo->removeElement($estadoVehiculo);
+    }
+
+    /**
+     * Get estadoVehiculo
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEstadoVehiculo()
+    {
+        return $this->estadoVehiculo;
     }
 }

@@ -25,7 +25,6 @@
                         <tr>
                             <th>Id</th>
                             <th>Vin</th>
-                            <th>Nombrevehiculo</th>
                             <th>Modelo</th>
                             <th>Aniofabricacion</th>
                             <th>Motor</th>
@@ -37,6 +36,7 @@
                             <th>Colorexterno</th>
                             <th>Kmingreso</th>
                             <th>Observacion</th>
+                            <th>Estado</th>
                             <th>Creado</th>
                             <th>Actualizado</th>
                             <th>Actions</th>
@@ -47,7 +47,6 @@
                             <tr>
                                 <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                                 <td>{{ entity.vin }}</td>
-                                <td>{{ entity.nombreVehiculo }}</td>
                                 <td>{{ entity.modelo }}</td>
                                 <td>{{ entity.anioFabricacion }}</td>
                                 <td>{{ entity.motor }}</td>
@@ -59,6 +58,7 @@
                                 <td>{{ entity.colorExterno }}</td>
                                 <td>{{ entity.kmIngreso }}</td>
                                 <td>{{ entity.observacion }}</td>
+                                <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
                                 <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                 <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                 <td>
@@ -77,8 +77,11 @@
     </div>
 
 
-    <a class="btn btn-primary" href="{{ path('vehiculos_new') }}">
-        Crear
+    {#<a class="btn btn-primary" href="{{ path('vehiculos_new') }}">#}
+        {#Crear#}
+    {#</a>#}
+    <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
+        Alta
     </a>
 
 {% endblock %}

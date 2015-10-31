@@ -5,7 +5,9 @@ namespace VehiculosBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use VehiculosBundle\Entity\EstadoVehiculo;
 use VehiculosBundle\Entity\Vehiculo;
+use VehiculosBundle\Form\AltaVehiculoType;
 use VehiculosBundle\Form\VehiculoType;
 
 /**
@@ -44,12 +46,25 @@ class VehiculoController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
+
             $em = $this->getDoctrine()->getManager();
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                'pendiente-por-recibir'
+            );
+
+            $estadoVehiculo = new EstadoVehiculo();
+            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+            $estadoVehiculo->setVehiculo($entity);
+
+            $entity->addEstadoVehiculo($estadoVehiculo);
+
             $em->persist($entity);
             $em->flush();
 
             $this->get('session')->getFlashBag()->add(
-                'success', 'Vehiculo creado correctamente.'
+                'success',
+                'Vehiculo creado correctamente.'
             );
 
             return $this->redirect($this->generateUrl('vehiculos_show', array('id' => $entity->getId())));
@@ -71,10 +86,15 @@ class VehiculoController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Vehiculo $entity)
+    private function createCreateForm(Vehiculo $entity, $type = null)
     {
+
+        if (!$type) {
+            $type = new VehiculoType();
+        }
+
         $form = $this->createForm(
-            new VehiculoType(),
+            $type,
             $entity,
             array(
                 'action' => $this->generateUrl('vehiculos_create'),
@@ -218,7 +238,8 @@ class VehiculoController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add(
-                'success', 'Vehiculo actualizado correctamente.'
+                'success',
+                'Vehiculo actualizado correctamente.'
             );
 
             return $this->redirect($this->generateUrl('vehiculos_edit', array('id' => $id)));
@@ -272,5 +293,19 @@ class VehiculoController extends Controller
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm();
+    }
+
+    public function altaAction()
+    {
+        $entity = new Vehiculo();
+        $form = $this->createCreateForm($entity, new AltaVehiculoType());
+
+        return $this->render(
+            'VehiculosBundle:Vehiculo:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 }
