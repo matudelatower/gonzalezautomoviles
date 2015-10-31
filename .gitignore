@@ -48,6 +48,7 @@ tmtags
 *.sublime-workspace
  
 # netbeans
+nbproject
 nbproject/private/
 build/
 nbbuild/
@@ -77,3 +78,7 @@ Icon
 ._*
 .Spotlight-V100
 .Trashes
+
+# -- Theme ------------------------------
+!/src/ThemeBundle/Resources/public/AdminLTE-2.3.0/dist/
+!/src/ThemeBundle/Resources/public/AdminLTE-2.3.0/build/
