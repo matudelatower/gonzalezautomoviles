@@ -2,47 +2,81 @@
 
 namespace VehiculosBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AltaVehiculoType extends AbstractType
-{
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('documento')
-            ->add('vin')
-            ->add('chasis')
-            ->add('modelo')
-            ->add('colorExterno')
-            ->add('motor')
-            ->add('remito', new RemitoType())
-            ->add('importe')
-            ->add('impuestos')
-            ->add('tipoVentaEspecial')
-        ;
-    }
+class AltaVehiculoType extends AbstractType {
+	/**
+	 * @param FormBuilderInterface $builder
+	 * @param array $options
+	 */
+	public function buildForm( FormBuilderInterface $builder, array $options ) {
+		$builder
+			->add( 'documento' )
+			->add( 'vin' )
+			->add( 'chasis' )
+			->add( 'modelo',
+				'entity',
+				array(
+					'class'         => 'VehiculosBundle:CodigoModelo',
+					'attr'          => array(
+						'class' => 'select2'
+					),
+					'query_builder' => function ( EntityRepository $er ) {
+						return $er->createQueryBuilder( 'cm' )
+						          ->where( 'cm.activo = true' );
+					},
+				)
+			)
+			->add( 'colorExterno' )
+			->add( 'motor' )
+			->add( 'importe' )
+			->add( 'impuestos' )
+			->add( 'numeroPedido' )
+			->add( 'tipoVentaEspecial' )
+			->add( 'numeroGrupo',
+				'text',
+				array(
+					'label_attr' => array( 'class' => 'hidden tipo-venta-especial-field' ),
+					'attr'       => array( 'class' => 'hidden tipo-venta-especial-field' )
+				) )
+			->add( 'numeroOrden',
+				'text',
+				array(
+					'label_attr' => array( 'class' => 'hidden tipo-venta-especial-field' ),
+					'attr'       => array( 'class' => 'hidden tipo-venta-especial-field' )
+				) )
+			->add( 'numeroSolicitud',
+				'text',
+				array(
+					'label_attr' => array( 'class' => 'hidden tipo-venta-especial-field' ),
+					'attr'       => array( 'class' => 'hidden tipo-venta-especial-field' )
+				) )
+//			->add( 'cliente', 'jqueryautocomplete', array(
+//					'class' => 'PersonasBundle\Entity\Persona',
+//					'property' => '',
+//					'search_method' => 'getByLike',
+//					'required' => false
+//			) )
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'VehiculosBundle\Entity\Vehiculo'
-        ));
-    }
+			->add( 'remito', new RemitoType() );
+	}
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'vehiculosbundle_vehiculo';
-    }
+	/**
+	 * @param OptionsResolver $resolver
+	 */
+	public function configureOptions( OptionsResolver $resolver ) {
+		$resolver->setDefaults( array(
+			'data_class' => 'VehiculosBundle\Entity\Vehiculo'
+		) );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return 'vehiculosbundle_vehiculo';
+	}
 }

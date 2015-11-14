@@ -1,3 +1,11 @@
+vehiculos_codigo_modelo:
+    resource: "@VehiculosBundle/Resources/config/routing/codigomodelo.yml"
+    prefix:   /codigo_modelo
+
+vehiculos_nombre_modelo:
+    resource: "@VehiculosBundle/Resources/config/routing/nombremodelo.yml"
+    prefix:   /nombre_modelo
+
 vehiculos_gravedad_danios_gm:
     resource: "@VehiculosBundle/Resources/config/routing/gravedaddaniogm.yml"
     prefix:   /gravedad_danios_gm
@@ -29,6 +37,10 @@ vehiculos_tipo_estado_vehiculo:
 vehiculos_vehiculos:
     resource: "@VehiculosBundle/Resources/config/routing/vehiculo.yml"
     prefix:   /vehiculos
+
+vehiculos_ajax:
+    resource: "@VehiculosBundle/Resources/config/routing/ajax.yml"
+    prefix:   /ajax
 
 vehiculos_homepage:
     path:     /hello/{name}

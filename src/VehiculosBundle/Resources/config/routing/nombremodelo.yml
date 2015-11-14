@@ -1,0 +1,30 @@
+nombre_modelo:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:NombreModelo:index" }
+
+nombre_modelo_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:NombreModelo:show" }
+
+nombre_modelo_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:NombreModelo:new" }
+
+nombre_modelo_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:NombreModelo:create" }
+    methods:  POST
+
+nombre_modelo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:NombreModelo:edit" }
+
+nombre_modelo_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:NombreModelo:update" }
+    methods:  [POST, PUT]
+
+nombre_modelo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:NombreModelo:delete" }
+    methods:  [POST, DELETE]

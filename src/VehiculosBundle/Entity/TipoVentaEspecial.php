@@ -71,6 +71,13 @@ class TipoVentaEspecial
      */
     private $actualizadoPor;
 
+    /**
+     * @var boolean $muestraPlanDeAhorro
+     *
+     * @ORM\Column(name="muestra_plan_de_ahorro", type="boolean", nullable=true)
+     */
+    private $muestraPlanDeAhorro;
+
     public function __toString()
     {
         return $this->nombre;
@@ -228,5 +235,29 @@ class TipoVentaEspecial
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set muestraPlanDeAhorro
+     *
+     * @param boolean $muestraPlanDeAhorro
+     *
+     * @return TipoVentaEspecial
+     */
+    public function setMuestraPlanDeAhorro($muestraPlanDeAhorro)
+    {
+        $this->muestraPlanDeAhorro = $muestraPlanDeAhorro;
+
+        return $this;
+    }
+
+    /**
+     * Get muestraPlanDeAhorro
+     *
+     * @return boolean
+     */
+    public function getMuestraPlanDeAhorro()
+    {
+        return $this->muestraPlanDeAhorro;
     }
 }

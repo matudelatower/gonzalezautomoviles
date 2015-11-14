@@ -44,6 +44,11 @@ class UsuarioController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
+            foreach ($entity->getGrupos() as $grupo) {
+                $grupo->setUsuario($entity);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -128,13 +133,13 @@ class UsuarioController extends Controller
             throw $this->createNotFoundException('Unable to find Usuario entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+//        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render(
             'UsuariosBundle:Usuario:show.html.twig',
             array(
                 'entity' => $entity,
-                'delete_form' => $deleteForm->createView(),
+//                'delete_form' => $deleteForm->createView(),
             )
         );
     }
@@ -211,7 +216,7 @@ class UsuarioController extends Controller
             throw $this->createNotFoundException('Unable to find Usuario entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+//        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
@@ -236,7 +241,7 @@ class UsuarioController extends Controller
             array(
                 'entity' => $entity,
                 'edit_form' => $editForm->createView(),
-                'delete_form' => $deleteForm->createView(),
+//                'delete_form' => $deleteForm->createView(),
             )
         );
     }

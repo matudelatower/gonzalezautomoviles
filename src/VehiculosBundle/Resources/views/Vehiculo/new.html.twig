@@ -3,7 +3,33 @@
 {% block content_title %}
     Formulario de Alta
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#{{ form.tipoVentaEspecial.vars.id }}').change(function () {
+                console.log($(this).val());
 
+                var id = $(this).val()
+
+                $.ajax({
+                    url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
+                    method: "GET",
+                    data: {id: id},
+                    success: function (data) {
+                        if (data == true) {
+                            $('.tipo-venta-especial-field').removeClass('hidden');
+                        } else {
+                            $('.tipo-venta-especial-field').addClass('hidden');
+                        }
+                    }
+                });
+
+
+            })
+        });
+    </script>
+{% endblock %}
 {% block content -%}
     <div class="row">
         <div class="col-md-12">

@@ -1,7 +1,7 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
 {% block content_title %}
-    Formulario de Edicion
+    Formulario de Alta
 {% endblock %}
 
 {% block content -%}
@@ -9,13 +9,14 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title">Usuario</h3>
+                <h3 class="box-title">NombreModelo</h3>
             </div>
 
-    {{ form(edit_form) }}
+
+    {{ form(form) }}
 
         <div class="box-footer">
-<a class="btn btn-default" href="{{ path('usuario') }}">
+<a class="btn btn-default" href="{{ path('nombre_modelo') }}">
     Volver
 </a>
 
@@ -23,6 +24,5 @@
 </div>
 </div>
 </div>
-    {#{{ form(delete_form) }}#}
 
 {% endblock %}

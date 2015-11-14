@@ -58,7 +58,7 @@ class Transportista
     private $domicilio;
 
     /**
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\Vehiculo", mappedBy="vehiculo", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\Vehiculo", mappedBy="transportista", cascade={"persist"})
      *
      */
     private $vehiculo;

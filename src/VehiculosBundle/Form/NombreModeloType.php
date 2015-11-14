@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TipoVentaEspecialType extends AbstractType
+class NombreModeloType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,8 +16,7 @@ class TipoVentaEspecialType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('descripcion')
-            ->add('muestraPlanDeAhorro')
+            ->add('activo')
 
         ;
     }
@@ -28,7 +27,7 @@ class TipoVentaEspecialType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'VehiculosBundle\Entity\TipoVentaEspecial'
+            'data_class' => 'VehiculosBundle\Entity\NombreModelo'
         ));
     }
 
@@ -37,6 +36,6 @@ class TipoVentaEspecialType extends AbstractType
      */
     public function getName()
     {
-        return 'vehiculosbundle_tipoventaespecial';
+        return 'vehiculosbundle_nombremodelo';
     }
 }
