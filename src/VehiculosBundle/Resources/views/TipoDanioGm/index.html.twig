@@ -1,6 +1,25 @@
-    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
-    {% block content -%}
+{% block javascripts %}
+    <script>
+        {#{% set formFilter = app.request.request.get('bigd_electoralbundle_establecimiento_filter_type') %}
+
+            {% if formFilter is not null %}
+            $('.pagination li a').click(function () {
+
+                $('#form-filtro-establecimientos').attr('action', this.href);
+                {% for row in form %}
+                $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
+                {% endfor %}
+
+                $('#form-filtro-establecimientos').submit();
+                return false;
+            });
+            {% endif %}#}
+    </script>
+{% endblock %}
+
+{% block content -%}
 
 
     <div class="row">
@@ -25,43 +44,44 @@
                     <table class="table table-hover">
 
                         <tr>
-                                <th>Id</th>
-                                <th>Codigo</th>
-                                <th>Descripcion</th>
-                                <th>Creado</th>
-                                <th>Actualizado</th>
+                            <th>Id</th>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Creado</th>
+                            <th>Actualizado</th>
                             <th>Acciones</th>
                         </tr>
 
                         {% for entity in entities %}
-                        <tr>
-                                    <td>
-                                        <a href="{{ path('tipos_danios_gm_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
-                                    </td>
-                                    <td>{{ entity.codigo }}</td>
-                                    <td>{{ entity.descripcion }}</td>
-                                    <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                    <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                    <td>
+                            <tr>
+                                <td>
+                                    <a href="{{ path('tipos_danios_gm_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
+                                </td>
+                                <td>{{ entity.codigo }}</td>
+                                <td>{{ entity.descripcion }}</td>
+                                <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                <td>
 
-                        <a class="btn btn-default" href="{{ path('tipos_danios_gm_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-default" href="{{ path('tipos_danios_gm_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
 
-                        <a class="btn btn-default" href="{{ path('tipos_danios_gm_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-default" href="{{ path('tipos_danios_gm_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
 
-                                    </td>
-                        </tr>
+                                </td>
+                            </tr>
                         {% endfor %}
 
                     </table>
                 </div>
                 <div class="box-footer">
-                    
-                        <a class="btn btn-primary" href="{{ path('tipos_danios_gm_new') }}">
-                            Nuevo
-                        </a>
 
-                                    </div>
+                    <a class="btn btn-primary" href="{{ path('tipos_danios_gm_new') }}">
+                        Nuevo
+                    </a>
+
+                </div>
             </div>
         </div>
     </div>
-    {% endblock %}
+    {{ knp_pagination_render(entities) }}
+{% endblock %}

@@ -4,7 +4,6 @@ namespace VehiculosBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use VehiculosBundle\Entity\TipoDanioGm;
 use VehiculosBundle\Form\TipoDanioGmType;
 
@@ -12,29 +11,32 @@ use VehiculosBundle\Form\TipoDanioGmType;
  * TipoDanioGm controller.
  *
  */
-class TipoDanioGmController extends Controller
-{
+class TipoDanioGmController extends Controller {
 
     /**
      * Lists all TipoDanioGm entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('VehiculosBundle:TipoDanioGm')->findAll();
 
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $this->get('request')->query->get('page', 1)/* page number */, 10/* limit per page */
+        );
+
         return $this->render('VehiculosBundle:TipoDanioGm:index.html.twig', array(
-            'entities' => $entities,
+                    'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new TipoDanioGm entity.
      *
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new TipoDanioGm();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -45,15 +47,15 @@ class TipoDanioGmController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add(
-                'success', 'TipoDanioGm creado correctamente.'
+                    'success', 'TipoDanioGm creado correctamente.'
             );
 
             return $this->redirect($this->generateUrl('tipos_danios_gm_show', array('id' => $entity->getId())));
         }
 
         return $this->render('VehiculosBundle:TipoDanioGm:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -64,8 +66,7 @@ class TipoDanioGmController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(TipoDanioGm $entity)
-    {
+    private function createCreateForm(TipoDanioGm $entity) {
         $form = $this->createForm(new TipoDanioGmType(), $entity, array(
             'action' => $this->generateUrl('tipos_danios_gm_create'),
             'method' => 'POST',
@@ -84,14 +85,13 @@ class TipoDanioGmController extends Controller
      * Displays a form to create a new TipoDanioGm entity.
      *
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new TipoDanioGm();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('VehiculosBundle:TipoDanioGm:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -99,8 +99,7 @@ class TipoDanioGmController extends Controller
      * Finds and displays a TipoDanioGm entity.
      *
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
@@ -112,8 +111,8 @@ class TipoDanioGmController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('VehiculosBundle:TipoDanioGm:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -121,8 +120,7 @@ class TipoDanioGmController extends Controller
      * Displays a form to edit an existing TipoDanioGm entity.
      *
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
@@ -135,21 +133,20 @@ class TipoDanioGmController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('VehiculosBundle:TipoDanioGm:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a TipoDanioGm entity.
-    *
-    * @param TipoDanioGm $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(TipoDanioGm $entity)
-    {
+     * Creates a form to edit a TipoDanioGm entity.
+     *
+     * @param TipoDanioGm $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(TipoDanioGm $entity) {
         $form = $this->createForm(new TipoDanioGmType(), $entity, array(
             'action' => $this->generateUrl('tipos_danios_gm_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -157,22 +154,20 @@ class TipoDanioGmController extends Controller
         ));
 
         $form->add(
-            'submit',
-            'submit',
-            array(
-                'label' => 'Actualizar',
-                'attr' => array('class' => 'btn btn-primary pull-right'),
-            )
+                'submit', 'submit', array(
+            'label' => 'Actualizar',
+            'attr' => array('class' => 'btn btn-primary pull-right'),
+                )
         );
 
         return $form;
     }
+
     /**
      * Edits an existing TipoDanioGm entity.
      *
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
@@ -189,24 +184,24 @@ class TipoDanioGmController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add(
-                'success', 'TipoDanioGm actualizado correctamente.'
+                    'success', 'TipoDanioGm actualizado correctamente.'
             );
 
             return $this->redirect($this->generateUrl('tipos_danios_gm_edit', array('id' => $id)));
         }
 
         return $this->render('VehiculosBundle:TipoDanioGm:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a TipoDanioGm entity.
      *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -232,13 +227,13 @@ class TipoDanioGmController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('tipos_danios_gm_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('tipos_danios_gm_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }
