@@ -1,0 +1,30 @@
+check_control_interno:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:index" }
+
+check_control_interno_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:show" }
+
+check_control_interno_new:
+    path:     /{vehiculoId}/new
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:new" }
+
+check_control_interno_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:create" }
+    methods:  POST
+
+check_control_interno_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:edit" }
+
+check_control_interno_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:update" }
+    methods:  [POST, PUT]
+
+check_control_interno_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:CheckControlInterno:delete" }
+    methods:  [POST, DELETE]

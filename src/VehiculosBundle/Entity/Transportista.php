@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Remito
+ * Transportista
  *
- * @ORM\Table(name="remitos")
+ * @ORM\Table(name="transportistas")
  * @ORM\Entity
  */
-class Remito
+class Transportista
 {
     /**
      * @var integer
@@ -23,40 +23,45 @@ class Remito
     private $id;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="fecha", type="datetime")
+     * @ORM\Column(name="cuit", type="string", length=255)
      */
-    private $fecha;
+    private $cuit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="text", nullable=true)
+     * @ORM\Column(name="apellido", type="string", length=255)
      */
-    private $observaciones;
+    private $apellido;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero",type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $numero;
+    private $nombre;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="fecha_recibido", type="datetime", nullable=true)
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
      */
-    private $fechaRecibido;
+    private $telefono;
 
     /**
-     * @var integer $usuarioReceptor
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="usuario_receptor_id", referencedColumnName="id", nullable=true)
+     * @ORM\Column(name="domicilio", type="string", length=255, nullable=true)
      */
-    private $usuarioReceptor;
+    private $domicilio;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\Vehiculo", mappedBy="vehiculo", cascade={"persist"})
+     *
+     */
+    private $vehiculo;
 
     /**
      * @var datetime $creado
@@ -92,6 +97,16 @@ class Remito
      */
     private $actualizadoPor;
 
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->vehiculo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -103,99 +118,123 @@ class Remito
     }
 
     /**
-     * Set fecha
+     * Set cuit
      *
-     * @param \DateTime $fecha
+     * @param string $cuit
      *
-     * @return Remito
+     * @return Transportista
      */
-    public function setFecha($fecha)
+    public function setCuit($cuit)
     {
-        $this->fecha = $fecha;
+        $this->cuit = $cuit;
 
         return $this;
     }
 
     /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set observaciones
-     *
-     * @param string $observaciones
-     *
-     * @return Remito
-     */
-    public function setObservaciones($observaciones)
-    {
-        $this->observaciones = $observaciones;
-
-        return $this;
-    }
-
-    /**
-     * Get observaciones
+     * Get cuit
      *
      * @return string
      */
-    public function getObservaciones()
+    public function getCuit()
     {
-        return $this->observaciones;
+        return $this->cuit;
     }
 
     /**
-     * Set numero
+     * Set apellido
      *
-     * @param string $numero
+     * @param string $apellido
      *
-     * @return Remito
+     * @return Transportista
      */
-    public function setNumero($numero)
+    public function setApellido($apellido)
     {
-        $this->numero = $numero;
+        $this->apellido = $apellido;
 
         return $this;
     }
 
     /**
-     * Get numero
+     * Get apellido
      *
      * @return string
      */
-    public function getNumero()
+    public function getApellido()
     {
-        return $this->numero;
+        return $this->apellido;
     }
 
     /**
-     * Set fechaRecibido
+     * Set nombre
      *
-     * @param \DateTime $fechaRecibido
+     * @param string $nombre
      *
-     * @return Remito
+     * @return Transportista
      */
-    public function setFechaRecibido($fechaRecibido)
+    public function setNombre($nombre)
     {
-        $this->fechaRecibido = $fechaRecibido;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get fechaRecibido
+     * Get nombre
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getFechaRecibido()
+    public function getNombre()
     {
-        return $this->fechaRecibido;
+        return $this->nombre;
+    }
+
+    /**
+     * Set telefono
+     *
+     * @param string $telefono
+     *
+     * @return Transportista
+     */
+    public function setTelefono($telefono)
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    /**
+     * Get telefono
+     *
+     * @return string
+     */
+    public function getTelefono()
+    {
+        return $this->telefono;
+    }
+
+    /**
+     * Set domicilio
+     *
+     * @param string $domicilio
+     *
+     * @return Transportista
+     */
+    public function setDomicilio($domicilio)
+    {
+        $this->domicilio = $domicilio;
+
+        return $this;
+    }
+
+    /**
+     * Get domicilio
+     *
+     * @return string
+     */
+    public function getDomicilio()
+    {
+        return $this->domicilio;
     }
 
     /**
@@ -203,7 +242,7 @@ class Remito
      *
      * @param \DateTime $creado
      *
-     * @return Remito
+     * @return Transportista
      */
     public function setCreado($creado)
     {
@@ -227,7 +266,7 @@ class Remito
      *
      * @param \DateTime $actualizado
      *
-     * @return Remito
+     * @return Transportista
      */
     public function setActualizado($actualizado)
     {
@@ -247,27 +286,37 @@ class Remito
     }
 
     /**
-     * Set usuarioReceptor
+     * Add vehiculo
      *
-     * @param \UsuariosBundle\Entity\Usuario $usuarioReceptor
+     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
      *
-     * @return Remito
+     * @return Transportista
      */
-    public function setUsuarioReceptor(\UsuariosBundle\Entity\Usuario $usuarioReceptor = null)
+    public function addVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo)
     {
-        $this->usuarioReceptor = $usuarioReceptor;
+        $this->vehiculo[] = $vehiculo;
 
         return $this;
     }
 
     /**
-     * Get usuarioReceptor
+     * Remove vehiculo
      *
-     * @return \UsuariosBundle\Entity\Usuario
+     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
      */
-    public function getUsuarioReceptor()
+    public function removeVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo)
     {
-        return $this->usuarioReceptor;
+        $this->vehiculo->removeElement($vehiculo);
+    }
+
+    /**
+     * Get vehiculo
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVehiculo()
+    {
+        return $this->vehiculo;
     }
 
     /**
@@ -275,7 +324,7 @@ class Remito
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return Remito
+     * @return Transportista
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -299,7 +348,7 @@ class Remito
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return Remito
+     * @return Transportista
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {

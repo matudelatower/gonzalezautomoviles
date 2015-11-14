@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * TipoCompra
+ * CodigoModelo
  *
- * @ORM\Table(name="tipos_compra")
+ * @ORM\Table(name="codigos_modelo")
  * @ORM\Entity
  */
-class TipoCompra
+class CodigoModelo
 {
     /**
      * @var integer
@@ -23,19 +23,32 @@ class TipoCompra
     private $id;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="anio", type="integer")
      */
-    private $nombre;
+    private $anio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @ORM\Column(name="codigo", type="string", length=255)
      */
-    private $descripcion;
+    private $codigo;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="version", type="string", length=255)
+     */
+    private $version;
+
+    /**
+     * @var $activo
+     *
+     * @ORM\Column(name="activo", type="boolean")
+     */
+    private $activo = true;
 
     /**
      * @var datetime $creado
@@ -71,10 +84,12 @@ class TipoCompra
      */
     private $actualizadoPor;
 
-    public function __toString()
-    {
-        return $this->nombre;
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\NombreModelo")
+     * @ORM\JoinColumn(name="nombre_modelo_id", referencedColumnName="id",nullable=true)
+     */
+    private $nombreModelo;
+
 
     /**
      * Get id
@@ -87,51 +102,99 @@ class TipoCompra
     }
 
     /**
-     * Set nombre
+     * Set anio
      *
-     * @param string $nombre
+     * @param integer $anio
      *
-     * @return TipoCompra
+     * @return CodigoModelo
      */
-    public function setNombre($nombre)
+    public function setAnio($anio)
     {
-        $this->nombre = $nombre;
+        $this->anio = $anio;
 
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get anio
      *
-     * @return string
+     * @return integer
      */
-    public function getNombre()
+    public function getAnio()
     {
-        return $this->nombre;
+        return $this->anio;
     }
 
     /**
-     * Set descripcion
+     * Set codigo
      *
-     * @param string $descripcion
+     * @param string $codigo
      *
-     * @return TipoCompra
+     * @return CodigoModelo
      */
-    public function setDescripcion($descripcion)
+    public function setCodigo($codigo)
     {
-        $this->descripcion = $descripcion;
+        $this->codigo = $codigo;
 
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get codigo
      *
      * @return string
      */
-    public function getDescripcion()
+    public function getCodigo()
     {
-        return $this->descripcion;
+        return $this->codigo;
+    }
+
+    /**
+     * Set version
+     *
+     * @param string $version
+     *
+     * @return CodigoModelo
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     *
+     * @return CodigoModelo
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    /**
+     * Get activo
+     *
+     * @return boolean
+     */
+    public function getActivo()
+    {
+        return $this->activo;
     }
 
     /**
@@ -139,7 +202,7 @@ class TipoCompra
      *
      * @param \DateTime $creado
      *
-     * @return TipoCompra
+     * @return CodigoModelo
      */
     public function setCreado($creado)
     {
@@ -163,7 +226,7 @@ class TipoCompra
      *
      * @param \DateTime $actualizado
      *
-     * @return TipoCompra
+     * @return CodigoModelo
      */
     public function setActualizado($actualizado)
     {
@@ -187,7 +250,7 @@ class TipoCompra
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return TipoCompra
+     * @return CodigoModelo
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -211,7 +274,7 @@ class TipoCompra
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return TipoCompra
+     * @return CodigoModelo
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -228,5 +291,29 @@ class TipoCompra
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set nombreModelo
+     *
+     * @param \VehiculosBundle\Entity\NombreModelo $nombreModelo
+     *
+     * @return CodigoModelo
+     */
+    public function setNombreModelo(\VehiculosBundle\Entity\NombreModelo $nombreModelo = null)
+    {
+        $this->nombreModelo = $nombreModelo;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreModelo
+     *
+     * @return \VehiculosBundle\Entity\NombreModelo
+     */
+    public function getNombreModelo()
+    {
+        return $this->nombreModelo;
     }
 }

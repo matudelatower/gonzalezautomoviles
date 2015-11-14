@@ -63,9 +63,16 @@
                                 <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                 <td>
 
-                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
-                                    <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                                class="fa fa-eye"></i></a>
+                                    <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
+                                                class="fa fa-edit"></i></a>
 
+                                        {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
+                                            <a class="btn btn-default"
+                                               href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"
+                                               title="Control interno"><i class="fa fa-check-square"></i></a>
+                                        {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -78,7 +85,7 @@
 
 
     {#<a class="btn btn-primary" href="{{ path('vehiculos_new') }}">#}
-        {#Crear#}
+    {#Crear#}
     {#</a>#}
     <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
         Alta

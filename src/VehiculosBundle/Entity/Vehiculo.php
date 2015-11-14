@@ -33,9 +33,8 @@ class Vehiculo
     private $vin;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="modelo", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CodigoModelo")
+     * @ORM\JoinColumn(name="codigo_modelo_id", referencedColumnName="id",nullable=true)
      */
     private $modelo;
 
@@ -158,10 +157,10 @@ class Vehiculo
     private $cliente;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\TipoCompra")
-     * @ORM\JoinColumn(name="tipo_compra_id", referencedColumnName="id", nullable=true))
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\TipoVentaEspecial")
+     * @ORM\JoinColumn(name="tipo_venta_especial_id", referencedColumnName="id", nullable=true))
      */
-    private $tipoCompra;
+    private $tipoVentaEspecial;
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Factura")
      * @ORM\JoinColumn(name="factura_id", referencedColumnName="id", nullable=true)
@@ -195,6 +194,70 @@ class Vehiculo
     private $documento;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="importe", type="decimal")
+     */
+    private $importe;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="impuestos", type="decimal")
+     */
+    private $impuestos;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_pedido", type="string", length=255)
+     */
+    private $numeroPedido;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_orden", type="string", length=255, nullable=true)
+     */
+    private $numeroOrden;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_grupo", type="string", length=255, nullable=true)
+     */
+    private $numeroGrupo;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_solicitud", type="string", length=255, nullable=true)
+     */
+    private $numeroSolicitud;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Transportista", inversedBy="vehiculo")
+     * @ORM\JoinColumn(name="transportista_id", referencedColumnName="id",nullable=true)
+     */
+    private $transportista;
+
+
+    public function __toString()
+    {
+        return $this->vin;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -226,30 +289,6 @@ class Vehiculo
     public function getVin()
     {
         return $this->vin;
-    }
-
-    /**
-     * Set modelo
-     *
-     * @param string $modelo
-     *
-     * @return Vehiculo
-     */
-    public function setModelo($modelo)
-    {
-        $this->modelo = $modelo;
-
-        return $this;
-    }
-
-    /**
-     * Get modelo
-     *
-     * @return string
-     */
-    public function getModelo()
-    {
-        return $this->modelo;
     }
 
     /**
@@ -589,6 +628,174 @@ class Vehiculo
     }
 
     /**
+     * Set importe
+     *
+     * @param string $importe
+     *
+     * @return Vehiculo
+     */
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
+
+        return $this;
+    }
+
+    /**
+     * Get importe
+     *
+     * @return string
+     */
+    public function getImporte()
+    {
+        return $this->importe;
+    }
+
+    /**
+     * Set impuestos
+     *
+     * @param string $impuestos
+     *
+     * @return Vehiculo
+     */
+    public function setImpuestos($impuestos)
+    {
+        $this->impuestos = $impuestos;
+
+        return $this;
+    }
+
+    /**
+     * Get impuestos
+     *
+     * @return string
+     */
+    public function getImpuestos()
+    {
+        return $this->impuestos;
+    }
+
+    /**
+     * Set numeroPedido
+     *
+     * @param string $numeroPedido
+     *
+     * @return Vehiculo
+     */
+    public function setNumeroPedido($numeroPedido)
+    {
+        $this->numeroPedido = $numeroPedido;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroPedido
+     *
+     * @return string
+     */
+    public function getNumeroPedido()
+    {
+        return $this->numeroPedido;
+    }
+
+    /**
+     * Set numeroOrden
+     *
+     * @param string $numeroOrden
+     *
+     * @return Vehiculo
+     */
+    public function setNumeroOrden($numeroOrden)
+    {
+        $this->numeroOrden = $numeroOrden;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroOrden
+     *
+     * @return string
+     */
+    public function getNumeroOrden()
+    {
+        return $this->numeroOrden;
+    }
+
+    /**
+     * Set numeroGrupo
+     *
+     * @param string $numeroGrupo
+     *
+     * @return Vehiculo
+     */
+    public function setNumeroGrupo($numeroGrupo)
+    {
+        $this->numeroGrupo = $numeroGrupo;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroGrupo
+     *
+     * @return string
+     */
+    public function getNumeroGrupo()
+    {
+        return $this->numeroGrupo;
+    }
+
+    /**
+     * Set numeroSolicitud
+     *
+     * @param string $numeroSolicitud
+     *
+     * @return Vehiculo
+     */
+    public function setNumeroSolicitud($numeroSolicitud)
+    {
+        $this->numeroSolicitud = $numeroSolicitud;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroSolicitud
+     *
+     * @return string
+     */
+    public function getNumeroSolicitud()
+    {
+        return $this->numeroSolicitud;
+    }
+
+    /**
+     * Set modelo
+     *
+     * @param \VehiculosBundle\Entity\CodigoModelo $modelo
+     *
+     * @return Vehiculo
+     */
+    public function setModelo(\VehiculosBundle\Entity\CodigoModelo $modelo = null)
+    {
+        $this->modelo = $modelo;
+
+        return $this;
+    }
+
+    /**
+     * Get modelo
+     *
+     * @return \VehiculosBundle\Entity\CodigoModelo
+     */
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+    /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
@@ -685,27 +892,27 @@ class Vehiculo
     }
 
     /**
-     * Set tipoCompra
+     * Set tipoVentaEspecial
      *
-     * @param \VehiculosBundle\Entity\TipoCompra $tipoCompra
+     * @param \VehiculosBundle\Entity\TipoVentaEspecial $tipoVentaEspecial
      *
      * @return Vehiculo
      */
-    public function setTipoCompra(\VehiculosBundle\Entity\TipoCompra $tipoCompra = null)
+    public function setTipoVentaEspecial(\VehiculosBundle\Entity\TipoVentaEspecial $tipoVentaEspecial = null)
     {
-        $this->tipoCompra = $tipoCompra;
+        $this->tipoVentaEspecial = $tipoVentaEspecial;
 
         return $this;
     }
 
     /**
-     * Get tipoCompra
+     * Get tipoVentaEspecial
      *
-     * @return \VehiculosBundle\Entity\TipoCompra
+     * @return \VehiculosBundle\Entity\TipoVentaEspecial
      */
-    public function getTipoCompra()
+    public function getTipoVentaEspecial()
     {
-        return $this->tipoCompra;
+        return $this->tipoVentaEspecial;
     }
 
     /**
@@ -755,13 +962,6 @@ class Vehiculo
     {
         return $this->patentamiento;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add estadoVehiculo
@@ -795,5 +995,29 @@ class Vehiculo
     public function getEstadoVehiculo()
     {
         return $this->estadoVehiculo;
+    }
+
+    /**
+     * Set transportista
+     *
+     * @param \VehiculosBundle\Entity\Transportista $transportista
+     *
+     * @return Vehiculo
+     */
+    public function setTransportista(\VehiculosBundle\Entity\Transportista $transportista = null)
+    {
+        $this->transportista = $transportista;
+
+        return $this;
+    }
+
+    /**
+     * Get transportista
+     *
+     * @return \VehiculosBundle\Entity\Transportista
+     */
+    public function getTransportista()
+    {
+        return $this->transportista;
     }
 }

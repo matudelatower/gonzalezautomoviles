@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * FotoDanio
+ * TipoVentaEspecial
  *
- * @ORM\Table(name="fotos_danios")
+ * @ORM\Table(name="tipos_venta_especial")
  * @ORM\Entity
  */
-class FotoDanio
+class TipoVentaEspecial
 {
     /**
      * @var integer
@@ -25,9 +25,16 @@ class FotoDanio
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $path;
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=255)
+     */
+    private $descripcion;
 
 
     /**
@@ -64,11 +71,10 @@ class FotoDanio
      */
     private $actualizadoPor;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\DanioVehiculo")
-     * @ORM\JoinColumn(name="danio_vehiculo_id", referencedColumnName="id")
-     */
-    private $danioVehiculo;
+    public function __toString()
+    {
+        return $this->nombre;
+    }
 
     /**
      * Get id
@@ -81,27 +87,51 @@ class FotoDanio
     }
 
     /**
-     * Set path
+     * Set nombre
      *
-     * @param string $path
+     * @param string $nombre
      *
-     * @return FotoDanio
+     * @return TipoCompra
      */
-    public function setPath($path)
+    public function setNombre($nombre)
     {
-        $this->path = $path;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get path
+     * Get nombre
      *
      * @return string
      */
-    public function getPath()
+    public function getNombre()
     {
-        return $this->path;
+        return $this->nombre;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return TipoCompra
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 
     /**
@@ -109,7 +139,7 @@ class FotoDanio
      *
      * @param \DateTime $creado
      *
-     * @return FotoDanio
+     * @return TipoCompra
      */
     public function setCreado($creado)
     {
@@ -133,7 +163,7 @@ class FotoDanio
      *
      * @param \DateTime $actualizado
      *
-     * @return FotoDanio
+     * @return TipoCompra
      */
     public function setActualizado($actualizado)
     {
@@ -157,7 +187,7 @@ class FotoDanio
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return FotoDanio
+     * @return TipoCompra
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -181,7 +211,7 @@ class FotoDanio
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return FotoDanio
+     * @return TipoCompra
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -198,29 +228,5 @@ class FotoDanio
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
-    }
-
-    /**
-     * Set danioVehiculo
-     *
-     * @param \VehiculosBundle\Entity\DanioVehiculo $danioVehiculo
-     *
-     * @return FotoDanio
-     */
-    public function setDanioVehiculo(\VehiculosBundle\Entity\DanioVehiculo $danioVehiculo = null)
-    {
-        $this->danioVehiculo = $danioVehiculo;
-
-        return $this;
-    }
-
-    /**
-     * Get danioVehiculo
-     *
-     * @return \VehiculosBundle\Entity\DanioVehiculo
-     */
-    public function getDanioVehiculo()
-    {
-        return $this->danioVehiculo;
     }
 }

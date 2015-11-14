@@ -1,3 +1,23 @@
+vehiculos_gravedad_danios_gm:
+    resource: "@VehiculosBundle/Resources/config/routing/gravedaddaniogm.yml"
+    prefix:   /gravedad_danios_gm
+
+vehiculos_codigos_danios_gm:
+    resource: "@VehiculosBundle/Resources/config/routing/codigodaniogm.yml"
+    prefix:   /codigos_danios_gm
+
+vehiculos_tipos_danios_gm:
+    resource: "@VehiculosBundle/Resources/config/routing/tipodaniogm.yml"
+    prefix:   /tipos_danios_gm
+
+vehiculos_tipo_venta_especial:
+    resource: "@VehiculosBundle/Resources/config/routing/tipoventaespecial.yml"
+    prefix:   /tipo_venta_especial
+
+vehiculos_check_control_interno:
+    resource: "@VehiculosBundle/Resources/config/routing/checkcontrolinterno.yml"
+    prefix:   /check_control_interno
+
 vehiculos_remitos:
     resource: "@VehiculosBundle/Resources/config/routing/remito.yml"
     prefix:   /remitos
@@ -5,10 +25,6 @@ vehiculos_remitos:
 vehiculos_tipo_estado_vehiculo:
     resource: "@VehiculosBundle/Resources/config/routing/tipoestadovehiculo.yml"
     prefix:   /tipo_estado_vehiculo
-
-vehiculos_tipo_compra:
-    resource: "@VehiculosBundle/Resources/config/routing/tipocompra.yml"
-    prefix:   /tipo_compra
 
 vehiculos_vehiculos:
     resource: "@VehiculosBundle/Resources/config/routing/vehiculo.yml"

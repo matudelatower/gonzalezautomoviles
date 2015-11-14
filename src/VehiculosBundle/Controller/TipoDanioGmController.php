@@ -5,37 +5,37 @@ namespace VehiculosBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use VehiculosBundle\Entity\TipoCompra;
-use VehiculosBundle\Form\TipoCompraType;
+use VehiculosBundle\Entity\TipoDanioGm;
+use VehiculosBundle\Form\TipoDanioGmType;
 
 /**
- * TipoCompra controller.
+ * TipoDanioGm controller.
  *
  */
-class TipoCompraController extends Controller
+class TipoDanioGmController extends Controller
 {
 
     /**
-     * Lists all TipoCompra entities.
+     * Lists all TipoDanioGm entities.
      *
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('VehiculosBundle:TipoCompra')->findAll();
+        $entities = $em->getRepository('VehiculosBundle:TipoDanioGm')->findAll();
 
-        return $this->render('VehiculosBundle:TipoCompra:index.html.twig', array(
+        return $this->render('VehiculosBundle:TipoDanioGm:index.html.twig', array(
             'entities' => $entities,
         ));
     }
     /**
-     * Creates a new TipoCompra entity.
+     * Creates a new TipoDanioGm entity.
      *
      */
     public function createAction(Request $request)
     {
-        $entity = new TipoCompra();
+        $entity = new TipoDanioGm();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -44,26 +44,30 @@ class TipoCompraController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('tipo_compra_show', array('id' => $entity->getId())));
+            $this->get('session')->getFlashBag()->add(
+                'success', 'TipoDanioGm creado correctamente.'
+            );
+
+            return $this->redirect($this->generateUrl('tipos_danios_gm_show', array('id' => $entity->getId())));
         }
 
-        return $this->render('VehiculosBundle:TipoCompra:new.html.twig', array(
+        return $this->render('VehiculosBundle:TipoDanioGm:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Creates a form to create a TipoCompra entity.
+     * Creates a form to create a TipoDanioGm entity.
      *
-     * @param TipoCompra $entity The entity
+     * @param TipoDanioGm $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(TipoCompra $entity)
+    private function createCreateForm(TipoDanioGm $entity)
     {
-        $form = $this->createForm(new TipoCompraType(), $entity, array(
-            'action' => $this->generateUrl('tipo_compra_create'),
+        $form = $this->createForm(new TipoDanioGmType(), $entity, array(
+            'action' => $this->generateUrl('tipos_danios_gm_create'),
             'method' => 'POST',
             'attr' => array('class' => 'box-body')
         ));
@@ -77,60 +81,60 @@ class TipoCompraController extends Controller
     }
 
     /**
-     * Displays a form to create a new TipoCompra entity.
+     * Displays a form to create a new TipoDanioGm entity.
      *
      */
     public function newAction()
     {
-        $entity = new TipoCompra();
+        $entity = new TipoDanioGm();
         $form   = $this->createCreateForm($entity);
 
-        return $this->render('VehiculosBundle:TipoCompra:new.html.twig', array(
+        return $this->render('VehiculosBundle:TipoDanioGm:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
         ));
     }
 
     /**
-     * Finds and displays a TipoCompra entity.
+     * Finds and displays a TipoDanioGm entity.
      *
      */
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('VehiculosBundle:TipoCompra')->find($id);
+        $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TipoCompra entity.');
+            throw $this->createNotFoundException('Unable to find TipoDanioGm entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('VehiculosBundle:TipoCompra:show.html.twig', array(
+        return $this->render('VehiculosBundle:TipoDanioGm:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-     * Displays a form to edit an existing TipoCompra entity.
+     * Displays a form to edit an existing TipoDanioGm entity.
      *
      */
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('VehiculosBundle:TipoCompra')->find($id);
+        $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TipoCompra entity.');
+            throw $this->createNotFoundException('Unable to find TipoDanioGm entity.');
         }
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('VehiculosBundle:TipoCompra:edit.html.twig', array(
+        return $this->render('VehiculosBundle:TipoDanioGm:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -138,35 +142,43 @@ class TipoCompraController extends Controller
     }
 
     /**
-    * Creates a form to edit a TipoCompra entity.
+    * Creates a form to edit a TipoDanioGm entity.
     *
-    * @param TipoCompra $entity The entity
+    * @param TipoDanioGm $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(TipoCompra $entity)
+    private function createEditForm(TipoDanioGm $entity)
     {
-        $form = $this->createForm(new TipoCompraType(), $entity, array(
-            'action' => $this->generateUrl('tipo_compra_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new TipoDanioGmType(), $entity, array(
+            'action' => $this->generateUrl('tipos_danios_gm_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'attr' => array('class' => 'box-body')
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add(
+            'submit',
+            'submit',
+            array(
+                'label' => 'Actualizar',
+                'attr' => array('class' => 'btn btn-primary pull-right'),
+            )
+        );
 
         return $form;
     }
     /**
-     * Edits an existing TipoCompra entity.
+     * Edits an existing TipoDanioGm entity.
      *
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('VehiculosBundle:TipoCompra')->find($id);
+        $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TipoCompra entity.');
+            throw $this->createNotFoundException('Unable to find TipoDanioGm entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -176,17 +188,21 @@ class TipoCompraController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('tipo_compra_edit', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add(
+                'success', 'TipoDanioGm actualizado correctamente.'
+            );
+
+            return $this->redirect($this->generateUrl('tipos_danios_gm_edit', array('id' => $id)));
         }
 
-        return $this->render('VehiculosBundle:TipoCompra:edit.html.twig', array(
+        return $this->render('VehiculosBundle:TipoDanioGm:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
     /**
-     * Deletes a TipoCompra entity.
+     * Deletes a TipoDanioGm entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -196,21 +212,21 @@ class TipoCompraController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('VehiculosBundle:TipoCompra')->find($id);
+            $entity = $em->getRepository('VehiculosBundle:TipoDanioGm')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find TipoCompra entity.');
+                throw $this->createNotFoundException('Unable to find TipoDanioGm entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('tipo_compra'));
+        return $this->redirect($this->generateUrl('tipos_danios_gm'));
     }
 
     /**
-     * Creates a form to delete a TipoCompra entity by id.
+     * Creates a form to delete a TipoDanioGm entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -219,7 +235,7 @@ class TipoCompraController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('tipo_compra_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('tipos_danios_gm_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

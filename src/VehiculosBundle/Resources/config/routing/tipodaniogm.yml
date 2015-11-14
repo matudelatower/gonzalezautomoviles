@@ -1,0 +1,30 @@
+tipos_danios_gm:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:index" }
+
+tipos_danios_gm_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:show" }
+
+tipos_danios_gm_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:new" }
+
+tipos_danios_gm_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:create" }
+    methods:  POST
+
+tipos_danios_gm_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:edit" }
+
+tipos_danios_gm_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:update" }
+    methods:  [POST, PUT]
+
+tipos_danios_gm_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:TipoDanioGm:delete" }
+    methods:  [POST, DELETE]

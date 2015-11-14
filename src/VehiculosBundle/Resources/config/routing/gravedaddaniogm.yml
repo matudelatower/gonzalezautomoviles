@@ -1,0 +1,30 @@
+gravedad_danios_gm:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:index" }
+
+gravedad_danios_gm_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:show" }
+
+gravedad_danios_gm_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:new" }
+
+gravedad_danios_gm_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:create" }
+    methods:  POST
+
+gravedad_danios_gm_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:edit" }
+
+gravedad_danios_gm_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:update" }
+    methods:  [POST, PUT]
+
+gravedad_danios_gm_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:GravedadDanioGm:delete" }
+    methods:  [POST, DELETE]

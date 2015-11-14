@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Remito
+ * TipoDanioGm
  *
- * @ORM\Table(name="remitos")
+ * @ORM\Table(name="tipos_danio_gm")
  * @ORM\Entity
  */
-class Remito
+class TipoDanioGm
 {
     /**
      * @var integer
@@ -23,40 +23,19 @@ class Remito
     private $id;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="fecha", type="datetime")
+     * @ORM\Column(name="codigo", type="string", length=255)
      */
-    private $fecha;
+    private $codigo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="text", nullable=true)
+     * @ORM\Column(name="descripcion", type="string", length=255)
      */
-    private $observaciones;
+    private $descripcion;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="numero",type="string", length=255)
-     */
-    private $numero;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_recibido", type="datetime", nullable=true)
-     */
-    private $fechaRecibido;
-
-    /**
-     * @var integer $usuarioReceptor
-     *
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="usuario_receptor_id", referencedColumnName="id", nullable=true)
-     */
-    private $usuarioReceptor;
 
     /**
      * @var datetime $creado
@@ -92,6 +71,12 @@ class Remito
      */
     private $actualizadoPor;
 
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
+
+
     /**
      * Get id
      *
@@ -103,99 +88,51 @@ class Remito
     }
 
     /**
-     * Set fecha
+     * Set codigo
      *
-     * @param \DateTime $fecha
+     * @param string $codigo
      *
-     * @return Remito
+     * @return TipoDanioGm
      */
-    public function setFecha($fecha)
+    public function setCodigo($codigo)
     {
-        $this->fecha = $fecha;
+        $this->codigo = $codigo;
 
         return $this;
     }
 
     /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set observaciones
-     *
-     * @param string $observaciones
-     *
-     * @return Remito
-     */
-    public function setObservaciones($observaciones)
-    {
-        $this->observaciones = $observaciones;
-
-        return $this;
-    }
-
-    /**
-     * Get observaciones
+     * Get codigo
      *
      * @return string
      */
-    public function getObservaciones()
+    public function getCodigo()
     {
-        return $this->observaciones;
+        return $this->codigo;
     }
 
     /**
-     * Set numero
+     * Set descripcion
      *
-     * @param string $numero
+     * @param string $descripcion
      *
-     * @return Remito
+     * @return TipoDanioGm
      */
-    public function setNumero($numero)
+    public function setDescripcion($descripcion)
     {
-        $this->numero = $numero;
+        $this->descripcion = $descripcion;
 
         return $this;
     }
 
     /**
-     * Get numero
+     * Get descripcion
      *
      * @return string
      */
-    public function getNumero()
+    public function getDescripcion()
     {
-        return $this->numero;
-    }
-
-    /**
-     * Set fechaRecibido
-     *
-     * @param \DateTime $fechaRecibido
-     *
-     * @return Remito
-     */
-    public function setFechaRecibido($fechaRecibido)
-    {
-        $this->fechaRecibido = $fechaRecibido;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaRecibido
-     *
-     * @return \DateTime
-     */
-    public function getFechaRecibido()
-    {
-        return $this->fechaRecibido;
+        return $this->descripcion;
     }
 
     /**
@@ -203,7 +140,7 @@ class Remito
      *
      * @param \DateTime $creado
      *
-     * @return Remito
+     * @return TipoDanioGm
      */
     public function setCreado($creado)
     {
@@ -227,7 +164,7 @@ class Remito
      *
      * @param \DateTime $actualizado
      *
-     * @return Remito
+     * @return TipoDanioGm
      */
     public function setActualizado($actualizado)
     {
@@ -247,35 +184,11 @@ class Remito
     }
 
     /**
-     * Set usuarioReceptor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $usuarioReceptor
-     *
-     * @return Remito
-     */
-    public function setUsuarioReceptor(\UsuariosBundle\Entity\Usuario $usuarioReceptor = null)
-    {
-        $this->usuarioReceptor = $usuarioReceptor;
-
-        return $this;
-    }
-
-    /**
-     * Get usuarioReceptor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getUsuarioReceptor()
-    {
-        return $this->usuarioReceptor;
-    }
-
-    /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return Remito
+     * @return TipoDanioGm
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -299,7 +212,7 @@ class Remito
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return Remito
+     * @return TipoDanioGm
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {

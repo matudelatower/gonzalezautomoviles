@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Remito
+ * NombreModelo
  *
- * @ORM\Table(name="remitos")
+ * @ORM\Table(name="nombres_modelo")
  * @ORM\Entity
  */
-class Remito
+class NombreModelo
 {
     /**
      * @var integer
@@ -23,40 +23,18 @@ class Remito
     private $id;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha", type="datetime")
-     */
-    private $fecha;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="text", nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $observaciones;
+    private $nombre;
 
     /**
-     * @var string
+     * @var $activo
      *
-     * @ORM\Column(name="numero",type="string", length=255)
+     * @ORM\Column(name="activo", type="boolean")
      */
-    private $numero;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha_recibido", type="datetime", nullable=true)
-     */
-    private $fechaRecibido;
-
-    /**
-     * @var integer $usuarioReceptor
-     *
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="usuario_receptor_id", referencedColumnName="id", nullable=true)
-     */
-    private $usuarioReceptor;
+    private $activo = true;
 
     /**
      * @var datetime $creado
@@ -92,6 +70,7 @@ class Remito
      */
     private $actualizadoPor;
 
+
     /**
      * Get id
      *
@@ -103,99 +82,51 @@ class Remito
     }
 
     /**
-     * Set fecha
+     * Set nombre
      *
-     * @param \DateTime $fecha
+     * @param string $nombre
      *
-     * @return Remito
+     * @return NombreModelo
      */
-    public function setFecha($fecha)
+    public function setNombre($nombre)
     {
-        $this->fecha = $fecha;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
     /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set observaciones
-     *
-     * @param string $observaciones
-     *
-     * @return Remito
-     */
-    public function setObservaciones($observaciones)
-    {
-        $this->observaciones = $observaciones;
-
-        return $this;
-    }
-
-    /**
-     * Get observaciones
+     * Get nombre
      *
      * @return string
      */
-    public function getObservaciones()
+    public function getNombre()
     {
-        return $this->observaciones;
+        return $this->nombre;
     }
 
     /**
-     * Set numero
+     * Set activo
      *
-     * @param string $numero
+     * @param boolean $activo
      *
-     * @return Remito
+     * @return NombreModelo
      */
-    public function setNumero($numero)
+    public function setActivo($activo)
     {
-        $this->numero = $numero;
+        $this->activo = $activo;
 
         return $this;
     }
 
     /**
-     * Get numero
+     * Get activo
      *
-     * @return string
+     * @return boolean
      */
-    public function getNumero()
+    public function getActivo()
     {
-        return $this->numero;
-    }
-
-    /**
-     * Set fechaRecibido
-     *
-     * @param \DateTime $fechaRecibido
-     *
-     * @return Remito
-     */
-    public function setFechaRecibido($fechaRecibido)
-    {
-        $this->fechaRecibido = $fechaRecibido;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaRecibido
-     *
-     * @return \DateTime
-     */
-    public function getFechaRecibido()
-    {
-        return $this->fechaRecibido;
+        return $this->activo;
     }
 
     /**
@@ -203,7 +134,7 @@ class Remito
      *
      * @param \DateTime $creado
      *
-     * @return Remito
+     * @return NombreModelo
      */
     public function setCreado($creado)
     {
@@ -227,7 +158,7 @@ class Remito
      *
      * @param \DateTime $actualizado
      *
-     * @return Remito
+     * @return NombreModelo
      */
     public function setActualizado($actualizado)
     {
@@ -247,35 +178,11 @@ class Remito
     }
 
     /**
-     * Set usuarioReceptor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $usuarioReceptor
-     *
-     * @return Remito
-     */
-    public function setUsuarioReceptor(\UsuariosBundle\Entity\Usuario $usuarioReceptor = null)
-    {
-        $this->usuarioReceptor = $usuarioReceptor;
-
-        return $this;
-    }
-
-    /**
-     * Get usuarioReceptor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getUsuarioReceptor()
-    {
-        return $this->usuarioReceptor;
-    }
-
-    /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return Remito
+     * @return NombreModelo
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -299,7 +206,7 @@ class Remito
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return Remito
+     * @return NombreModelo
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {

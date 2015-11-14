@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * TipoDanio
+ * GravedadDanioGm
  *
- * @ORM\Table(name="tipo_danio")
+ * @ORM\Table(name="gravedad_danios_gm")
  * @ORM\Entity
  */
-class TipoDanio
+class GravedadDanioGm
 {
     /**
      * @var integer
@@ -35,7 +35,6 @@ class TipoDanio
      * @ORM\Column(name="descripcion", type="string", length=255)
      */
     private $descripcion;
-
 
     /**
      * @var datetime $creado
@@ -71,6 +70,7 @@ class TipoDanio
      */
     private $actualizadoPor;
 
+
     /**
      * Get id
      *
@@ -86,7 +86,7 @@ class TipoDanio
      *
      * @param string $codigo
      *
-     * @return TipoDanio
+     * @return GravedadDanioGm
      */
     public function setCodigo($codigo)
     {
@@ -110,7 +110,7 @@ class TipoDanio
      *
      * @param string $descripcion
      *
-     * @return TipoDanio
+     * @return GravedadDanioGm
      */
     public function setDescripcion($descripcion)
     {
@@ -127,101 +127,5 @@ class TipoDanio
     public function getDescripcion()
     {
         return $this->descripcion;
-    }
-
-    /**
-     * Set creado
-     *
-     * @param \DateTime $creado
-     *
-     * @return TipoDanio
-     */
-    public function setCreado($creado)
-    {
-        $this->creado = $creado;
-
-        return $this;
-    }
-
-    /**
-     * Get creado
-     *
-     * @return \DateTime
-     */
-    public function getCreado()
-    {
-        return $this->creado;
-    }
-
-    /**
-     * Set actualizado
-     *
-     * @param \DateTime $actualizado
-     *
-     * @return TipoDanio
-     */
-    public function setActualizado($actualizado)
-    {
-        $this->actualizado = $actualizado;
-
-        return $this;
-    }
-
-    /**
-     * Get actualizado
-     *
-     * @return \DateTime
-     */
-    public function getActualizado()
-    {
-        return $this->actualizado;
-    }
-
-    /**
-     * Set creadoPor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $creadoPor
-     *
-     * @return TipoDanio
-     */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
-        $this->creadoPor = $creadoPor;
-
-        return $this;
-    }
-
-    /**
-     * Get creadoPor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getCreadoPor()
-    {
-        return $this->creadoPor;
-    }
-
-    /**
-     * Set actualizadoPor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-     *
-     * @return TipoDanio
-     */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
-        $this->actualizadoPor = $actualizadoPor;
-
-        return $this;
-    }
-
-    /**
-     * Get actualizadoPor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getActualizadoPor()
-    {
-        return $this->actualizadoPor;
     }
 }

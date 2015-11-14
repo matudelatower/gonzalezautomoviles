@@ -1,0 +1,30 @@
+tipo_venta_especial:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:index" }
+
+tipo_venta_especial_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:show" }
+
+tipo_venta_especial_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:new" }
+
+tipo_venta_especial_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:create" }
+    methods:  POST
+
+tipo_venta_especial_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:edit" }
+
+tipo_venta_especial_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:update" }
+    methods:  [POST, PUT]
+
+tipo_venta_especial_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:TipoVentaEspecial:delete" }
+    methods:  [POST, DELETE]
