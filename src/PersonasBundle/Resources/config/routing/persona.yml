@@ -1,0 +1,30 @@
+personas:
+    path:     /
+    defaults: { _controller: "PersonasBundle:Persona:index" }
+
+personas_show:
+    path:     /{id}/show
+    defaults: { _controller: "PersonasBundle:Persona:show" }
+
+personas_new:
+    path:     /new
+    defaults: { _controller: "PersonasBundle:Persona:new" }
+
+personas_create:
+    path:     /create
+    defaults: { _controller: "PersonasBundle:Persona:create" }
+    methods:  POST
+
+personas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "PersonasBundle:Persona:edit" }
+
+personas_update:
+    path:     /{id}/update
+    defaults: { _controller: "PersonasBundle:Persona:update" }
+    methods:  [POST, PUT]
+
+personas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "PersonasBundle:Persona:delete" }
+    methods:  [POST, DELETE]

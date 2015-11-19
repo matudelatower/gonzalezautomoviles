@@ -1,3 +1,15 @@
+personas_empleados:
+    resource: "@PersonasBundle/Resources/config/routing/empleado.yml"
+    prefix:   /empleados
+
+personas_tipos_documento:
+    resource: "@PersonasBundle/Resources/config/routing/tipodocumento.yml"
+    prefix:   /tipos_documento
+
+personas_personas:
+    resource: "@PersonasBundle/Resources/config/routing/persona.yml"
+    prefix:   /personas
+
 personas_homepage:
     path:     /hello/{name}
     defaults: { _controller: PersonasBundle:Default:index }

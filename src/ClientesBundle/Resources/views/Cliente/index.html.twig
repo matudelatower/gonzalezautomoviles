@@ -1,0 +1,68 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+    {% block content -%}
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Listado Cliente</h3>
+
+                        <div class="box-tools">
+                            <div class="input-group" style="width: 150px;">
+                                <input type="text" name="table_search" class="form-control input-sm pull-right"
+                                       placeholder="Buscar">
+
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Foraneo</th>
+                                <th>Acciones</th>
+                            </tr>
+
+                            {% for entity in entities %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ path('clientes_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
+                                    </td>
+                                    <td>{{ entity.personaTipo.first.persona }}</td>
+                                    <td>{{ entity.foraneo }}</td>
+                                    <td>
+
+                                        <a class="btn btn-default"
+                                           href="{{ path('clientes_show', { 'id': entity.id }) }}"><i
+                                                    class="fa fa-eye"></i></a>
+
+                                        <a class="btn btn-default"
+                                           href="{{ path('clientes_edit', { 'id': entity.id }) }}"><i
+                                                    class="fa fa-edit"></i></a>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                        </table>
+                    </div>
+                    <div class="box-footer">
+
+                        <a class="btn btn-primary" href="{{ path('clientes_new') }}">
+                            Nuevo
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ knp_pagination_render(entities) }}
+    {% endblock %}

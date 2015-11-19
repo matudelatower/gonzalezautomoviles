@@ -1,0 +1,30 @@
+tipos_documento:
+    path:     /
+    defaults: { _controller: "PersonasBundle:TipoDocumento:index" }
+
+tipos_documento_show:
+    path:     /{id}/show
+    defaults: { _controller: "PersonasBundle:TipoDocumento:show" }
+
+tipos_documento_new:
+    path:     /new
+    defaults: { _controller: "PersonasBundle:TipoDocumento:new" }
+
+tipos_documento_create:
+    path:     /create
+    defaults: { _controller: "PersonasBundle:TipoDocumento:create" }
+    methods:  POST
+
+tipos_documento_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "PersonasBundle:TipoDocumento:edit" }
+
+tipos_documento_update:
+    path:     /{id}/update
+    defaults: { _controller: "PersonasBundle:TipoDocumento:update" }
+    methods:  [POST, PUT]
+
+tipos_documento_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "PersonasBundle:TipoDocumento:delete" }
+    methods:  [POST, DELETE]

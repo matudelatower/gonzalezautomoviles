@@ -1,0 +1,30 @@
+empleados:
+    path:     /
+    defaults: { _controller: "PersonasBundle:Empleado:index" }
+
+empleados_show:
+    path:     /{id}/show
+    defaults: { _controller: "PersonasBundle:Empleado:show" }
+
+empleados_new:
+    path:     /new
+    defaults: { _controller: "PersonasBundle:Empleado:new" }
+
+empleados_create:
+    path:     /create
+    defaults: { _controller: "PersonasBundle:Empleado:create" }
+    methods:  POST
+
+empleados_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "PersonasBundle:Empleado:edit" }
+
+empleados_update:
+    path:     /{id}/update
+    defaults: { _controller: "PersonasBundle:Empleado:update" }
+    methods:  [POST, PUT]
+
+empleados_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "PersonasBundle:Empleado:delete" }
+    methods:  [POST, DELETE]

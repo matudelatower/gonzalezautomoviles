@@ -1,3 +1,11 @@
+empresas_empresas:
+    resource: "@EmpresasBundle/Resources/config/routing/empresa.yml"
+    prefix:   /empresas
+
+empresas_sucursales:
+    resource: "@EmpresasBundle/Resources/config/routing/sucursal.yml"
+    prefix:   /sucursales
+
 empresas_homepage:
     path:     /hello/{name}
     defaults: { _controller: EmpresasBundle:Default:index }

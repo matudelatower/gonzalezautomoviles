@@ -140,6 +140,10 @@ class Persona
      */
     private $tipoDocumento;
 
+    public function __toString() {
+        return $this->apellido. ', '. $this->nombre;
+    }
+    
     /**
      * Get id
      *

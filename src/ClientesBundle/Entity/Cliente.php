@@ -1,17 +1,16 @@
 <?php
 
-namespace EmpresasBundle\Entity;
+namespace ClientesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
 /**
- * Empresa
+ * Cliente
  *
- * @ORM\Table(name="empresas")
+ * @ORM\Table(name="clientes")
  * @ORM\Entity
  */
-class Empresa
+class Cliente
 {
     /**
      * @var integer
@@ -23,33 +22,17 @@ class Empresa
     private $id;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="razon_social", type="string", length=255)
+     * @ORM\Column(name="foraneo", type="boolean", nullable=true)
      */
-    private $razonSocial;
+    private $foraneo;
 
     /**
-     * @var string
+     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
      *
-     * @ORM\Column(name="slogan", type="string", length=255)
      */
-    private $slogan;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cuit", type="string", length=255)
-     */
-    private $cuit;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="logo", type="string", length=255)
-     */
-    private $logo;
-
+    private $personaTipo;
 
     /**
      * @var datetime $creado
@@ -85,10 +68,6 @@ class Empresa
      */
     private $actualizadoPor;
 
-    public function __toString() {
-        return $this->razonSocial;
-    }
-
     /**
      * Get id
      *
@@ -100,99 +79,68 @@ class Empresa
     }
 
     /**
-     * Set razonSocial
+     * Set foraneo
      *
-     * @param string $razonSocial
+     * @param boolean $foraneo
      *
-     * @return Empresa
+     * @return Cliente
      */
-    public function setRazonSocial($razonSocial)
+    public function setForaneo($foraneo)
     {
-        $this->razonSocial = $razonSocial;
+        $this->foraneo = $foraneo;
 
         return $this;
     }
 
     /**
-     * Get razonSocial
+     * Get foraneo
      *
-     * @return string
+     * @return boolean
      */
-    public function getRazonSocial()
+    public function getForaneo()
     {
-        return $this->razonSocial;
+        return $this->foraneo;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Set slogan
+     * Add personaTipo
      *
-     * @param string $slogan
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
      *
-     * @return Empresa
+     * @return Cliente
      */
-    public function setSlogan($slogan)
+    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
     {
-        $this->slogan = $slogan;
+        $this->personaTipo[] = $personaTipo;
 
         return $this;
     }
 
     /**
-     * Get slogan
+     * Remove personaTipo
      *
-     * @return string
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
      */
-    public function getSlogan()
+    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
     {
-        return $this->slogan;
+        $this->personaTipo->removeElement($personaTipo);
     }
 
     /**
-     * Set cuit
+     * Get personaTipo
      *
-     * @param string $cuit
-     *
-     * @return Empresa
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setCuit($cuit)
+    public function getPersonaTipo()
     {
-        $this->cuit = $cuit;
-
-        return $this;
-    }
-
-    /**
-     * Get cuit
-     *
-     * @return string
-     */
-    public function getCuit()
-    {
-        return $this->cuit;
-    }
-
-    /**
-     * Set logo
-     *
-     * @param string $logo
-     *
-     * @return Empresa
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-
-        return $this;
-    }
-
-    /**
-     * Get logo
-     *
-     * @return string
-     */
-    public function getLogo()
-    {
-        return $this->logo;
+        return $this->personaTipo;
     }
 
     /**
@@ -200,7 +148,7 @@ class Empresa
      *
      * @param \DateTime $creado
      *
-     * @return Empresa
+     * @return Cliente
      */
     public function setCreado($creado)
     {
@@ -224,7 +172,7 @@ class Empresa
      *
      * @param \DateTime $actualizado
      *
-     * @return Empresa
+     * @return Cliente
      */
     public function setActualizado($actualizado)
     {
@@ -248,7 +196,7 @@ class Empresa
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return Empresa
+     * @return Cliente
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -272,7 +220,7 @@ class Empresa
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return Empresa
+     * @return Cliente
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
