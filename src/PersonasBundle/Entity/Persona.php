@@ -53,7 +53,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="celular", type="string", length=255)
+     * @ORM\Column(name="celular", type="string", length=255, nullable=true)
      */
     private $celular;
 
@@ -67,7 +67,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="web", type="string", length=255)
+     * @ORM\Column(name="web", type="string", length=255, nullable=true)
      */
     private $web;
 
@@ -95,7 +95,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="barrio", type="string", length=255)
+     * @ORM\Column(name="barrio", type="string", length=255, nullable=true)
      */
     private $barrio;
 
@@ -139,6 +139,12 @@ class Persona
      * @ORM\JoinColumn(name="tipo_documento_id", referencedColumnName="id")
      */
     private $tipoDocumento;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="persona", cascade={"persist"})
+     *
+     */
+    private $personaTipo;
 
     public function __toString() {
         return $this->apellido. ', '. $this->nombre;
@@ -536,5 +542,46 @@ class Persona
     public function getTipoDocumento()
     {
         return $this->tipoDocumento;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     *
+     * @return Persona
+     */
+    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    {
+        $this->personaTipo[] = $personaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Remove personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     */
+    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    {
+        $this->personaTipo->removeElement($personaTipo);
+    }
+
+    /**
+     * Get personaTipo
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPersonaTipo()
+    {
+        return $this->personaTipo;
     }
 }

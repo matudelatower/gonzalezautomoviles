@@ -16,11 +16,7 @@ class EmpleadoType extends AbstractType
     {
         $builder
             ->add('categoria')
-            ->add( 'personaTipo',
-                'collection',
-                array(
-                    'type' => new EmpleadoPersonaTipoType()
-                ) );
+            ;
 
         ;
     }

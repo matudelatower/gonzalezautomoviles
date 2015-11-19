@@ -7,8 +7,8 @@ empleados_show:
     defaults: { _controller: "PersonasBundle:Empleado:show" }
 
 empleados_new:
-    path:     /new
-    defaults: { _controller: "PersonasBundle:Empleado:new" }
+    path:     /new/{personaId}
+    defaults: { _controller: "PersonasBundle:Empleado:new" , personaId : null}
 
 empleados_create:
     path:     /create
@@ -28,3 +28,7 @@ empleados_delete:
     path:     /{id}/delete
     defaults: { _controller: "PersonasBundle:Empleado:delete" }
     methods:  [POST, DELETE]
+
+empleados_buscar_persona:
+    path:     /empleados_buscar_persona
+    defaults: { _controller: "PersonasBundle:Empleado:nuevoEmpleado" }

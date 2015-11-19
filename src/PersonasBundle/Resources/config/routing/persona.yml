@@ -28,3 +28,4 @@ personas_delete:
     path:     /{id}/delete
     defaults: { _controller: "PersonasBundle:Persona:delete" }
     methods:  [POST, DELETE]
+

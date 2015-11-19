@@ -58,7 +58,7 @@ class PersonaTipo
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Persona")
+     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Persona", inversedBy="personaTipo", cascade={"persist"})
      * @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
      */
     private $persona;
@@ -71,7 +71,7 @@ class PersonaTipo
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Empleado", inversedBy="personaTipo")
+     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Empleado", inversedBy="personaTipo", cascade={"persist"})
      * @ORM\JoinColumn(name="empleado_id", referencedColumnName="id", nullable=true)
      */
     private $empleado;

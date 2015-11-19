@@ -10,6 +10,11 @@ personas_personas:
     resource: "@PersonasBundle/Resources/config/routing/persona.yml"
     prefix:   /personas
 
+buscar_persona:
+    path:     /buscar_persona
+    defaults: { _controller: "PersonasBundle:Default:buscarPersona" }
+
+
 personas_homepage:
     path:     /hello/{name}
     defaults: { _controller: PersonasBundle:Default:index }
