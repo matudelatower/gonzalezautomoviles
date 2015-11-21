@@ -16,7 +16,8 @@ $(document).ready(function () {
 
     $(document).ajaxStart(function () {
         $.blockUI(
-            {message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
+            {
+                message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
                 css: {backgroundColor: 'none', border: 'none'}
             }
         )
@@ -26,11 +27,22 @@ $(document).ready(function () {
     $(".select2").select2({
         language: "es",
         "language": {
-            "noResults": function(){
+            "noResults": function () {
                 return "No se encontraron resultados";
             }
         },
     });
     inicializarFecha();
+
+    $(".table").DataTable({
+        "paging": false,
+        "autoWidth": true,
+        "info":false,
+        "scrollX": true,
+        "language": {
+            "search": "Buscar:",
+            "zeroRecords": "Sin resultados"
+        }
+    });
 
 });
