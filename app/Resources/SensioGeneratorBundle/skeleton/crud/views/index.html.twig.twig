@@ -3,6 +3,10 @@
 {% endblock extends %}
 
 {% block body %}
+    {{ "{% block title %}" }}
+        {{ entity }}
+    {{ "{% endblock title %}" }}
+
     {{ "{% block content -%}" }}
 
 
@@ -12,63 +16,55 @@
                 <div class="box-header">
                     <h3 class="box-title">Listado {{ entity }}</h3>
 
-                    <div class="box-tools">
-                        <div class="input-group" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control input-sm pull-right"
-                                   placeholder="Buscar">
 
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                {%- for field, metadata in fields %}
 
-                        <tr>
-                            {%- for field, metadata in fields %}
+                                    <th>{{ field|capitalize }}</th>
 
-                                <th>{{ field|capitalize }}</th>
+                                {%- endfor %}
 
-                            {%- endfor %}
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ '{% for entity in entities %}' }}
+                            <tr>
 
-                            <th>Acciones</th>
-                        </tr>
+                                {%- for field, metadata in fields %}
+                                    {%- if loop.first and ('show' in actions) %}
 
-                        {{ '{% for entity in entities %}' }}
-                        <tr>
+                                        <td>
+                                            <a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity."~ identifier ~" }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a>
+                                        </td>
 
-                            {%- for field, metadata in fields %}
-                                {%- if loop.first and ('show' in actions) %}
+                                    {%- elseif metadata.type in ['date', 'datetime'] %}
 
-                                    <td>
-                                        <a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': entity."~ identifier ~" }) }}" }}">{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</a>
-                                    </td>
+                                        <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
 
-                                {%- elseif metadata.type in ['date', 'datetime'] %}
+                                    {%- else %}
 
-                                    <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+                                        <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
 
-                                {%- else %}
+                                    {%- endif %}
 
-                                    <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+                                    {%- if loop.last %}
 
-                                {%- endif %}
+                                        <td>
+                                            {%- include "crud/views/others/actions.html.twig.twig" %}
+                                        </td>
 
-                                {%- if loop.last %}
+                                    {%- endif %}
+                                {%- endfor %}
 
-                                    <td>
-                                        {%- include "crud/views/others/actions.html.twig.twig" %}
-                                    </td>
-
-                                {%- endif %}
-                            {%- endfor %}
-
-                        </tr>
-                        {{ '{% endfor %}' }}
-
+                            </tr>
+                            {{ '{% endfor %}' }}
+                        </tbody>
                     </table>
                 </div>
                 <div class="box-footer">

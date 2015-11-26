@@ -1,0 +1,30 @@
+categoria_empleado:
+    path:     /
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:index" }
+
+categoria_empleado_show:
+    path:     /{id}/show
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:show" }
+
+categoria_empleado_new:
+    path:     /new
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:new" }
+
+categoria_empleado_create:
+    path:     /create
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:create" }
+    methods:  POST
+
+categoria_empleado_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:edit" }
+
+categoria_empleado_update:
+    path:     /{id}/update
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:update" }
+    methods:  [POST, PUT]
+
+categoria_empleado_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "PersonasBundle:CategoriaEmpleado:delete" }
+    methods:  [POST, DELETE]

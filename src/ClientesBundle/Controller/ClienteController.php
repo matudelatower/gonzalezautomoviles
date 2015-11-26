@@ -2,6 +2,8 @@
 
 namespace ClientesBundle\Controller;
 
+use ClientesBundle\Form\PersonaClienteType;
+use PersonasBundle\Entity\Persona;
 use PersonasBundle\Entity\PersonaTipo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,22 +39,31 @@ class ClienteController extends Controller {
 			) );
 	}
 
+	public function nuevoClienteAction( Request $request ) {
+
+
+		$form = $this->get( 'manager.personas' )->formBuscadorPersonas( 'clientes_new' );
+
+
+		return $this->render( 'PersonasBundle:Default:buscadorPersona.html.twig',
+			array(
+
+				'form' => $form->createView(),
+			) );
+	}
+
 	/**
 	 * Creates a new Cliente entity.
 	 *
 	 */
 	public function createAction( Request $request ) {
-		$entity      = new Cliente();
-		$personaTipo = new PersonaTipo();
-		$entity->addPersonaTipo( $personaTipo );
+
+		$entity = new PersonaTipo();
+
 		$form = $this->createCreateForm( $entity );
 		$form->handleRequest( $request );
 
 		if ( $form->isValid() ) {
-
-            foreach ($entity->getPersonaTipo() as $personaTipo){
-                $personaTipo->setCliente($entity);
-            }
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $entity );
@@ -80,8 +91,9 @@ class ClienteController extends Controller {
 	 *
 	 * @return \Symfony\Component\Form\Form The form
 	 */
-	private function createCreateForm( Cliente $entity ) {
-		$form = $this->createForm( new ClienteType(),
+	private function createCreateForm( PersonaTipo $entity ) {
+//		$form = $this->createForm( new ClienteType(),
+		$form = $this->createForm( new PersonaClienteType(),
 			$entity,
 			array(
 				'action' => $this->generateUrl( 'clientes_create' ),
@@ -103,12 +115,39 @@ class ClienteController extends Controller {
 	 * Displays a form to create a new Cliente entity.
 	 *
 	 */
-	public function newAction() {
-		$entity      = new Cliente();
-		$personaTipo = new PersonaTipo();
-		$entity->addPersonaTipo( $personaTipo );
-		$form = $this->createCreateForm( $entity );
+	public function newAction( Request $request ) {
 
+
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->get( 'manager.personas' )->formBuscadorPersonas( 'clientes_new' );
+		$form->handleRequest( $request );
+		$criteria = null;
+		if ( $request->getMethod() == 'POST' ) {
+			$data     = $form->getData();
+			$criteria = array(
+				'numeroDocumento' => $data['numeroDocumento'],
+				'tipoDocumento'   => $data['tipoDocumento'],
+			);
+
+			$persona = $em->getRepository( 'PersonasBundle:Persona' )->findOneBy( $criteria );
+
+		}
+		if ( ! $persona ) {
+			$persona = new Persona();
+			$persona->setNumeroDocumento( $criteria['numeroDocumento'] );
+			$persona->setTipoDocumento( $criteria['tipoDocumento'] );
+		}
+
+		$entity = new PersonaTipo();
+
+		if ( ! $persona ) {
+			$persona = new Persona();
+			$persona->setNumeroDocumento( $criteria['numeroDocumento'] );
+			$persona->setTipoDocumento( $criteria['tipoDocumento'] );
+		}
+		$entity->setPersona( $persona );
+
+		$form = $this->createCreateForm( $entity );
 
 		return $this->render( 'ClientesBundle:Cliente:new.html.twig',
 			array(
@@ -148,18 +187,20 @@ class ClienteController extends Controller {
 
 		$entity = $em->getRepository( 'ClientesBundle:Cliente' )->find( $id );
 
+		$personaTipo = $em->getRepository( 'PersonasBundle:PersonaTipo' )->findOneByCliente( $entity );
+
 		if ( ! $entity ) {
 			throw $this->createNotFoundException( 'Unable to find Cliente entity.' );
 		}
 
-		$editForm   = $this->createEditForm( $entity );
-		$deleteForm = $this->createDeleteForm( $id );
+		$editForm   = $this->createEditForm( $personaTipo );
+//		$deleteForm = $this->createDeleteForm( $id );
 
 		return $this->render( 'ClientesBundle:Cliente:edit.html.twig',
 			array(
 				'entity'      => $entity,
 				'edit_form'   => $editForm->createView(),
-				'delete_form' => $deleteForm->createView(),
+//				'delete_form' => $deleteForm->createView(),
 			) );
 	}
 
@@ -170,8 +211,8 @@ class ClienteController extends Controller {
 	 *
 	 * @return \Symfony\Component\Form\Form The form
 	 */
-	private function createEditForm( Cliente $entity ) {
-		$form = $this->createForm( new ClienteType(),
+	private function createEditForm( PersonaTipo $entity ) {
+		$form = $this->createForm( new PersonaClienteType(),
 			$entity,
 			array(
 				'action' => $this->generateUrl( 'clientes_update', array( 'id' => $entity->getId() ) ),
@@ -198,7 +239,7 @@ class ClienteController extends Controller {
 	public function updateAction( Request $request, $id ) {
 		$em = $this->getDoctrine()->getManager();
 
-		$entity = $em->getRepository( 'ClientesBundle:Cliente' )->find( $id );
+		$entity = $em->getRepository( 'PersonasBundle:PersonaTipo' )->find( $id );
 
 		if ( ! $entity ) {
 			throw $this->createNotFoundException( 'Unable to find Cliente entity.' );

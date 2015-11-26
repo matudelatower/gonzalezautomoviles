@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          href="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('bundles/theme/AdminLTE-2.3.0/dist/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -55,6 +58,10 @@
         <!-- Bootstrap 3.3.5 -->
         <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js') }}"></script>
 
+        <!-- DataTables -->
+        <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+
         <!-- Select2 -->
         <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/select2/select2.full.min.js') }}"></script>
 
@@ -92,7 +99,7 @@
         <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/dist/js/demo.js') }}"></script>
 
         <!-- BlockUI -->
-        <script src="{{asset('bundles/theme/js/jquery.blockUI.js')}}" type="text/javascript"></script>
+        <script src="{{ asset('bundles/theme/js/jquery.blockUI.js') }}" type="text/javascript"></script>
 
         <!-- App js -->
         <script src="{{ asset('bundles/theme/js/app.js') }}"></script>
@@ -125,23 +132,23 @@
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    {% set nombreUsuario =  app.user.username  %}
+                    {% set nombreUsuario =  app.user.username %}
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ asset('bundles/theme/AdminLTE-2.3.0/dist/img/user2-160x160.jpg') }}"
+                            <img src="{{ asset('bundles/theme/images/default-user-avatar.png') }}"
                                  class="user-image" alt="User Image">
                             <span class="hidden-xs">{{ nombreUsuario }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{ asset('bundles/theme/AdminLTE-2.3.0/dist/img/user2-160x160.jpg') }}"
+                                <img src="{{ asset('bundles/theme/images/default-user-avatar.png') }}"
                                      class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{ nombreUsuario }} - Cargo
-                                    <small>Miembro desde 2012</small>
+                                    {{ nombreUsuario }} - {% if is_granted('ROLE_ADMIN') %}Administrador {% else %} {{app.user.grupos.first.grupo}} {% endif %}
+                                    <small>Miembro desde {{app.user.creado | date('Y')}}</small>
                                 </p>
                             </li>
 
@@ -151,7 +158,8 @@
                                     <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-default btn-flat">Perfil</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default btn-flat">Cerrar Sesion</a>
+                                    <a href="{{ path('fos_user_security_logout') }}" class="btn btn-default btn-flat">Cerrar
+                                        Sesion</a>
                                 </div>
                             </li>
                         </ul>

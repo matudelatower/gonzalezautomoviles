@@ -1,5 +1,7 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-
+{% block title %}
+    Empleados
+{% endblock title %}
     {% block content -%}
 
 
@@ -7,30 +9,22 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">Listado Empleado</h3>
+                        <h3 class="box-title">Listado Empleados</h3>
 
-                        <div class="box-tools">
-                            <div class="input-group" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control input-sm pull-right"
-                                       placeholder="Buscar">
 
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-hover">
-
+                    <div class="box-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
                                 <th>Categoria</th>
                                 <th>Acciones</th>
                             </tr>
-
+                            </thead>
+                            <tbody>
                             {% for entity in entities %}
                                 <tr>
                                     <td>
@@ -51,7 +45,7 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-
+                            </tbody>
                         </table>
                     </div>
                     <div class="box-footer">
