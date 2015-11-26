@@ -1,3 +1,7 @@
+clientes_ajax:
+    resource: "@ClientesBundle/Resources/config/routing/ajax.yml"
+    prefix:   /ajax
+
 clientes_clientes:
     resource: "@ClientesBundle/Resources/config/routing/cliente.yml"
     prefix:   /clientes

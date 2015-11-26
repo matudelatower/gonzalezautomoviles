@@ -54,13 +54,19 @@ class AltaVehiculoType extends AbstractType {
 					'label_attr' => array( 'class' => 'hidden tipo-venta-especial-field' ),
 					'attr'       => array( 'class' => 'hidden tipo-venta-especial-field' )
 				) )
-//			->add( 'cliente', 'jqueryautocomplete', array(
-//					'class' => 'PersonasBundle\Entity\Persona',
-//					'property' => '',
-//					'search_method' => 'getByLike',
-//					'required' => false
-//			) )
-
+			->add( 'cliente',
+				'jqueryautocomplete',
+				array(
+					'class'         => 'ClientesBundle:Cliente',
+//					'property'      => 'nombreCompleto',
+					'search_method' => 'getClienteByDni',
+					'required'      => false,
+					'route_name'    => 'get_cliente_by_dni'
+//					'route_name'    => "buscarPersonaConDominio",
+//					'class'         => 'PersonaBundle:Persona',
+//					'property'      => 'nombreCompleto',
+//					'search_method' => 'getEmpadronadoresPorSector',
+				) )
 			->add( 'remito', new RemitoType() );
 	}
 
@@ -77,6 +83,6 @@ class AltaVehiculoType extends AbstractType {
 	 * @return string
 	 */
 	public function getName() {
-		return 'vehiculosbundle_vehiculo';
+		return 'vehiculosbundle_alta_vehiculo';
 	}
 }

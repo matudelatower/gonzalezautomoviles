@@ -151,7 +151,7 @@ class Vehiculo
     private $remito;
 
     /**
-     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Persona")
+     * @ORM\ManyToOne(targetEntity="ClientesBundle\Entity\Cliente")
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id",nullable=true)
      */
     private $cliente;
@@ -870,11 +870,11 @@ class Vehiculo
     /**
      * Set cliente
      *
-     * @param \PersonasBundle\Entity\Persona $cliente
+     * @param \ClientesBundle\Entity\Cliente $cliente
      *
      * @return Vehiculo
      */
-    public function setCliente(\PersonasBundle\Entity\Persona $cliente = null)
+    public function setCliente(\ClientesBundle\Entity\Cliente $cliente = null)
     {
         $this->cliente = $cliente;
 
@@ -884,7 +884,7 @@ class Vehiculo
     /**
      * Get cliente
      *
-     * @return \PersonasBundle\Entity\Persona
+     * @return \ClientesBundle\Entity\Cliente
      */
     public function getCliente()
     {

@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Cliente
  *
  * @ORM\Table(name="clientes")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ClientesBundle\Entity\Repository\ClienteRepository")
  */
 class Cliente
 {
@@ -67,6 +67,10 @@ class Cliente
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
+
+    public function __toString() {
+        return $this->personaTipo->first()->getPersona()->__toString();
+    }
 
     /**
      * Get id
