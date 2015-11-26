@@ -1,22 +1,30 @@
-{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-{% block title %}
-    Sucursal
-{% endblock title %}
+    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
     {% block content -%}
 
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Listado Sucursal</h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Listado Sucursal</h3>
 
+                    <div class="box-tools">
+                        <div class="input-group" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control input-sm pull-right"
+                                   placeholder="Buscar">
+
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+
+                        <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
                                 <th>Calle</th>
@@ -27,12 +35,11 @@
                                 <th>Web</th>
                                 <th>Creado</th>
                                 <th>Actualizado</th>
-                                <th>Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for entity in entities %}
-                                <tr>
+                            <th>Acciones</th>
+                        </tr>
+
+                        {% for entity in entities %}
+                        <tr>
                                     <td>
                                         <a href="{{ path('sucursales_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
                                     </td>
@@ -47,29 +54,25 @@
                                     <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                     <td>
 
-                                        <a class="btn btn-default"
-                                           href="{{ path('sucursales_show', { 'id': entity.id }) }}"><i
-                                                    class="fa fa-eye"></i></a>
+                        <a class="btn btn-default" href="{{ path('sucursales_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
 
-                                        <a class="btn btn-default"
-                                           href="{{ path('sucursales_edit', { 'id': entity.id }) }}"><i
-                                                    class="fa fa-edit"></i></a>
+                        <a class="btn btn-default" href="{{ path('sucursales_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
 
                                     </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="box-footer">
+                        </tr>
+                        {% endfor %}
 
+                    </table>
+                </div>
+                <div class="box-footer">
+                    
                         <a class="btn btn-primary" href="{{ path('sucursales_new') }}">
                             Nuevo
                         </a>
 
-                    </div>
-                </div>
+                                    </div>
             </div>
         </div>
-        {{ knp_pagination_render(entities) }}
+    </div>
+    {{ knp_pagination_render(entities) }}
     {% endblock %}

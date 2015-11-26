@@ -28,7 +28,3 @@ clientes_delete:
     path:     /{id}/delete
     defaults: { _controller: "ClientesBundle:Cliente:delete" }
     methods:  [POST, DELETE]
-
-clientes_buscar_persona:
-    path:     /clientes_buscar_persona
-    defaults: { _controller: "ClientesBundle:Cliente:nuevoCliente" }

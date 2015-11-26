@@ -45,14 +45,16 @@ class EmpleadoController extends Controller {
 	 *
 	 */
 	public function createAction( Request $request ) {
-
+//		$entity      = new Empleado();
 		$entity = new PersonaTipo();
-
+//		$entity->addPersonaTipo( $personaTipo );
 		$form = $this->createCreateForm( $entity );
 		$form->handleRequest( $request );
 
 		if ( $form->isValid() ) {
-
+//			foreach ( $entity->getPersonaTipo() as $personaTipo ) {
+//				$personaTipo->setEmpleado( $entity );
+//			}
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $entity );
 			$em->flush();
@@ -102,7 +104,25 @@ class EmpleadoController extends Controller {
 	public function nuevoEmpleadoAction( Request $request ) {
 
 
-		$form = $this->get( 'manager.personas' )->formBuscadorPersonas( 'empleados_new' );
+		$form = $this->get( 'manager.personas' )->formBuscadorPersonas( 'empleados_buscar_persona' );
+		$form->handleRequest( $request );
+		if ( $request->getMethod() == 'POST' ) {
+			$em       = $this->getDoctrine()->getManager();
+			$data     = $form->getData();
+			$criteria = array(
+				'numeroDocumento' => $data['numeroDocumento'],
+				'tipoDocumento'   => $data['tipoDocumento'],
+			);
+
+			$persona = $em->getRepository( 'PersonasBundle:Persona' )->findOneBy( $criteria );
+
+			$personaId = null;
+			if ( $persona ) {
+				$personaId = $persona->getId();
+			}
+
+			return $this->redirectToRoute( 'empleados_new', array( 'personaId' => $personaId ) );
+		}
 
 
 		return $this->render( 'PersonasBundle:Default:buscadorPersona.html.twig',
@@ -116,33 +136,19 @@ class EmpleadoController extends Controller {
 	 * Displays a form to create a new Empleado entity.
 	 *
 	 */
-	public function newAction( Request $request ) {
-
-
-		$em   = $this->getDoctrine()->getManager();
-		$form = $this->get( 'manager.personas' )->formBuscadorPersonas( 'empleados_new' );
-		$form->handleRequest( $request );
-		$criteria = null;
-		if ( $request->getMethod() == 'POST' ) {
-			$data     = $form->getData();
-			$criteria = array(
-				'numeroDocumento' => $data['numeroDocumento'],
-				'tipoDocumento'   => $data['tipoDocumento'],
-			);
-
-			$persona = $em->getRepository( 'PersonasBundle:Persona' )->findOneBy( $criteria );
-
-		}
+	public function newAction( $personaId = null ) {
 
 		$entity = new PersonaTipo();
 
-		if ( ! $persona ) {
-			$persona = new Persona();
-			$persona->setNumeroDocumento( $criteria['numeroDocumento'] );
-			$persona->setTipoDocumento( $criteria['tipoDocumento'] );
+		if ( $personaId ) {
+			$em      = $this->getDoctrine();
+			$persona = $em->getRepository( 'PersonasBundle:Persona' )->find( $personaId );
+			$entity->setPersona( $persona );
 		}
-		$entity->setPersona( $persona );
 
+//		$entity      = new Empleado();
+//		$personaTipo = new PersonaTipo();
+//		$entity->addPersonaTipo( $personaTipo );
 		$form = $this->createCreateForm( $entity );
 
 		return $this->render( 'PersonasBundle:Empleado:new.html.twig',
@@ -188,20 +194,19 @@ class EmpleadoController extends Controller {
 
 		$entity = $em->getRepository( 'PersonasBundle:Empleado' )->find( $id );
 
-		$personaTipo = $em->getRepository( 'PersonasBundle:PersonaTipo' )->findOneByEmpleado( $entity );
+		$personaTipo= $em->getRepository('PersonasBundle:PersonaTipo')->findOneByEmpleado($entity);
 
 		if ( ! $entity ) {
 			throw $this->createNotFoundException( 'Unable to find Empleado entity.' );
 		}
 
-		$editForm = $this->createEditForm( $personaTipo );
-
+		$editForm   = $this->createEditForm( $personaTipo );
 //		$deleteForm = $this->createDeleteForm( $id );
 
 		return $this->render( 'PersonasBundle:Empleado:edit.html.twig',
 			array(
-				'entity'    => $entity,
-				'edit_form' => $editForm->createView(),
+				'entity'      => $entity,
+				'edit_form'   => $editForm->createView(),
 //				'delete_form' => $deleteForm->createView(),
 			) );
 	}
@@ -259,8 +264,7 @@ class EmpleadoController extends Controller {
 				'Empleado actualizado correctamente.'
 			);
 
-			return $this->redirect( $this->generateUrl( 'empleados_edit',
-				array( 'id' => $entity->getEmpleado()->getId() ) ) );
+			return $this->redirect( $this->generateUrl( 'empleados_edit', array( 'id' => $entity->getEmpleado()->getId() ) ) );
 		}
 
 		return $this->render( 'PersonasBundle:Empleado:edit.html.twig',

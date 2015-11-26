@@ -14,12 +14,11 @@ class ClienteType extends AbstractType {
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
 		$builder
 			->add( 'foraneo' )
-//			->add( 'personaTipo',
-//				'collection',
-//				array(
-//					'type' => new ClientePersonaTipoType()
-//				) )
-		;
+			->add( 'personaTipo',
+				'collection',
+				array(
+					'type' => new ClientePersonaTipoType()
+				) );
 	}
 
 	/**

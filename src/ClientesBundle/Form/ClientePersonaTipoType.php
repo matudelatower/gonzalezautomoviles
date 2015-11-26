@@ -2,22 +2,18 @@
 
 namespace ClientesBundle\Form;
 
-use ClientesBundle\Entity\Cliente;
-use PersonasBundle\Form\PersonaType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PersonaClienteType extends AbstractType {
+class ClientePersonaTipoType extends AbstractType {
 	/**
 	 * @param FormBuilderInterface $builder
 	 * @param array $options
 	 */
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
 		$builder
-			->add( 'persona', new PersonaType() )
-			->add( 'cliente', new ClienteType() );
-
+			->add( 'persona' );
 	}
 
 	/**
@@ -29,7 +25,10 @@ class PersonaClienteType extends AbstractType {
 		) );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getName() {
-		return 'clientes_bundle_persona_cliente_type';
+		return 'personasbundle_personatipo';
 	}
 }
