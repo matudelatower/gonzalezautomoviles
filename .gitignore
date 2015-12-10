@@ -8,7 +8,6 @@
 /bin/
 /composer.phar
 /vendor/
-web/uploads/fotos_danio/*
 !/web/uploads/fotos_danio/.gitkeep
 # -- Editores -----------------------------------------
 # vim
