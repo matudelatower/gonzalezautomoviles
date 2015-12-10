@@ -32,3 +32,7 @@ vehiculos_delete:
 vehiculos_alta:
     path:     /alta
     defaults: { _controller: "VehiculosBundle:Vehiculo:alta" }
+
+vehiculos_actualizar_remito:
+    path:     /{vehiculoId}/vehiculos_actualizar_remito
+    defaults: { _controller: "VehiculosBundle:Vehiculo:actualizarVehiculoRemito" }

@@ -13,22 +13,22 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table table-bordered table-striped">
+                    <table class="data-table table table-bordered table-striped">
                         <thead>
 
                         <tr>
                             <th>Id</th>
                             <th>Vin</th>
                             <th>Modelo</th>
-                            <th>Aniofabricacion</th>
+                            <th>Anio fabricacion</th>
                             <th>Motor</th>
-                            <th>Codigollave</th>
-                            <th>Codigoradio</th>
-                            <th>Codigoseguridad</th>
-                            <th>Codigoinmovilizador</th>
-                            <th>Colorinterno</th>
-                            <th>Colorexterno</th>
-                            <th>Kmingreso</th>
+                            <th>Codigo llave</th>
+                            <th>Codigo radio</th>
+                            <th>Codigo seguridad</th>
+                            <th>Codigo inmovilizador</th>
+                            <th>Color interno</th>
+                            <th>Color externo</th>
+                            <th>Km ingreso</th>
                             <th>Observacion</th>
                             <th>Estado</th>
                             <th>Creado</th>
@@ -63,9 +63,12 @@
                                                 class="fa fa-edit"></i></a>
 
                                     {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
+                                        {#<a class="btn btn-default"#}
+                                           {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
+                                           {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
                                         <a class="btn btn-default"
-                                           href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"
-                                           title="Control interno"><i class="fa fa-check-square"></i></a>
+                                           href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
+                                           title="Actualizar remito"><i class="fa fa-file-text"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -25,20 +25,20 @@ class DanioVehiculoGm
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_orden_arreglo", type="string", length=255)
+     * @ORM\Column(name="numero_orden_arreglo", type="string", length=255, nullable=true)
      */
     private $numeroOrdenArreglo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="solucionado", type="boolean")
+     * @ORM\Column(name="solucionado", type="boolean",nullable=true)
      */
     private $solucionado;
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo", inversedBy="danioVehculoGm")
      * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
      */
     private $vehiculo;
@@ -319,6 +319,13 @@ class DanioVehiculoGm
      * @return DanioVehiculoGm
      */
     public function addFotoDanio(\VehiculosBundle\Entity\FotoDanioGm $fotoDanio)
+    {
+        $this->fotoDanio[] = $fotoDanio;
+
+        return $this;
+    }
+
+    public function setFotoDanio(\VehiculosBundle\Entity\FotoDanioGm $fotoDanio)
     {
         $this->fotoDanio[] = $fotoDanio;
 

@@ -1,0 +1,30 @@
+transportistas:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:Transportista:index" }
+
+transportistas_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:Transportista:show" }
+
+transportistas_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:Transportista:new" }
+
+transportistas_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:Transportista:create" }
+    methods:  POST
+
+transportistas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:Transportista:edit" }
+
+transportistas_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:Transportista:update" }
+    methods:  [POST, PUT]
+
+transportistas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:Transportista:delete" }
+    methods:  [POST, DELETE]

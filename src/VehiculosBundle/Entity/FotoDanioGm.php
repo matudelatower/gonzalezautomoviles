@@ -4,6 +4,8 @@ namespace VehiculosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * FotoDanioGm
@@ -11,64 +13,141 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="fotos_danios_gm")
  * @ORM\Entity
  */
-class FotoDanioGm
-{
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+class FotoDanioGm {
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=255)
-     */
-    private $path;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="ruta", type="string", length=255)
+	 */
+	private $ruta;
+
+	public function __toString() {
+		return $this->ruta;
+	}
+
+	public function getAbsolutePath() {
+		return null === $this->ruta
+			? null
+			: $this->getUploadRootDir() . '/' . $this->ruta;
+	}
+
+	public function getWebPath() {
+		return null === $this->ruta
+			? null
+			: $this->getUploadDir() . '/' . $this->ruta;
+	}
+
+	protected function getUploadRootDir() {
+		// the absolute directory ruta where uploaded
+		// documents should be saved
+		return __DIR__ . '/../../../web/' . $this->getUploadDir();
+	}
+
+	protected function getUploadDir() {
+		// get rid of the __DIR__ so it doesn't screw up
+		// when displaying uploaded doc/image in the view.
+		return 'uploads/fotos_danio/';
+	}
+
+	/**
+	 * @Assert\File(maxSize="6000000")
+	 */
+	private $foto;
+
+	/**
+	 * Sets foto.
+	 *
+	 * @param UploadedFile $foto
+	 */
+	public function setFoto(UploadedFile $foto = null)
+	{
+		$this->foto = $foto;
+	}
+
+	/**
+	 * Get foto.
+	 *
+	 * @return UploadedFile
+	 */
+	public function getFoto()
+	{
+		return $this->foto;
+	}
+
+	public function upload()
+	{
+		// the file property can be empty if the field is not required
+		if (null === $this->getFoto()) {
+			return;
+		}
+
+		// use the original file name here but you should
+		// sanitize it at least to avoid any security issues
+
+		// move takes the target directory and then the
+		// target filename to move to
+		$this->getFoto()->move(
+				$this->getUploadRootDir(),
+				$this->getFoto()->getClientOriginalName()
+		);
+
+		// set the path property to the filename where you've saved the file
+		$this->ruta = $this->getFoto()->getClientOriginalName();
+
+		// clean up the file property as you won't need it anymore
+		$this->foto = null;
+	}
 
 
-    /**
-     * @var datetime $creado
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="creado", type="datetime")
-     */
-    private $creado;
+	/**
+	 * @var datetime $creado
+	 *
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(name="creado", type="datetime")
+	 */
+	private $creado;
 
-    /**
-     * @var datetime $actualizado
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="actualizado",type="datetime")
-     */
-    private $actualizado;
+	/**
+	 * @var datetime $actualizado
+	 *
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(name="actualizado",type="datetime")
+	 */
+	private $actualizado;
 
-    /**
-     * @var integer $creadoPor
-     *
-     * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
-     */
-    private $creadoPor;
+	/**
+	 * @var integer $creadoPor
+	 *
+	 * @Gedmo\Blameable(on="create")
+	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+	 * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
+	 */
+	private $creadoPor;
 
-    /**
-     * @var integer $actualizadoPor
-     *
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
-     */
-    private $actualizadoPor;
+	/**
+	 * @var integer $actualizadoPor
+	 *
+	 * @Gedmo\Blameable(on="update")
+	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+	 * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
+	 */
+	private $actualizadoPor;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="DanioVehiculoGm", inversedBy="fotoDanio")
-     * @ORM\JoinColumn(name="danio_vehiculo_id", referencedColumnName="id")
-     */
-    private $danioVehiculo;
+	/**
+	 * @ORM\ManyToOne(targetEntity="DanioVehiculoGm", inversedBy="fotoDanio")
+	 * @ORM\JoinColumn(name="danio_vehiculo_id", referencedColumnName="id")
+	 */
+	private $danioVehiculo;
+
 
 
     /**
@@ -82,27 +161,27 @@ class FotoDanioGm
     }
 
     /**
-     * Set path
+     * Set ruta
      *
-     * @param string $path
+     * @param string $ruta
      *
      * @return FotoDanioGm
      */
-    public function setPath($path)
+    public function setRuta($ruta)
     {
-        $this->path = $path;
+        $this->ruta = $ruta;
 
         return $this;
     }
 
     /**
-     * Get path
+     * Get ruta
      *
      * @return string
      */
-    public function getPath()
+    public function getRuta()
     {
-        return $this->path;
+        return $this->ruta;
     }
 
     /**

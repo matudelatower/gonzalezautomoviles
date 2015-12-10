@@ -8,304 +8,336 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Entity\EstadoVehiculo;
 use VehiculosBundle\Entity\Vehiculo;
 use VehiculosBundle\Form\AltaVehiculoType;
+use VehiculosBundle\Form\EditarVehiculoType;
 use VehiculosBundle\Form\VehiculoType;
 
 /**
  * Vehiculo controller.
  *
  */
-class VehiculoController extends Controller
-{
+class VehiculoController extends Controller {
 
-    /**
-     * Lists all Vehiculo entities.
-     *
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Lists all Vehiculo entities.
+	 *
+	 */
+	public function indexAction() {
+		$em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->findAll();
+		$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->findAll();
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:index.html.twig',
-            array(
-                'entities' => $entities,
-            )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:index.html.twig',
+			array(
+				'entities' => $entities,
+			)
+		);
+	}
 
-    /**
-     * Creates a new Vehiculo entity.
-     *
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new Vehiculo();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
+	/**
+	 * Creates a new Vehiculo entity.
+	 *
+	 */
+	public function createAction( Request $request ) {
+		$entity = new Vehiculo();
+		$form   = $this->createCreateForm( $entity, new AltaVehiculoType() );
+		$form->handleRequest( $request );
 
-        if ($form->isValid()) {
+		if ( $form->isValid() ) {
 
 
-            $em = $this->getDoctrine()->getManager();
-            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                'pendiente-por-recibir'
-            );
+			$em                 = $this->getDoctrine()->getManager();
+			$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+				'pendiente-por-recibir'
+			);
 
-            $estadoVehiculo = new EstadoVehiculo();
-            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-            $estadoVehiculo->setVehiculo($entity);
+			$estadoVehiculo = new EstadoVehiculo();
+			$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
+			$estadoVehiculo->setVehiculo( $entity );
 
-            $entity->addEstadoVehiculo($estadoVehiculo);
+			$entity->addEstadoVehiculo( $estadoVehiculo );
 
-            $em->persist($entity);
-            $em->flush();
+			$em->persist( $entity );
+			$em->flush();
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                'Vehiculo creado correctamente.'
-            );
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'Vehiculo creado correctamente.'
+			);
 
-            return $this->redirect($this->generateUrl('vehiculos_show', array('id' => $entity->getId())));
-        }
+			return $this->redirect( $this->generateUrl( 'vehiculos_show', array( 'id' => $entity->getId() ) ) );
+		}
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:new.html.twig',
-            array(
-                'entity' => $entity,
-                'form' => $form->createView(),
-            )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			)
+		);
+	}
 
-    /**
-     * Creates a form to create a Vehiculo entity.
-     *
-     * @param Vehiculo $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Vehiculo $entity, $type = null)
-    {
+	/**
+	 * Creates a form to create a Vehiculo entity.
+	 *
+	 * @param Vehiculo $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createCreateForm( Vehiculo $entity, $type = null, $route = null ) {
 
-        if (!$type) {
-            $type = new VehiculoType();
-        }
+		if ( ! $type ) {
+			$type = new VehiculoType();
+		}
 
-        $form = $this->createForm(
-            $type,
-            $entity,
-            array(
-                'action' => $this->generateUrl('vehiculos_create'),
-                'method' => 'POST',
-                'attr' => array('class' => 'box-body')
-            )
-        );
+		if ( ! $route ) {
+			$route = $this->generateUrl( 'vehiculos_create' );
+		}
 
-        $form->add(
-            'submit',
-            'submit',
-            array(
-                'label' => 'Crear',
-                'attr' => array('class' => 'btn btn-primary pull-right')
-            )
-        );
+		$form = $this->createForm(
+			$type,
+			$entity,
+			array(
+				'action' => $route,
+				'method' => 'POST',
+				'attr'   => array( 'class' => 'box-body' )
+			)
+		);
 
-        return $form;
-    }
+		$form->add(
+			'submit',
+			'submit',
+			array(
+				'label' => 'Crear',
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' )
+			)
+		);
 
-    /**
-     * Displays a form to create a new Vehiculo entity.
-     *
-     */
-    public function newAction()
-    {
-        $entity = new Vehiculo();
-        $form = $this->createCreateForm($entity);
+		return $form;
+	}
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:new.html.twig',
-            array(
-                'entity' => $entity,
-                'form' => $form->createView(),
-            )
-        );
-    }
+	/**
+	 * Displays a form to create a new Vehiculo entity.
+	 *
+	 */
+	public function newAction() {
+		$entity = new Vehiculo();
+		$form   = $this->createCreateForm( $entity );
 
-    /**
-     * Finds and displays a Vehiculo entity.
-     *
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+		return $this->render(
+			'VehiculosBundle:Vehiculo:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			)
+		);
+	}
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+	/**
+	 * Finds and displays a Vehiculo entity.
+	 *
+	 */
+	public function showAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-        }
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-        $deleteForm = $this->createDeleteForm($id);
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:show.html.twig',
-            array(
-                'entity' => $entity,
-                'delete_form' => $deleteForm->createView(),
-            )
-        );
-    }
+		$deleteForm = $this->createDeleteForm( $id );
 
-    /**
-     * Displays a form to edit an existing Vehiculo entity.
-     *
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+		return $this->render(
+			'VehiculosBundle:Vehiculo:show.html.twig',
+			array(
+				'entity'      => $entity,
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+	/**
+	 * Displays a form to edit an existing Vehiculo entity.
+	 *
+	 */
+	public function editAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-        }
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:edit.html.twig',
-            array(
-                'entity' => $entity,
-                'edit_form' => $editForm->createView(),
-                'delete_form' => $deleteForm->createView(),
-            )
-        );
-    }
+		$editForm   = $this->createEditForm( $entity );
+		$deleteForm = $this->createDeleteForm( $id );
 
-    /**
-     * Creates a form to edit a Vehiculo entity.
-     *
-     * @param Vehiculo $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createEditForm(Vehiculo $entity)
-    {
-        $form = $this->createForm(
-            new VehiculoType(),
-            $entity,
-            array(
-                'action' => $this->generateUrl('vehiculos_update', array('id' => $entity->getId())),
-                'method' => 'PUT',
-                'attr' => array('class' => 'box-body')
-            )
-        );
+		return $this->render(
+			'VehiculosBundle:Vehiculo:edit.html.twig',
+			array(
+				'entity'      => $entity,
+				'edit_form'   => $editForm->createView(),
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
-        $form->add(
-            'submit',
-            'submit',
-            array(
-                'label' => 'Actualizar',
-                'attr' => array('class' => 'btn btn-primary pull-right'),
-            )
-        );
+	/**
+	 * Creates a form to edit a Vehiculo entity.
+	 *
+	 * @param Vehiculo $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createEditForm( Vehiculo $entity ) {
+		$form = $this->createForm(
+			new VehiculoType(),
+			$entity,
+			array(
+				'action' => $this->generateUrl( 'vehiculos_update', array( 'id' => $entity->getId() ) ),
+				'method' => 'PUT',
+				'attr'   => array( 'class' => 'box-body' )
+			)
+		);
 
-        return $form;
-    }
+		$form->add(
+			'submit',
+			'submit',
+			array(
+				'label' => 'Actualizar',
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' ),
+			)
+		);
 
-    /**
-     * Edits an existing Vehiculo entity.
-     *
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
+		return $form;
+	}
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+	/**
+	 * Edits an existing Vehiculo entity.
+	 *
+	 */
+	public function updateAction( Request $request, $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-        }
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
 
-        if ($editForm->isValid()) {
-            $em->flush();
+		$deleteForm = $this->createDeleteForm( $id );
+		$editForm   = $this->createEditForm( $entity );
+		$editForm->handleRequest( $request );
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                'Vehiculo actualizado correctamente.'
-            );
+		if ( $editForm->isValid() ) {
+			$em->flush();
 
-            return $this->redirect($this->generateUrl('vehiculos_edit', array('id' => $id)));
-        }
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'Vehiculo actualizado correctamente.'
+			);
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:edit.html.twig',
-            array(
-                'entity' => $entity,
-                'edit_form' => $editForm->createView(),
-                'delete_form' => $deleteForm->createView(),
-            )
-        );
-    }
+			return $this->redirect( $this->generateUrl( 'vehiculos_edit', array( 'id' => $id ) ) );
+		}
 
-    /**
-     * Deletes a Vehiculo entity.
-     *
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+		return $this->render(
+			'VehiculosBundle:Vehiculo:edit.html.twig',
+			array(
+				'entity'      => $entity,
+				'edit_form'   => $editForm->createView(),
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+	/**
+	 * Deletes a Vehiculo entity.
+	 *
+	 */
+	public function deleteAction( Request $request, $id ) {
+		$form = $this->createDeleteForm( $id );
+		$form->handleRequest( $request );
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-            }
+		if ( $form->isValid() ) {
+			$em     = $this->getDoctrine()->getManager();
+			$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-            $em->remove($entity);
-            $em->flush();
-        }
+			if ( ! $entity ) {
+				throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+			}
 
-        return $this->redirect($this->generateUrl('vehiculos'));
-    }
+			$em->remove( $entity );
+			$em->flush();
+		}
 
-    /**
-     * Creates a form to delete a Vehiculo entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('vehiculos_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm();
-    }
+		return $this->redirect( $this->generateUrl( 'vehiculos' ) );
+	}
 
-    public function altaAction()
-    {
-        $entity = new Vehiculo();
-        $form = $this->createCreateForm($entity, new AltaVehiculoType());
+	/**
+	 * Creates a form to delete a Vehiculo entity by id.
+	 *
+	 * @param mixed $id The entity id
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createDeleteForm( $id ) {
+		return $this->createFormBuilder()
+		            ->setAction( $this->generateUrl( 'vehiculos_delete', array( 'id' => $id ) ) )
+		            ->setMethod( 'DELETE' )
+		            ->add( 'submit', 'submit', array( 'label' => 'Delete' ) )
+		            ->getForm();
+	}
 
-        return $this->render(
-            'VehiculosBundle:Vehiculo:new.html.twig',
-            array(
-                'entity' => $entity,
-                'form' => $form->createView(),
-            )
-        );
-    }
+	public function altaAction() {
+		$entity = new Vehiculo();
+		$form   = $this->createCreateForm( $entity, new AltaVehiculoType() );
+
+		return $this->render(
+			'VehiculosBundle:Vehiculo:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			)
+		);
+	}
+
+	public function actualizarVehiculoRemitoAction( Request $request, $vehiculoId ) {
+		$em       = $this->getDoctrine()->getManager();
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
+		$ruta     = $this->generateUrl( 'vehiculos_actualizar_remito', array( 'vehiculoId' => $vehiculoId ) );
+
+
+
+		$form = $this->createCreateForm( $vehiculo, new EditarVehiculoType(), $ruta );
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$vehiculo->getRemito()->setUsuarioReceptor( $this->getUser() );
+				$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
+
+				foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
+					$danioVehiculo->setVehiculo($vehiculo);
+					foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
+						$fotoDanio->upload();
+						$fotoDanio->setDanioVehiculo($danioVehiculo);
+					}
+				}
+
+				$em->flush();
+
+				$this->get( 'session' )->getFlashBag()->add(
+						'success',
+						'Datos del Vehiculo actualizados correctamente.'
+				);
+
+			}
+		}
+
+		return $this->render( 'VehiculosBundle:Vehiculo:edit.html.twig',
+			array(
+				'edit_form' => $form->createView(),
+			) );
+	}
 }

@@ -180,6 +180,12 @@ class Vehiculo
     private $estadoVehiculo;
 
     /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoGm", mappedBy="vehiculo", cascade={"persist"})
+     *
+     */
+    private $danioVehiculoGm;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="chasis", type="string", length=255)
@@ -249,12 +255,14 @@ class Vehiculo
         return $this->vin;
     }
     
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->danioVehiculoGm = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -995,6 +1003,40 @@ class Vehiculo
     public function getEstadoVehiculo()
     {
         return $this->estadoVehiculo;
+    }
+
+    /**
+     * Add danioVehiculoGm
+     *
+     * @param \VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm
+     *
+     * @return Vehiculo
+     */
+    public function addDanioVehiculoGm(\VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm)
+    {
+        $this->danioVehiculoGm[] = $danioVehiculoGm;
+
+        return $this;
+    }
+
+    /**
+     * Remove danioVehiculoGm
+     *
+     * @param \VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm
+     */
+    public function removeDanioVehiculoGm(\VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm)
+    {
+        $this->danioVehiculoGm->removeElement($danioVehiculoGm);
+    }
+
+    /**
+     * Get danioVehiculoGm
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDanioVehiculoGm()
+    {
+        return $this->danioVehiculoGm;
     }
 
     /**

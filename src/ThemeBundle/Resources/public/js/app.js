@@ -34,7 +34,7 @@ $(document).ready(function () {
     });
     inicializarFecha();
 
-    $(".table").DataTable({
+    $(".data-table").DataTable({
         "paging": false,
         "autoWidth": true,
         "info":false,

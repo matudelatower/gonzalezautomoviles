@@ -70,7 +70,9 @@ class GravedadDanioGm
      */
     private $actualizadoPor;
 
-
+    public function __toString() {
+        return $this->codigo;
+    }
     /**
      * Get id
      *

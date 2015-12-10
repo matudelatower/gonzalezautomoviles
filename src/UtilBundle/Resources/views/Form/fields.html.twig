@@ -143,7 +143,7 @@
                                             if (itemList.find('tbody tr').length < {{ max_items_add }}) {
 
                                                 var newWidget = itemList.data('prototype');
-                                                newWidget = newWidget.replace(/__name__/g, itemCant{{form.vars.id}});
+                                                newWidget = newWidget.replace(/{{ prototype_name }}/g, itemCant{{form.vars.id}});
                                                 var newTr = $('<tr item="' + itemCant{{form.vars.id}} + '"></tr>').html(newWidget);
                                                 itemCant{{form.vars.id}}++;
                                                 newTr.appendTo(itemList);
@@ -344,7 +344,7 @@
                 if (itemList.find('.item').length < {{ max_items_add }}) {
 
                     var newWidget = itemList.data('prototype');
-                    newWidget = newWidget.replace(/__name__/g, itemCant{{form.vars.id}});
+                    newWidget = newWidget.replace(/{{ prototype_name }}/g, itemCant{{form.vars.id}});
                     var newTr = $('<div class="item" item=' + itemCant{{form.vars.id}} + '"></div>').html(newWidget);
                     itemCant{{form.vars.id}}++;
                     newTr.appendTo(itemList);

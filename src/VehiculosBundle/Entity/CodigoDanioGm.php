@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * CodigoDanioGm
  *
  * @ORM\Table(name="codigos_danio_gm")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\Repository\CodigoDanioGmRepository")
  */
 class CodigoDanioGm
 {
@@ -70,7 +70,9 @@ class CodigoDanioGm
      */
     private $actualizadoPor;
 
-
+    public function __toString() {
+        return $this->codigo;
+    }
 
 
     /**

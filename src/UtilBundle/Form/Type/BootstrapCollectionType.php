@@ -25,7 +25,8 @@ class BootstrapCollectionType extends AbstractType {
        
         $view->vars = array_replace($view->vars, array(
             'max_items_add' => $options['max_items_add'],         
-            'display_history' => $options['display_history']         
+            'display_history' => $options['display_history']    ,
+            'prototype_name' => $options['prototype_name']
         ));
     }
 

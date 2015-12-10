@@ -1,3 +1,7 @@
+vehiculos_transportistas:
+    resource: "@VehiculosBundle/Resources/config/routing/transportista.yml"
+    prefix:   /transportistas
+
 vehiculos_codigo_modelo:
     resource: "@VehiculosBundle/Resources/config/routing/codigomodelo.yml"
     prefix:   /codigo_modelo
