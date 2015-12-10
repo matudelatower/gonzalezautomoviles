@@ -38,7 +38,7 @@ class DanioVehiculoGm
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo", inversedBy="danioVehculoGm")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo", inversedBy="danioVehiculoGm")
      * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
      */
     private $vehiculo;
