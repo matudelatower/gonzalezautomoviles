@@ -71,7 +71,7 @@ class CategoriaEmpleado {
     private $actualizadoPor;
 
     /**
-     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\EmpleadoCategoria", mappedBy="categoria_empleado", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\EmpleadoCategoria", mappedBy="categoriaEmpleado", cascade={"persist"})
      *
      */
     private $empleadoCategoria;

@@ -8,11 +8,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * MovimientoDeposito
  *
- * @ORM\Table(name="movimientos_vehiculos")
+ * @ORM\Table(name="movimientos_depositos")
  * @ORM\Entity
  */
-class MovimientoDeposito
-{
+class MovimientoDeposito {
+
     /**
      * @var integer
      *
@@ -32,28 +32,28 @@ class MovimientoDeposito
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_egreso", type="datetime")
+     * @ORM\Column(name="fecha_egreso", type="datetime", nullable=true)
      */
     private $fechaEgreso;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="fila", type="string", length=255)
+     * @ORM\Column(name="fila", type="string", length=255,nullable=true)
      */
     private $fila;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="posicion", type="string", length=255)
+     * @ORM\Column(name="posicion", type="string", length=255, nullable=true)
      */
     private $posicion;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observacion", type="text")
+     * @ORM\Column(name="observacion", type="text", nullable=true)
      */
     private $observacion;
 
@@ -63,7 +63,6 @@ class MovimientoDeposito
      * @ORM\Column(name="actual", type="boolean")
      */
     private $actual;
-
 
     /**
      * @var datetime $creado
@@ -123,15 +122,12 @@ class MovimientoDeposito
      */
     private $vehiculo;
 
-
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -142,8 +138,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setFechaIngreso($fechaIngreso)
-    {
+    public function setFechaIngreso($fechaIngreso) {
         $this->fechaIngreso = $fechaIngreso;
 
         return $this;
@@ -154,8 +149,7 @@ class MovimientoDeposito
      *
      * @return \DateTime
      */
-    public function getFechaIngreso()
-    {
+    public function getFechaIngreso() {
         return $this->fechaIngreso;
     }
 
@@ -166,8 +160,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setFechaEgreso($fechaEgreso)
-    {
+    public function setFechaEgreso($fechaEgreso) {
         $this->fechaEgreso = $fechaEgreso;
 
         return $this;
@@ -178,8 +171,7 @@ class MovimientoDeposito
      *
      * @return \DateTime
      */
-    public function getFechaEgreso()
-    {
+    public function getFechaEgreso() {
         return $this->fechaEgreso;
     }
 
@@ -190,8 +182,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setFila($fila)
-    {
+    public function setFila($fila) {
         $this->fila = $fila;
 
         return $this;
@@ -202,8 +193,7 @@ class MovimientoDeposito
      *
      * @return string
      */
-    public function getFila()
-    {
+    public function getFila() {
         return $this->fila;
     }
 
@@ -214,8 +204,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setPosicion($posicion)
-    {
+    public function setPosicion($posicion) {
         $this->posicion = $posicion;
 
         return $this;
@@ -226,8 +215,7 @@ class MovimientoDeposito
      *
      * @return string
      */
-    public function getPosicion()
-    {
+    public function getPosicion() {
         return $this->posicion;
     }
 
@@ -238,8 +226,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setObservacion($observacion)
-    {
+    public function setObservacion($observacion) {
         $this->observacion = $observacion;
 
         return $this;
@@ -250,8 +237,7 @@ class MovimientoDeposito
      *
      * @return string
      */
-    public function getObservacion()
-    {
+    public function getObservacion() {
         return $this->observacion;
     }
 
@@ -262,8 +248,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setActual($actual)
-    {
+    public function setActual($actual) {
         $this->actual = $actual;
 
         return $this;
@@ -274,8 +259,7 @@ class MovimientoDeposito
      *
      * @return boolean
      */
-    public function getActual()
-    {
+    public function getActual() {
         return $this->actual;
     }
 
@@ -286,8 +270,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -298,8 +281,7 @@ class MovimientoDeposito
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -310,8 +292,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -322,8 +303,7 @@ class MovimientoDeposito
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -334,8 +314,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -346,8 +325,7 @@ class MovimientoDeposito
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -358,8 +336,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -370,8 +347,7 @@ class MovimientoDeposito
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
 
@@ -382,8 +358,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setDepositoOrigen(\VehiculosBundle\Entity\Deposito $depositoOrigen = null)
-    {
+    public function setDepositoOrigen(\VehiculosBundle\Entity\Deposito $depositoOrigen = null) {
         $this->depositoOrigen = $depositoOrigen;
 
         return $this;
@@ -394,8 +369,7 @@ class MovimientoDeposito
      *
      * @return \VehiculosBundle\Entity\Deposito
      */
-    public function getDepositoOrigen()
-    {
+    public function getDepositoOrigen() {
         return $this->depositoOrigen;
     }
 
@@ -406,8 +380,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setDepositoDestino(\VehiculosBundle\Entity\Deposito $depositoDestino = null)
-    {
+    public function setDepositoDestino(\VehiculosBundle\Entity\Deposito $depositoDestino = null) {
         $this->depositoDestino = $depositoDestino;
 
         return $this;
@@ -418,8 +391,7 @@ class MovimientoDeposito
      *
      * @return \VehiculosBundle\Entity\Deposito
      */
-    public function getDepositoDestino()
-    {
+    public function getDepositoDestino() {
         return $this->depositoDestino;
     }
 
@@ -430,8 +402,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setTipoMovimiento(\VehiculosBundle\Entity\TipoMovimiento $tipoMovimiento = null)
-    {
+    public function setTipoMovimiento(\VehiculosBundle\Entity\TipoMovimiento $tipoMovimiento = null) {
         $this->tipoMovimiento = $tipoMovimiento;
 
         return $this;
@@ -442,8 +413,7 @@ class MovimientoDeposito
      *
      * @return \VehiculosBundle\Entity\TipoMovimiento
      */
-    public function getTipoMovimiento()
-    {
+    public function getTipoMovimiento() {
         return $this->tipoMovimiento;
     }
 
@@ -454,8 +424,7 @@ class MovimientoDeposito
      *
      * @return MovimientoDeposito
      */
-    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null)
-    {
+    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null) {
         $this->vehiculo = $vehiculo;
 
         return $this;
@@ -466,8 +435,8 @@ class MovimientoDeposito
      *
      * @return \VehiculosBundle\Entity\Vehiculo
      */
-    public function getVehiculo()
-    {
+    public function getVehiculo() {
         return $this->vehiculo;
     }
+
 }

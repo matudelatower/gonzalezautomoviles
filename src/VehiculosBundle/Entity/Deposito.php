@@ -4,12 +4,14 @@ namespace VehiculosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Deposito
  *
  * @ORM\Table(name="depositos")
  * @ORM\Entity
+ * @UniqueEntity("nombre")
  */
 class Deposito
 {

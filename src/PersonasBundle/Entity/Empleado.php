@@ -34,6 +34,12 @@ class Empleado
      *
      */
     private $personaTipo;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\EmpleadoCategoria", mappedBy="empleado", cascade={"persist"})
+     *
+     */
+    private $empleadoCategoria;
 
     /**
      * @var datetime $creado
@@ -239,5 +245,39 @@ class Empleado
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Add empleadoCategorium
+     *
+     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
+     *
+     * @return Empleado
+     */
+    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    {
+        $this->empleadoCategoria[] = $empleadoCategorium;
+
+        return $this;
+    }
+
+    /**
+     * Remove empleadoCategorium
+     *
+     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
+     */
+    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    {
+        $this->empleadoCategoria->removeElement($empleadoCategorium);
+    }
+
+    /**
+     * Get empleadoCategoria
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmpleadoCategoria()
+    {
+        return $this->empleadoCategoria;
     }
 }

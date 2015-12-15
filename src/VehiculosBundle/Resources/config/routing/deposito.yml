@@ -1,0 +1,30 @@
+depositos:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:Deposito:index" }
+
+depositos_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:Deposito:show" }
+
+depositos_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:Deposito:new" }
+
+depositos_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:Deposito:create" }
+    methods:  POST
+
+depositos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:Deposito:edit" }
+
+depositos_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:Deposito:update" }
+    methods:  [POST, PUT]
+
+depositos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:Deposito:delete" }
+    methods:  [POST, DELETE]

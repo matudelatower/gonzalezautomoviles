@@ -1,3 +1,11 @@
+personas_categoria_empleado:
+    resource: "@PersonasBundle/Resources/config/routing/categoriaempleado.yml"
+    prefix:   /categoria_empleado
+
+personas_categoria_empleado:
+    resource: "@PersonasBundle/Resources/config/routing/categoriaempleado.yml"
+    prefix:   /categoria_empleado
+
 personas_empleados:
     resource: "@PersonasBundle/Resources/config/routing/empleado.yml"
     prefix:   /empleados
