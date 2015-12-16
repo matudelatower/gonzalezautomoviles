@@ -1,0 +1,75 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+   Resumen
+{% endblock %}
+
+{% block content -%}
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">MovimientoDeposito</h3>
+            </div>
+            <div class="box-body">
+                <table class="record_properties">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ entity.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fechaingreso</th>
+                            <td>{{ entity.fechaIngreso|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fechaegreso</th>
+                            <td>{{ entity.fechaEgreso|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fila</th>
+                            <td>{{ entity.fila }}</td>
+                        </tr>
+                        <tr>
+                            <th>Posicion</th>
+                            <td>{{ entity.posicion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Observacion</th>
+                            <td>{{ entity.observacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Actual</th>
+                            <td>{{ entity.actual }}</td>
+                        </tr>
+                        <tr>
+                            <th>Creado</th>
+                            <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Actualizado</th>
+                            <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        <div class="box-footer">
+<a class="btn btn-default" href="{{ path('movimiento_deposito') }}">
+    Volver
+</a>
+
+
+        <a class="btn btn-primary" href="{{ path('movimiento_deposito_edit', { 'id': entity.id }) }}">
+            Editar
+        </a>
+
+</div>
+</div>
+</div>
+</div>
+    {{ form(delete_form) }}
+
+
+{% endblock %}

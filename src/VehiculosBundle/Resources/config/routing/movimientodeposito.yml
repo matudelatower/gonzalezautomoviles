@@ -1,0 +1,30 @@
+movimiento_deposito:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:index" }
+
+movimiento_deposito_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:show" }
+
+movimiento_deposito_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:new" }
+
+movimiento_deposito_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:create" }
+    methods:  POST
+
+movimiento_deposito_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:edit" }
+
+movimiento_deposito_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:update" }
+    methods:  [POST, PUT]
+
+movimiento_deposito_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:MovimientoDeposito:delete" }
+    methods:  [POST, DELETE]

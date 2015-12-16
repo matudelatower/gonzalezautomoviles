@@ -1,3 +1,11 @@
+vehiculos_movimiento_deposito:
+    resource: "@VehiculosBundle/Resources/config/routing/movimientodeposito.yml"
+    prefix:   /movimiento_deposito
+
+vehiculos_tipo_movimiento:
+    resource: "@VehiculosBundle/Resources/config/routing/tipomovimiento.yml"
+    prefix:   /tipo_movimiento
+
 vehiculos_depositos:
     resource: "@VehiculosBundle/Resources/config/routing/deposito.yml"
     prefix:   /depositos

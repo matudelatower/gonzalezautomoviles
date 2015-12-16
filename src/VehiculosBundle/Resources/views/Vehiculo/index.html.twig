@@ -3,6 +3,63 @@
     Vehiculos
 {% endblock title %}
 {% block content -%}
+    <!-- Modal -->
+    <div id="modalDeposito" class="modal fade" role="dialog">
+        <div class="modal-dialog" >
+            <!-- Modal content-->
+            <div class="modal-content">
+                <form class="form-horizontal" id="form_movimiento_deposito" role="form" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Ingrese los datos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-sm-3"> 
+                                {{ form_label(form_movimiento_deposito.depositoDestino)}}
+                            </div>
+                            <div class="col-sm-6"> 
+                                {{ form_widget(form_movimiento_deposito.depositoDestino) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3"> 
+                                {{ form_label(form_movimiento_deposito.fila)}}
+                            </div>
+                            <div class="col-sm-6"> 
+                                {{ form_widget(form_movimiento_deposito.fila) }}
+                            </div>    
+                        </div>  
+
+                        <div class="form-group">
+                            <div class="col-sm-3"> 
+                                {{ form_label(form_movimiento_deposito.posicion)}}
+                            </div>
+                            <div class="col-sm-6"> 
+                                {{ form_widget(form_movimiento_deposito.posicion) }}
+                            </div>    
+                        </div>  
+                        <div class="form-group">
+                            <div class="col-sm-3"> 
+                                {{ form_label(form_movimiento_deposito.observacion)}}
+                            </div>
+                            <div class="col-sm-6"> 
+                                {{ form_widget(form_movimiento_deposito.observacion) }}
+                            </div>    
+                        </div>  
+                    </div>
+                    {#<div class="hidden">
+                    </div>#}
+                    <div class="modal-footer">
+                        <button type="submit" id="btn-modal-etiquetar" class="btn btn-primary">Aceptar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -16,63 +73,63 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                        <tr>
-                            <th>Id</th>
-                            <th>Vin</th>
-                            <th>Modelo</th>
-                            <th>Anio fabricacion</th>
-                            <th>Motor</th>
-                            <th>Codigo llave</th>
-                            <th>Codigo radio</th>
-                            <th>Codigo seguridad</th>
-                            <th>Codigo inmovilizador</th>
-                            <th>Color interno</th>
-                            <th>Color externo</th>
-                            <th>Km ingreso</th>
-                            <th>Observacion</th>
-                            <th>Estado</th>
-                            <th>Creado</th>
-                            <th>Actualizado</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th>Id</th>
+                                <th>Vin</th>
+                                <th>Modelo</th>
+                                <th>Anio fabricacion</th>
+                                <th>Motor</th>
+                                <th>Codigo llave</th>
+                                <th>Codigo radio</th>
+                                <th>Codigo seguridad</th>
+                                <th>Codigo inmovilizador</th>
+                                <th>Color interno</th>
+                                <th>Color externo</th>
+                                <th>Km ingreso</th>
+                                <th>Observacion</th>
+                                <th>Estado</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for entity in entities %}
-                            <tr>
-                                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                <td>{{ entity.vin }}</td>
-                                <td>{{ entity.modelo }}</td>
-                                <td>{{ entity.anioFabricacion }}</td>
-                                <td>{{ entity.motor }}</td>
-                                <td>{{ entity.codigoLlave }}</td>
-                                <td>{{ entity.codigoRadio }}</td>
-                                <td>{{ entity.codigoSeguridad }}</td>
-                                <td>{{ entity.codigoInmovilizador }}</td>
-                                <td>{{ entity.colorInterno }}</td>
-                                <td>{{ entity.colorExterno }}</td>
-                                <td>{{ entity.kmIngreso }}</td>
-                                <td>{{ entity.observacion }}</td>
-                                <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
-                                <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                <td>
+                            {% for entity in entities %}
+                                <tr>
+                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.modelo }}</td>
+                                    <td>{{ entity.anioFabricacion }}</td>
+                                    <td>{{ entity.motor }}</td>
+                                    <td>{{ entity.codigoLlave }}</td>
+                                    <td>{{ entity.codigoRadio }}</td>
+                                    <td>{{ entity.codigoSeguridad }}</td>
+                                    <td>{{ entity.codigoInmovilizador }}</td>
+                                    <td>{{ entity.colorInterno }}</td>
+                                    <td>{{ entity.colorExterno }}</td>
+                                    <td>{{ entity.kmIngreso }}</td>
+                                    <td>{{ entity.observacion }}</td>
+                                    <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
+                                    <td>
 
-                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                 class="fa fa-eye"></i></a>
-                                    <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
+                                        <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
                                                 class="fa fa-edit"></i></a>
 
-                                    {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
-                                        {#<a class="btn btn-default"#}
-                                           {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
-                                           {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
-                                           title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                                        {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
+                                            {#<a class="btn btn-default"#}
+                                            {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
+                                            {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
+                                               title="Actualizar remito"><i class="fa fa-file-text"></i></a>                                           
+                                            {% endif %}
+
+                                        <a class="btn btn-default btn-deposito" data-toggle="modal" data-target="#modalDeposito"
+                                           data-url="{{entity.id}}"
+                                           title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -89,3 +146,4 @@
     </a>
 
 {% endblock %}
+

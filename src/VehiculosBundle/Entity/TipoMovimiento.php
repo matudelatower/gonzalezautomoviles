@@ -226,4 +226,8 @@ class TipoMovimiento
     {
         return $this->actualizadoPor;
     }
+    
+    public function __toString() {
+        return $this->nombre;
+    }
 }

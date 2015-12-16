@@ -1,0 +1,30 @@
+tipo_movimiento:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:index" }
+
+tipo_movimiento_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:show" }
+
+tipo_movimiento_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:new" }
+
+tipo_movimiento_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:create" }
+    methods:  POST
+
+tipo_movimiento_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:edit" }
+
+tipo_movimiento_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:update" }
+    methods:  [POST, PUT]
+
+tipo_movimiento_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:TipoMovimiento:delete" }
+    methods:  [POST, DELETE]
