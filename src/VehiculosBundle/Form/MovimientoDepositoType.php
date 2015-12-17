@@ -16,7 +16,7 @@ class MovimientoDepositoType extends AbstractType
     {
         $builder
             ->add('fechaIngreso')
-            ->add('fechaEgreso')
+//            ->add('fechaEgreso')
             ->add('fila')
             ->add('posicion')
             ->add('observacion')

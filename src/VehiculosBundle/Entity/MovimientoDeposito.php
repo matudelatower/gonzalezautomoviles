@@ -117,10 +117,11 @@ class MovimientoDeposito {
     private $tipoMovimiento;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo", inversedBy="movimientoDeposito")
      * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id",nullable=true)
      */
     private $vehiculo;
+ 
 
     /**
      * Get id

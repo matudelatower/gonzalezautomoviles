@@ -11,15 +11,20 @@ function inicializarFecha() {
     });
 }
 
+function modalAlert(msg) {
+    $('#modal-alert .modal-body').html(msg);
+    $('#modal-alert').modal('toggle');
+}
+
 
 $(document).ready(function () {
 
     $(document).ajaxStart(function () {
         $.blockUI(
-            {
-                message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
-                css: {backgroundColor: 'none', border: 'none'}
-            }
+                {
+                    message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
+                    css: {backgroundColor: 'none', border: 'none'}
+                }
         )
     });
     $(document).ajaxStop($.unblockUI);
@@ -37,7 +42,7 @@ $(document).ready(function () {
     $(".data-table").DataTable({
         "paging": false,
         "autoWidth": true,
-        "info":false,
+        "info": false,
         "scrollX": true,
         "language": {
             "search": "Buscar:",

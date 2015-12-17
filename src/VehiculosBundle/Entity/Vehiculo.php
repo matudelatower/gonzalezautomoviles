@@ -178,6 +178,12 @@ class Vehiculo
      *
      */
     private $estadoVehiculo;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\MovimientoDeposito", mappedBy="vehiculo", cascade={"persist"})
+     *
+     */
+    private $deposito;
 
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoGm", mappedBy="vehiculo", cascade={"persist"})
@@ -263,6 +269,7 @@ class Vehiculo
     {
         $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->danioVehiculoGm = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->deposito = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1061,5 +1068,39 @@ class Vehiculo
     public function getTransportista()
     {
         return $this->transportista;
+    }
+
+    /**
+     * Add deposito
+     *
+     * @param \VehiculosBundle\Entity\MovimientoDeposito $deposito
+     *
+     * @return Vehiculo
+     */
+    public function addDeposito(\VehiculosBundle\Entity\MovimientoDeposito $deposito)
+    {
+        $this->deposito[] = $deposito;
+
+        return $this;
+    }
+
+    /**
+     * Remove deposito
+     *
+     * @param \VehiculosBundle\Entity\MovimientoDeposito $deposito
+     */
+    public function removeDeposito(\VehiculosBundle\Entity\MovimientoDeposito $deposito)
+    {
+        $this->deposito->removeElement($deposito);
+    }
+
+    /**
+     * Get deposito
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeposito()
+    {
+        return $this->deposito;
     }
 }

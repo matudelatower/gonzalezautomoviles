@@ -48,10 +48,12 @@
                             </div>    
                         </div>  
                     </div>
-                    {#<div class="hidden">
-                    </div>#}
+                    <div class="hidden">
+                        <input name="id_vehiculo" id="id_vehiculo"/>
+                    </div>
+                            {{form_widget(form_movimiento_deposito._token)}}
                     <div class="modal-footer">
-                        <button type="submit" id="btn-modal-etiquetar" class="btn btn-primary">Aceptar</button>
+                        <button type="button" id="btn-modal-movimiento" class="btn btn-primary">Aceptar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </form>
@@ -87,6 +89,7 @@
                                 <th>Color externo</th>
                                 <th>Km ingreso</th>
                                 <th>Observacion</th>
+                                <th>Deposito</th>
                                 <th>Estado</th>
                                 <th>Actions</th>
                             </tr>
@@ -107,6 +110,7 @@
                                     <td>{{ entity.colorExterno }}</td>
                                     <td>{{ entity.kmIngreso }}</td>
                                     <td>{{ entity.observacion }}</td>
+                                    <td>{{ entity.deposito.last.depositoDestino | default ("") }}</td>
                                     <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
                                     <td>
 
@@ -125,7 +129,7 @@
                                             {% endif %}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal" data-target="#modalDeposito"
-                                           data-url="{{entity.id}}"
+                                           id="{{entity.id}}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                     </td>
                                 </tr>
@@ -147,3 +151,31 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent()}}
+    <script>
+        $(document).ready(function () {
+            $('.btn-deposito').click(function () {
+                $("#id_vehiculo").val(this.id);
+            });
+
+            $('#btn-modal-movimiento').click(function () {
+                datos = $('#form_movimiento_deposito').serialize();
+                url = '{{path('movimiento_deposito_new_ajax')}}';
+                $.ajax({
+                    type: 'post',
+                    dataType: 'json',
+                    cache: true,
+                    url: url,
+                    data: datos,
+                    success: function (json) {
+                        $('#modalDeposito').modal('hide');
+                        modalAlert('La operación se realizó con exito');
+                        
+                    },
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

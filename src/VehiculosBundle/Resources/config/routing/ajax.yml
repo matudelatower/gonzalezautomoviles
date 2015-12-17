@@ -1,3 +1,7 @@
 get_muestra_campos_plan_de_ahorro:
     path:     /get_muestra_campos_plan_de_ahorro
-    defaults: { _controller: "VehiculosBundle:Ajax:getMuestraCamposPlanDeAhorro" }
+    defaults: { _controller: "VehiculosBundle:Ajax:getMuestraCamposPlanDeAhorro" }   
+    
+movimiento_deposito_new_ajax:
+    path:     /movimiento_deposito_new_ajax/
+    defaults: { _controller: "VehiculosBundle:Ajax:movimientoDepositoNewAjax" }     
