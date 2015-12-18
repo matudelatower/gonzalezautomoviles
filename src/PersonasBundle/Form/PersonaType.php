@@ -17,11 +17,7 @@ class PersonaType extends AbstractType {
 			->add( 'apellido' )
 			->add( 'tipoDocumento' )
 			->add( 'numeroDocumento' )
-			->add( 'telefono' )
-			->add( 'celular' )
-			->add( 'mail' )
-			->add( 'web' )
-			->add( 'fechaNacimiento',
+                        ->add( 'fechaNacimiento',
 				'date',
 				array(
 					'widget' => 'single_text',
@@ -32,6 +28,11 @@ class PersonaType extends AbstractType {
 //                'required'=>false
 
 				) )
+			->add( 'telefono' )
+			->add( 'celular' )
+			->add( 'mail' )
+			->add( 'web' )
+			
 			->add( 'calle' )
 			->add( 'numeroCalle' )
 			->add( 'barrio' );

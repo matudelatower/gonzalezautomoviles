@@ -62,7 +62,7 @@
                                 <td>{{ entity.colorExterno }}</td>
                                 <td>{{ entity.kmIngreso }}</td>
                                 <td>{{ entity.observacion }}</td>
-                                <td>{{ entity.deposito.last.depositoDestino | default ("") }}</td>
+                                <td>{{ entity.Movimientodeposito.first.depositoDestino | default ("") }}</td>
                                 <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
                                 <td>
 

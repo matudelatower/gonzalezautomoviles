@@ -24,7 +24,7 @@ class Empleado
     /**
      * @var string
      *
-     * @ORM\Column(name="categoria", type="string", length=255)
+     * @ORM\Column(name="categoria", type="string", length=255,nullable=true)
      */
     private $categoria;
 
