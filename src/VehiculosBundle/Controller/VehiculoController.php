@@ -75,14 +75,14 @@ class VehiculoController extends Controller {
         );
     }
 
-    /**
-     * Creates a form to create a Vehiculo entity.
-     *
-     * @param Vehiculo $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Vehiculo $entity, $type = null, $route = null) {
+	/**
+	 * Creates a form to create a Vehiculo entity.
+	 *
+	 * @param Vehiculo $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createCreateForm( Vehiculo $entity, $type = null, $route = null, $submitLabel = 'Crear' ) {
 
         if (!$type) {
             $type = new VehiculoType();
@@ -100,12 +100,14 @@ class VehiculoController extends Controller {
                 )
         );
 
-        $form->add(
-                'submit', 'submit', array(
-            'label' => 'Crear',
-            'attr' => array('class' => 'btn btn-primary pull-right')
-                )
-        );
+		$form->add(
+			'submit',
+			'submit',
+			array(
+				'label' => $submitLabel,
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' )
+			)
+		);
 
         return $form;
     }
@@ -292,30 +294,56 @@ class VehiculoController extends Controller {
         $ruta = $this->generateUrl('vehiculos_actualizar_remito', array('vehiculoId' => $vehiculoId));
 
 
+		$form = $this->createCreateForm( $vehiculo, new EditarVehiculoType(), $ruta, 'Actualizar' );
 
-        $form = $this->createCreateForm($vehiculo, new EditarVehiculoType(), $ruta);
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $vehiculo->getRemito()->setUsuarioReceptor($this->getUser());
-                $vehiculo->getRemito()->setFechaRecibido(new \DateTime('now'));
+				if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
+					$vehiculo->getRemito()->setUsuarioReceptor( $this->getUser() );
+				}
+				if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
+					$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
+				}
 
-                foreach ($vehiculo->getDanioVehiculoGm() as $danioVehiculo) {
-                    $danioVehiculo->setVehiculo($vehiculo);
-                    foreach ($danioVehiculo->getFotoDanio() as $fotoDanio) {
-                        $fotoDanio->upload();
-                        $fotoDanio->setDanioVehiculo($danioVehiculo);
-                    }
-                }
+				if ( $vehiculo->getDanioVehiculoGm()->count() > 0 ) {
+
+					foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
+						$danioVehiculo->setVehiculo( $vehiculo );
+						foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
+							$fotoDanio->upload();
+							$fotoDanio->setDanioVehiculo( $danioVehiculo );
+						}
+					}
+//estado 2
+					$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+						'recibido-con-problemas'
+					);
+
+
+				} else {
+//estado 3
+					$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+						'recibido-conforme'
+					);
+				}
+
+				$estadoVehiculo = new EstadoVehiculo();
+				$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
+				$estadoVehiculo->setVehiculo( $vehiculo );
+
+				$vehiculo->addEstadoVehiculo( $estadoVehiculo );
 
                 $em->flush();
 
-                $this->get('session')->getFlashBag()->add(
-                        'success', 'Datos del Vehiculo actualizados correctamente.'
-                );
-            }
-        }
+				$this->get( 'session' )->getFlashBag()->add(
+					'success',
+					'Datos del Vehiculo actualizados correctamente.'
+				);
+
+			}
+		}
 
         return $this->render('VehiculosBundle:Vehiculo:edit.html.twig', array(
                     'edit_form' => $form->createView(),
