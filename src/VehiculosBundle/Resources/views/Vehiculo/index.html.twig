@@ -7,56 +7,8 @@
     <div id="modalDeposito" class="modal fade" role="dialog">
         <div class="modal-dialog" >
             <!-- Modal content-->
-            <div class="modal-content">
-                <form class="form-horizontal" id="form_movimiento_deposito" role="form" method="post">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Ingrese los datos</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="col-sm-3"> 
-                                {{ form_label(form_movimiento_deposito.depositoDestino)}}
-                            </div>
-                            <div class="col-sm-6"> 
-                                {{ form_widget(form_movimiento_deposito.depositoDestino) }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3"> 
-                                {{ form_label(form_movimiento_deposito.fila)}}
-                            </div>
-                            <div class="col-sm-6"> 
-                                {{ form_widget(form_movimiento_deposito.fila) }}
-                            </div>    
-                        </div>  
+            <div class="modal-content" id="cuerpoMovimientoDepostido">
 
-                        <div class="form-group">
-                            <div class="col-sm-3"> 
-                                {{ form_label(form_movimiento_deposito.posicion)}}
-                            </div>
-                            <div class="col-sm-6"> 
-                                {{ form_widget(form_movimiento_deposito.posicion) }}
-                            </div>    
-                        </div>  
-                        <div class="form-group">
-                            <div class="col-sm-3"> 
-                                {{ form_label(form_movimiento_deposito.observacion)}}
-                            </div>
-                            <div class="col-sm-6"> 
-                                {{ form_widget(form_movimiento_deposito.observacion) }}
-                            </div>    
-                        </div>  
-                    </div>
-                    <div class="hidden">
-                        <input name="id_vehiculo" id="id_vehiculo"/>
-                    </div>
-                            {{form_widget(form_movimiento_deposito._token)}}
-                    <div class="modal-footer">
-                        <button type="button" id="btn-modal-movimiento" class="btn btn-primary">Aceptar</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </form>
             </div>
 
         </div>
@@ -129,7 +81,7 @@
                                             {% endif %}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal" data-target="#modalDeposito"
-                                           id="{{entity.id}}"
+                                           data-url="{{path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                     </td>
                                 </tr>
@@ -156,24 +108,34 @@
     <script>
         $(document).ready(function () {
             $('.btn-deposito').click(function () {
-                $("#id_vehiculo").val(this.id);
-            });
-
-            $('#btn-modal-movimiento').click(function () {
-                datos = $('#form_movimiento_deposito').serialize();
-                url = '{{path('movimiento_deposito_new_ajax')}}';
+                url = $(this).data('url');
                 $.ajax({
-                    type: 'post',
-                    dataType: 'json',
-                    cache: true,
+                    type: 'get',
                     url: url,
-                    data: datos,
-                    success: function (json) {
-                        $('#modalDeposito').modal('hide');
-                        modalAlert('La operación se realizó con exito');
-                        
+                    success: function (data) {
+                        $('#cuerpoMovimientoDepostido').html(data);
                     },
                 });
+            });
+
+
+        });
+        $(document).on('click', "#btn-modal-movimiento", function () {
+            datos = $('#form').serializeArray();
+            url = '{{path('movimiento_deposito_create_ajax')}}';
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: datos,
+                success: function (data) {
+                    $('#modalDeposito').modal('hide');
+                    modalAlert('La operación se realizó con exito');
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#modalDeposito').modal('hide');
+                    modalAlert('La operación no se realizo');
+                }
             });
         });
 

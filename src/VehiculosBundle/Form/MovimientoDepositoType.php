@@ -20,7 +20,6 @@ class MovimientoDepositoType extends AbstractType
             ->add('fila')
             ->add('posicion')
             ->add('observacion')
-            ->add('actual')
             ->add('depositoDestino', 'entity', array(
                     'class' => 'VehiculosBundle:Deposito',
                     'property' => 'nombre',

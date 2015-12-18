@@ -1,0 +1,48 @@
+<form class="form-horizontal" id="form" role="form" method="post">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ingrese los datos</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.depositoDestino)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.depositoDestino) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.fila)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.fila) }}
+            </div>    
+        </div>  
+
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.posicion)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.posicion) }}
+            </div>    
+        </div>  
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.observacion)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.observacion) }}
+            </div>    
+        </div>  
+    </div>
+    <div class="hidden">
+            {{form_rest(form)}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="btn-modal-movimiento" class="btn btn-primary">Aceptar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>

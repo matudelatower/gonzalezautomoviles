@@ -57,13 +57,7 @@ class MovimientoDeposito {
      */
     private $observacion;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="actual", type="boolean")
-     */
-    private $actual;
-
+    
     /**
      * @var datetime $creado
      *
@@ -242,27 +236,7 @@ class MovimientoDeposito {
         return $this->observacion;
     }
 
-    /**
-     * Set actual
-     *
-     * @param boolean $actual
-     *
-     * @return MovimientoDeposito
-     */
-    public function setActual($actual) {
-        $this->actual = $actual;
-
-        return $this;
-    }
-
-    /**
-     * Get actual
-     *
-     * @return boolean
-     */
-    public function getActual() {
-        return $this->actual;
-    }
+    
 
     /**
      * Set creado

@@ -25,30 +25,32 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
-    public function movimientoDepositoNewAjaxAction(Request $request) {
+    public function movimientoDepositoCreateAjaxAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $datos = $request->get('vehiculosbundle_movimientodeposito');
-
-        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($request->get('id_vehiculo'));
-
-
         $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
+        $form = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType(), $entity);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em->persist($entity);
+            $em->flush();
+            return new JsonResponse(true);
+        }
+        return new JsonResponse(false, 400);
+    }
 
-
+    public function newMovimientoDepositoAction($vehiculoId) {
+        $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
         $entity->setVehiculo($vehiculo);
-        $deposito_destino = $em->getRepository('VehiculosBundle:Deposito')->find($datos['depositoDestino']);
-        $entity->setDepositoDestino($deposito_destino);
-        $entity->setFila($datos['fila']);
-        $entity->setPosicion($datos['posicion']);
         $entity->setFechaIngreso(new \DateTime("now"));
-        $entity->setActual('true');
-        $entity->setObservacion($datos['observacion']);
+        $form = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType(), $entity);
 
-        $em->persist($entity);
-        $em->flush();     
-        
-        return new JsonResponse( 'true' );
-        
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig', array(
+            'form' => $form->createView(),
+                )
+        );
+        return new JsonResponse($html);
     }
 
 }
