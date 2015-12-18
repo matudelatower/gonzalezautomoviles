@@ -61,11 +61,13 @@ class EditarVehiculoType extends AbstractType {
 //					'choice_label'      => 'nombreCompleto',
 					'search_method' => 'getClienteByDni',
 					'required'      => false,
-					'route_name'    => 'get_cliente_by_dni'
+					'route_name'    => 'get_cliente_by_dni',
 //					'route_name'    => "buscarPersonaConDominio",
 //					'class'         => 'PersonaBundle:Persona',
 //					'property'      => 'nombreCompleto',
 //					'search_method' => 'getEmpadronadoresPorSector',
+					'label_attr'    => array( 'class' => 'hidden tipo-venta-especial-field' ),
+					'attr'          => array( 'class' => 'hidden tipo-venta-especial-field' )
 				) )
 			->add( 'remito', new RemitoType() )
 			->add( 'codigoLlave' )
@@ -76,9 +78,9 @@ class EditarVehiculoType extends AbstractType {
 			->add( 'danioVehiculoGm',
 				'bootstrapcollection',
 				array(
-					'type'         => new DanioVehiculoGmType(),
-					'allow_add'    => true,
-					'allow_delete' => true,
+					'type'           => new DanioVehiculoGmType(),
+					'allow_add'      => true,
+					'allow_delete'   => true,
 					'prototype_name' => '__daniovehiculo__',
 				) );
 	}

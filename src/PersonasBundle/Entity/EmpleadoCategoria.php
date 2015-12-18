@@ -63,7 +63,7 @@ class EmpleadoCategoria
     private $categoriaEmpleado;
     
     /**
-     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Empleado")
+     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Empleado", inversedBy="empleadoCategoria")
      * @ORM\JoinColumn(name="empleado_id", referencedColumnName="id")
      */
     private $empleado;

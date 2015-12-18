@@ -19,8 +19,11 @@
                     success: function (data) {
                         if (data == true) {
                             $('.tipo-venta-especial-field').removeClass('hidden');
+                            $('.tipo-venta-especial-field').add('required', 'required');
                         } else {
+
                             $('.tipo-venta-especial-field').addClass('hidden');
+                            $('.tipo-venta-especial-field').removeAttr('required');
                         }
                     }
                 });

@@ -23,7 +23,8 @@ $(document).ready(function () {
         $.blockUI(
                 {
                     message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
-                    css: {backgroundColor: 'none', border: 'none'}
+                    css: {backgroundColor: 'none', border: 'none'},
+                    baseZ: 1050,
                 }
         )
     });

@@ -57,15 +57,18 @@ class AltaVehiculoType extends AbstractType {
 			->add( 'cliente',
 				'jqueryautocomplete',
 				array(
+					'label'=>'Cliente (Por DNI)',
 					'class'         => 'ClientesBundle:Cliente',
 //					'property'      => 'nombreCompleto',
 					'search_method' => 'getClienteByDni',
 					'required'      => false,
-					'route_name'    => 'get_cliente_by_dni'
+					'route_name'    => 'get_cliente_by_dni',
 //					'route_name'    => "buscarPersonaConDominio",
 //					'class'         => 'PersonaBundle:Persona',
 //					'property'      => 'nombreCompleto',
 //					'search_method' => 'getEmpadronadoresPorSector',
+					'label_attr'    => array( 'class' => 'hidden tipo-venta-especial-field' ),
+					'attr'          => array( 'class' => 'hidden tipo-venta-especial-field' )
 				) )
 			->add( 'remito', new RemitoType() );
 	}

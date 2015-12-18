@@ -29,23 +29,20 @@
                 return false;
             });
 
-//            $('.agregar-foto').click(function () {
             $(document).on('click', '.agregar-foto', function () {
                 var itemCantFoto = $(this).data('cant');
 
                 var btnAddFoto = $(this);
-                var itemList = $('.foto-list');
-                console.log(itemCantFoto)
+                var itemList = $(this).parent('.foto-list');
+//                console.log(itemCantFoto)
 
                 if (itemList.find('div').length < 9999) {
 
-//                    console.log(itemList)
+
                     var newWidget = itemList.data('prototype');
                     newWidget = newWidget.replace(/__foto__/g, itemCantFoto);
                     var newTr = $('<tr item="' + itemCantFoto + '"></tr>').html(newWidget);
                     itemCantFoto++;
-//                    newTr.appendTo(itemList);
-//                    console.log(btnAddFoto.parent('td').find('.elements'))
                     btnAddFoto.parent('td').find('.elements').append(newTr);
                 }
 //                                            inicializarFecha();
@@ -54,19 +51,66 @@
                 return false;
             });
 
+            $(document).on('click', '.btn-remove-foto', function () {
+                $(this).parents('tr').remove();
+            });
+
+//            tipo de venta
+            $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
+
+
+                var id = $(this).val()
+
+                checkTipoVenta(id);
+
+
+            });
+
+
+            var id = $('#{{ edit_form.tipoVentaEspecial.vars.id }}').val()
+
+            checkTipoVenta(id);
+
+            function checkTipoVenta(id) {
+                $.ajax({
+                    url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
+                    method: "GET",
+                    data: {id: id},
+                    success: function (data) {
+                        if (data == true) {
+                            $('.tipo-venta-especial-field').removeClass('hidden');
+                            $('.tipo-venta-especial-field').add('required', 'required');
+                        } else {
+
+                            $('.tipo-venta-especial-field').addClass('hidden');
+                            $('.tipo-venta-especial-field').removeAttr('required');
+                        }
+                    }
+                });
+            }
         });
     </script>
 {% endblock javascripts %}
 
 {% block content -%}
 
+
+
     {% set danioVehiculoProto %}
+
+        {% set fotoProto %}
+            <button type="button" class="btn btn-box-tool pull-right btn-remove-foto">
+                <i class="fa fa-remove"></i>
+            </button>
+            {{ form_widget(edit_form.danioVehiculoGm.vars.prototype.fotoDanio.vars.prototype) }}
+
+        {% endset %}
 
         <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.tipoDanio) }}</td>
         <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.codigoDanio) }}</td>
         <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.gravedadDanio) }}</td>
         <td class="foto-list"
-            data-prototype="{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.fotoDanio.vars.prototype)|e }}">
+            data-prototype="{{ fotoProto |e }}">
             <div class="elements">
 
             </div>
@@ -99,6 +143,9 @@
                 {{ form_row(edit_form.impuestos) }}
                 {{ form_row(edit_form.numeroPedido) }}
                 {{ form_row(edit_form.tipoVentaEspecial) }}
+                {{ form_row(edit_form.numeroGrupo) }}
+                {{ form_row(edit_form.numeroSolicitud) }}
+                {{ form_row(edit_form.numeroOrden) }}
                 {{ form_row(edit_form.cliente) }}
                 <div class="jumbotron">
                     <h3>Remito</h3>
@@ -134,7 +181,8 @@
                                     data-prototype="{{ form_widget(danioVehiculo.fotoDanio.vars.prototype)|e }}">
                                     <div class="elements">
                                         {% for fotoDanio in danioVehiculo.fotoDanio %}
-                                            <img class="img-responsive" width="300" height="300" src="{{ app.request.basePath ~ '/uploads/fotos_danio/' ~ fotoDanio.vars.data.ruta }}">
+                                            <img class="img-responsive" width="300" height="300"
+                                                 src="{{ app.request.basePath ~ '/uploads/fotos_danio/' ~ fotoDanio.vars.data.ruta }}">
                                             {{ form_widget(fotoDanio) }}
                                         {% endfor %}
                                     </div>
@@ -157,7 +205,9 @@
                            href="#"><i class="fa fa-plus"></i> Agregar</a>
                     </div>
                 </div>
-                {#{{ form_row(edit_form.danioVehiculoGm) }}#}
+                <div class="hidden">
+                    {{ form_row(edit_form.danioVehiculoGm) }}
+                </div>
                 {{ form_end(edit_form) }}
 
                 <a class="btn btn-default" href="{{ path('vehiculos') }}">

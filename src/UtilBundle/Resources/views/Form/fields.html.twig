@@ -124,8 +124,9 @@
     {% set id = 'suggest_'~id %}
     {% set full_name = 'suggest_'~full_name %}
     {% set value = suggest_value %}
+    {% set class = form.vars.attr.class | default('') %}
     <input type="text"
-           class="form-control"{{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+           class="form-control {{ class }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {% endblock %}
 
                             {% block bootstrapcollection_widget %}
