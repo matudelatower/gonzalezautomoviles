@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\VehiculoRepository")
  * @UniqueEntity("vin")
  * @UniqueEntity("chasis")
+ * @UniqueEntity("motor")
  */
 class Vehiculo
 {
@@ -37,13 +38,6 @@ class Vehiculo
      * @ORM\JoinColumn(name="codigo_modelo_id", referencedColumnName="id",nullable=true)
      */
     private $modelo;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="anio_fabricacion", type="integer", nullable=true)
-     */
-    private $anioFabricacion;
 
     /**
      * @var string
@@ -83,16 +77,16 @@ class Vehiculo
     /**
      * @var string
      *
-     * @ORM\Column(name="color_interno", type="string", length=255, nullable=true)
-     */
-    private $colorInterno;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="color_externo", type="string", length=255, nullable=true)
      */
     private $colorExterno;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_emision_documento", type="datetime",nullable=true)
+     */
+    private $fechaEmisionDocumento;
 
     /**
      * @var string
@@ -305,31 +299,7 @@ class Vehiculo
     public function getVin()
     {
         return $this->vin;
-    }
-
-    /**
-     * Set anioFabricacion
-     *
-     * @param integer $anioFabricacion
-     *
-     * @return Vehiculo
-     */
-    public function setAnioFabricacion($anioFabricacion)
-    {
-        $this->anioFabricacion = $anioFabricacion;
-
-        return $this;
-    }
-
-    /**
-     * Get anioFabricacion
-     *
-     * @return integer
-     */
-    public function getAnioFabricacion()
-    {
-        return $this->anioFabricacion;
-    }
+    }    
 
     /**
      * Set motor
@@ -451,29 +421,7 @@ class Vehiculo
         return $this->codigoInmovilizador;
     }
 
-    /**
-     * Set colorInterno
-     *
-     * @param string $colorInterno
-     *
-     * @return Vehiculo
-     */
-    public function setColorInterno($colorInterno)
-    {
-        $this->colorInterno = $colorInterno;
-
-        return $this;
-    }
-
-    /**
-     * Get colorInterno
-     *
-     * @return string
-     */
-    public function getColorInterno()
-    {
-        return $this->colorInterno;
-    }
+    
 
     /**
      * Set colorExterno
@@ -1103,5 +1051,29 @@ class Vehiculo
     public function getTransportista()
     {
         return $this->transportista;
+    }
+
+    /**
+     * Set fechaEmisionDocumento
+     *
+     * @param \DateTime $fechaEmisionDocumento
+     *
+     * @return Vehiculo
+     */
+    public function setFechaEmisionDocumento($fechaEmisionDocumento)
+    {
+        $this->fechaEmisionDocumento = $fechaEmisionDocumento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmisionDocumento
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmisionDocumento()
+    {
+        return $this->fechaEmisionDocumento;
     }
 }

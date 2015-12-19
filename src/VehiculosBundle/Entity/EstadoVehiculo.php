@@ -22,6 +22,14 @@ class EstadoVehiculo
      */
     private $id;
 
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="actual", type="boolean", nullable=true)
+     */
+    private $actual;
+    
     /**
      * @var string
      *
@@ -253,5 +261,29 @@ class EstadoVehiculo
     public function getTipoEstadoVehiculo()
     {
         return $this->tipoEstadoVehiculo;
+    }
+
+    /**
+     * Set actual
+     *
+     * @param string $actual
+     *
+     * @return EstadoVehiculo
+     */
+    public function setActual($actual)
+    {
+        $this->actual = $actual;
+
+        return $this;
+    }
+
+    /**
+     * Get actual
+     *
+     * @return string
+     */
+    public function getActual()
+    {
+        return $this->actual;
     }
 }

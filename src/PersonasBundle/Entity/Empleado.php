@@ -21,14 +21,7 @@ class Empleado
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="categoria", type="string", length=255,nullable=true)
-     */
-    private $categoria;
-
-
+    
     /**
      * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="empleado", cascade={"persist"})
      *
@@ -81,6 +74,7 @@ class Empleado
     public function __construct()
     {
         $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->empleadoCategoria = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

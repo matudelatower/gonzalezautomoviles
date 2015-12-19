@@ -36,3 +36,7 @@ vehiculos_alta:
 vehiculos_actualizar_remito:
     path:     /{vehiculoId}/vehiculos_actualizar_remito
     defaults: { _controller: "VehiculosBundle:Vehiculo:actualizarVehiculoRemito" }
+    
+vehiculos_pendientes_index:
+    path:     /vehiculos_pendientes_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosPendientesIndex" }    

@@ -18,7 +18,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listado Vehiculos</h3>
+                    <h3 class="box-title">Listado Vehiculos Pendientes Por Recibir</h3>
 
 
                 </div>
@@ -31,16 +31,9 @@
                             <th>Id</th>
                             <th>Vin</th>
                             <th>Modelo</th>
-                            <th>Motor</th>
-                            <th>Codigo llave</th>
-                            <th>Codigo radio</th>
-                            <th>Codigo seguridad</th>
-                            <th>Codigo inmovilizador</th>
+                            <th>Motor</th>                            
                             <th>Color externo</th>
-                            <th>Km ingreso</th>
                             <th>Observacion</th>
-                            <th>Deposito</th>
-                            <th>Estado</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -50,15 +43,9 @@
                                 <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                                 <td>{{ entity.vin }}</td>
                                 <td>{{ entity.modelo }}</td>
-                                <td>{{ entity.motor }}</td>
-                                <td>{{ entity.codigoLlave }}</td>
-                                <td>{{ entity.codigoRadio }}</td>
-                                <td>{{ entity.codigoSeguridad }}</td>
-                                <td>{{ entity.codigoInmovilizador }}</td>
+                                <td>{{ entity.motor }}</td>                                
                                 <td>{{ entity.colorExterno }}</td>
-                                <td>{{ entity.kmIngreso }}</td>
                                 <td>{{ entity.observacion }}</td>
-                                <td>{{ entity.Movimientodeposito.first.depositoDestino | default ("") }}</td>
                                 <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
                                 <td>
 
