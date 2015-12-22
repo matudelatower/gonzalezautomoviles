@@ -76,7 +76,9 @@ class CategoriaEmpleado {
      */
     private $empleadoCategoria;
 
-    
+    public function __toString() {
+        return $this->nombre;
+    }
 
     /**
      * Constructor

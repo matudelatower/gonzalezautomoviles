@@ -8,32 +8,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmpleadoType extends AbstractType {
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-                ->add('empleadoCategoria', 'entity', array(
-                    'class' => 'PersonasBundle:CategoriaEmpleado',
-                    'choice_label' => 'nombre',
-        ));
-    }
+	/**
+	 * @param FormBuilderInterface $builder
+	 * @param array $options
+	 */
+	public function buildForm( FormBuilderInterface $builder, array $options ) {
+		$builder
+			->add( 'empleadoCategoria', new EmpleadoCategoriaType());
+	}
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
-            'data_class' => 'PersonasBundle\Entity\Empleado'
-        ));
-    }
+	/**
+	 * @param OptionsResolver $resolver
+	 */
+	public function configureOptions( OptionsResolver $resolver ) {
+		$resolver->setDefaults( array(
+			'data_class' => 'PersonasBundle\Entity\Empleado'
+		) );
+	}
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'personasbundle_empleado';
-    }
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return 'personasbundle_empleado';
+	}
 
 }

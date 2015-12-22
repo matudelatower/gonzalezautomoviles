@@ -68,6 +68,7 @@ class Empleado
      */
     private $actualizadoPor;
     
+
     /**
      * Constructor
      */
@@ -85,64 +86,6 @@ class Empleado
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set categoria
-     *
-     * @param string $categoria
-     *
-     * @return Empleado
-     */
-    public function setCategoria($categoria)
-    {
-        $this->categoria = $categoria;
-
-        return $this;
-    }
-
-    /**
-     * Get categoria
-     *
-     * @return string
-     */
-    public function getCategoria()
-    {
-        return $this->categoria;
-    }
-
-    /**
-     * Add personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     *
-     * @return Empleado
-     */
-    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo[] = $personaTipo;
-
-        return $this;
-    }
-
-    /**
-     * Remove personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     */
-    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo->removeElement($personaTipo);
-    }
-
-    /**
-     * Get personaTipo
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPersonaTipo()
-    {
-        return $this->personaTipo;
     }
 
     /**
@@ -194,6 +137,74 @@ class Empleado
     }
 
     /**
+     * Add personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     *
+     * @return Empleado
+     */
+    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    {
+        $this->personaTipo[] = $personaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Remove personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     */
+    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    {
+        $this->personaTipo->removeElement($personaTipo);
+    }
+
+    /**
+     * Get personaTipo
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPersonaTipo()
+    {
+        return $this->personaTipo;
+    }
+
+    /**
+     * Add empleadoCategorium
+     *
+     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
+     *
+     * @return Empleado
+     */
+    public function addEmpleadoCategorion(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    {
+        $this->empleadoCategoria[] = $empleadoCategorium;
+
+        return $this;
+    }
+
+    /**
+     * Remove empleadoCategorium
+     *
+     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
+     */
+    public function removeEmpleadoCategorion(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    {
+        $this->empleadoCategoria->removeElement($empleadoCategorium);
+    }
+
+    /**
+     * Get empleadoCategoria
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmpleadoCategoria()
+    {
+        return $this->empleadoCategoria;
+    }
+
+    /**
      * Set creadoPor
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
@@ -239,39 +250,5 @@ class Empleado
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
-    }
-
-    /**
-     * Add empleadoCategorium
-     *
-     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
-     *
-     * @return Empleado
-     */
-    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
-    {
-        $this->empleadoCategoria[] = $empleadoCategorium;
-
-        return $this;
-    }
-
-    /**
-     * Remove empleadoCategorium
-     *
-     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
-     */
-    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
-    {
-        $this->empleadoCategoria->removeElement($empleadoCategorium);
-    }
-
-    /**
-     * Get empleadoCategoria
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEmpleadoCategoria()
-    {
-        return $this->empleadoCategoria;
     }
 }
