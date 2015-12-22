@@ -53,6 +53,25 @@ class VehiculoController extends Controller {
     }
 
     /**
+     * listado de vehiculos que se recibieron ya sea conforme o con daños.
+     *
+     */
+    public function vehiculosRecibidosIndexAction() {
+        $em = $this->getDoctrine()->getManager();
+        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('recibido-con-problemas');
+        $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('recibido-conforme');
+        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estadoId1[0]->getId(), $estadoId2[0]->getId());
+        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:recibidosIndex.html.twig', array(
+                    'entities' => $entities,
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                        )
+        );
+    }
+
+    /**
      * Creates a new Vehiculo entity.
      *
      */
@@ -72,6 +91,7 @@ class VehiculoController extends Controller {
             $estadoVehiculo = new EstadoVehiculo();
             $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
             $estadoVehiculo->setVehiculo($entity);
+            $estadoVehiculo->setActual('true');
 
             $entity->addEstadoVehiculo($estadoVehiculo);
 
@@ -342,10 +362,20 @@ class VehiculoController extends Controller {
                             'recibido-conforme'
                     );
                 }
+                //cambio actual=false en todos los registros de estado que tuvo el automovil
+                $qb = $em->getRepository('VehiculosBundle:Vehiculo')->createQueryBuilder('e')
+                        ->update('VehiculosBundle:EstadoVehiculo', 'e')
+                        ->set('e.actual', 'false')
+                        ->where('e.vehiculo=:vehiculoId')
+                        ->setParameter('vehiculoId', $vehiculoId);
+
+                $qb->getQuery()->getResult();
 
                 $estadoVehiculo = new EstadoVehiculo();
                 $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
                 $estadoVehiculo->setVehiculo($vehiculo);
+                $estadoVehiculo->setActual('true');
+
 
                 $vehiculo->addEstadoVehiculo($estadoVehiculo);
 

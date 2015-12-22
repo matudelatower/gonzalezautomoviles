@@ -10,14 +10,24 @@ namespace VehiculosBundle\Entity;
  */
 class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
-    public function getVehiculosEstado($estado) {
+    public function getVehiculosEstado($estado1, $estado2 = false) {
         $qb = $this->createQueryBuilder('p');
+        if (!$estado2) {
+            $qb->join('p.estadoVehiculo', 'ev');
+            $qb->andWhere('ev.tipoEstadoVehiculo = :estado')
+                    ->setParameter('estado', $estado1);
+            $qb->andWhere('ev.actual = true');
+            $qb->setMaxResults(1000);
+        } else {
+            $qb->join('p.estadoVehiculo', 'ev');
+            $qb->andWhere('ev.tipoEstadoVehiculo = :estado')
+                    ->setParameter('estado', $estado1);
+            $qb->orWhere('ev.tipoEstadoVehiculo = :estado2')
+                    ->setParameter('estado2', $estado2);
+            $qb->andWhere('ev.actual = true');
+            $qb->setMaxResults(1000);
+        }
 
-        $qb->join('p.estadoVehiculo', 'ev');
-        $qb->andWhere('ev.tipoEstadoVehiculo = :estado')
-                ->setParameter('estado', $estado);
-        $qb->andWhere('ev.actual = true');
-        $qb->setMaxResults(1000);
 
         return $qb->getQuery()->getResult();
     }

@@ -39,4 +39,9 @@ vehiculos_actualizar_remito:
     
 vehiculos_pendientes_index:
     path:     /vehiculos_pendientes_index
-    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosPendientesIndex" }    
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosPendientesIndex" } 
+    
+vehiculos_recibidos_index:
+    path:     /vehiculos_recibidos_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosRecibidosIndex" }
+   
