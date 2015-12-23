@@ -16,380 +16,403 @@ use VehiculosBundle\Form\VehiculoType;
  */
 class VehiculoController extends Controller {
 
-    /**
-     * Lists all Vehiculo entities.
-     *
-     */
-    public function indexAction() {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Lists all Vehiculo entities.
+	 *
+	 */
+	public function indexAction() {
+		$em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->findAll();
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+		$entities               = $em->getRepository( 'VehiculosBundle:Vehiculo' )->findAll();
+		$formMovimientoDeposito = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType() );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:index.html.twig', array(
-                    'entities' => $entities,
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:index.html.twig',
+			array(
+				'entities'                 => $entities,
+				'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+			)
+		);
+	}
 
-    /**
-     * listado de vehiculos que se encuentren pendientes por recibir.
-     *
-     */
-    public function vehiculosPendientesIndexAction() {
-        $em = $this->getDoctrine()->getManager();
-        $estadoId = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('pendiente-por-recibir');
-        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estadoId[0]->getId());
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+	/**
+	 * listado de vehiculos que se encuentren pendientes por recibir.
+	 *
+	 */
+	public function vehiculosPendientesIndexAction() {
+		$em                     = $this->getDoctrine()->getManager();
+		$estado                 = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findBySlug( 'pendiente-por-recibir' );
+		$entities               = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estado );
+		$formMovimientoDeposito = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType() );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:pendientesIndex.html.twig', array(
-                    'entities' => $entities,
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:pendientesIndex.html.twig',
+			array(
+				'entities'                 => $entities,
+				'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+			)
+		);
+	}
 
-    /**
-     * listado de vehiculos que se recibieron ya sea conforme o con daños.
-     *
-     */
-    public function vehiculosRecibidosIndexAction() {
-        $em = $this->getDoctrine()->getManager();
-        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('recibido-con-problemas');
-        $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('recibido-conforme');
-        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estadoId1[0]->getId(), $estadoId2[0]->getId());
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+	/**
+	 * listado de vehiculos que se recibieron ya sea conforme o con daños.
+	 *
+	 */
+	public function vehiculosRecibidosIndexAction() {
+		$em                     = $this->getDoctrine()->getManager();
+		$estadoId1              = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug( 'recibido-con-problemas' );
+		$estadoId2              = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug( 'recibido-conforme' );
+		$estados                = array( $estadoId1, $estadoId2 );
+		$entities               = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados );
+		$formMovimientoDeposito = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType() );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:recibidosIndex.html.twig', array(
-                    'entities' => $entities,
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:recibidosIndex.html.twig',
+			array(
+				'entities'                 => $entities,
+				'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+			)
+		);
+	}
 
-    /**
-     * Creates a new Vehiculo entity.
-     *
-     */
-    public function createAction(Request $request) {
-        $entity = new Vehiculo();
-        $form = $this->createCreateForm($entity, new AltaVehiculoType());
-        $form->handleRequest($request);
+	/**
+	 * Creates a new Vehiculo entity.
+	 *
+	 */
+	public function createAction( Request $request ) {
+		$entity = new Vehiculo();
+		$form   = $this->createCreateForm( $entity, new AltaVehiculoType() );
+		$form->handleRequest( $request );
 
-        if ($form->isValid()) {
+		if ( $form->isValid() ) {
 
 
-            $em = $this->getDoctrine()->getManager();
-            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                    'pendiente-por-recibir'
-            );
+			$em                 = $this->getDoctrine()->getManager();
+			$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+				'pendiente-por-recibir'
+			);
 
-            $estadoVehiculo = new EstadoVehiculo();
-            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-            $estadoVehiculo->setVehiculo($entity);
-            $estadoVehiculo->setActual('true');
+			$estadoVehiculo = new EstadoVehiculo();
+			$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
+			$estadoVehiculo->setVehiculo( $entity );
+			$estadoVehiculo->setActual( 'true' );
 
-            $entity->addEstadoVehiculo($estadoVehiculo);
+			$entity->addEstadoVehiculo( $estadoVehiculo );
 
-            $em->persist($entity);
-            $em->flush();
+			$em->persist( $entity );
+			$em->flush();
 
-            $this->get('session')->getFlashBag()->add(
-                    'success', 'Vehiculo creado correctamente.'
-            );
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'Vehiculo creado correctamente.'
+			);
 
-            return $this->redirect($this->generateUrl('vehiculos_show', array('id' => $entity->getId())));
-        }
+			return $this->redirect( $this->generateUrl( 'vehiculos_show', array( 'id' => $entity->getId() ) ) );
+		}
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:new.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			)
+		);
+	}
 
-    /**
-     * Creates a form to create a Vehiculo entity.
-     *
-     * @param Vehiculo $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(Vehiculo $entity, $type = null, $route = null, $submitLabel = 'Crear') {
+	/**
+	 * Creates a form to create a Vehiculo entity.
+	 *
+	 * @param Vehiculo $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createCreateForm( Vehiculo $entity, $type = null, $route = null, $submitLabel = 'Crear' ) {
 
-        if (!$type) {
-            $type = new VehiculoType();
-        }
+		if ( ! $type ) {
+			$type = new VehiculoType();
+		}
 
-        if (!$route) {
-            $route = $this->generateUrl('vehiculos_create');
-        }
+		if ( ! $route ) {
+			$route = $this->generateUrl( 'vehiculos_create' );
+		}
 
-        $form = $this->createForm(
-                $type, $entity, array(
-            'action' => $route,
-            'method' => 'POST',
-            'attr' => array('class' => 'box-body')
-                )
-        );
+		$form = $this->createForm(
+			$type,
+			$entity,
+			array(
+				'action' => $route,
+				'method' => 'POST',
+				'attr'   => array( 'class' => 'box-body' )
+			)
+		);
 
-        $form->add(
-                'submit', 'submit', array(
-            'label' => $submitLabel,
-            'attr' => array('class' => 'btn btn-primary pull-right')
-                )
-        );
+		$form->add(
+			'submit',
+			'submit',
+			array(
+				'label' => $submitLabel,
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' )
+			)
+		);
 
-        return $form;
-    }
+		return $form;
+	}
 
-    /**
-     * Displays a form to create a new Vehiculo entity.
-     *
-     */
-    public function newAction() {
-        $entity = new Vehiculo();
-        $form = $this->createCreateForm($entity);
+	/**
+	 * Displays a form to create a new Vehiculo entity.
+	 *
+	 */
+	public function newAction() {
+		$entity = new Vehiculo();
+		$form   = $this->createCreateForm( $entity );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:new.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			)
+		);
+	}
 
-    /**
-     * Finds and displays a Vehiculo entity.
-     *
-     */
-    public function showAction($id) {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Finds and displays a Vehiculo entity.
+	 *
+	 */
+	public function showAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-        }
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
 
-        $deleteForm = $this->createDeleteForm($id);
+		$deleteForm = $this->createDeleteForm( $id );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:show.html.twig', array(
-                    'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:show.html.twig',
+			array(
+				'entity'      => $entity,
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
-    /**
-     * Displays a form to edit an existing Vehiculo entity.
-     *
-     */
-    public function editAction($id) {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Displays a form to edit an existing Vehiculo entity.
+	 *
+	 */
+	public function editAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-        }
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
 
-        $editForm = $this->createEditForm($entity);
+		$editForm = $this->createEditForm( $entity );
+
 //		$deleteForm = $this->createDeleteForm( $id );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:editarVehiculo.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
+		return $this->render(
+			'VehiculosBundle:Vehiculo:editarVehiculo.html.twig',
+			array(
+				'entity'    => $entity,
+				'edit_form' => $editForm->createView(),
 //				'delete_form' => $deleteForm->createView(),
-                        )
-        );
-    }
+			)
+		);
+	}
 
-    /**
-     * Creates a form to edit a Vehiculo entity.
-     *
-     * @param Vehiculo $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createEditForm(Vehiculo $entity) {
-        $form = $this->createForm(
-                new VehiculoType(), $entity, array(
-            'action' => $this->generateUrl('vehiculos_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-            'attr' => array('class' => 'box-body')
-                )
-        );
+	/**
+	 * Creates a form to edit a Vehiculo entity.
+	 *
+	 * @param Vehiculo $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createEditForm( Vehiculo $entity ) {
+		$form = $this->createForm(
+			new VehiculoType(),
+			$entity,
+			array(
+				'action' => $this->generateUrl( 'vehiculos_update', array( 'id' => $entity->getId() ) ),
+				'method' => 'PUT',
+				'attr'   => array( 'class' => 'box-body' )
+			)
+		);
 
-        $form->add(
-                'submit', 'submit', array(
-            'label' => 'Actualizar',
-            'attr' => array('class' => 'btn btn-primary pull-right'),
-                )
-        );
+		$form->add(
+			'submit',
+			'submit',
+			array(
+				'label' => 'Actualizar',
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' ),
+			)
+		);
 
-        return $form;
-    }
+		return $form;
+	}
 
-    /**
-     * Edits an existing Vehiculo entity.
-     *
-     */
-    public function updateAction(Request $request, $id) {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Edits an existing Vehiculo entity.
+	 *
+	 */
+	public function updateAction( Request $request, $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-        }
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
+		$deleteForm = $this->createDeleteForm( $id );
+		$editForm   = $this->createEditForm( $entity );
+		$editForm->handleRequest( $request );
 
-        if ($editForm->isValid()) {
-            $em->flush();
+		if ( $editForm->isValid() ) {
+			$em->flush();
 
-            $this->get('session')->getFlashBag()->add(
-                    'success', 'Vehiculo actualizado correctamente.'
-            );
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'Vehiculo actualizado correctamente.'
+			);
 
-            return $this->redirect($this->generateUrl('vehiculos_edit', array('id' => $id)));
-        }
+			return $this->redirect( $this->generateUrl( 'vehiculos_edit', array( 'id' => $id ) ) );
+		}
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:edit.html.twig', array(
-                    'entity' => $entity,
-                    'edit_form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:edit.html.twig',
+			array(
+				'entity'      => $entity,
+				'edit_form'   => $editForm->createView(),
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
-    /**
-     * Deletes a Vehiculo entity.
-     *
-     */
-    public function deleteAction(Request $request, $id) {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+	/**
+	 * Deletes a Vehiculo entity.
+	 *
+	 */
+	public function deleteAction( Request $request, $id ) {
+		$form = $this->createDeleteForm( $id );
+		$form->handleRequest( $request );
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+		if ( $form->isValid() ) {
+			$em     = $this->getDoctrine()->getManager();
+			$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Vehiculo entity.');
-            }
+			if ( ! $entity ) {
+				throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+			}
 
-            $em->remove($entity);
-            $em->flush();
-        }
+			$em->remove( $entity );
+			$em->flush();
+		}
 
-        return $this->redirect($this->generateUrl('vehiculos'));
-    }
+		return $this->redirect( $this->generateUrl( 'vehiculos' ) );
+	}
 
-    /**
-     * Creates a form to delete a Vehiculo entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id) {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('vehiculos_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm();
-    }
+	/**
+	 * Creates a form to delete a Vehiculo entity by id.
+	 *
+	 * @param mixed $id The entity id
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createDeleteForm( $id ) {
+		return $this->createFormBuilder()
+		            ->setAction( $this->generateUrl( 'vehiculos_delete', array( 'id' => $id ) ) )
+		            ->setMethod( 'DELETE' )
+		            ->add( 'submit', 'submit', array( 'label' => 'Delete' ) )
+		            ->getForm();
+	}
 
-    public function altaAction() {
-        $entity = new Vehiculo();
-        $form = $this->createCreateForm($entity, new AltaVehiculoType());
+	public function altaAction() {
+		$entity = new Vehiculo();
+		$form   = $this->createCreateForm( $entity, new AltaVehiculoType() );
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:new.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			)
+		);
+	}
 
-    public function actualizarVehiculoRemitoAction(Request $request, $vehiculoId) {
-        $em = $this->getDoctrine()->getManager();
-        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
-        $ruta = $this->generateUrl('vehiculos_actualizar_remito', array('vehiculoId' => $vehiculoId));
+	public function actualizarVehiculoRemitoAction( Request $request, $vehiculoId ) {
+		$em       = $this->getDoctrine()->getManager();
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
+		$ruta     = $this->generateUrl( 'vehiculos_actualizar_remito', array( 'vehiculoId' => $vehiculoId ) );
 
 
-        $form = $this->createCreateForm($vehiculo, new EditarVehiculoType(), $ruta, 'Actualizar');
+		$form = $this->createCreateForm( $vehiculo, new EditarVehiculoType(), $ruta, 'Actualizar' );
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
 
-                if (!$vehiculo->getRemito()->getUsuarioReceptor()) {
-                    $vehiculo->getRemito()->setUsuarioReceptor($this->getUser());
-                }
-                if (!$vehiculo->getRemito()->getFechaRecibido()) {
-                    $vehiculo->getRemito()->setFechaRecibido(new \DateTime('now'));
-                }
+				if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
+					$vehiculo->getRemito()->setUsuarioReceptor( $this->getUser() );
+				}
+				if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
+					$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
+				}
 
-                if ($vehiculo->getDanioVehiculoGm()->count() > 0) {
+				if ( $vehiculo->getDanioVehiculoGm()->count() > 0 ) {
 
-                    foreach ($vehiculo->getDanioVehiculoGm() as $danioVehiculo) {
-                        $danioVehiculo->setVehiculo($vehiculo);
-                        foreach ($danioVehiculo->getFotoDanio() as $fotoDanio) {
-                            $fotoDanio->upload();
-                            $fotoDanio->setDanioVehiculo($danioVehiculo);
-                        }
-                    }
+					foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
+						$danioVehiculo->setVehiculo( $vehiculo );
+						foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
+							$fotoDanio->upload();
+							$fotoDanio->setDanioVehiculo( $danioVehiculo );
+						}
+					}
 //estado 2
-                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                            'recibido-con-problemas'
-                    );
-                } else {
+					$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+						'recibido-con-problemas'
+					);
+				} else {
 //estado 3
-                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                            'recibido-conforme'
-                    );
-                }
-                //cambio actual=false en todos los registros de estado que tuvo el automovil
-                $qb = $em->getRepository('VehiculosBundle:Vehiculo')->createQueryBuilder('e')
-                        ->update('VehiculosBundle:EstadoVehiculo', 'e')
-                        ->set('e.actual', 'false')
-                        ->where('e.vehiculo=:vehiculoId')
-                        ->setParameter('vehiculoId', $vehiculoId);
+					$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+						'recibido-conforme'
+					);
+				}
+				//cambio actual=false en todos los registros de estado que tuvo el automovil
+				$qb = $em->getRepository( 'VehiculosBundle:Vehiculo' )->createQueryBuilder( 'e' )
+				         ->update( 'VehiculosBundle:EstadoVehiculo', 'e' )
+				         ->set( 'e.actual', 'false' )
+				         ->where( 'e.vehiculo=:vehiculoId' )
+				         ->setParameter( 'vehiculoId', $vehiculoId );
 
-                $qb->getQuery()->getResult();
+				$qb->getQuery()->getResult();
 
-                $estadoVehiculo = new EstadoVehiculo();
-                $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-                $estadoVehiculo->setVehiculo($vehiculo);
-                $estadoVehiculo->setActual('true');
+				$estadoVehiculo = new EstadoVehiculo();
+				$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
+				$estadoVehiculo->setVehiculo( $vehiculo );
+				$estadoVehiculo->setActual( 'true' );
 
 
-                $vehiculo->addEstadoVehiculo($estadoVehiculo);
+				$vehiculo->addEstadoVehiculo( $estadoVehiculo );
 
-                $em->flush();
+				$em->flush();
 
-                $this->get('session')->getFlashBag()->add(
-                        'success', 'Datos del Vehiculo actualizados correctamente.'
-                );
-            }
-        }
+				$this->get( 'session' )->getFlashBag()->add(
+					'success',
+					'Datos del Vehiculo actualizados correctamente.'
+				);
+			}
+		}
 
-        return $this->render('VehiculosBundle:Vehiculo:edit.html.twig', array(
-                    'edit_form' => $form->createView(),
-        ));
-    }
+		return $this->render( 'VehiculosBundle:Vehiculo:edit.html.twig',
+			array(
+				'edit_form' => $form->createView(),
+			) );
+	}
 
 }

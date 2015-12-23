@@ -10,26 +10,28 @@ namespace VehiculosBundle\Entity;
  */
 class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
-    public function getVehiculosEstado($estado1, $estado2 = false) {
-        $qb = $this->createQueryBuilder('p');
-        if (!$estado2) {
-            $qb->join('p.estadoVehiculo', 'ev');
-            $qb->andWhere('ev.tipoEstadoVehiculo = :estado')
-                    ->setParameter('estado', $estado1);
-            $qb->andWhere('ev.actual = true');
-            $qb->setMaxResults(1000);
-        } else {
-            $qb->join('p.estadoVehiculo', 'ev');
-            $qb->andWhere('ev.tipoEstadoVehiculo = :estado')
-                    ->setParameter('estado', $estado1);
-            $qb->orWhere('ev.tipoEstadoVehiculo = :estado2')
-                    ->setParameter('estado2', $estado2);
-            $qb->andWhere('ev.actual = true');
-            $qb->setMaxResults(1000);
-        }
+	public function getVehiculosEstado( $estado ) {
+
+		$ids = array();
+
+		foreach ( $estado as $item ) {
+			$ids[] = $item->getId();
+		}
+		$idsEstado = implode( ',', $ids );
 
 
-        return $qb->getQuery()->getResult();
-    }
+		$db    = $this->getEntityManager()->getConnection();
+		$query = "SELECT   public.vehiculos.*
+					FROM     estados_vehiculos
+					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+					INNER JOIN vehiculos  ON estados_vehiculos.vehiculo_id = vehiculos.id
+					INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+				  where tipo_estado_vehiculo.id in ($idsEstado)";
+
+		$stmt = $db->prepare( $query );
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+	}
 
 }
