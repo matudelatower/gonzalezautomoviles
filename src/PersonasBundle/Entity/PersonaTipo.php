@@ -64,7 +64,7 @@ class PersonaTipo
     private $persona;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ClientesBundle\Entity\Cliente", inversedBy="personaTipo")
+     * @ORM\ManyToOne(targetEntity="ClientesBundle\Entity\Cliente", inversedBy="personaTipo", cascade={"persist"})
      * @ORM\JoinColumn(name="cliente_id", referencedColumnName="id", nullable=true)
      */
     private $cliente;
@@ -87,8 +87,12 @@ class PersonaTipo
      * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id", nullable=true)
      */
     private $usuario;
-    
 
+
+    public function __toString() {
+        return $this->persona;
+    }
+    
     /**
      * Get id
      *

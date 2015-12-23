@@ -74,7 +74,7 @@ class ClienteController extends Controller {
 				'Cliente creado correctamente.'
 			);
 
-			return $this->redirect( $this->generateUrl( 'clientes_show', array( 'id' => $entity->getId() ) ) );
+			return $this->redirect( $this->generateUrl( 'clientes_show', array( 'id' => $entity->getCliente()->getId() ) ) );
 		}
 
 		return $this->render( 'ClientesBundle:Cliente:new.html.twig',

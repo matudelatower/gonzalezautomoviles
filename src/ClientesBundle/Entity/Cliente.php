@@ -68,8 +68,12 @@ class Cliente
      */
     private $actualizadoPor;
 
-    public function __toString() {
-        return $this->personaTipo->first()->getPersona()->__toString();
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -104,47 +108,6 @@ class Cliente
     public function getForaneo()
     {
         return $this->foraneo;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     *
-     * @return Cliente
-     */
-    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo[] = $personaTipo;
-
-        return $this;
-    }
-
-    /**
-     * Remove personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     */
-    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo->removeElement($personaTipo);
-    }
-
-    /**
-     * Get personaTipo
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPersonaTipo()
-    {
-        return $this->personaTipo;
     }
 
     /**
@@ -193,6 +156,40 @@ class Cliente
     public function getActualizado()
     {
         return $this->actualizado;
+    }
+
+    /**
+     * Add personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     *
+     * @return Cliente
+     */
+    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    {
+        $this->personaTipo[] = $personaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Remove personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     */
+    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    {
+        $this->personaTipo->removeElement($personaTipo);
+    }
+
+    /**
+     * Get personaTipo
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPersonaTipo()
+    {
+        return $this->personaTipo;
     }
 
     /**
