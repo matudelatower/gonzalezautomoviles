@@ -33,6 +33,10 @@
                                 <th>Modelo</th>
                                 <th>Motor</th>                            
                                 <th>Color externo</th>
+                                <th>Numero remito</th>
+                                <th>Fecha remito</th> 
+                                <th>Numero pedido</th>
+                                <th>Tipo de venta</th>
                                 <th>Codigo llave</th>
                                 <th>Codigo radio</th>
                                 <th>Codigo seguridad</th>
@@ -51,15 +55,19 @@
                                     <td>{{ entity.vin }}</td>
                                     <td>{{ entity.modelo }}</td>
                                     <td>{{ entity.motor }}</td>                                
-                                    <td>{{ entity.colorExterno }}</td>
-                                    <td>{{ entity.codigoLlave }}</td>
-                                    <td>{{ entity.codigoRadio }}</td>
-                                    <td>{{ entity.codigoSeguridad }}</td>
-                                    <td>{{ entity.codigoInmovilizador }}</td>
-                                    <td>{{ entity.kmIngreso }}</td>
+                                    <td>{{ entity.color_externo }}</td>
+                                    <td>{{ entity.remito_numero }}</td>
+                                    <td>{{ entity.remito_fecha|date("d-m-Y") }}</td>
+                                    <td>{{ entity.numero_pedido }}</td>
+                                    <td>{{ entity.tipo_venta_especial }}</td>
+                                    <td>{{ entity.codigo_llave }}</td>
+                                    <td>{{ entity.codigo_radio }}</td>
+                                    <td>{{ entity.codigo_seguridad }}</td>
+                                    <td>{{ entity.codigo_inmovilizador }}</td>
+                                    <td>{{ entity.km_ingreso }}</td>
                                     <td>{{ entity.observacion }}</td>
-                                    <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
-                                    <td>{{ entity.Movimientodeposito.first.depositoDestino | default ("") }}</td>
+                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>
+                                    <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>
 
                                         <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
@@ -67,14 +75,14 @@
                                         <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
                                                 class="fa fa-edit"></i></a>
 
-                                        {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
+{#                                        {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}#}
                                             {#<a class="btn btn-default"#}
                                             {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
                                             {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
                                                title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                            {% endif %}
+{#                                            {% endif %}#}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalDeposito"

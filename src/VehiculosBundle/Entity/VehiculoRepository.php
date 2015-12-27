@@ -10,28 +10,40 @@ namespace VehiculosBundle\Entity;
  */
 class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
-	public function getVehiculosEstado( $estado ) {
+    public function getVehiculosEstado($estado) {
 
-		$ids = array();
+        $ids = array();
 
-		foreach ( $estado as $item ) {
-			$ids[] = $item->getId();
-		}
-		$idsEstado = implode( ',', $ids );
+        foreach ($estado as $item) {
+            $ids[] = $item->getId();
+        }
+        $idsEstado = implode(',', $ids);
 
 
-		$db    = $this->getEntityManager()->getConnection();
-		$query = "SELECT   public.vehiculos.*
+        $db = $this->getEntityManager()->getConnection();
+        $query = "SELECT   distinct(v.*),
+                                        codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,
+                                        tipo_estado_vehiculo.estado as vehiculo_estado,remitos.fecha as remito_fecha,remitos.numero as remito_numero,v.numero_pedido,
+                                        tv.nombre as tipo_venta_especial,d.nombre as deposito_actual
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
-					INNER JOIN vehiculos  ON estados_vehiculos.vehiculo_id = vehiculos.id
+					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
 					INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
-				  where tipo_estado_vehiculo.id in ($idsEstado)";
+                                        LEFT JOIN codigos_modelo ON v.codigo_modelo_id=codigos_modelo.id
+                                        LEFT JOIN nombres_modelo ON codigos_modelo.nombre_modelo_id=nombres_modelo.id
+                                        LEFT JOIN remitos ON v.remito_id=remitos.id
+                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
+                                        
+                                        LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id =  mmdd.vehiculo_id
+                                        LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
+                                        LEFT JOIN depositos d ON md.deposito_destino_id=d.id
+                                        
+                                        WHERE tipo_estado_vehiculo.id in ($idsEstado)";
 
-		$stmt = $db->prepare( $query );
-		$stmt->execute();
+        $stmt = $db->prepare($query);
+        $stmt->execute();
 
-		return $stmt->fetchAll();
-	}
+        return $stmt->fetchAll();
+    }
 
 }

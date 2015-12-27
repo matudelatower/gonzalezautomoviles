@@ -239,4 +239,8 @@ class Cliente
     {
         return $this->actualizadoPor;
     }
+    
+    public function __toString() {
+        return $this->personaTipo->first()->getPersona()->__toString();
+    }
 }

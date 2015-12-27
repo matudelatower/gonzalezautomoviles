@@ -27,49 +27,46 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                        <tr>
-                            <th>Id</th>
-                            <th>Vin</th>
-                            <th>Modelo</th>
-                            <th>Motor</th>                            
-                            <th>Color externo</th>
-                            <th>Observacion</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th>Id</th>
+                                <th>Vin</th>
+                                <th>Modelo</th>
+                                <th>Motor</th>                            
+                                <th>Color externo</th>
+                                <th>Numero remito</th>
+                                <th>Fecha remito</th> 
+                                <th>Numero pedido</th>
+                                <th>Tipo de venta</th>
+                                <th>Observacion</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for entity in entities %}
-                            <tr>
-                                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                <td>{{ entity.vin }}</td>
-                                <td>{{ entity.modelo }}</td>
-                                <td>{{ entity.motor }}</td>                                
-                                <td>{{ entity.colorExterno }}</td>
-                                <td>{{ entity.observacion }}</td>
-                                <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
-                                <td>
+                            {% for entity in entities %}
+                                <tr>
+                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.modelo }}</td>
+                                    <td>{{ entity.motor }}</td>                                
+                                    <td>{{ entity.color_externo }}</td>
+                                    <td>{{ entity.remito_numero }}</td>
+                                    <td>{{ entity.remito_fecha|date("d-m-Y") }}</td>
+                                    <td>{{ entity.numero_pedido }}</td>
+                                    <td>{{ entity.tipo_venta_especial }}</td>
+                                    <td>{{ entity.observacion }}</td>
+                                    <td>
 
-                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                 class="fa fa-eye"></i></a>
-                                    <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
+                                        <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
                                                 class="fa fa-edit"></i></a>
-
-                                    {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
-                                        {#<a class="btn btn-default"#}
-                                        {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
-                                        {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
                                         <a class="btn btn-default"
                                            href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
                                            title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                    {% endif %}
 
-                                    <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                       data-target="#modalDeposito"
-                                       data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                       title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -77,10 +74,6 @@
         </div>
     </div>
 
-
-    {#<a class="btn btn-primary" href="{{ path('vehiculos_new') }}">#}
-    {#Crear#}
-    {#</a>#}
     <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
         Alta
     </a>
