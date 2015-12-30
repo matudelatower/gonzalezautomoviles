@@ -1,3 +1,7 @@
+vehiculos_tipo_estado_danio_gm:
+    resource: "@VehiculosBundle/Resources/config/routing/tipoestadodaniogm.yml"
+    prefix:   /tipo_estado_danio_gm
+
 vehiculos_movimiento_deposito:
     resource: "@VehiculosBundle/Resources/config/routing/movimientodeposito.yml"
     prefix:   /movimiento_deposito

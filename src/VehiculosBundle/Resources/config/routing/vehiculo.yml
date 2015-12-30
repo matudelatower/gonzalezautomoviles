@@ -44,4 +44,9 @@ vehiculos_pendientes_index:
 vehiculos_recibidos_index:
     path:     /vehiculos_recibidos_index
     defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosRecibidosIndex" }
+
+vehiculos_editar_recibido:
+    path:     /{vehiculoId}/vehiculos_editar_recibido
+    defaults: { _controller: "VehiculosBundle:Vehiculo:editarVehiculoRecibido" }
+
    

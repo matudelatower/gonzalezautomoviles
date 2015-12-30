@@ -44,7 +44,8 @@ class DanioVehiculoGmType extends AbstractType {
 					'allow_add'      => true,
 					'allow_delete'   => true,
 					'prototype_name' => '__foto__'
-				) );
+				) )
+			->add( 'tipoEstadoDanioGm' );
 	}
 
 	/**

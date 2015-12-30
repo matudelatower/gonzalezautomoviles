@@ -68,6 +68,12 @@ class DanioVehiculoGm
     private $fotoDanio;
 
     /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\TipoEstadoDanioGm")
+     * @ORM\JoinColumn(name="tipo_estado_danio_gm_id", referencedColumnName="id")
+     */
+    private $tipoEstadoDanioGm;
+
+    /**
      * @var datetime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -398,5 +404,29 @@ class DanioVehiculoGm
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set tipoEstadoDanioGm
+     *
+     * @param \VehiculosBundle\Entity\TipoEstadoDanioGm $tipoEstadoDanioGm
+     *
+     * @return DanioVehiculoGm
+     */
+    public function setTipoEstadoDanioGm(\VehiculosBundle\Entity\TipoEstadoDanioGm $tipoEstadoDanioGm = null)
+    {
+        $this->tipoEstadoDanioGm = $tipoEstadoDanioGm;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoEstadoDanioGm
+     *
+     * @return \VehiculosBundle\Entity\TipoEstadoDanioGm
+     */
+    public function getTipoEstadoDanioGm()
+    {
+        return $this->tipoEstadoDanioGm;
     }
 }

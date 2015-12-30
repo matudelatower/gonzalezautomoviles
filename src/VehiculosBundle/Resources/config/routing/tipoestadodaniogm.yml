@@ -1,0 +1,30 @@
+tipo_estado_danio_gm:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:index" }
+
+tipo_estado_danio_gm_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:show" }
+
+tipo_estado_danio_gm_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:new" }
+
+tipo_estado_danio_gm_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:create" }
+    methods:  POST
+
+tipo_estado_danio_gm_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:edit" }
+
+tipo_estado_danio_gm_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:update" }
+    methods:  [POST, PUT]
+
+tipo_estado_danio_gm_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:TipoEstadoDanioGm:delete" }
+    methods:  [POST, DELETE]

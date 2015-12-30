@@ -357,59 +357,54 @@ class VehiculoController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 
-				if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
-					$vehiculo->getRemito()->setUsuarioReceptor( $this->getUser() );
-				}
-				if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
-					$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
-				}
+				$vehiculosManager = $this->get( 'manager.vehicuos' );
 
-				if ( $vehiculo->getDanioVehiculoGm()->count() > 0 ) {
-
-					foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
-						$danioVehiculo->setVehiculo( $vehiculo );
-						foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
-							$fotoDanio->upload();
-							$fotoDanio->setDanioVehiculo( $danioVehiculo );
-						}
-					}
-//estado 2
-					$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
-						'recibido-con-problemas'
-					);
-				} else {
-//estado 3
-					$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
-						'recibido-conforme'
-					);
-				}
-				//cambio actual=false en todos los registros de estado que tuvo el automovil
-				$qb = $em->getRepository( 'VehiculosBundle:Vehiculo' )->createQueryBuilder( 'e' )
-				         ->update( 'VehiculosBundle:EstadoVehiculo', 'e' )
-				         ->set( 'e.actual', 'false' )
-				         ->where( 'e.vehiculo=:vehiculoId' )
-				         ->setParameter( 'vehiculoId', $vehiculoId );
-
-				$qb->getQuery()->getResult();
-
-				$estadoVehiculo = new EstadoVehiculo();
-				$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
-				$estadoVehiculo->setVehiculo( $vehiculo );
-				$estadoVehiculo->setActual( 'true' );
-
-
-				$vehiculo->addEstadoVehiculo( $estadoVehiculo );
-
-				$em->flush();
-
-				$this->get( 'session' )->getFlashBag()->add(
-					'success',
-					'Datos del Vehiculo actualizados correctamente.'
+				$tipoEstadoDanioGm = $em->getRepository( 'VehiculosBundle:TipoEstadoDanioGm' )->findOneBySlug(
+					'tipo-danio-gm-registrado'
 				);
+
+				if ( $vehiculosManager->guardarVehiculo( $vehiculo, $tipoEstadoDanioGm ) ) {
+
+					$this->get( 'session' )->getFlashBag()->add(
+						'success',
+						'Datos del Vehiculo actualizados correctamente.'
+					);
+				}
 			}
 		}
 
 		return $this->render( 'VehiculosBundle:Vehiculo:edit.html.twig',
+			array(
+				'edit_form' => $form->createView(),
+			) );
+	}
+
+	public function editarVehiculoRecibidoAction( Request $request, $vehiculoId ) {
+		$em       = $this->getDoctrine()->getManager();
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
+		$ruta     = $this->generateUrl( 'vehiculos_editar_recibido', array( 'vehiculoId' => $vehiculoId ) );
+
+
+		$form = $this->createCreateForm( $vehiculo, new EditarVehiculoType(), $ruta, 'Actualizar' );
+
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+
+				$vehiculosManager = $this->get( 'manager.vehiculos' );
+				
+				if ( $vehiculosManager->guardarVehiculo( $vehiculo ) ) {
+
+					$this->get( 'session' )->getFlashBag()->add(
+						'success',
+						'Datos del Vehiculo actualizados correctamente.'
+					);
+				}
+			}
+		}
+
+		return $this->render( 'VehiculosBundle:Vehiculo:editarVehiculoRecibido.html.twig',
 			array(
 				'edit_form' => $form->createView(),
 			) );

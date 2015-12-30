@@ -1,14 +1,14 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
 {% block content_title %}
-    Formulario de Edicion
+    Formulario de Edición Vehículo Recibido
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
 
         var itemCant{{edit_form.danioVehiculoGm.vars.id}} = {{ edit_form.danioVehiculoGm.count | default(0)}};
-        {#var itemCant{{edit_form.danioVehiculoGm.vars.data.fotoDanio.vars.id}} = {{ edit_form.danioVehiculoGm.vars.data.fotoDanio.count | default(0)}};#}
+
         $(document).ready(function () {
 
             $('.agregar-danio').click(function () {
@@ -109,6 +109,7 @@
         <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.tipoDanio) }}</td>
         <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.codigoDanio) }}</td>
         <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.gravedadDanio) }}</td>
+        <td>{{ form_widget(edit_form.danioVehiculoGm.vars.prototype.tipoEstadoDanioGm) }}</td>
         <td class="foto-list"
             data-prototype="{{ fotoProto |e }}">
             <div class="elements">
@@ -166,6 +167,7 @@
                             <th>Tipo Daño</th>
                             <th>Codigo Daño</th>
                             <th>Gravedad</th>
+                            <th>Tipo Danio</th>
                             <th>Foto</th>
                             <th>Acción</th>
 
@@ -178,6 +180,7 @@
                                 <td>{{ form_widget(danioVehiculo.tipoDanio) }}</td>
                                 <td>{{ form_widget(danioVehiculo.codigoDanio) }}</td>
                                 <td>{{ form_widget(danioVehiculo.gravedadDanio) }}</td>
+                                <td>{{ form_widget(danioVehiculo.tipoEstadoDanioGm) }}</td>
                                 {% set fotoProtoList %}
                                     <button type="button" class="btn btn-box-tool pull-right btn-remove-foto">
                                         <i class="fa fa-remove"></i>
@@ -186,7 +189,7 @@
 
                                 {% endset %}
                                 <td class="foto-list"
-                                    data-prototype="{{ fotoProtoList |e }}">
+                                    data-prototype="{{ fotoProtoList|e }}">
                                     <div class="elements">
                                         {% for fotoDanio in danioVehiculo.fotoDanio %}
                                             <img class="img-responsive" width="300" height="300"
