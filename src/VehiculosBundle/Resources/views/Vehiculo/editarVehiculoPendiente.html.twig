@@ -1,15 +1,15 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
 {% block content_title %}
-    Formulario de Alta
+    Formulario de Edicion
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            $('#{{ form.tipoVentaEspecial.vars.id }}').change(function () {
-                console.log($(this).val());
 
+            $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
+                console.log($(this).val());
                 var id = $(this).val()
 
                 $.ajax({
@@ -28,10 +28,15 @@
                         }
                     }
                 });
-
-
             })
         });
+        window.onload = function (e) {
+            if ({{entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false')}}){
+                $('.tipo-venta-especial-field').removeClass('hidden');
+                $('.tipo-venta-especial-field').add('required', 'required');
+            }
+        }
+
     </script>
 {% endblock %}
 {% block content -%}
@@ -41,11 +46,8 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Vehiculo</h3>
                 </div>
-
-                {{ form(form) }}
-
-
-                <a class="btn btn-default" href="{{ path('vehiculos') }}">
+                {{ form(edit_form) }}
+                <a class="btn btn-default" href="{{ path('vehiculos_pendientes_index') }}">
                     Volver
                 </a>
             </div>

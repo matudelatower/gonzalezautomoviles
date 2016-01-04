@@ -241,7 +241,7 @@ class VehiculoController extends Controller {
 //		$deleteForm = $this->createDeleteForm( $id );
 
 		return $this->render(
-			'VehiculosBundle:Vehiculo:editarVehiculo.html.twig',
+			'VehiculosBundle:Vehiculo:editarVehiculoPendiente.html.twig',
 			array(
 				'entity'    => $entity,
 				'edit_form' => $editForm->createView(),
@@ -259,7 +259,7 @@ class VehiculoController extends Controller {
 	 */
 	private function createEditForm( Vehiculo $entity ) {
 		$form = $this->createForm(
-			new VehiculoType(),
+			new AltaVehiculoType(),
 			$entity,
 			array(
 				'action' => $this->generateUrl( 'vehiculos_update', array( 'id' => $entity->getId() ) ),
