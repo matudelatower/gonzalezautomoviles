@@ -70,7 +70,7 @@
                                 <td>{{ entity.deposito_actual | default ("") }}</td>
                                 <td>
 
-                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                    <a class="btn btn-default" href="{{ path('vehiculos_recibidos_show', { 'id': entity.id }) }}"><i
                                                 class="fa fa-eye"></i></a>
                                     <a class="btn btn-default"
                                        href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i

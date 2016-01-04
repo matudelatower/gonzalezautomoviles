@@ -1,0 +1,127 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Resumen
+{% endblock %}
+
+{% block content -%}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Vehículo</h3>
+                </div>
+                <div class="box-body">
+
+                    <table class="record_properties">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ entity.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Vin</th>
+                                <td>{{ entity.vin }}</td>
+                            </tr>
+                            <tr>
+                                <th>Chasis</th>
+                                <td>{{ entity.chasis }}</td>
+                            </tr>
+                            <tr>
+                                <th>Modelo</th>
+                                <td>{{ entity.modelo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Color</th>
+                                <td>{{ entity.colorExterno }}</td>
+                            </tr>
+                            <tr>
+                                <th>Motor</th>
+                                <td>{{ entity.motor }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numero remito</th>
+                                <td>{{ entity.remito.numero }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha remito</th>
+                                <td>{{ entity.remito.fecha|date('Y-m-d') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Importe</th>
+                                <td>{{ entity.importe }}</td>
+                            </tr>
+                            <tr>
+                                <th>Impuestos</th>
+                                <td>{{ entity.impuestos }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numero pedido</th>
+                                <td>{{ entity.numeroPedido }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tipo de venta</th>
+                                <td>{{ entity.tipoVentaEspecial }}</td>
+                            </tr>
+                            <tr>
+                                <th>Grupo</th>
+                                <td>{{ entity.numeroGrupo }}</td>
+                            </tr>
+                            <tr>
+                                <th>Orden</th>
+                                <td>{{ entity.numeroOrden }}</td>
+                            </tr>
+                             <tr>
+                                <th>Solicitud</th>
+                                <td>{{ entity.numeroSolicitud }}</td>
+                            </tr>
+                            <tr>
+                                <th>Codigo llave</th>
+                                <td>{{ entity.codigoLlave }}</td>
+                            </tr>
+                            <tr>
+                                <th>Codigo radio</th>
+                                <td>{{ entity.codigoRadio }}</td>
+                            </tr>
+                            <tr>
+                                <th>Codigo seguridad</th>
+                                <td>{{ entity.codigoSeguridad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Codigo inmovilizador</th>
+                                <td>{{ entity.codigoInmovilizador }}</td>
+                            </tr>
+                            <tr>
+                                <th>Km ingreso</th>
+                                <td>{{ entity.kmIngreso }}</td>
+                            </tr>
+                            <tr>
+                                <th>Observación</th>
+                                <td>{{ entity.observacion }}</td>
+                            </tr>
+                            <tr>
+                                <th>Creado</th>
+                                <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actualizado</th>
+                                <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <a class="btn btn-default" href="{{ path('vehiculos_recibidos_index') }}">
+                        Volver
+                    </a>
+                    <a class="btn btn-primary" href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}">
+                        Editar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#{{ form(delete_form) }}#}
+
+
+{% endblock %}

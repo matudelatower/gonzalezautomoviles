@@ -5,6 +5,10 @@ vehiculos:
 vehiculos_show:
     path:     /{id}/show
     defaults: { _controller: "VehiculosBundle:Vehiculo:show" }
+    
+vehiculos_recibidos_show:
+    path:     /{id}/show_recibidos
+    defaults: { _controller: "VehiculosBundle:Vehiculo:showRecibidos" }    
 
 vehiculos_new:
     path:     /new

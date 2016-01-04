@@ -198,6 +198,30 @@ class VehiculoController extends Controller {
 			)
 		);
 	}
+        
+        /**
+	 * Finds and displays a Vehiculo Recibido entity.
+	 *
+	 */
+	public function showRecibidosAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
+
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
+
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find Vehiculo entity.' );
+		}
+
+		$deleteForm = $this->createDeleteForm( $id );
+
+		return $this->render(
+			'VehiculosBundle:Vehiculo:showRecibidos.html.twig',
+			array(
+				'entity'      => $entity,
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
 	/**
 	 * Displays a form to edit an existing Vehiculo entity.
