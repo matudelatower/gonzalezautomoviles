@@ -27,7 +27,7 @@ class VehiculosManager {
 		$em = $this->em;
 
 		if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
-			$vehiculo->getRemito()->setUsuarioReceptor( $this->getUser() );
+			$vehiculo->getRemito()->setUsuarioReceptor( $this->container->get('security.token_storage')->getToken()->getUser() );
 		}
 		if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
 			$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
