@@ -381,7 +381,7 @@ class VehiculoController extends Controller {
 			$form->handleRequest( $request );
 			if ( $form->isValid() ) {
 
-				$vehiculosManager = $this->get( 'manager.vehicuos' );
+				$vehiculosManager = $this->get( 'manager.vehiculos' );
 
 				$tipoEstadoDanioGm = $em->getRepository( 'VehiculosBundle:TipoEstadoDanioGm' )->findOneBySlug(
 					'tipo-danio-gm-registrado'
