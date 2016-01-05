@@ -171,6 +171,10 @@
                                             <td>{{ danio.gravedadDanio.descripcion }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Estado</th>
+                                            <td>{{ danio.tipoEstadoDanioGm.descripcion }}</td>
+                                        </tr>
+                                        <tr>
                                             <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
                                                    data-target="#modalCarousel"
                                                    data-url="{{ path('get_fotos_danios_gm_ajax', { 'danioId': danio.id }) }}"

@@ -8,34 +8,36 @@
     <script>
         $(document).ready(function () {
 
-            $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
-                console.log($(this).val());
+        $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
+        console.log($(this).val());
                 var id = $(this).val()
 
                 $.ajax({
-                    url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
-                    method: "GET",
-                    data: {id: id},
-                    success: function (data) {
+                url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
+                        method: "GET",
+                        data: {id: id},
+                        success: function (data) {
                         if (data == true) {
-                            $('.tipo-venta-especial-field').removeClass('hidden');
-                            $('.tipo-venta-especial-field').attr('required', 'required');
+                        $('.tipo-venta-especial-field').removeClass('hidden');
+                                $('.tipo-venta-especial-field').attr('required', 'required');
                         } else {
 
-                            $('.tipo-venta-especial-field').addClass('hidden');
-                            $('.tipo-venta-especial-field').removeAttr('required');
-                            $('.tipo-venta-especial-field').val('');
+                        $('.tipo-venta-especial-field').addClass('hidden');
+                                $('.tipo-venta-especial-field').removeAttr('required');
+                                $('.tipo-venta-especial-field').val('');
                         }
-                    }
+                        }
                 });
-            })
+        })
         });
-        window.onload = function (e) {
-            if ({{entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false')}}){
+                window.onload = function (e) {
+                if ({{entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false')}}){
                 $('.tipo-venta-especial-field').removeClass('hidden');
-                $('.tipo-venta-especial-field').add('required', 'required');
-            }
-        }
+                        $('.tipo-venta-especial-field').attr('required', 'required');
+                } else{
+                $('.tipo-venta-especial-field').removeAttr('required');
+                }
+                }
 
     </script>
 {% endblock %}
