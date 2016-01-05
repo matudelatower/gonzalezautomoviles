@@ -184,6 +184,12 @@ class Vehiculo
      *
      */
     private $danioVehiculoGm;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoInterno", mappedBy="vehiculo", cascade={"persist"})
+     *
+     */
+    private $danioVehiculoInterno;
 
     /**
      * @var string
@@ -265,6 +271,7 @@ class Vehiculo
         $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->movimientoDeposito = new \Doctrine\Common\Collections\ArrayCollection();
         $this->danioVehiculoGm = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->danioVehiculoInterno = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -1075,5 +1082,39 @@ class Vehiculo
     public function getFechaEmisionDocumento()
     {
         return $this->fechaEmisionDocumento;
+    }
+
+    /**
+     * Add danioVehiculoInterno
+     *
+     * @param \VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno
+     *
+     * @return Vehiculo
+     */
+    public function addDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno)
+    {
+        $this->danioVehiculoInterno[] = $danioVehiculoInterno;
+
+        return $this;
+    }
+
+    /**
+     * Remove danioVehiculoInterno
+     *
+     * @param \VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno
+     */
+    public function removeDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno)
+    {
+        $this->danioVehiculoInterno->removeElement($danioVehiculoInterno);
+    }
+
+    /**
+     * Get danioVehiculoInterno
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDanioVehiculoInterno()
+    {
+        return $this->danioVehiculoInterno;
     }
 }

@@ -1,0 +1,30 @@
+categoria_danio_interno:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:index" }
+
+categoria_danio_interno_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:show" }
+
+categoria_danio_interno_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:new" }
+
+categoria_danio_interno_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:create" }
+    methods:  POST
+
+categoria_danio_interno_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:edit" }
+
+categoria_danio_interno_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:update" }
+    methods:  [POST, PUT]
+
+categoria_danio_interno_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:CategoriaDanioInterno:delete" }
+    methods:  [POST, DELETE]

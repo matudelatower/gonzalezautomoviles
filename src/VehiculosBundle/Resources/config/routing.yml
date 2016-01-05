@@ -1,3 +1,11 @@
+vehiculos_tipo_danio_interno:
+    resource: "@VehiculosBundle/Resources/config/routing/tipodaniointerno.yml"
+    prefix:   /tipo_danio_interno
+
+vehiculos_categoria_danio_interno:
+    resource: "@VehiculosBundle/Resources/config/routing/categoriadaniointerno.yml"
+    prefix:   /categoria_danio_interno
+
 vehiculos_tipo_estado_danio_gm:
     resource: "@VehiculosBundle/Resources/config/routing/tipoestadodaniogm.yml"
     prefix:   /tipo_estado_danio_gm
