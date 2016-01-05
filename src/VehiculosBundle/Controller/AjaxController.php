@@ -50,6 +50,27 @@ class AjaxController extends Controller {
             'form' => $form->createView(),
                 )
         );
+        return new \Symfony\Component\Serializer\Encoder\JsonEncode($html);
+    }
+
+    public function getFotosDaniosGmAction(Request $request) {
+
+
+        $danioId = $request->query->get('danioId');
+
+        if (!$danioId) {
+            $entities = false;
+        } else {
+
+            $em = $this->getDoctrine()->getManager();
+            $entities = $em->getRepository('VehiculosBundle:FotoDanioGm')->findByDanioVehiculo($danioId);
+            $html = $this->renderView(
+                    'VehiculosBundle:Vehiculo:formFotoDanioGm.html.twig', array(
+                'entity' => $entities,
+                    )
+            );
+        }
+
         return new JsonResponse($html);
     }
 

@@ -9,3 +9,7 @@ movimiento_deposito_create_ajax:
 new_movimiento_deposito_ajax:
     path:     /new_movimiento_deposito_ajax/{vehiculoId}
     defaults: { _controller: "VehiculosBundle:Ajax:newMovimientoDeposito" }     
+    
+get_fotos_danios_gm_ajax:
+    path:     /get_fotos_danios_gm_ajax/danioId
+    defaults: { _controller: "VehiculosBundle:Ajax:getFotosDaniosGm" }     

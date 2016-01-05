@@ -5,7 +5,27 @@
 {% endblock %}
 
 {% block content -%}
-    <div class="row">
+    <div id="modalCarousel" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="cuerpoCarousel">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    </ol>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="" alt="...">
+                        </div>
+                    </div>
+                </div> <!-- Carousel -->
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">        
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -151,7 +171,11 @@
                                             <td>{{ danio.gravedadDanio.descripcion }}</td>
                                         </tr>
                                         <tr>
-                                            <th><span class="pull-right badge bg-red">Ver fotos</span></th>
+                                            <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
+                                                   data-target="#modalCarousel"
+                                                   data-url="{{ path('get_fotos_danios_gm_ajax', { 'danioId': danio.id }) }}"
+                                                   title="Mover de Deposito">Ver fotos</a>
+                                            </th>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -166,4 +190,25 @@
     {#{{ form(delete_form) }}#}
 
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('.btn-carousel').click(function () {
+                url = $(this).data('url');
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
+                        $('#carousel-example-generic').html(data);
+                    },
+                });
+            });
+
+
+        });
+
+    </script>
 {% endblock %}
