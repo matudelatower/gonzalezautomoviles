@@ -10,17 +10,26 @@ namespace VehiculosBundle\Entity;
  */
 class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
-    public function getVehiculosEstado($estado) {
-
+    public function getVehiculosEstado($estado, $filters = null) {
         $ids = array();
 
         foreach ($estado as $item) {
             $ids[] = $item->getId();
         }
         $idsEstado = implode(',', $ids);
-
+        $where = "tipo_estado_vehiculo.id in ($idsEstado)";
 
         $db = $this->getEntityManager()->getConnection();
+
+
+        if ($filters['vin']) {
+
+            $where.=" AND upper(v.vin) LIKE upper('%" . $filters['vin'] . "%')";
+        }
+        if ($filters['colorExterno']) {
+            $where.=" AND upper(v.color_externo) LIKE upper('%" . $filters['colorExterno'] . "%')";
+        }
+
         $query = "SELECT   distinct(v.*),
                                         codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,remitos.fecha as remito_fecha,remitos.numero as remito_numero,v.numero_pedido,
@@ -38,7 +47,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
                                         
-                                        WHERE tipo_estado_vehiculo.id in ($idsEstado)";
+                                        WHERE " . $where;
 
         $stmt = $db->prepare($query);
         $stmt->execute();

@@ -175,7 +175,7 @@ class Vehiculo
     
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\MovimientoDeposito", mappedBy="vehiculo", cascade={"persist"})
-     *
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $movimientoDeposito;
 

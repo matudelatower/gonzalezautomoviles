@@ -50,7 +50,7 @@ class AjaxController extends Controller {
             'form' => $form->createView(),
                 )
         );
-        return new \Symfony\Component\Serializer\Encoder\JsonEncode($html);
+        return new JsonResponse($html);
     }
 
     public function getFotosDaniosGmAction(Request $request) {

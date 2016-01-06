@@ -13,7 +13,7 @@
 
         </div>
     </div>
-
+    
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -27,62 +27,62 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                        <tr>
-                            <th>Id</th>
-                            <th>Vin</th>
-                            <th>Modelo</th>
-                            <th>Motor</th>
-                            <th>Codigo llave</th>
-                            <th>Codigo radio</th>
-                            <th>Codigo seguridad</th>
-                            <th>Codigo inmovilizador</th>
-                            <th>Color externo</th>
-                            <th>Km ingreso</th>
-                            <th>Observacion</th>
-                            <th>Deposito</th>
-                            <th>Estado</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th>Id</th>
+                                <th>Vin</th>
+                                <th>Modelo</th>
+                                <th>Motor</th>
+                                <th>Codigo llave</th>
+                                <th>Codigo radio</th>
+                                <th>Codigo seguridad</th>
+                                <th>Codigo inmovilizador</th>
+                                <th>Color externo</th>
+                                <th>Km ingreso</th>
+                                <th>Observacion</th>
+                                <th>Deposito</th>
+                                <th>Estado</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for entity in entities %}
-                            <tr>
-                                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                <td>{{ entity.vin }}</td>
-                                <td>{{ entity.modelo }}</td>
-                                <td>{{ entity.motor }}</td>
-                                <td>{{ entity.codigoLlave }}</td>
-                                <td>{{ entity.codigoRadio }}</td>
-                                <td>{{ entity.codigoSeguridad }}</td>
-                                <td>{{ entity.codigoInmovilizador }}</td>
-                                <td>{{ entity.colorExterno }}</td>
-                                <td>{{ entity.kmIngreso }}</td>
-                                <td>{{ entity.observacion }}</td>
-                                <td>{{ entity.Movimientodeposito.first.depositoDestino | default ("") }}</td>
-                                <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
-                                <td>
+                            {% for entity in entities %}
+                                <tr>
+                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.modelo }}</td>
+                                    <td>{{ entity.motor }}</td>
+                                    <td>{{ entity.codigoLlave }}</td>
+                                    <td>{{ entity.codigoRadio }}</td>
+                                    <td>{{ entity.codigoSeguridad }}</td>
+                                    <td>{{ entity.codigoInmovilizador }}</td>
+                                    <td>{{ entity.colorExterno }}</td>
+                                    <td>{{ entity.kmIngreso }}</td>
+                                    <td>{{ entity.observacion }}</td>
+                                    <td>{{ entity.Movimientodeposito.first.depositoDestino | default ("") }}</td>
+                                    <td>{{ entity.estadoVehiculo.last.tipoEstadoVehiculo | default ("") }}</td>
+                                    <td>
 
-                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                 class="fa fa-eye"></i></a>
-                                    <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
+                                        <a class="btn btn-default" href="{{ path('vehiculos_edit', { 'id': entity.id }) }}"><i
                                                 class="fa fa-edit"></i></a>
 
-                                    {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
-                                        {#<a class="btn btn-default"#}
-                                        {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
-                                        {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
-                                           title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                    {% endif %}
+                                        {% if entity.estadoVehiculo.last.tipoEstadoVehiculo.slug == 'pendiente-por-recibir' %}
+                                            {#<a class="btn btn-default"#}
+                                            {#href="{{ path('check_control_interno_new', { 'vehiculoId': entity.id }) }}"#}
+                                            {#title="Control interno"><i class="fa fa-check-square"></i></a>#}
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
+                                               title="Actualizar remito"><i class="fa fa-file-text"></i></a>
+                                            {% endif %}
 
-                                    <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                       data-target="#modalDeposito"
-                                       data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                       title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                                        <a class="btn btn-default btn-deposito" data-toggle="modal"
+                                           data-target="#modalDeposito"
+                                           data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
+                                           title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
