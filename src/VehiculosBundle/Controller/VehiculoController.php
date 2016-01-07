@@ -21,15 +21,28 @@ class VehiculoController extends Controller {
      * Lists all Vehiculo entities.
      *
      */
-    public function indexAction() {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculoFilterType());
 
-        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->findAll();
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false, $data);
+            }
+        } else {
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false);
+        }
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
-
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+        );
         return $this->render(
                         'VehiculosBundle:Vehiculo:index.html.twig', array(
                     'entities' => $entities,
+                    'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView()
                         )
         );
@@ -57,6 +70,10 @@ class VehiculoController extends Controller {
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+        );
         return $this->render(
                         'VehiculosBundle:Vehiculo:pendientesIndex.html.twig', array(
                     'entities' => $entities,
@@ -70,17 +87,33 @@ class VehiculoController extends Controller {
      * listado de vehiculos que se recibieron ya sea conforme o con daños.
      *
      */
-    public function vehiculosRecibidosIndexAction() {
+    public function vehiculosRecibidosIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido-con-problemas');
         $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido-conforme');
         $estados = array($estadoId1, $estadoId2);
-        $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+            }
+        } else {
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+        }
+
+        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+        $form = $this->createForm(new VehiculoFilterType());
+        
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+        );
         return $this->render(
                         'VehiculosBundle:Vehiculo:recibidosIndex.html.twig', array(
                     'entities' => $entities,
+                    'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView()
                         )
         );

@@ -12,12 +12,16 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
     public function getVehiculosEstado($estado, $filters = null) {
         $ids = array();
-
-        foreach ($estado as $item) {
-            $ids[] = $item->getId();
+        if ($estado) {
+            foreach ($estado as $item) {
+                $ids[] = $item->getId();
+            }
+            $idsEstado = implode(',', $ids);
+            $where = "tipo_estado_vehiculo.id in ($idsEstado)";
+        } else {
+            $where = "0=0";
         }
-        $idsEstado = implode(',', $ids);
-        $where = "tipo_estado_vehiculo.id in ($idsEstado)";
+
 
         $db = $this->getEntityManager()->getConnection();
 
@@ -32,8 +36,8 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
         $query = "SELECT   distinct(v.*),
                                         codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,
-                                        tipo_estado_vehiculo.estado as vehiculo_estado,remitos.fecha as remito_fecha,remitos.numero as remito_numero,v.numero_pedido,
-                                        tv.nombre as tipo_venta_especial,d.nombre as deposito_actual
+                                        tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
+                                        remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,d.nombre as deposito_actual
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id

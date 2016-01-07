@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filtros</h3>
+                <div class="box-tools pull-right">
+                    <button title="" data-toggle="tooltip" data-widget="collapse" class="btn btn-box-tool" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+                    <button title="" data-toggle="tooltip" data-widget="remove" class="btn btn-box-tool" data-original-title="Remove"><i class="fa fa-times"></i></button>
+                </div>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <form class="form-horizontal" id="form_listado" role="form" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label" for="inputEmail3">VIN</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.vin) }}
+                        </div>
+                        <label class="col-sm-2 control-label" for="inputEmail3">Color</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.colorExterno) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button class="btn btn-primary btn-label-left" type="submit">
+                                <span>
+                                    <i class="fa fa-filter"></i>
+                                </span>
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
