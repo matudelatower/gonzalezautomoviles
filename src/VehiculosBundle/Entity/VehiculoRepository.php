@@ -33,6 +33,9 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['colorExterno']) {
             $where.=" AND upper(v.color_externo) LIKE upper('%" . $filters['colorExterno'] . "%')";
         }
+        if ($filters['tipoVentaEspecial']) {
+            $where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
+        }
 
         $query = "SELECT   distinct(v.*),
                                         codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,

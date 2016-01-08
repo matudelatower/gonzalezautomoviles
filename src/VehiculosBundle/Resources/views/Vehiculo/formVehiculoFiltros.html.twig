@@ -11,9 +11,9 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                <form class="form-horizontal" id="form_listado" role="form" method="post">
+                <form class="form-horizontal" id="form_listado" name="form_listado" role="form" method="post">
                     <div class="form-group">
-                        <label class="col-sm-1 control-label" for="inputEmail3">VIN</label>
+                        <label class="col-sm-2 control-label" for="inputEmail3">VIN</label>
                         <div class="col-sm-4">
                             {{ form_widget(form.vin) }}
                         </div>
@@ -22,18 +22,25 @@
                             {{ form_widget(form.colorExterno) }}
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputEmail3">Tipo de Venta</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.tipoVentaEspecial) }}
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-4">
-                            <button class="btn btn-primary btn-label-left" type="submit">
+                            <button class="btn btn-primary btn-label-left" type="submit" id="btn-filtro-buscar">
                                 <span>
                                     <i class="fa fa-filter"></i>
                                 </span>
                                 Buscar
                             </button>
+                            
                         </div>
                     </div>
-                </form>
+{#                </form>#}
             </div>
         </div>
     </div>

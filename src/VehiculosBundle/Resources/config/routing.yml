@@ -1,3 +1,7 @@
+vehiculos_check_control_interno_pregunta:
+    resource: "@VehiculosBundle/Resources/config/routing/checkcontrolinternopregunta.yml"
+    prefix:   /check_control_interno_pregunta
+
 vehiculos_tipo_danio_interno:
     resource: "@VehiculosBundle/Resources/config/routing/tipodaniointerno.yml"
     prefix:   /tipo_danio_interno
@@ -49,10 +53,6 @@ vehiculos_tipos_danios_gm:
 vehiculos_tipo_venta_especial:
     resource: "@VehiculosBundle/Resources/config/routing/tipoventaespecial.yml"
     prefix:   /tipo_venta_especial
-
-vehiculos_check_control_interno:
-    resource: "@VehiculosBundle/Resources/config/routing/checkcontrolinterno.yml"
-    prefix:   /check_control_interno
 
 vehiculos_remitos:
     resource: "@VehiculosBundle/Resources/config/routing/remito.yml"

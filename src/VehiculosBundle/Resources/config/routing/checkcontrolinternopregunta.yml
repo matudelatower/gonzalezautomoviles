@@ -1,0 +1,30 @@
+check_control_interno_pregunta:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:index" }
+
+check_control_interno_pregunta_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:show" }
+
+check_control_interno_pregunta_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:new" }
+
+check_control_interno_pregunta_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:create" }
+    methods:  POST
+
+check_control_interno_pregunta_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:edit" }
+
+check_control_interno_pregunta_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:update" }
+    methods:  [POST, PUT]
+
+check_control_interno_pregunta_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:CheckControlInternoPregunta:delete" }
+    methods:  [POST, DELETE]

@@ -35,7 +35,26 @@ class VehiculoFilterType extends AbstractType {
 //                ->add('importe')
 //                ->add('impuestos')
 //                ->add('numeroPedido')
-                ->add('tipoVentaEspecial')
+                ->add('tipoVentaEspecial', 'entity', array(
+                    'class' => 'VehiculosBundle:TipoVentaEspecial',
+                    'property' => 'nombre',
+                    'required' => false,
+                ))
+                ->add('registrosPaginador', 'choice', array(
+                    'empty_value' => '10',
+                    'choices' => array(
+                        '20' => '20',
+                        '30' => '30',
+                        '40' => '40',
+                        '50' => '50',
+                        '60' => '60',
+                        '70' => '70',
+                        '80' => '80',
+                        '90' => '90',
+                        '100' => '100',
+                    ),
+                    "attr" => array("onchange" => 'document.form_listado.submit()')
+                ))
 //                ->add('remito', new RemitoType())
 //            ->add('importe')
 //            ->add('impuestos')

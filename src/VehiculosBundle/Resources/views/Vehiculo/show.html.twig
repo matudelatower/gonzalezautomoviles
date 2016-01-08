@@ -192,7 +192,38 @@
                 </div>
 
             </div>
-        </div>  
+        </div> 
+
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Patentamiento</h3>
+                </div>
+                <div class="box-body">
+                    <table class="record_properties">
+                        <tbody>
+                            <tr>
+                                <th>Estado</th>
+                                <td>{{ entity.Patentamiento.estadoPatentamiento | default ("") }}</td>
+                            </tr>   
+                            <tr>
+                                <th>Dominio</th>
+                                <td>{{ entity.Patentamiento.dominio | default ("") }}</td>
+                            </tr> 
+                            <tr>
+                                <th>Fecha</th>
+                                <td>{{ entity.Patentamiento.fecha| default ("") }}</td>
+                            </tr> 
+                            <tr>
+                                <th>Registro</th>
+                                <td>{{ entity.Patentamiento.registro | default ("") }}</td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div> 
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
