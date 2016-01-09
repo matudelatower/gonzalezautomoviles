@@ -11,7 +11,6 @@ namespace VehiculosBundle\Form\EventListener;
 
 
 use Doctrine\ORM\EntityRepository;
-use FlowerMaster\LocationBundle\Entity\Country;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,7 +30,7 @@ class AddTipoDanioInternoFieldSuscriber implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormEvents::PRE_SET_DATA => 'preSetData',
-			FormEvents::PRE_BIND => 'preBind'
+			FormEvents::PRE_SUBMIT => 'preBind'
 		);
 	}
 
@@ -52,7 +51,7 @@ class AddTipoDanioInternoFieldSuscriber implements EventSubscriberInterface {
 					   ->setParameter('categoria', $categoria);
 				} elseif (is_numeric($categoria)) {
 					$qb->where('cat.id = :categoria')
-					   ->setParameter('categoria', $categoria->getId());
+					   ->setParameter('categoria', $categoria);
 				} else {
 					$qb->where('cat.nombre = :categoria')
 					   ->setParameter('categoria', null);
@@ -72,9 +71,9 @@ class AddTipoDanioInternoFieldSuscriber implements EventSubscriberInterface {
 			return;
 		}
 
-		$accessor = PropertyAccess::getPropertyAccessor();
+		$accessor = PropertyAccess::createPropertyAccessor();
 		$danioInterno = $accessor->getValue($data, 'tipoDanioInterno');
-		$categoria = ($danioInterno) ? $danioInterno->getCategoria() : null;
+		$categoria = ($danioInterno) ? $danioInterno->getCategoriaDanioInterno() : null;
 
 		$this->addTipoDanioForm($form, $categoria, $danioInterno);
 	}

@@ -10,12 +10,13 @@ class CheckListPreEntregaType extends AbstractType {
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
 		$builder
 			->add( 'danioVehiculoInterno',
-			'bootstrapcollection',
+			'collection',
 			array(
 				'type'         => new DanioVehiculoInternoType(),
 				'allow_add'    => true,
 				'allow_add'    => true,
-				'by_reference' => true
+				'by_reference' => true,
+				'prototype_name'=> '__danioVehiculo__'
 			) )
 
 

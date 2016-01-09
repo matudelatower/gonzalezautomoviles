@@ -65,7 +65,7 @@ class CuestionarioResultadoRespuesta
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoCabecera")
+     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoCabecera", cascade={"persist"})
      * @ORM\JoinColumn(name="resultado_cabecera_id", referencedColumnName="id")
      */
     private $resultadoCabecera;

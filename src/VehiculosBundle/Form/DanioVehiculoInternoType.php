@@ -23,17 +23,18 @@ class DanioVehiculoInternoType extends AbstractType {
 
 		$builder
 //            ->add('numeroOrdenArreglo')
-//            ->add('detalle')
+			->add( 'detalle' )
 //            ->add('solucionado')
 //			->add( 'tipoDanioInterno' )
-//			->add( 'fotoDanioInterno',
-//				'bootstrapcollection',
-//				array(
-//					'type'         => new FotoDanioInternoType(),
-//					'allow_add'    => true,
-//					'allow_add'    => true,
-//					'by_reference' => true
-//				) )
+			->add( 'fotoDanioInterno',
+				'collection',
+				array(
+					'type'           => new FotoDanioInternoType(),
+					'allow_add'      => true,
+					'allow_add'      => true,
+					'by_reference'   => true,
+					'prototype_name' => '__foto__'
+				) )
 //            ->add('creadoPor')
 //            ->add('actualizadoPor')
 //            ->add('vehiculo')

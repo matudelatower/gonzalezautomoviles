@@ -337,4 +337,34 @@ class CuestionarioController extends Controller
 
         return $this->redirectToRoute('categorias_cuestionario');
     }
+
+    public function getCamposPorCategoriaEditAction($id, $vehiculoId)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $categoria = $em->getRepository('CuestionariosBundle:CuestionarioCategoria')->find($id);
+
+        $campos = $em->getRepository('CuestionariosBundle:CuestionarioPregunta')->findByCategoria($categoria);
+
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+
+        if (!$campos) {
+            throw $this->createNotFoundException('No se encuentra el Campo');
+        }
+
+        $arrayParam = array('vehiculo'=>$vehiculo);
+
+        $checkListParameter = new CheckListParameter($campos, $em, true, $arrayParam);
+        $form = $this->createForm(new CheckListParameterType(), $checkListParameter);
+
+
+        return $this->render(
+            'CuestionariosBundle:Cuestionario:campos.html.twig',
+            array(
+                'campos' => $campos,
+                'form' => $form->createView(),
+            )
+        );
+
+    }
 }

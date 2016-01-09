@@ -79,6 +79,10 @@ class TipoDanioInterno {
      */
     private $actualizadoPor;
 
+    public function __toString() {
+        return $this->nombre;
+    }
+
     /**
      * Get id
      *

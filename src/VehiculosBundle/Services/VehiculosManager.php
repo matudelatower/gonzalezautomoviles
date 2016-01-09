@@ -9,6 +9,9 @@
 namespace VehiculosBundle\Services;
 
 
+use CuestionariosBundle\Entity\CuestionarioResultadoCabecera;
+use CuestionariosBundle\Entity\CuestionarioResultadoRespuesta;
+use CuestionariosBundle\Entity\PreguntaResultadoRespuesta;
 use Doctrine\ORM\EntityManager;
 use VehiculosBundle\Entity\EstadoVehiculo;
 
@@ -27,7 +30,7 @@ class VehiculosManager {
 		$em = $this->em;
 
 		if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
-			$vehiculo->getRemito()->setUsuarioReceptor( $this->container->get('security.token_storage')->getToken()->getUser() );
+			$vehiculo->getRemito()->setUsuarioReceptor( $this->container->get( 'security.token_storage' )->getToken()->getUser() );
 		}
 		if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
 			$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
@@ -55,6 +58,66 @@ class VehiculosManager {
 				'recibido-conforme'
 			);
 		}
+
+		$this->setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo );
+
+		$em->flush();
+
+		return true;
+	}
+
+	public function crearCheckList( $vehiculo, $checkList ) {
+
+		$em = $this->em;
+
+		if ( $vehiculo->getDanioVehiculoInterno()->count() > 0 ) {
+
+			foreach ( $vehiculo->getDanioVehiculoInterno() as $danioVehiculo ) {
+				$danioVehiculo->setVehiculo( $vehiculo );
+
+				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
+					$fotoDanio->upload();
+					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
+				}
+			}
+
+		}
+
+		$resultadoCabecera = new CuestionarioResultadoCabecera();
+		$resultadoCabecera->setVehiculo( $vehiculo );
+
+
+		foreach ( $checkList as $preguntaId => $valor ) {
+			$resultadoRespuesta = new CuestionarioResultadoRespuesta();
+			$resultadoRespuesta->setResultadoCabecera( $resultadoCabecera );
+			$resultadoRespuesta->setTextoRespuesta( $valor );
+
+			$pregunta = $em->getRepository( 'CuestionariosBundle:CuestionarioPregunta' )->find( $preguntaId );
+
+			$preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
+			$preguntaResultadoRespuesta->setResultadoRespuesta( $resultadoRespuesta );
+			$preguntaResultadoRespuesta->setPregunta( $pregunta );
+
+			$em->persist( $preguntaResultadoRespuesta );
+
+		}
+
+		$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+			'stock'
+		);
+
+		if ( $vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo ) {
+
+			$this->setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo );
+		}
+		$em->flush();
+
+		return true;
+
+	}
+
+	public function setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo ) {
+		$em = $this->em;
 		//cambio actual=false en todos los registros de estado que tuvo el automovil
 		$qb = $em->getRepository( 'VehiculosBundle:Vehiculo' )->createQueryBuilder( 'e' )
 		         ->update( 'VehiculosBundle:EstadoVehiculo', 'e' )
@@ -69,12 +132,7 @@ class VehiculosManager {
 		$estadoVehiculo->setVehiculo( $vehiculo );
 		$estadoVehiculo->setActual( 'true' );
 
-
 		$vehiculo->addEstadoVehiculo( $estadoVehiculo );
-
-		$em->flush();
-
-		return true;
 	}
 
 

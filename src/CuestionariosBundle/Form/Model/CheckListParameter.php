@@ -9,125 +9,111 @@ use Doctrine\ORM\EntityManager;
  * Date: 6/10/15
  * Time: 5:07 PM
  */
-class CheckListParameter
-{
-    protected $data;
-    protected $calculables;
-    protected $agrupador;
+class CheckListParameter {
+	protected $data;
+	protected $calculables;
+	protected $agrupador;
 
-    /**
-     * @return mixed
-     */
-    public function getAgrupador()
-    {
-        return $this->agrupador;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getAgrupador() {
+		return $this->agrupador;
+	}
 
-    /**
-     * @param mixed $agrupador
-     */
-    public function setAgrupador($agrupador)
-    {
-        $this->agrupador = $agrupador;
-    }
+	/**
+	 * @param mixed $agrupador
+	 */
+	public function setAgrupador( $agrupador ) {
+		$this->agrupador = $agrupador;
+	}
 
-    /**
-     * @return array
-     */
-    public function getCalculables()
-    {
-        return $this->calculables;
-    }
+	/**
+	 * @return array
+	 */
+	public function getCalculables() {
+		return $this->calculables;
+	}
 
-    /**
-     * @param array $calculables
-     */
-    public function setCalculables($calculables)
-    {
-        $this->calculables = $calculables;
-    }
+	/**
+	 * @param array $calculables
+	 */
+	public function setCalculables( $calculables ) {
+		$this->calculables = $calculables;
+	}
 
-    public function __construct($parameters, EntityManager $entityManager, $edit = false)
-    {
-        if ($edit == false) {
+	public function __construct( $parameters, EntityManager $entityManager, $edit = false, $extraParams ) {
+		if ( $edit == false ) {
 
-            foreach ($parameters as $k => $value) {
+			foreach ( $parameters as $k => $value ) {
 
-                $buildField = $this->buildField($entityManager, $value);
-                $name = $buildField['name'];
+				$buildField = $this->buildField( $entityManager, $value );
+				$name       = $buildField['name'];
 
-                $this->{$name} = "";
-            }
-        } else {
-            foreach ($parameters as $k => $value) {
+				$this->{$name} = "";
+			}
+		} else {
+			$resultadoCabecera = $entityManager->getRepository( 'CuestionariosBundle:CuestionarioResultadoCabecera' )->findOneByVehiculo( $extraParams['vehiculo'] );
+			foreach ( $parameters as $k => $value ) {
 
-                $buildField = $this->buildField($entityManager, $value);
-                $name = $buildField['name'];
-                $widgetType = $buildField['widgetType'];
-
-                $criteria = array(
-                    'campo' => $value,
-                    'instanciaModulo' => $extraParams
-                );
-
-                $instanciaResultado = $entityManager->getRepository('HcFichaBundle:InstanciaResultado')->findOneBy(
-                    $criteria
-                );
+				$buildField = $this->buildField( $entityManager, $value );
+				$name       = $buildField['name'];
+				$widgetType = $buildField['widgetType'];
 
 
-                if ($widgetType == 'choice') {
-                    $pValue = $instanciaResultado->getOpcionCampo()->getId();
-                } else {
-                    switch ($value->getTipoDato()->getSlug()) {
-                        case 'string':
-                            $pValue = $instanciaResultado->getResultadoTexto();
+				$resultadoRespuesta = $entityManager->getRepository( 'CuestionariosBundle:PreguntaResultadoRespuesta' )->getRespuesta(
+					$value,
+					$resultadoCabecera
+				);
 
-                            break;
-                        case 'integer':
-                            $pValue = $instanciaResultado->getResultadoNumerico();
-                            break;
-                        case 'date':
-                            $pValue = $instanciaResultado->getResultadoFecha();
-                            break;
-                        default:
-                            $pValue = "";
-                            break;
-                    }
-                }
+				$pValue = false;
 
-                $this->data[$name]['value'] = $pValue;
-                $this->{$name} = $pValue;
+				if ( count( $resultadoRespuesta ) > 0 ) {
+					if ( $widgetType == 'choice' ) {
+						$pValue = $resultadoRespuesta->getResultadoRespuesta()->getId();
+					} elseif ( $widgetType == 'checkbox' ) {
+						$pValue = $resultadoRespuesta[0]->getResultadoRespuesta()->getTextoRespuesta();
+						if ( $pValue == '1' ) {
+							$pValue = true;
+						} else {
+							$pValue = false;
+						}
+					}
+				}
 
-            }
-        }
-    }
+				$this->data[ $name ]['value'] = $pValue;
+				$this->{$name}                = $pValue;
 
-    /**
-     * @param $entityManager
-     * @param $value es un objeto campo
-     * @return array con nombre de widget y el tipo
-     */
-    private function buildField($entityManager, $value)
-    {
-        /* @var $value \CuestionariosBundle\Entity\CuestionarioPregunta */
-        $name = $value->getId();
+			}
+		}
+	}
+
+	/**
+	 * @param $entityManager
+	 * @param $value es un objeto campo
+	 *
+	 * @return array con nombre de widget y el tipo
+	 */
+	private function buildField( $entityManager, $value ) {
+		/* @var $value \CuestionariosBundle\Entity\CuestionarioPregunta */
+		$name = $value->getId();
 
 //        $this->agrupador[$name] = $value->getAgrupadorCampo()->first()->getAgrupador();
 
 
-        if ($value->getTipoPregunta() === null) {
-            $widgetType = 'text';
-        } else {
-            $widgetType = $value->getTipoPregunta()->getWidgetType();
-        }
+		if ( $value->getTipoPregunta() === null ) {
+			$widgetType = 'text';
+		} else {
+			$widgetType = $value->getTipoPregunta()->getWidgetType();
+		}
 
-        $this->data[$name] = array(
-            "type" => $widgetType,
-            "label" => $value->getTextoPregunta(),
-            "value" => false,
-            "required" => false,
+		$this->data[ $name ] = array(
+			"type"     => $widgetType,
+			"label"    => $value->getTextoPregunta(),
+			"value"    => false,
+			"required" => false,
 //            "required" => $value->getRequerido() ? true : false,
-        );
+		);
 
 //        if ($value->getFuenteDatos()) {
 //            $class = $value->getFuenteDatos()->getBundle().":".$value->getFuenteDatos()->getClass();
@@ -152,24 +138,24 @@ class CheckListParameter
 //
 //        }
 
-        if ($widgetType == 'choice') {
-            foreach ($value->getOpcionesCampo()->toArray() as $opcion) {
-                $this->data[$name]['choices'][$opcion->getId()] = $opcion->getDescripcion();
-            }
-            $this->data[$name]['expanded'] = $value->getTipoCampo()->getSymfonyType()->getExpanded();
-            $this->data[$name]['multiple'] = $value->getTipoCampo()->getSymfonyType()->getMultiple();
+		if ( $widgetType == 'choice' ) {
+			foreach ( $value->getOpcionesCampo()->toArray() as $opcion ) {
+				$this->data[ $name ]['choices'][ $opcion->getId() ] = $opcion->getDescripcion();
+			}
+			$this->data[ $name ]['expanded'] = $value->getTipoCampo()->getSymfonyType()->getExpanded();
+			$this->data[ $name ]['multiple'] = $value->getTipoCampo()->getSymfonyType()->getMultiple();
 
-        }
+		}
 //                si es campo fecha
-        if ($widgetType == 'date') {
-            $this->data[$name]['widget'] = $value->getTipoCampo()->getSymfonyType()->getWidget();
-            $this->data[$name]['input'] = $value->getTipoCampo()->getSymfonyType()->getInput();
-            $this->data[$name]['format'] = $value->getTipoCampo()->getSymfonyType()->getFormat();
-            $this->data[$name]['attr'] = $value->getTipoCampo()->getSymfonyType()->getAttr();
+		if ( $widgetType == 'date' ) {
+			$this->data[ $name ]['widget'] = $value->getTipoCampo()->getSymfonyType()->getWidget();
+			$this->data[ $name ]['input']  = $value->getTipoCampo()->getSymfonyType()->getInput();
+			$this->data[ $name ]['format'] = $value->getTipoCampo()->getSymfonyType()->getFormat();
+			$this->data[ $name ]['attr']   = $value->getTipoCampo()->getSymfonyType()->getAttr();
 
-        }
+		}
 
-        $this->data[$name]['attr'] = array();
+		$this->data[ $name ]['attr'] = array();
 //        if ($value->getFuncionNombre()) {
 //            $this->calculables[$value->getId()] = array(
 //                'nombreFuncion' => $value->getFuncionNombre(),
@@ -178,14 +164,13 @@ class CheckListParameter
 //            );
 //        }
 
-        return array(
-            'name' => $name,
-            'widgetType' => $widgetType
-        );
-    }
+		return array(
+			'name'       => $name,
+			'widgetType' => $widgetType
+		);
+	}
 
-    public function get()
-    {
-        return $this->data;
-    }
+	public function get() {
+		return $this->data;
+	}
 }

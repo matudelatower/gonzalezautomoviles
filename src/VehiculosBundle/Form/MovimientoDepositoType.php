@@ -22,7 +22,7 @@ class MovimientoDepositoType extends AbstractType {
 				'entity',
 				array(
 					'class'    => 'VehiculosBundle:Deposito',
-					'property' => 'nombre',
+					'choice_label' => 'nombre',
 				) )
 			->add( 'tipoMovimiento' )
 			->add( 'vehiculo' );

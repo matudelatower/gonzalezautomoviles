@@ -7,6 +7,56 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+
+        var itemCant{{ formDanioInterno.danioVehiculoInterno.vars.id }} = {{ edit_form.danioVehiculoGm.count | default(0) }};
+
+        $(document).ready(function () {
+            $('.agregar-danio').click(function () {
+
+                var itemList = $('#danio-vehiculo-list table');
+
+                if (itemList.find('tbody tr').length < 9999) {
+
+//                    console.log(itemList)
+                    var newWidget = itemList.data('prototype');
+                    newWidget = newWidget.replace(/__daniovehiculo__/g, itemCant{{ formDanioInterno.danioVehiculoInterno.vars.id }});
+                    var newTr = $('<tr item="' + itemCant{{ formDanioInterno.danioVehiculoInterno.vars.id }} + '"></tr>').html(newWidget);
+                    itemCant{{ formDanioInterno.danioVehiculoInterno.vars.id }}++;
+                    newTr.appendTo(itemList);
+                }
+//                                            inicializarFecha();
+                $(this).trigger('clicked');
+                return false;
+            });
+
+            $(document).on('click', '.agregar-foto', function () {
+                var itemCantFoto = $(this).data('cant');
+
+                var btnAddFoto = $(this);
+                var itemList = $(this).parent('.foto-list');
+//                console.log(itemCantFoto)
+
+                if (itemList.find('div').length < 9999) {
+
+
+                    var newWidget = itemList.data('prototype');
+                    newWidget = newWidget.replace(/__foto__/g, itemCantFoto);
+                    var newTr = $('<tr item="' + itemCantFoto + '"></tr>').html(newWidget);
+                    itemCantFoto++;
+                    btnAddFoto.parent('td').find('.elements').append(newTr);
+                }
+//                                            inicializarFecha();
+                btnAddFoto.data('cant', itemCantFoto);
+                $(this).trigger('clicked');
+                return false;
+            });
+
+            $(document).on('click', '.btn-remove-foto', function () {
+                $(this).parent('tr').remove();
+            });
+        });
+
+        // combo dependiente tipo danio
         $(document).on('change', '.categoria_danio_interno_select', function () {
             var data = {
                 categoria_id: $(this).val()
@@ -24,12 +74,41 @@
 {% endblock javascripts %}
 
 {% block content -%}
+
+    {% set danioInternoVehiculoProto %}
+
+        {% set fotoProto %}
+            <button type="button" class="btn btn-box-tool pull-right btn-remove-foto">
+                <i class="fa fa-remove"></i>
+            </button>
+            {{ form_widget(formDanioInterno.danioVehiculoInterno.vars.prototype.fotoDanioInterno.vars.prototype) }}
+
+        {% endset %}
+
+        <td>{{ form_widget(formDanioInterno.danioVehiculoInterno.vars.prototype.categoriaDanioInterno) }}</td>
+        <td>{{ form_widget(formDanioInterno.danioVehiculoInterno.vars.prototype.tipoDanioInterno) }}</td>
+        <td>{{ form_widget(formDanioInterno.danioVehiculoInterno.vars.prototype.detalle) }}</td>
+        <td class="foto-list"
+            data-prototype="{{ fotoProto |e }}">
+            <div class="elements">
+
+            </div>
+            <a class="btn btn-default pull-right agregar-foto"
+               data-cant="0"
+               href="#"><i class="fa fa-plus"></i></a>
+        </td>
+        <td>
+            <a class="btn btn-default" title="Borrar item"
+               href="javascript:void(0)"
+               onclick="bootstrapCollectionBorrarItem(this);"><i
+                        class="fa fa-fw fa-trash-o"></i></a>
+        </td>
+    {% endset %}
+
     <div class="row">
         <div class="col-md-12">
-
-
             <form method="post" id="form-checklist"
-                  action="{{ path('crear_resultado_respuesta', {'cuestionarioId':cuestionario.id }) }}">
+                  action="{{ path('checklist_preentrega', {'vehiculoId':vehiculoId }) }}" {{ form_enctype(formDanioInterno) }}>
                 {% for categoria in categorias %}
                     <div class="col-md-6">
                         <div class="box box-primary">
@@ -38,7 +117,7 @@
                             </div>
                             <div class="box-body">
 
-                                {{ render(controller('CuestionariosBundle:Cuestionario:getCamposPorCategoria', { 'id':categoria.id } )) }}
+                                {{ render(controller('CuestionariosBundle:Cuestionario:getCamposPorCategoriaEdit', { 'id':categoria.id, 'vehiculoId':vehiculoId } )) }}
                             </div>
                         </div>
                     </div>
@@ -50,9 +129,67 @@
                         </div>
 
                         <div class="box-body">
-                            {{ form_widget(formDanioInterno.danioVehiculoInterno) }}
+                            <div id="danio-vehiculo-list">
+                                <table class="table table-striped table-bordered"
+                                       data-prototype="{{ danioInternoVehiculoProto|e }}">
+                                    <thead>
+                                    <tr>
+                                        <th>Categoría Daño</th>
+                                        <th>Tipo Daño</th>
+                                        <th>Detalle</th>
+                                        <th>Foto</th>
+                                        <th>Acción</th>
+
+                                    </tr>
+
+                                    </thead>
+                                    <tbody>
+                                    {% for danioVehiculo in formDanioInterno.danioVehiculoInterno %}
+                                        <tr>
+                                            <td>{{ form_widget(danioVehiculo.categoriaDanioInterno) }}</td>
+                                            <td>{{ form_widget(danioVehiculo.tipoDanioInterno) }}</td>
+                                            <td>{{ form_widget(danioVehiculo.detalle) }}</td>
+                                            {% set fotoProtoList %}
+                                                <button type="button"
+                                                        class="btn btn-box-tool pull-right btn-remove-foto">
+                                                    <i class="fa fa-remove"></i>
+                                                </button>
+                                                {{ form_widget(danioVehiculo.fotoDanioInterno.vars.prototype) }}
+
+                                            {% endset %}
+                                            <td class="foto-list"
+                                                data-prototype="{{ fotoProtoList|e }}">
+                                                <div class="elements">
+                                                    {% for fotoDanio in danioVehiculo.fotoDanioInterno %}
+                                                        <img class="img-responsive" width="300" height="300"
+                                                             src="{{ app.request.basePath ~ '/uploads/fotos_danio_interno/' ~ fotoDanio.vars.data.ruta }}">
+                                                        {{ form_widget(fotoDanio) }}
+                                                    {% endfor %}
+                                                </div>
+                                                <a class="btn btn-default pull-right agregar-foto"
+                                                   data-cant="{{ danioVehiculo.fotoDanioInterno.count + 1 }}"
+                                                   href="#"><i class="fa fa-plus"></i></a>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-default" title="Borrar item"
+                                                   href="javascript:void(0)"
+                                                   onclick="bootstrapCollectionBorrarItem(this);"><i
+                                                            class="fa fa-fw fa-trash-o"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="box-footer clearfix no-border">
+                                    <a class="btn btn-default pull-right agregar-danio"
+                                       href="#"><i class="fa fa-plus"></i> Agregar</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="hidden">
+                    {{ form_widget(formDanioInterno._token) }}
                 </div>
                 <button class="btn btn-primary" id="btn-guardar-checklist" type="submit">Guardar</button>
                 <a class="btn btn-default" href="{{ path('vehiculos_recibidos_index') }}">

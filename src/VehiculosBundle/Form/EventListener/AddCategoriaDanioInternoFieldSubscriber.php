@@ -27,7 +27,7 @@ class AddCategoriaDanioInternoFieldSubscriber implements EventSubscriberInterfac
 	public static function getSubscribedEvents() {
 		return array(
 			FormEvents::PRE_SET_DATA => 'preSetData',
-			FormEvents::PRE_BIND     => 'preBind'
+			FormEvents::PRE_SUBMIT     => 'preBind'
 		);
 	}
 
@@ -62,8 +62,8 @@ class AddCategoriaDanioInternoFieldSubscriber implements EventSubscriberInterfac
 			return;
 		}
 
-		$accessor  = PropertyAccess::getPropertyAccessor();
-		$categoria = $accessor->getValue( $data, 'categoriaDanioInterno' );
+		$accessor  = PropertyAccess::createPropertyAccessor();
+		$categoria = $accessor->getValue( $data->getTipoDanioInterno(), 'categoriaDanioInterno' );
 
 		$this->addCategoriaForm( $form, $categoria );
 	}

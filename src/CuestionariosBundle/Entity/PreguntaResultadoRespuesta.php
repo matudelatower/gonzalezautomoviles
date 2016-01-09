@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * PreguntaResultadoRespuesta
  *
  * @ORM\Table(name="pregunta_resultado_respuestas")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\Repository\PreguntaResultadoRespuestaRepository")
  */
 class PreguntaResultadoRespuesta
 {
@@ -58,8 +58,8 @@ class PreguntaResultadoRespuesta
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoRespuesta")
-     * @ORM\JoinColumn(name="tipo_danio_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoRespuesta", cascade={"persist"})
+     * @ORM\JoinColumn(name="resultado_respuesta_id", referencedColumnName="id")
      */
     private $resultadoRespuesta;
 

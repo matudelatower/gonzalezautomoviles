@@ -4,6 +4,8 @@ namespace VehiculosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * FotoDanioInterno
@@ -25,9 +27,9 @@ class FotoDanioInterno {
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255)
+     * @ORM\Column(name="ruta", type="string", length=255)
      */
-    private $path;
+    private $ruta;
 
     /**
      * @ORM\ManyToOne(targetEntity="DanioVehiculoInterno", inversedBy="fotoDanioInterno")
@@ -69,35 +71,111 @@ class FotoDanioInterno {
      */
     private $actualizadoPor;
 
+    public function getAbsolutePath() {
+        return null === $this->ruta
+            ? null
+            : $this->getUploadRootDir() . '/' . $this->ruta;
+    }
+
+    public function getWebPath() {
+        return null === $this->ruta
+            ? null
+            : $this->getUploadDir() . '/' . $this->ruta;
+    }
+
+    protected function getUploadRootDir() {
+        // the absolute directory ruta where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir() {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/fotos_danio_interno/';
+    }
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $foto;
+
+    /**
+     * Sets foto.
+     *
+     * @param UploadedFile $foto
+     */
+    public function setFoto(UploadedFile $foto = null)
+    {
+        $this->foto = $foto;
+    }
+
+    /**
+     * Get foto.
+     *
+     * @return UploadedFile
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFoto()) {
+            return;
+        }
+
+        // use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+
+        // move takes the target directory and then the
+        // target filename to move to
+        $this->getFoto()->move(
+            $this->getUploadRootDir(),
+            $this->getFoto()->getClientOriginalName()
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->ruta = $this->getFoto()->getClientOriginalName();
+
+        // clean up the file property as you won't need it anymore
+        $this->foto = null;
+    }
+
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set path
+     * Set ruta
      *
-     * @param string $path
+     * @param string $ruta
      *
      * @return FotoDanioInterno
      */
-    public function setPath($path) {
-        $this->path = $path;
+    public function setRuta($ruta)
+    {
+        $this->ruta = $ruta;
 
         return $this;
     }
 
     /**
-     * Get path
+     * Get ruta
      *
      * @return string
      */
-    public function getPath() {
-        return $this->path;
+    public function getRuta()
+    {
+        return $this->ruta;
     }
 
     /**
@@ -107,7 +185,8 @@ class FotoDanioInterno {
      *
      * @return FotoDanioInterno
      */
-    public function setCreado($creado) {
+    public function setCreado($creado)
+    {
         $this->creado = $creado;
 
         return $this;
@@ -118,7 +197,8 @@ class FotoDanioInterno {
      *
      * @return \DateTime
      */
-    public function getCreado() {
+    public function getCreado()
+    {
         return $this->creado;
     }
 
@@ -129,7 +209,8 @@ class FotoDanioInterno {
      *
      * @return FotoDanioInterno
      */
-    public function setActualizado($actualizado) {
+    public function setActualizado($actualizado)
+    {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -140,7 +221,8 @@ class FotoDanioInterno {
      *
      * @return \DateTime
      */
-    public function getActualizado() {
+    public function getActualizado()
+    {
         return $this->actualizado;
     }
 
@@ -151,7 +233,8 @@ class FotoDanioInterno {
      *
      * @return FotoDanioInterno
      */
-    public function setDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno = null) {
+    public function setDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno = null)
+    {
         $this->danioVehiculoInterno = $danioVehiculoInterno;
 
         return $this;
@@ -162,7 +245,8 @@ class FotoDanioInterno {
      *
      * @return \VehiculosBundle\Entity\DanioVehiculoInterno
      */
-    public function getDanioVehiculoInterno() {
+    public function getDanioVehiculoInterno()
+    {
         return $this->danioVehiculoInterno;
     }
 
@@ -173,7 +257,8 @@ class FotoDanioInterno {
      *
      * @return FotoDanioInterno
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
+    {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -184,7 +269,8 @@ class FotoDanioInterno {
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor() {
+    public function getCreadoPor()
+    {
         return $this->creadoPor;
     }
 
@@ -195,7 +281,8 @@ class FotoDanioInterno {
      *
      * @return FotoDanioInterno
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
+    {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -206,8 +293,8 @@ class FotoDanioInterno {
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor() {
+    public function getActualizadoPor()
+    {
         return $this->actualizadoPor;
     }
-
 }

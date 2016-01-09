@@ -37,7 +37,7 @@ class VehiculoFilterType extends AbstractType {
 //                ->add('numeroPedido')
                 ->add('tipoVentaEspecial', 'entity', array(
                     'class' => 'VehiculosBundle:TipoVentaEspecial',
-                    'property' => 'nombre',
+                    'choice_label' => 'nombre',
                     'required' => false,
                 ))
                 ->add('registrosPaginador', 'choice', array(

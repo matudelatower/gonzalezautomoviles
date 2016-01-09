@@ -25,21 +25,21 @@ class DanioVehiculoInterno {
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_orden_arreglo", type="string", length=255)
+     * @ORM\Column(name="numero_orden_arreglo", type="string", length=255, nullable=true)
      */
     private $numeroOrdenArreglo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="detalle", type="string", length=255)
+     * @ORM\Column(name="detalle", type="text", nullable=true)
      */
     private $detalle;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="solucionado", type="boolean")
+     * @ORM\Column(name="solucionado", type="boolean", nullable=true)
      */
     private $solucionado;
 
