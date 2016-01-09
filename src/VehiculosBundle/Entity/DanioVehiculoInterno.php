@@ -90,6 +90,12 @@ class DanioVehiculoInterno {
     private $actualizadoPor;
 
     /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo", inversedBy="danioVehiculoInterno")
+     * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
+     */
+    private $vehiculo;
+
+    /**
      * Get id
      *
      * @return integer
@@ -312,4 +318,28 @@ class DanioVehiculoInterno {
         return $this->actualizadoPor;
     }
 
+
+    /**
+     * Set vehiculo
+     *
+     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
+     *
+     * @return DanioVehiculoInterno
+     */
+    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null)
+    {
+        $this->vehiculo = $vehiculo;
+
+        return $this;
+    }
+
+    /**
+     * Get vehiculo
+     *
+     * @return \VehiculosBundle\Entity\Vehiculo
+     */
+    public function getVehiculo()
+    {
+        return $this->vehiculo;
+    }
 }

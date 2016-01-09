@@ -1,0 +1,4 @@
+<option value="">Seleccionar</option>
+{% for tipoDanio in tipoDanios %}
+    <option value="{{ tipoDanio.id }}">{{ tipoDanio.nombre }}</option>
+{% endfor %}

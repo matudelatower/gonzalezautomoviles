@@ -53,4 +53,8 @@ vehiculos_editar_recibido:
     path:     /{vehiculoId}/vehiculos_editar_recibido
     defaults: { _controller: "VehiculosBundle:Vehiculo:editarVehiculoRecibido" }
 
+checklist_preentrega:
+    path:     /{vehiculoId}/checklist_preentrega
+    defaults: { _controller: "VehiculosBundle:Vehiculo:checklistPreEntrega" }
+
    

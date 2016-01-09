@@ -78,11 +78,10 @@
                                         <a class="btn btn-default"
                                            href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
                                                 class="fa fa-edit"></i></a>
-                                            {#TODO un boton que direccione a hacer checklist#}
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
-                                           title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                            {#                                            {% endif %}#}
+                                    <a class="btn btn-default"
+                                       href="{{ path('checklist_preentrega', { 'vehiculoId': entity.id }) }}"
+                                       title="Realizar checklist"><i class="fa fa-check-square"></i></a>
+                                    {#                                            {% endif %}#}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalDeposito"
@@ -98,7 +97,7 @@
                     <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
                         Alta
                     </a>
-                </div> 
+                </div>
             </div>
         </div>
     </div>

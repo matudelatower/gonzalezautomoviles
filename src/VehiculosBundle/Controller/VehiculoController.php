@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Entity\EstadoVehiculo;
 use VehiculosBundle\Entity\Vehiculo;
 use VehiculosBundle\Form\AltaVehiculoType;
+use VehiculosBundle\Form\CheckListPreEntregaType;
 use VehiculosBundle\Form\EditarVehiculoType;
 use VehiculosBundle\Form\VehiculoType;
 use VehiculosBundle\Form\VehiculoFilterType;
@@ -105,7 +106,7 @@ class VehiculoController extends Controller {
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
         $form = $this->createForm(new VehiculoFilterType());
-        
+
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
@@ -227,20 +228,21 @@ class VehiculoController extends Controller {
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render(
-                        'VehiculosBundle:Vehiculo:show.html.twig', array(
-                    'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),
-                        )
-        );
-    }
+		return $this->render(
+			'VehiculosBundle:Vehiculo:show.html.twig',
+			array(
+				'entity'      => $entity,
+				'delete_form' => $deleteForm->createView(),
+			)
+		);
+	}
 
-    /**
-     * Finds and displays a Vehiculo Recibido entity.
-     *
-     */
-    public function showRecibidosAction($id) {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Finds and displays a Vehiculo Recibido entity.
+	 *
+	 */
+	public function showRecibidosAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
 
@@ -441,9 +443,9 @@ class VehiculoController extends Controller {
             $form->handleRequest($request);
             if ($form->isValid()) {
 
-                $vehiculosManager = $this->get('manager.vehiculos');
+				$vehiculosManager = $this->get( 'manager.vehiculos' );
 
-                if ($vehiculosManager->guardarVehiculo($vehiculo)) {
+				if ( $vehiculosManager->guardarVehiculo( $vehiculo ) ) {
 
                     $this->get('session')->getFlashBag()->add(
                             'success', 'Datos del Vehiculo actualizados correctamente.'
@@ -456,5 +458,34 @@ class VehiculoController extends Controller {
                     'edit_form' => $form->createView(),
         ));
     }
+
+	public function checklistPreEntregaAction( Request $request, $vehiculoId ) {
+		$em = $this->getDoctrine()->getManager();
+
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
+
+		$cuestionario = $em->getRepository( 'CuestionariosBundle:Cuestionario' )->find( 1 );
+
+
+		$categorias = $em->getRepository( 'CuestionariosBundle:CuestionarioCategoria' )->getCategoriasConCampos(
+			$cuestionario
+		);
+
+		$formDaniosInternos = $this->createForm( new CheckListPreEntregaType(), $vehiculo );
+
+
+		if ( ! $categorias ) {
+			throw $this->createNotFoundException( 'No se encuentra el Campo' );
+		}
+
+		return $this->render(
+			'VehiculosBundle:Vehiculo:checkListPreEntrega.html.twig',
+			array(
+				'categorias'       => $categorias,
+				'cuestionario'     => $cuestionario,
+				'formDanioInterno' => $formDaniosInternos->createView(),
+			)
+		);
+	}
 
 }

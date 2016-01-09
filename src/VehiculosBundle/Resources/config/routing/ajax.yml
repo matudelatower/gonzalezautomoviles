@@ -12,4 +12,8 @@ new_movimiento_deposito_ajax:
     
 get_fotos_danios_gm_ajax:
     path:     /get_fotos_danios_gm_ajax/danioId
-    defaults: { _controller: "VehiculosBundle:Ajax:getFotosDaniosGm" }     
+    defaults: { _controller: "VehiculosBundle:Ajax:getFotosDaniosGm" }
+
+get_tipo_danios_internos:
+    path:     /get_tipo_danios_internos
+    defaults: { _controller: "VehiculosBundle:Ajax:getTipoDanioInterno" }

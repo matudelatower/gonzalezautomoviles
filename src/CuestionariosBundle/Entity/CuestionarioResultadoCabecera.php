@@ -59,7 +59,7 @@ class CuestionarioResultadoCabecera
 
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
-     * @ORM\JoinColumn(name="tipo_danio_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
      */
     private $vehiculo;
 
