@@ -39,6 +39,13 @@ class CheckControlInternoPregunta {
     private $estado;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer",nullable=true)
+     */
+    private $orden;
+
+    /**
      * @var datetime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -125,7 +132,6 @@ class CheckControlInternoPregunta {
         return $this->estado;
     }
 
-
     /**
      * Set creado
      *
@@ -133,8 +139,7 @@ class CheckControlInternoPregunta {
      *
      * @return CheckControlInternoPregunta
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -145,8 +150,7 @@ class CheckControlInternoPregunta {
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -157,8 +161,7 @@ class CheckControlInternoPregunta {
      *
      * @return CheckControlInternoPregunta
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -169,8 +172,7 @@ class CheckControlInternoPregunta {
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -181,8 +183,7 @@ class CheckControlInternoPregunta {
      *
      * @return CheckControlInternoPregunta
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -193,8 +194,7 @@ class CheckControlInternoPregunta {
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -205,8 +205,7 @@ class CheckControlInternoPregunta {
      *
      * @return CheckControlInternoPregunta
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -217,8 +216,34 @@ class CheckControlInternoPregunta {
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return CheckControlInternoPregunta
+     */
+    public function setOrden($orden) {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden() {
+        return $this->orden;
+    }
+
+    public function __toString() {
+        return $this->pregunta;
+    }
+
 }

@@ -17,3 +17,7 @@ get_fotos_danios_gm_ajax:
 get_tipo_danios_internos:
     path:     /get_tipo_danios_internos
     defaults: { _controller: "VehiculosBundle:Ajax:getTipoDanioInterno" }
+    
+get_fotos_danios_interno_ajax:
+    path:     /get_fotos_danios_interno_ajax/danioId
+    defaults: { _controller: "VehiculosBundle:Ajax:getFotosDaniosInterno" }    

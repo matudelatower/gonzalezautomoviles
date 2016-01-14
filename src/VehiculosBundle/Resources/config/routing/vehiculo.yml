@@ -4,11 +4,7 @@ vehiculos:
 
 vehiculos_show:
     path:     /{id}/show
-    defaults: { _controller: "VehiculosBundle:Vehiculo:show" }
-    
-vehiculos_recibidos_show:
-    path:     /{id}/show_recibidos
-    defaults: { _controller: "VehiculosBundle:Vehiculo:showRecibidos" }    
+    defaults: { _controller: "VehiculosBundle:Vehiculo:show" } 
 
 vehiculos_new:
     path:     /new
@@ -48,6 +44,10 @@ vehiculos_pendientes_index:
 vehiculos_recibidos_index:
     path:     /vehiculos_recibidos_index
     defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosRecibidosIndex" }
+    
+vehiculos_stock_index:
+    path:     /vehiculos_stock_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosStockIndex" }     
 
 vehiculos_editar_recibido:
     path:     /{vehiculoId}/vehiculos_editar_recibido
@@ -56,5 +56,9 @@ vehiculos_editar_recibido:
 checklist_preentrega:
     path:     /{vehiculoId}/checklist_preentrega
     defaults: { _controller: "VehiculosBundle:Vehiculo:checklistPreEntrega" }
+    
+check_control_interno:
+    path:     /{vehiculoId}/check_control_interno
+    defaults: { _controller: "VehiculosBundle:Vehiculo:checkControlInterno" }    
 
    

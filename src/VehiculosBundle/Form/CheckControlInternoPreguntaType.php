@@ -6,29 +6,28 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CheckControlInternoPreguntaType extends AbstractType
-{
+class CheckControlInternoPreguntaType extends AbstractType {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add('pregunta')
-            ->add('estado')
-            ->add('creado')
-            ->add('actualizado')
-            ->add('creadoPor')
-            ->add('actualizadoPor')
+                ->add('pregunta')
+                ->add('orden')
+                ->add('estado')
+                ->add('creado')
+                ->add('actualizado')
+                ->add('creadoPor')
+                ->add('actualizadoPor')
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'VehiculosBundle\Entity\CheckControlInternoPregunta'
         ));
@@ -37,8 +36,8 @@ class CheckControlInternoPreguntaType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
-    {
+    public function getName() {
         return 'vehiculosbundle_checkcontrolinternopregunta';
     }
+
 }

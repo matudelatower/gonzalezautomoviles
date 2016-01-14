@@ -76,6 +76,28 @@ class AjaxController extends Controller {
 
 		return new JsonResponse( $html );
 	}
+        
+        public function getFotosDaniosInternoAction( Request $request ) {
+
+
+		$danioId = $request->query->get( 'danioId' );
+
+		if ( ! $danioId ) {
+			$entities = false;
+		} else {
+
+			$em       = $this->getDoctrine()->getManager();
+			$entities = $em->getRepository( 'VehiculosBundle:FotoDanioInterno' )->findByDanioVehiculoInterno( $danioId );
+			$html     = $this->renderView(
+				'VehiculosBundle:Vehiculo:formFotoDanioInterno.html.twig',
+				array(
+					'entity' => $entities,
+				)
+			);
+		}
+
+		return new JsonResponse( $html );
+	}
 
 	public function getTipoDanioInternoAction( Request $request ) {
 		$categoriaId = $request->get( 'categoria_id' );

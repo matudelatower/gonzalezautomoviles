@@ -1,3 +1,7 @@
+vehiculos_check_control_interno_resultado_cabecera:
+    resource: "@VehiculosBundle/Resources/config/routing/checkcontrolinternoresultadocabecera.yml"
+    prefix:   /check_control_interno_resultado_cabecera
+
 vehiculos_check_control_interno_pregunta:
     resource: "@VehiculosBundle/Resources/config/routing/checkcontrolinternopregunta.yml"
     prefix:   /check_control_interno_pregunta

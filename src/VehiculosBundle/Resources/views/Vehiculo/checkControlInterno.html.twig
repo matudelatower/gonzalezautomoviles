@@ -1,0 +1,58 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Checklist Control Interno
+{% endblock %}
+
+{#{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).on('change', '.categoria_danio_interno_select', function () {
+            var data = {
+                categoria_id: $(this).val()
+            };
+            $.ajax({
+                type: 'post',
+                url: '{{ path("get_tipo_danios_internos") }}',
+                data: data,
+                success: function (data) {
+                    $('.tipo_danio_interno_select').html(data);
+                }
+            });
+        });
+    </script>
+{% endblock javascripts %}
+#}
+{% block content -%}
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <form method="post" id="form-checklist"
+                  action="">
+                {#                {{ form_widget(formDanioInterno.danioVehiculoInterno) }}#}
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Control Interno</h3>
+                        </div>
+                        <div class="box-body">
+                            {% for pregunta in preguntas %}
+                                <div class="form-group">
+                                    <div class="checkbox"> 
+                                        <label><input type="checkbox" value="1" name="{{pregunta.id}}">{{ pregunta.pregunta }}</label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <button class="btn btn-primary" id="btn-guardar-checklist" type="submit">Guardar</button>
+                            <a class="btn btn-default" href="{{ path('vehiculos_recibidos_index') }}">
+                                Volver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

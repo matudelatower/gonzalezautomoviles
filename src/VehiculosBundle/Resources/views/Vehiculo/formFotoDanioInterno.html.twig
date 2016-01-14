@@ -1,0 +1,32 @@
+{% block content -%}
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        {% for foto in entity %}
+            <li data-target="#carousel-example-generic" data-slide-to="{{foto.id}}" class="active"></li>
+            {%endfor%}
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        {% set i = 0 %}
+        {% for foto in entity %}
+            {% if i == 0 %}
+                <div class="item active">
+                {% else %}
+                    <div class="item">
+                    {%endif%}
+                    <img src="{{app.request.basePath ~ '/uploads/fotos_danio_interno/' ~ foto.ruta }}" alt="...">                    
+                    {% set i=i+1 %}
+                </div>
+            {%endfor%}
+
+        </div>
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+
+    {% endblock %}
