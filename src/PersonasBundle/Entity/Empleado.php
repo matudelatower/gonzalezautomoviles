@@ -251,4 +251,28 @@ class Empleado
     {
         return $this->actualizadoPor;
     }
+
+    /**
+     * Add empleadoCategorium
+     *
+     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
+     *
+     * @return Empleado
+     */
+    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    {
+        $this->empleadoCategoria[] = $empleadoCategorium;
+
+        return $this;
+    }
+
+    /**
+     * Remove empleadoCategorium
+     *
+     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
+     */
+    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    {
+        $this->empleadoCategoria->removeElement($empleadoCategorium);
+    }
 }

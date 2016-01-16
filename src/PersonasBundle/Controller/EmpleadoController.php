@@ -2,6 +2,9 @@
 
 namespace PersonasBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use PersonasBundle\Entity\CategoriaEmpleado;
+use PersonasBundle\Entity\EmpleadoCategoria;
 use PersonasBundle\Entity\Persona;
 use PersonasBundle\Entity\PersonaTipo;
 use PersonasBundle\Form\BuscadorPersonaType;
@@ -48,12 +51,20 @@ class EmpleadoController extends Controller {
 
 		$entity = new PersonaTipo();
 
+
 		$form = $this->createCreateForm( $entity );
 		$form->handleRequest( $request );
 
+		$categoriasOriginales = new ArrayCollection();
+		foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $categoria ) {
+			$categoriasOriginales->add( $categoria );
+		}
+
 		if ( $form->isValid() ) {
 
-
+			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
+				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
+			}
 
 			$em = $this->getDoctrine()->getManager();
 			$em->persist( $entity );
@@ -254,6 +265,11 @@ class EmpleadoController extends Controller {
 		$editForm->handleRequest( $request );
 
 		if ( $editForm->isValid() ) {
+
+			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
+				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
+			}
+
 			$em->flush();
 
 			$this->get( 'session' )->getFlashBag()->add(

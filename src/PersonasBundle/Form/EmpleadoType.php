@@ -14,7 +14,14 @@ class EmpleadoType extends AbstractType {
 	 */
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
 		$builder
-			->add( 'empleadoCategoria', new EmpleadoCategoriaType());
+			->add( 'empleadoCategoria',
+				'bootstrapcollection',
+				array(
+					'type'         => new EmpleadoCategoriaType(),
+					'allow_add'    => true,
+					'allow_delete' => true,
+					'by_reference' => true,
+				) );
 	}
 
 	/**
