@@ -32,7 +32,16 @@ vehiculos_delete:
 vehiculos_alta:
     path:     /alta
     defaults: { _controller: "VehiculosBundle:Vehiculo:alta" }
+    
+vehiculos_new_factura:
+    path:     /{vehiculoId}/vehiculos_new_factura
+    defaults: { _controller: "VehiculosBundle:Vehiculo:newFactura" }    
 
+vehiculos_create_factura:
+    path:     /{vehiculoId}/vehiculos_create_factura
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosCreateFactura" }
+    methods:  POST
+    
 vehiculos_actualizar_remito:
     path:     /{vehiculoId}/vehiculos_actualizar_remito
     defaults: { _controller: "VehiculosBundle:Vehiculo:actualizarVehiculoRemito" }
@@ -47,8 +56,16 @@ vehiculos_recibidos_index:
     
 vehiculos_stock_index:
     path:     /vehiculos_stock_index
-    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosStockIndex" }     
-
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosStockIndex" } 
+    
+vehiculos_facturados_index:
+    path:     /vehiculos_facturados_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosFacturadosIndex" } 
+    
+vehiculos_entregados_index:
+    path:     /vehiculos_entregados_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosEntregadosIndex" }     
+    
 vehiculos_editar_recibido:
     path:     /{vehiculoId}/vehiculos_editar_recibido
     defaults: { _controller: "VehiculosBundle:Vehiculo:editarVehiculoRecibido" }
@@ -60,5 +77,14 @@ checklist_preentrega:
 check_control_interno:
     path:     /{vehiculoId}/check_control_interno
     defaults: { _controller: "VehiculosBundle:Vehiculo:checkControlInterno" }    
+    
+vehiculos_edit_patente:
+    path:     /{vehiculoId}/vehiculos_edit_patente
+    defaults: { _controller: "VehiculosBundle:Vehiculo:editPatente" }    
+
+vehiculos_update_patente:
+    path:     /{vehiculoId}/vehiculos_update_patente
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosUpdatePatente" }
+    methods:  POST    
 
    

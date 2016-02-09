@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Empleado
  *
  * @ORM\Table(name="empleados")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="PersonasBundle\Entity\EmpleadoRepository")
  */
 class Empleado
 {
@@ -274,5 +274,9 @@ class Empleado
     public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
     {
         $this->empleadoCategoria->removeElement($empleadoCategorium);
+    }
+    
+    public function __toString() {
+        return $this->personaTipo->first()->getPersona()->__toString();
     }
 }

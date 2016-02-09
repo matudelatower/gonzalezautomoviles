@@ -1,3 +1,23 @@
+vehiculos_color_vehiculo:
+    resource: "@VehiculosBundle/Resources/config/routing/colorvehiculo.yml"
+    prefix:   /color_vehiculo
+
+vehiculos_agente_inicio_patente:
+    resource: "@VehiculosBundle/Resources/config/routing/agenteiniciopatente.yml"
+    prefix:   /agente_inicio_patente
+
+vehiculos_patentamiento:
+    resource: "@VehiculosBundle/Resources/config/routing/patentamiento.yml"
+    prefix:   /patentamiento
+
+vehiculos_estado_patentamiento:
+    resource: "@VehiculosBundle/Resources/config/routing/estadopatentamiento.yml"
+    prefix:   /estado_patentamiento
+
+vehiculos_factura:
+    resource: "@VehiculosBundle/Resources/config/routing/factura.yml"
+    prefix:   /factura
+
 vehiculos_check_control_interno_resultado_cabecera:
     resource: "@VehiculosBundle/Resources/config/routing/checkcontrolinternoresultadocabecera.yml"
     prefix:   /check_control_interno_resultado_cabecera

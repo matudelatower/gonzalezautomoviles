@@ -34,19 +34,19 @@
                                 <th>Id</th>
                                 <th>Vin</th>
                                 <th>Modelo</th>
-                                <th>Motor</th>
-                                <th>Color externo</th>
-                                <th>Numero remito</th>
-                                <th>Fecha remito</th>
-                                <th>Numero pedido</th>
+                                    {#                                <th>Motor</th>#}
+                                <th>Color vehiculo</th>
+                                    {#<th>Numero remito</th>
+                                    <th>Fecha remito</th>
+                                    <th>Numero pedido</th>#}
                                 <th>Tipo de venta</th>
-                                <th>Codigo llave</th>
-                                <th>Codigo radio</th>
-                                <th>Codigo seguridad</th>
-                                <th>Codigo inmovilizador</th>
-                                <th>Km ingreso</th>
-                                <th>Observacion</th>
-                                <th>Estado</th>
+                                    {# <th>Codigo llave</th>
+                                     <th>Codigo radio</th>
+                                     <th>Codigo seguridad</th>
+                                     <th>Codigo inmovilizador</th>
+                                     <th>Km ingreso</th>
+                                     <th>Observacion</th>#}
+                                    {#                                <th>Estado</th>#}
                                 <th>Deposito</th>
                                 <th>Actions</th>
                             </tr>
@@ -57,48 +57,50 @@
                                     <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                                     <td>{{ entity.vin }}</td>
                                     <td>{{ entity.modelo }}</td>
-                                    <td>{{ entity.motor }}</td>
-                                    <td>{{ entity.color_externo }}</td>
-                                    <td>{{ entity.remito_numero }}</td>
+                                    {#                                    <td>{{ entity.motor }}</td>#}
+                                    <td>{{ entity.color_vehiculo }}</td>
+                                    {#<td>{{ entity.remito_numero }}</td>
                                     <td>{{ entity.remito_fecha|date("d-m-Y") }}</td>
-                                    <td>{{ entity.numero_pedido }}</td>
+                                    <td>{{ entity.numero_pedido }}</td>#}
                                     <td>{{ entity.tipo_venta_especial }}</td>
-                                    <td>{{ entity.codigo_llave }}</td>
+                                    {#<td>{{ entity.codigo_llave }}</td>
                                     <td>{{ entity.codigo_radio }}</td>
                                     <td>{{ entity.codigo_seguridad }}</td>
                                     <td>{{ entity.codigo_inmovilizador }}</td>
                                     <td>{{ entity.km_ingreso }}</td>
-                                    <td>{{ entity.observacion }}</td>
-                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>
+                                    <td>{{ entity.observacion }}</td>#}
+                                    {#                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>#}
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>
 
                                         <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                class="fa fa-eye"></i></a>
+                                                title="Ver" class="fa fa-eye"></i></a>
                                         <a class="btn btn-default"
                                            href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                class="fa fa-edit"></i></a>
-                                    <a class="btn btn-default"
-                                       href="{{ path('check_control_interno', { 'vehiculoId': entity.id }) }}"
-                                       title="Realizar checklist"><i class="fa fa-check-square"></i></a>
-                                    {#                                            {% endif %}#}
+                                                title="Editar"  class="fa fa-edit"></i></a>                                              
+                                        
+                                        <a class="btn btn-default"
+                                           href="{{ path('vehiculos_new_factura', { 'vehiculoId': entity.id }) }}"
+                                           title="Facturar"><i class="fa fa-usd"></i></a>   
+                                            {#                                            {% endif %}#}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalDeposito"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                     </td>
-                                    
+
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
-                        Alta
-                    </a>
-                </div>
+                    <label  class="control-label col-xs-1 col-xs-offset-9"> Registros:</label>
+                    <div class="col-xs-2">
+                        {{ form_widget(form.registrosPaginador) }}
+                    </div> 
+                </div> 
             </div>
         </div>
     </div>
@@ -120,29 +122,42 @@
                     },
                 });
             });
+        {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
 
+        {% if formFilter is not null %}
+                $('.pagination li a').click(function () {
 
-        });
+                    $('#form_listado').attr('action', this.href);
+            {% for row in form %}
+                        $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
+            {% endfor %}
 
-        $(document).on('submit', '#form', function (ev) {
-            ev.preventDefault();
-            datos = $('#form').serializeArray();
-            url = '{{ path('movimiento_deposito_create_ajax') }}';
-            $.ajax({
-                type: 'post',
-                url: url,
-                data: datos,
-                success: function (data) {
-                    $('#modalDeposito').modal('toggle');
-                    modalAlert('La operación se realizó con exito');
+                        $('#form_listado').submit();
+                        return false;
+                    });
+        {% endif %}
 
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    $('#modalDeposito').modal('toggle');
-                    modalAlert('La operación no se realizo');
-                }
             });
-        });
+
+            $(document).on('submit', '#form', function (ev) {
+                ev.preventDefault();
+                datos = $('#form').serializeArray();
+                url = '{{ path('movimiento_deposito_create_ajax') }}';
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: datos,
+                    success: function (data) {
+                        $('#modalDeposito').modal('toggle');
+                        modalAlert('La operación se realizó con exito');
+                        $('#btn-filtro-buscar').click();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $('#modalDeposito').modal('toggle');
+                        modalAlert('La operación no se realizo');
+                    }
+                });
+            });
 
     </script>
 {% endblock %}

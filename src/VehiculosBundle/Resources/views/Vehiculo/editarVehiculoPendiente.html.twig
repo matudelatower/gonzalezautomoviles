@@ -29,6 +29,9 @@
                         }
                 });
         })
+                $('#{{ edit_form.vin.vars.id }}').keyup(function () {
+        $('#{{ edit_form.chasis.vars.id }}').val($('#{{ edit_form.vin.vars.id }}').val());
+        });
         });
                 window.onload = function (e) {
                 if ({{entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false')}}){

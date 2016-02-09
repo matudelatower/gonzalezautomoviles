@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="estados_patentamiento")
  * @ORM\Entity
  */
-class EstadoPatentamiento
-{
+class EstadoPatentamiento {
+
     /**
      * @var integer
      *
@@ -36,6 +36,12 @@ class EstadoPatentamiento
      */
     private $descripcion;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @var datetime $creado
@@ -76,8 +82,7 @@ class EstadoPatentamiento
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -88,8 +93,7 @@ class EstadoPatentamiento
      *
      * @return EstadoPatentamiento
      */
-    public function setEstado($estado)
-    {
+    public function setEstado($estado) {
         $this->estado = $estado;
 
         return $this;
@@ -100,8 +104,7 @@ class EstadoPatentamiento
      *
      * @return string
      */
-    public function getEstado()
-    {
+    public function getEstado() {
         return $this->estado;
     }
 
@@ -112,8 +115,7 @@ class EstadoPatentamiento
      *
      * @return EstadoPatentamiento
      */
-    public function setDescripcion($descripcion)
-    {
+    public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
 
         return $this;
@@ -124,8 +126,7 @@ class EstadoPatentamiento
      *
      * @return string
      */
-    public function getDescripcion()
-    {
+    public function getDescripcion() {
         return $this->descripcion;
     }
 
@@ -136,8 +137,7 @@ class EstadoPatentamiento
      *
      * @return EstadoPatentamiento
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -148,8 +148,7 @@ class EstadoPatentamiento
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -160,8 +159,7 @@ class EstadoPatentamiento
      *
      * @return EstadoPatentamiento
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -172,8 +170,7 @@ class EstadoPatentamiento
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -184,8 +181,7 @@ class EstadoPatentamiento
      *
      * @return EstadoPatentamiento
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -196,8 +192,7 @@ class EstadoPatentamiento
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -208,8 +203,7 @@ class EstadoPatentamiento
      *
      * @return EstadoPatentamiento
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -220,8 +214,34 @@ class EstadoPatentamiento
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return EstadoPatentamiento
+     */
+    public function setSlug($slug) {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug() {
+        return $this->slug;
+    }
+
+    public function __toString() {
+        return $this->estado;
+    }
+
 }

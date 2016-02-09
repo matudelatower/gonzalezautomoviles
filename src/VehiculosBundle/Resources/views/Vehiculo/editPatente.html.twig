@@ -1,0 +1,67 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Formulario de Patente
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //saco el required ya que no se por que puta lo agrega si son nullable=true
+            $('.estado-patente-field').removeAttr('required');
+
+
+
+            $('#{{ form.estadoPatentamiento.vars.id }}').change(function () {
+                id = $(this).val();
+                $.ajax({
+                    url: "{{ path('get_slug_estado_patentamiento_ajax') }}",
+                    method: "GET",
+                    data: {id: id},
+                    success: function (data) {
+                        if (data == 'iniciado') {
+                            $('.estado-patente-field').removeAttr('required');
+                            $('.estado-patente-field').addClass('hidden');
+                            $('.estado-patente-field').val('');
+                        } else if (data == 'patentado') {                            
+                            $('.estado-patente-field').attr('required','required');
+                            $('.estado-patente-field').removeClass('hidden');
+                            $('.estado-patente-field').val('');
+                        }
+                    }
+                });
+            })
+        })
+
+
+        window.onload = function (e) {
+        {% if entity.estadoPatentamiento.slug is defined %}
+            {% if entity.estadoPatentamiento.slug=='patentado' %}
+                    $('.estado-patente-field').removeClass('hidden');
+            {%endif%}
+        {%endif%}
+            }
+    </script>
+{%endblock%}
+{% block content -%}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Patente</h3>
+                </div>
+                {{ form_start(form) }}
+                {{ form_row(form.estadoPatentamiento) }}
+                {{ form_row(form.agenteInicioPatente) }}
+                {{ form_row(form.dominio) }}
+                {{ form_row(form.fecha) }}
+                {{ form_row(form.registro) }}
+                {{ form_end(form) }}
+                <a class="btn btn-default" href="{{ path('vehiculos_facturados_index') }}">
+                    Volver
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

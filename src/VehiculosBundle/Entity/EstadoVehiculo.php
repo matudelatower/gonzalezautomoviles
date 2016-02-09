@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="estados_vehiculos")
  * @ORM\Entity
  */
-class EstadoVehiculo
-{
+class EstadoVehiculo {
+
     /**
      * @var integer
      *
@@ -22,14 +22,6 @@ class EstadoVehiculo
      */
     private $id;
 
-    
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="actual", type="boolean", nullable=true)
-     */
-    private $actual;
-    
     /**
      * @var string
      *
@@ -83,15 +75,12 @@ class EstadoVehiculo
      */
     private $tipoEstadoVehiculo;
 
-
-
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -102,8 +91,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setObservacion($observacion)
-    {
+    public function setObservacion($observacion) {
         $this->observacion = $observacion;
 
         return $this;
@@ -114,8 +102,7 @@ class EstadoVehiculo
      *
      * @return string
      */
-    public function getObservacion()
-    {
+    public function getObservacion() {
         return $this->observacion;
     }
 
@@ -126,8 +113,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -138,8 +124,7 @@ class EstadoVehiculo
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -150,8 +135,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -162,8 +146,7 @@ class EstadoVehiculo
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -174,8 +157,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -186,8 +168,7 @@ class EstadoVehiculo
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -198,8 +179,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -210,8 +190,7 @@ class EstadoVehiculo
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
 
@@ -222,8 +201,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null)
-    {
+    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null) {
         $this->vehiculo = $vehiculo;
 
         return $this;
@@ -234,8 +212,7 @@ class EstadoVehiculo
      *
      * @return \VehiculosBundle\Entity\Vehiculo
      */
-    public function getVehiculo()
-    {
+    public function getVehiculo() {
         return $this->vehiculo;
     }
 
@@ -246,8 +223,7 @@ class EstadoVehiculo
      *
      * @return EstadoVehiculo
      */
-    public function setTipoEstadoVehiculo(\VehiculosBundle\Entity\TipoEstadoVehiculo $tipoEstadoVehiculo = null)
-    {
+    public function setTipoEstadoVehiculo(\VehiculosBundle\Entity\TipoEstadoVehiculo $tipoEstadoVehiculo = null) {
         $this->tipoEstadoVehiculo = $tipoEstadoVehiculo;
 
         return $this;
@@ -258,32 +234,8 @@ class EstadoVehiculo
      *
      * @return \VehiculosBundle\Entity\TipoEstadoVehiculo
      */
-    public function getTipoEstadoVehiculo()
-    {
+    public function getTipoEstadoVehiculo() {
         return $this->tipoEstadoVehiculo;
     }
 
-    /**
-     * Set actual
-     *
-     * @param string $actual
-     *
-     * @return EstadoVehiculo
-     */
-    public function setActual($actual)
-    {
-        $this->actual = $actual;
-
-        return $this;
-    }
-
-    /**
-     * Get actual
-     *
-     * @return string
-     */
-    public function getActual()
-    {
-        return $this->actual;
-    }
 }

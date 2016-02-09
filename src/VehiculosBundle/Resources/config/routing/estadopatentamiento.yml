@@ -1,0 +1,30 @@
+estado_patentamiento:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:index" }
+
+estado_patentamiento_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:show" }
+
+estado_patentamiento_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:new" }
+
+estado_patentamiento_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:create" }
+    methods:  POST
+
+estado_patentamiento_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:edit" }
+
+estado_patentamiento_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:update" }
+    methods:  [POST, PUT]
+
+estado_patentamiento_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:EstadoPatentamiento:delete" }
+    methods:  [POST, DELETE]

@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="patentamientos")
  * @ORM\Entity
  */
-class Patentamiento
-{
+class Patentamiento {
+
     /**
      * @var integer
      *
@@ -25,24 +25,23 @@ class Patentamiento
     /**
      * @var string
      *
-     * @ORM\Column(name="dominio", type="string", length=255)
+     * @ORM\Column(name="dominio", type="string", length=255, nullable=true)
      */
     private $dominio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="datetime")
+     * @ORM\Column(name="fecha", type="datetime", nullable=true)
      */
     private $fecha;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="registro", type="string", length=255)
+     * @ORM\Column(name="registro", type="string", length=255, nullable=true)
      */
     private $registro;
-
 
     /**
      * @var datetime $creado
@@ -83,14 +82,19 @@ class Patentamiento
      * @ORM\JoinColumn(name="estado_patentamiento_id", referencedColumnName="id",nullable=true)
      */
     private $estadoPatentamiento;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\AgenteInicioPatente")
+     * @ORM\JoinColumn(name="agente_inicio_patente_id", referencedColumnName="id",nullable=true)
+     */
+    private $agenteInicioPatente;
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -101,8 +105,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setDominio($dominio)
-    {
+    public function setDominio($dominio) {
         $this->dominio = $dominio;
 
         return $this;
@@ -113,8 +116,7 @@ class Patentamiento
      *
      * @return string
      */
-    public function getDominio()
-    {
+    public function getDominio() {
         return $this->dominio;
     }
 
@@ -125,8 +127,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setFecha($fecha)
-    {
+    public function setFecha($fecha) {
         $this->fecha = $fecha;
 
         return $this;
@@ -137,8 +138,7 @@ class Patentamiento
      *
      * @return \DateTime
      */
-    public function getFecha()
-    {
+    public function getFecha() {
         return $this->fecha;
     }
 
@@ -149,8 +149,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setRegistro($registro)
-    {
+    public function setRegistro($registro) {
         $this->registro = $registro;
 
         return $this;
@@ -161,8 +160,7 @@ class Patentamiento
      *
      * @return string
      */
-    public function getRegistro()
-    {
+    public function getRegistro() {
         return $this->registro;
     }
 
@@ -173,8 +171,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -185,8 +182,7 @@ class Patentamiento
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -197,8 +193,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -209,8 +204,7 @@ class Patentamiento
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -221,8 +215,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -233,8 +226,7 @@ class Patentamiento
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -245,8 +237,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -257,8 +248,7 @@ class Patentamiento
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
 
@@ -269,8 +259,7 @@ class Patentamiento
      *
      * @return Patentamiento
      */
-    public function setEstadoPatentamiento(\VehiculosBundle\Entity\EstadoPatentamiento $estadoPatentamiento = null)
-    {
+    public function setEstadoPatentamiento(\VehiculosBundle\Entity\EstadoPatentamiento $estadoPatentamiento = null) {
         $this->estadoPatentamiento = $estadoPatentamiento;
 
         return $this;
@@ -281,8 +270,32 @@ class Patentamiento
      *
      * @return \VehiculosBundle\Entity\EstadoPatentamiento
      */
-    public function getEstadoPatentamiento()
-    {
+    public function getEstadoPatentamiento() {
         return $this->estadoPatentamiento;
+    }
+
+
+    /**
+     * Set agenteInicioPatente
+     *
+     * @param \VehiculosBundle\Entity\AgenteInicioPatente $agenteInicioPatente
+     *
+     * @return Patentamiento
+     */
+    public function setAgenteInicioPatente(\VehiculosBundle\Entity\AgenteInicioPatente $agenteInicioPatente = null)
+    {
+        $this->agenteInicioPatente = $agenteInicioPatente;
+
+        return $this;
+    }
+
+    /**
+     * Get agenteInicioPatente
+     *
+     * @return \VehiculosBundle\Entity\AgenteInicioPatente
+     */
+    public function getAgenteInicioPatente()
+    {
+        return $this->agenteInicioPatente;
     }
 }

@@ -15,8 +15,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("chasis")
  * @UniqueEntity("motor")
  */
-class Vehiculo
-{
+class Vehiculo {
+
     /**
      * @var integer
      *
@@ -75,13 +75,6 @@ class Vehiculo
     private $codigoInmovilizador;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="color_externo", type="string", length=255, nullable=true)
-     */
-    private $colorExterno;
-    
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="fecha_emision_documento", type="datetime",nullable=true)
@@ -101,7 +94,6 @@ class Vehiculo
      * @ORM\Column(name="observacion", type="text", nullable=true, nullable=true)
      */
     private $observacion;
-
 
     /**
      * @var datetime $creado
@@ -137,7 +129,6 @@ class Vehiculo
      */
     private $actualizadoPor;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Remito", cascade={"persist"})
      * @ORM\JoinColumn(name="remito_id", referencedColumnName="id",nullable=true)
@@ -151,12 +142,25 @@ class Vehiculo
     private $cliente;
 
     /**
+     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\Empleado")
+     * @ORM\JoinColumn(name="vendedor_id", referencedColumnName="id",nullable=true)
+     */
+    private $vendedor;
+
+    /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\TipoVentaEspecial")
-     * @ORM\JoinColumn(name="tipo_venta_especial_id", referencedColumnName="id", nullable=true))
+     * @ORM\JoinColumn(name="tipo_venta_especial_id", referencedColumnName="id", nullable=true)
      */
     private $tipoVentaEspecial;
+
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Factura")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\ColorVehiculo")
+     * @ORM\JoinColumn(name="color_vehiculo_id", referencedColumnName="id",nullable=false)
+     */
+    private $colorVehiculo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Factura",cascade={"persist"})
      * @ORM\JoinColumn(name="factura_id", referencedColumnName="id", nullable=true)
      */
     private $factura;
@@ -172,7 +176,7 @@ class Vehiculo
      *
      */
     private $estadoVehiculo;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\MovimientoDeposito", mappedBy="vehiculo", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -184,7 +188,7 @@ class Vehiculo
      *
      */
     private $danioVehiculoGm;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoInterno", mappedBy="vehiculo", cascade={"persist"})
      *
@@ -220,6 +224,13 @@ class Vehiculo
     private $impuestos;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="pagado", type="boolean")
+     */
+    private $pagado = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="numero_pedido", type="string", length=255)
@@ -233,14 +244,12 @@ class Vehiculo
      */
     private $numeroOrden;
 
-
     /**
      * @var string
      *
      * @ORM\Column(name="numero_grupo", type="string", length=255, nullable=true)
      */
     private $numeroGrupo;
-
 
     /**
      * @var string
@@ -255,19 +264,20 @@ class Vehiculo
      */
     private $transportista;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera", inversedBy="vehiculo")
+     * @ORM\JoinColumn(name="check_control_interno_resultado_cabecera_id", referencedColumnName="id",nullable=true)
+     */
+    private $checkControlInternoResultadoCabecera;
 
-    public function __toString()
-    {
+    public function __toString() {
         return $this->vin;
     }
-    
 
-    
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->estadoVehiculo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->movimientoDeposito = new \Doctrine\Common\Collections\ArrayCollection();
         $this->danioVehiculoGm = new \Doctrine\Common\Collections\ArrayCollection();
@@ -279,8 +289,7 @@ class Vehiculo
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -291,8 +300,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setVin($vin)
-    {
+    public function setVin($vin) {
         $this->vin = $vin;
 
         return $this;
@@ -303,10 +311,9 @@ class Vehiculo
      *
      * @return string
      */
-    public function getVin()
-    {
+    public function getVin() {
         return $this->vin;
-    }    
+    }
 
     /**
      * Set motor
@@ -315,8 +322,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setMotor($motor)
-    {
+    public function setMotor($motor) {
         $this->motor = $motor;
 
         return $this;
@@ -327,8 +333,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getMotor()
-    {
+    public function getMotor() {
         return $this->motor;
     }
 
@@ -339,8 +344,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCodigoLlave($codigoLlave)
-    {
+    public function setCodigoLlave($codigoLlave) {
         $this->codigoLlave = $codigoLlave;
 
         return $this;
@@ -351,8 +355,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getCodigoLlave()
-    {
+    public function getCodigoLlave() {
         return $this->codigoLlave;
     }
 
@@ -363,8 +366,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCodigoRadio($codigoRadio)
-    {
+    public function setCodigoRadio($codigoRadio) {
         $this->codigoRadio = $codigoRadio;
 
         return $this;
@@ -375,8 +377,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getCodigoRadio()
-    {
+    public function getCodigoRadio() {
         return $this->codigoRadio;
     }
 
@@ -387,8 +388,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCodigoSeguridad($codigoSeguridad)
-    {
+    public function setCodigoSeguridad($codigoSeguridad) {
         $this->codigoSeguridad = $codigoSeguridad;
 
         return $this;
@@ -399,8 +399,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getCodigoSeguridad()
-    {
+    public function getCodigoSeguridad() {
         return $this->codigoSeguridad;
     }
 
@@ -411,8 +410,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCodigoInmovilizador($codigoInmovilizador)
-    {
+    public function setCodigoInmovilizador($codigoInmovilizador) {
         $this->codigoInmovilizador = $codigoInmovilizador;
 
         return $this;
@@ -423,35 +421,8 @@ class Vehiculo
      *
      * @return string
      */
-    public function getCodigoInmovilizador()
-    {
+    public function getCodigoInmovilizador() {
         return $this->codigoInmovilizador;
-    }
-
-    
-
-    /**
-     * Set colorExterno
-     *
-     * @param string $colorExterno
-     *
-     * @return Vehiculo
-     */
-    public function setColorExterno($colorExterno)
-    {
-        $this->colorExterno = $colorExterno;
-
-        return $this;
-    }
-
-    /**
-     * Get colorExterno
-     *
-     * @return string
-     */
-    public function getColorExterno()
-    {
-        return $this->colorExterno;
     }
 
     /**
@@ -461,8 +432,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setKmIngreso($kmIngreso)
-    {
+    public function setKmIngreso($kmIngreso) {
         $this->kmIngreso = $kmIngreso;
 
         return $this;
@@ -473,8 +443,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getKmIngreso()
-    {
+    public function getKmIngreso() {
         return $this->kmIngreso;
     }
 
@@ -485,8 +454,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setObservacion($observacion)
-    {
+    public function setObservacion($observacion) {
         $this->observacion = $observacion;
 
         return $this;
@@ -497,8 +465,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getObservacion()
-    {
+    public function getObservacion() {
         return $this->observacion;
     }
 
@@ -509,8 +476,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -521,8 +487,7 @@ class Vehiculo
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -533,8 +498,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -545,8 +509,7 @@ class Vehiculo
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -557,8 +520,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setChasis($chasis)
-    {
+    public function setChasis($chasis) {
         $this->chasis = $chasis;
 
         return $this;
@@ -569,8 +531,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getChasis()
-    {
+    public function getChasis() {
         return $this->chasis;
     }
 
@@ -581,8 +542,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setDocumento($documento)
-    {
+    public function setDocumento($documento) {
         $this->documento = $documento;
 
         return $this;
@@ -593,8 +553,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getDocumento()
-    {
+    public function getDocumento() {
         return $this->documento;
     }
 
@@ -605,8 +564,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setImporte($importe)
-    {
+    public function setImporte($importe) {
         $this->importe = $importe;
 
         return $this;
@@ -617,8 +575,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getImporte()
-    {
+    public function getImporte() {
         return $this->importe;
     }
 
@@ -629,8 +586,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setImpuestos($impuestos)
-    {
+    public function setImpuestos($impuestos) {
         $this->impuestos = $impuestos;
 
         return $this;
@@ -641,8 +597,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getImpuestos()
-    {
+    public function getImpuestos() {
         return $this->impuestos;
     }
 
@@ -653,8 +608,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setNumeroPedido($numeroPedido)
-    {
+    public function setNumeroPedido($numeroPedido) {
         $this->numeroPedido = $numeroPedido;
 
         return $this;
@@ -665,8 +619,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getNumeroPedido()
-    {
+    public function getNumeroPedido() {
         return $this->numeroPedido;
     }
 
@@ -677,8 +630,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setNumeroOrden($numeroOrden)
-    {
+    public function setNumeroOrden($numeroOrden) {
         $this->numeroOrden = $numeroOrden;
 
         return $this;
@@ -689,8 +641,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getNumeroOrden()
-    {
+    public function getNumeroOrden() {
         return $this->numeroOrden;
     }
 
@@ -701,8 +652,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setNumeroGrupo($numeroGrupo)
-    {
+    public function setNumeroGrupo($numeroGrupo) {
         $this->numeroGrupo = $numeroGrupo;
 
         return $this;
@@ -713,8 +663,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getNumeroGrupo()
-    {
+    public function getNumeroGrupo() {
         return $this->numeroGrupo;
     }
 
@@ -725,8 +674,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setNumeroSolicitud($numeroSolicitud)
-    {
+    public function setNumeroSolicitud($numeroSolicitud) {
         $this->numeroSolicitud = $numeroSolicitud;
 
         return $this;
@@ -737,8 +685,7 @@ class Vehiculo
      *
      * @return string
      */
-    public function getNumeroSolicitud()
-    {
+    public function getNumeroSolicitud() {
         return $this->numeroSolicitud;
     }
 
@@ -749,8 +696,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setModelo(\VehiculosBundle\Entity\CodigoModelo $modelo = null)
-    {
+    public function setModelo(\VehiculosBundle\Entity\CodigoModelo $modelo = null) {
         $this->modelo = $modelo;
 
         return $this;
@@ -761,8 +707,7 @@ class Vehiculo
      *
      * @return \VehiculosBundle\Entity\CodigoModelo
      */
-    public function getModelo()
-    {
+    public function getModelo() {
         return $this->modelo;
     }
 
@@ -773,8 +718,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -785,8 +729,7 @@ class Vehiculo
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -797,8 +740,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -809,8 +751,7 @@ class Vehiculo
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
 
@@ -821,8 +762,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setRemito(\VehiculosBundle\Entity\Remito $remito = null)
-    {
+    public function setRemito(\VehiculosBundle\Entity\Remito $remito = null) {
         $this->remito = $remito;
 
         return $this;
@@ -833,8 +773,7 @@ class Vehiculo
      *
      * @return \VehiculosBundle\Entity\Remito
      */
-    public function getRemito()
-    {
+    public function getRemito() {
         return $this->remito;
     }
 
@@ -845,8 +784,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setCliente(\ClientesBundle\Entity\Cliente $cliente = null)
-    {
+    public function setCliente(\ClientesBundle\Entity\Cliente $cliente = null) {
         $this->cliente = $cliente;
 
         return $this;
@@ -857,8 +795,7 @@ class Vehiculo
      *
      * @return \ClientesBundle\Entity\Cliente
      */
-    public function getCliente()
-    {
+    public function getCliente() {
         return $this->cliente;
     }
 
@@ -869,8 +806,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setTipoVentaEspecial(\VehiculosBundle\Entity\TipoVentaEspecial $tipoVentaEspecial = null)
-    {
+    public function setTipoVentaEspecial(\VehiculosBundle\Entity\TipoVentaEspecial $tipoVentaEspecial = null) {
         $this->tipoVentaEspecial = $tipoVentaEspecial;
 
         return $this;
@@ -881,8 +817,7 @@ class Vehiculo
      *
      * @return \VehiculosBundle\Entity\TipoVentaEspecial
      */
-    public function getTipoVentaEspecial()
-    {
+    public function getTipoVentaEspecial() {
         return $this->tipoVentaEspecial;
     }
 
@@ -893,8 +828,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setFactura(\VehiculosBundle\Entity\Factura $factura = null)
-    {
+    public function setFactura(\VehiculosBundle\Entity\Factura $factura = null) {
         $this->factura = $factura;
 
         return $this;
@@ -905,8 +839,7 @@ class Vehiculo
      *
      * @return \VehiculosBundle\Entity\Factura
      */
-    public function getFactura()
-    {
+    public function getFactura() {
         return $this->factura;
     }
 
@@ -917,8 +850,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setPatentamiento(\VehiculosBundle\Entity\Patentamiento $patentamiento = null)
-    {
+    public function setPatentamiento(\VehiculosBundle\Entity\Patentamiento $patentamiento = null) {
         $this->patentamiento = $patentamiento;
 
         return $this;
@@ -929,8 +861,7 @@ class Vehiculo
      *
      * @return \VehiculosBundle\Entity\Patentamiento
      */
-    public function getPatentamiento()
-    {
+    public function getPatentamiento() {
         return $this->patentamiento;
     }
 
@@ -941,8 +872,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function addEstadoVehiculo(\VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo)
-    {
+    public function addEstadoVehiculo(\VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo) {
         $this->estadoVehiculo[] = $estadoVehiculo;
 
         return $this;
@@ -953,8 +883,7 @@ class Vehiculo
      *
      * @param \VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo
      */
-    public function removeEstadoVehiculo(\VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo)
-    {
+    public function removeEstadoVehiculo(\VehiculosBundle\Entity\EstadoVehiculo $estadoVehiculo) {
         $this->estadoVehiculo->removeElement($estadoVehiculo);
     }
 
@@ -963,8 +892,7 @@ class Vehiculo
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEstadoVehiculo()
-    {
+    public function getEstadoVehiculo() {
         return $this->estadoVehiculo;
     }
 
@@ -975,8 +903,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function addMovimientoDeposito(\VehiculosBundle\Entity\MovimientoDeposito $movimientoDeposito)
-    {
+    public function addMovimientoDeposito(\VehiculosBundle\Entity\MovimientoDeposito $movimientoDeposito) {
         $this->movimientoDeposito[] = $movimientoDeposito;
 
         return $this;
@@ -987,8 +914,7 @@ class Vehiculo
      *
      * @param \VehiculosBundle\Entity\MovimientoDeposito $movimientoDeposito
      */
-    public function removeMovimientoDeposito(\VehiculosBundle\Entity\MovimientoDeposito $movimientoDeposito)
-    {
+    public function removeMovimientoDeposito(\VehiculosBundle\Entity\MovimientoDeposito $movimientoDeposito) {
         $this->movimientoDeposito->removeElement($movimientoDeposito);
     }
 
@@ -997,8 +923,7 @@ class Vehiculo
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getMovimientoDeposito()
-    {
+    public function getMovimientoDeposito() {
         return $this->movimientoDeposito;
     }
 
@@ -1009,8 +934,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function addDanioVehiculoGm(\VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm)
-    {
+    public function addDanioVehiculoGm(\VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm) {
         $this->danioVehiculoGm[] = $danioVehiculoGm;
 
         return $this;
@@ -1021,8 +945,7 @@ class Vehiculo
      *
      * @param \VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm
      */
-    public function removeDanioVehiculoGm(\VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm)
-    {
+    public function removeDanioVehiculoGm(\VehiculosBundle\Entity\DanioVehiculoGm $danioVehiculoGm) {
         $this->danioVehiculoGm->removeElement($danioVehiculoGm);
     }
 
@@ -1031,8 +954,7 @@ class Vehiculo
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getDanioVehiculoGm()
-    {
+    public function getDanioVehiculoGm() {
         return $this->danioVehiculoGm;
     }
 
@@ -1043,8 +965,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setTransportista(\VehiculosBundle\Entity\Transportista $transportista = null)
-    {
+    public function setTransportista(\VehiculosBundle\Entity\Transportista $transportista = null) {
         $this->transportista = $transportista;
 
         return $this;
@@ -1055,8 +976,7 @@ class Vehiculo
      *
      * @return \VehiculosBundle\Entity\Transportista
      */
-    public function getTransportista()
-    {
+    public function getTransportista() {
         return $this->transportista;
     }
 
@@ -1067,8 +987,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function setFechaEmisionDocumento($fechaEmisionDocumento)
-    {
+    public function setFechaEmisionDocumento($fechaEmisionDocumento) {
         $this->fechaEmisionDocumento = $fechaEmisionDocumento;
 
         return $this;
@@ -1079,8 +998,7 @@ class Vehiculo
      *
      * @return \DateTime
      */
-    public function getFechaEmisionDocumento()
-    {
+    public function getFechaEmisionDocumento() {
         return $this->fechaEmisionDocumento;
     }
 
@@ -1091,8 +1009,7 @@ class Vehiculo
      *
      * @return Vehiculo
      */
-    public function addDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno)
-    {
+    public function addDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno) {
         $this->danioVehiculoInterno[] = $danioVehiculoInterno;
 
         return $this;
@@ -1103,8 +1020,7 @@ class Vehiculo
      *
      * @param \VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno
      */
-    public function removeDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno)
-    {
+    public function removeDanioVehiculoInterno(\VehiculosBundle\Entity\DanioVehiculoInterno $danioVehiculoInterno) {
         $this->danioVehiculoInterno->removeElement($danioVehiculoInterno);
     }
 
@@ -1113,8 +1029,96 @@ class Vehiculo
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getDanioVehiculoInterno()
-    {
+    public function getDanioVehiculoInterno() {
         return $this->danioVehiculoInterno;
     }
+
+    /**
+     * Set vendedor
+     *
+     * @param \PersonasBundle\Entity\Empleado $vendedor
+     *
+     * @return Vehiculo
+     */
+    public function setVendedor(\PersonasBundle\Entity\Empleado $vendedor = null) {
+        $this->vendedor = $vendedor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendedor
+     *
+     * @return \PersonasBundle\Entity\Empleado
+     */
+    public function getVendedor() {
+        return $this->vendedor;
+    }
+
+    /**
+     * Set checkControlInternoResultadoCabecera
+     *
+     * @param \VehiculosBundle\Entity\CheckControlInternoResultadoCabecera $checkControlInternoResultadoCabecera
+     *
+     * @return Vehiculo
+     */
+    public function setCheckControlInternoResultadoCabecera(\VehiculosBundle\Entity\CheckControlInternoResultadoCabecera $checkControlInternoResultadoCabecera = null) {
+        $this->checkControlInternoResultadoCabecera = $checkControlInternoResultadoCabecera;
+
+        return $this;
+    }
+
+    /**
+     * Get checkControlInternoResultadoCabecera
+     *
+     * @return \VehiculosBundle\Entity\CheckControlInternoResultadoCabecera
+     */
+    public function getCheckControlInternoResultadoCabecera() {
+        return $this->checkControlInternoResultadoCabecera;
+    }
+
+    /**
+     * Set colorVehiculo
+     *
+     * @param \VehiculosBundle\Entity\ColorVehiculo $colorVehiculo
+     *
+     * @return Vehiculo
+     */
+    public function setColorVehiculo(\VehiculosBundle\Entity\ColorVehiculo $colorVehiculo = null) {
+        $this->colorVehiculo = $colorVehiculo;
+
+        return $this;
+    }
+
+    /**
+     * Get colorVehiculo
+     *
+     * @return \VehiculosBundle\Entity\ColorVehiculo
+     */
+    public function getColorVehiculo() {
+        return $this->colorVehiculo;
+    }
+
+    /**
+     * Set pagado
+     *
+     * @param boolean $pagado
+     *
+     * @return Vehiculo
+     */
+    public function setPagado($pagado) {
+        $this->pagado = $pagado;
+
+        return $this;
+    }
+
+    /**
+     * Get pagado
+     *
+     * @return boolean
+     */
+    public function getPagado() {
+        return $this->pagado;
+    }
+
 }

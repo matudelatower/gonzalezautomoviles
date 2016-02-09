@@ -8,8 +8,7 @@
     <script type="text/javascript">
 
         var itemCant{{edit_form.danioVehiculoGm.vars.id}} = {{ edit_form.danioVehiculoGm.count | default(0)}};
-
-        $(document).ready(function () {
+                $(document).ready(function () {
 
             $('.agregar-danio').click(function () {
 
@@ -88,6 +87,9 @@
                     }
                 });
             }
+            $('#{{ edit_form.vin.vars.id }}').keyup(function () {
+                $('#{{ edit_form.chasis.vars.id }}').val($('#{{ edit_form.vin.vars.id }}').val());
+            });
         });
     </script>
 {% endblock javascripts %}
@@ -123,7 +125,7 @@
             <a class="btn btn-default" title="Borrar item"
                href="javascript:void(0)"
                onclick="bootstrapCollectionBorrarItem(this);"><i
-                        class="fa fa-fw fa-trash-o"></i></a>
+                    class="fa fa-fw fa-trash-o"></i></a>
         </td>
     {% endset %}
     <div class="row">
@@ -139,7 +141,7 @@
                 {{ form_row(edit_form.vin) }}
                 {{ form_row(edit_form.chasis) }}
                 {{ form_row(edit_form.modelo) }}
-                {{ form_row(edit_form.colorExterno) }}
+                {{ form_row(edit_form.colorVehiculo) }}
                 {{ form_row(edit_form.motor) }}
                 {{ form_row(edit_form.importe) }}
                 {{ form_row(edit_form.impuestos) }}
@@ -163,50 +165,50 @@
                     <table class="table table-striped table-bordered"
                            data-prototype="{{ danioVehiculoProto|e }}">
                         <thead>
-                        <tr>
-                            <th>Tipo Daño</th>
-                            <th>Codigo Daño</th>
-                            <th>Gravedad</th>
-                            <th>Estado</th>
-                            <th>Foto</th>
-                            <th>Acción</th>
+                            <tr>
+                                <th>Tipo Daño</th>
+                                <th>Codigo Daño</th>
+                                <th>Gravedad</th>
+                                <th>Estado</th>
+                                <th>Foto</th>
+                                <th>Acción</th>
 
-                        </tr>
+                            </tr>
 
                         </thead>
                         <tbody>
-                        {% for danioVehiculo in edit_form.danioVehiculoGm %}
-                            <tr>
-                                <td>{{ form_widget(danioVehiculo.tipoDanio) }}</td>
-                                <td>{{ form_widget(danioVehiculo.codigoDanio) }}</td>
-                                <td>{{ form_widget(danioVehiculo.gravedadDanio) }}</td>
-                                <td>{{ form_widget(danioVehiculo.tipoEstadoDanioGm) }}</td>
-                                {% set fotoProtoList %}
-                                    <button type="button" class="btn btn-box-tool pull-right btn-remove-foto">
-                                        <i class="fa fa-remove"></i>
-                                    </button>
-                                    {{ form_widget(danioVehiculo.fotoDanio.vars.prototype) }}
+                            {% for danioVehiculo in edit_form.danioVehiculoGm %}
+                                <tr>
+                                    <td>{{ form_widget(danioVehiculo.tipoDanio) }}</td>
+                                    <td>{{ form_widget(danioVehiculo.codigoDanio) }}</td>
+                                    <td>{{ form_widget(danioVehiculo.gravedadDanio) }}</td>
+                                    <td>{{ form_widget(danioVehiculo.tipoEstadoDanioGm) }}</td>
+                                    {% set fotoProtoList %}
+                                <button type="button" class="btn btn-box-tool pull-right btn-remove-foto">
+                                    <i class="fa fa-remove"></i>
+                                </button>
+                                {{ form_widget(danioVehiculo.fotoDanio.vars.prototype) }}
 
-                                {% endset %}
-                                <td class="foto-list"
-                                    data-prototype="{{ fotoProtoList|e }}">
-                                    <div class="elements">
-                                        {% for fotoDanio in danioVehiculo.fotoDanio %}
-                                            <img class="img-responsive" width="300" height="300"
-                                                 src="{{ app.request.basePath ~ '/uploads/fotos_danio/' ~ fotoDanio.vars.data.ruta }}">
-                                            {{ form_widget(fotoDanio) }}
-                                        {% endfor %}
-                                    </div>
-                                    <a class="btn btn-default pull-right agregar-foto"
-                                       data-cant="{{ danioVehiculo.fotoDanio.count + 1 }}"
-                                       href="#"><i class="fa fa-plus"></i></a>
-                                </td>
-                                <td>
-                                    <a class="btn btn-default" title="Borrar item"
-                                       href="javascript:void(0)"
-                                       onclick="bootstrapCollectionBorrarItem(this);"><i
-                                                class="fa fa-fw fa-trash-o"></i></a>
-                                </td>
+                            {% endset %}
+                            <td class="foto-list"
+                                data-prototype="{{ fotoProtoList|e }}">
+                                <div class="elements">
+                                    {% for fotoDanio in danioVehiculo.fotoDanio %}
+                                        <img class="img-responsive" width="300" height="300"
+                                             src="{{ app.request.basePath ~ '/uploads/fotos_danio/' ~ fotoDanio.vars.data.ruta }}">
+                                        {{ form_widget(fotoDanio) }}
+                                    {% endfor %}
+                                </div>
+                                <a class="btn btn-default pull-right agregar-foto"
+                                   data-cant="{{ danioVehiculo.fotoDanio.count + 1 }}"
+                                   href="#"><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td>
+                                <a class="btn btn-default" title="Borrar item"
+                                   href="javascript:void(0)"
+                                   onclick="bootstrapCollectionBorrarItem(this);"><i
+                                        class="fa fa-fw fa-trash-o"></i></a>
+                            </td>
                             </tr>
                         {% endfor %}
                         </tbody>

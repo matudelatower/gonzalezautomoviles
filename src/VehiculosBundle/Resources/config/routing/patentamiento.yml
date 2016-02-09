@@ -1,0 +1,30 @@
+patentamiento:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:Patentamiento:index" }
+
+patentamiento_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:Patentamiento:show" }
+
+patentamiento_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:Patentamiento:new" }
+
+patentamiento_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:Patentamiento:create" }
+    methods:  POST
+
+patentamiento_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:Patentamiento:edit" }
+
+patentamiento_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:Patentamiento:update" }
+    methods:  [POST, PUT]
+
+patentamiento_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:Patentamiento:delete" }
+    methods:  [POST, DELETE]

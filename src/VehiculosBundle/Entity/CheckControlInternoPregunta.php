@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="check_control_interno_preguntas")
  * @ORM\Entity
  * @UniqueEntity("pregunta")
+ * @UniqueEntity("orden")
  */
 class CheckControlInternoPregunta {
 
@@ -41,7 +42,7 @@ class CheckControlInternoPregunta {
     /**
      * @var integer
      *
-     * @ORM\Column(name="orden", type="integer",nullable=true)
+     * @ORM\Column(name="orden", type="integer")
      */
     private $orden;
 

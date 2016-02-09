@@ -6,11 +6,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Entity\EstadoVehiculo;
 use VehiculosBundle\Entity\Vehiculo;
+use VehiculosBundle\Entity\Patentamiento;
 use VehiculosBundle\Form\AltaVehiculoType;
+use VehiculosBundle\Form\FacturaVehiculoType;
 use VehiculosBundle\Form\CheckListPreEntregaType;
 use VehiculosBundle\Form\EditarVehiculoType;
 use VehiculosBundle\Form\VehiculoType;
 use VehiculosBundle\Form\VehiculoFilterType;
+use VehiculosBundle\Form\PatentamientoType;
 
 /**
  * Vehiculo controller.
@@ -25,7 +28,6 @@ class VehiculoController extends Controller {
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new VehiculoFilterType());
-
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -37,8 +39,13 @@ class VehiculoController extends Controller {
         }
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
         $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        } else {
+            $limit = 10;
+        }
         $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
 
         return $this->render(
@@ -73,8 +80,13 @@ class VehiculoController extends Controller {
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
         $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        } else {
+            $limit = 10;
+        }
         $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
 
         return $this->render(
@@ -95,7 +107,7 @@ class VehiculoController extends Controller {
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido-con-problemas');
         $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido-conforme');
         $estados = array($estadoId1, $estadoId2);
-
+        $form = $this->createForm(new VehiculoFilterType());
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -107,13 +119,16 @@ class VehiculoController extends Controller {
         }
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
-        $form = $this->createForm(new VehiculoFilterType());
 
         $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        } else {
+            $limit = 10;
+        }
         $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
-
         return $this->render(
                         'VehiculosBundle:Vehiculo:recibidosIndex.html.twig', array(
                     'entities' => $entities,
@@ -129,6 +144,7 @@ class VehiculoController extends Controller {
      */
     public function vehiculosStockIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculoFilterType());
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('stock');
         $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('asignado-a-cliente');
         $estadoId3 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('asignado-a-reventa');
@@ -145,11 +161,16 @@ class VehiculoController extends Controller {
         }
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
-        $form = $this->createForm(new VehiculoFilterType());
+
 
         $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        } else {
+            $limit = 10;
+        }
         $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
 
         return $this->render(
@@ -157,6 +178,93 @@ class VehiculoController extends Controller {
                     'entities' => $entities,
                     'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                        )
+        );
+    }
+
+    /**
+     * listado de vehiculos que fueron facturados.
+     *
+     */
+    public function vehiculosFacturadosIndexAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculoFilterType());
+        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('facturado');
+        $estados = array($estadoId1);
+
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+            }
+        } else {
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+        }
+
+        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+
+        $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        } else {
+            $limit = 10;
+        }
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
+        );
+
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:facturadosIndex.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                        )
+        );
+    }
+
+    /**
+     * listado de vehiculos que fueron patentados.
+     *
+     */
+    public function vehiculosEntregadosIndexAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculoFilterType());
+        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
+        $estados = array($estadoId1);
+
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+            }
+        } else {
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+        }
+
+//        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+
+        $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        } else {
+            $limit = 10;
+        }
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
+        );
+//        $entities = $paginator->paginate(
+//            $entities,
+//            $this->get('request')->query->get('page', 1)/* page number */,
+//            10/* limit per page */
+//        );
+
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:entregadosIndex.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView()
+//                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
                         )
         );
     }
@@ -181,8 +289,6 @@ class VehiculoController extends Controller {
             $estadoVehiculo = new EstadoVehiculo();
             $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
             $estadoVehiculo->setVehiculo($entity);
-            $estadoVehiculo->setActual('true');
-
             $entity->addEstadoVehiculo($estadoVehiculo);
 
             $em->persist($entity);
@@ -277,7 +383,6 @@ class VehiculoController extends Controller {
         );
     }
 
-   
     /**
      * Displays a form to edit an existing Vehiculo entity.
      *
@@ -328,6 +433,191 @@ class VehiculoController extends Controller {
         );
 
         return $form;
+    }
+
+    /**
+     * Creates a form to crear a Patentamiento entity.
+     *
+     * @param Patentamiento $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createPatentamientoForm(Patentamiento $entity, $route, $submitLabel = 'Guardar') {
+
+
+        $type = new PatentamientoType();
+
+
+        $form = $this->createForm(
+                $type, $entity, array(
+            'action' => $route,
+            'method' => 'POST',
+            'attr' => array('class' => 'box-body')
+                )
+        );
+
+        $form->add(
+                'submit', 'submit', array(
+            'label' => $submitLabel,
+            'attr' => array('class' => 'btn btn-primary pull-right')
+                )
+        );
+
+        return $form;
+    }
+
+    /**
+     * Crea form para guardar una factura para el vehiculo
+     * @return type
+     */
+    public function newFacturaAction($vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
+        }
+
+        $form = $this->createCreateForm($entity, new FacturaVehiculoType(), $this->generateUrl('vehiculos_create_factura', array('vehiculoId' => $vehiculoId)), 'Guardar');
+
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:newFactura.html.twig', array(
+                    'entity' => $entity,
+                    'form' => $form->createView(),
+                        )
+        );
+    }
+
+    /**
+     * Crea o actualiza una factura para un automovil.
+     *
+     */
+    public function vehiculosCreateFacturaAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+
+        if (!$vehiculo) {
+            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
+        }
+
+        $form = $this->createCreateForm($vehiculo, new FacturaVehiculoType(), $this->generateUrl('vehiculos_create_factura', array('vehiculoId' => $vehiculoId)), 'Guardar');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                //busco el id del estado facturado
+                $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                        'facturado'
+                );
+
+                if ($vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo) {
+
+                    $estadoVehiculo = new EstadoVehiculo();
+                    $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+                    $estadoVehiculo->setVehiculo($vehiculo);
+                    $vehiculo->addEstadoVehiculo($estadoVehiculo);
+                }
+
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                        'success', 'Factura guardada correctamente.'
+                );
+
+//                return $this->redirect($this->generateUrl('vehiculos_create_factura', array('vehiculoId' => $vehiculoId)));
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'error', 'Hubo un problema al guardar la factura.'
+                );
+            }
+        }
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:newFactura.html.twig', array(
+                    'entity' => $vehiculo,
+                    'form' => $form->createView(),
+                        )
+        );
+    }
+
+    /**
+     * Crea form para guardar datos de patentamiento de un vehiculo
+     * @return type
+     */
+    public function editPatenteAction($vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+        if ($vehiculo->getPatentamiento()) {
+            $entity = $em->getRepository('VehiculosBundle:Patentamiento')->find($vehiculo->getPatentamiento()->getId());
+        } else {
+            $entity = new Patentamiento();
+        }
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Vehiculo entity.');
+        }
+
+        $form = $this->createPatentamientoForm($entity, $this->generateUrl('vehiculos_update_patente', array('vehiculoId' => $vehiculoId)));
+
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:editPatente.html.twig', array(
+                    'entity' => $entity,
+                    'form' => $form->createView(),
+                        )
+        );
+    }
+
+    /**
+     * Crea o actualiza una factura para un automovil.
+     *
+     */
+    public function vehiculosUpdatePatenteAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+        if ($vehiculo->getPatentamiento()) {
+            $entity = $em->getRepository('VehiculosBundle:Patentamiento')->find($vehiculo->getPatentamiento()->getId());
+        } else {
+            $entity = new Patentamiento();
+        }
+
+        $form = $this->createPatentamientoForm($entity, $this->generateUrl('vehiculos_update_patente', array('vehiculoId' => $vehiculoId)));
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em->persist($entity);
+                $vehiculo->setPatentamiento($entity);
+//                $data = $form->getData();
+//                if ($data->getEstadoPatentamiento()->getSlug() == 'patentado') {
+//                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+//                            'patentado'
+//                    );
+//                    $estadoVehiculo = new EstadoVehiculo();
+//                    $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+//                    $estadoVehiculo->setVehiculo($vehiculo);
+//                    $vehiculo->addEstadoVehiculo($estadoVehiculo);
+//                }
+
+                $em->flush();
+
+                $this->get('session')->getFlashBag()->add(
+                        'success', 'Patente guardada correctamente.'
+                );
+
+//                return $this->redirect($this->generateUrl('vehiculos_create_factura', array('vehiculoId' => $vehiculoId)));
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                        'error', 'Hubo un problema al guardar los datos de la patente.'
+                );
+            }
+        }
+        return $this->render(
+                        'VehiculosBundle:Vehiculo:editPatente.html.twig', array(
+                    'entity' => $entity,
+                    'form' => $form->createView(),
+                        )
+        );
     }
 
     /**
@@ -532,32 +822,63 @@ class VehiculoController extends Controller {
 //                $cuestionario
 //        );
         $preguntas = $em->getRepository('VehiculosBundle:CheckControlInternoPregunta')->findBy(array('estado' => 'true'), array('orden' => 'asc'));
-//        $formDaniosInternos = $this->createForm(new CheckListPreEntregaType(), $vehiculo);
+        $preguntasSelecionadas = $request->request;
+        $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($vehiculo);
 
 
-        if (!$preguntas) {
-            throw $this->createNotFoundException('No se encuentra el Campo');
+        if (!$controlInternoCabecera) {
+            $controlInternoCabecera = new \VehiculosBundle\Entity\CheckControlInternoResultadoCabecera();
+            $controlInternoCabecera->setVehiculo($vehiculo);
+            $controlInternoCabecera->setFirmado('false');
+            $em->persist($controlInternoCabecera);
+            $nuevo = true;
+        } else {
+            $nuevo = false;
         }
 
         if ($request->getMethod() == 'POST') {
-            $formDaniosInternos->handleRequest($request);
-            if ($formDaniosInternos->isValid()) {
-                $checkList = $request->get('cuestionarios_bundle_check_list_parameter_type');
-//				$data             = $formDaniosInternos->getData();
-                $vehiculosManager = $this->get('manager.vehiculos');
+            if (!$nuevo) {
+                $qb = $em->createQueryBuilder();
+                $query = $qb->delete('VehiculosBundle:CheckControlInternoResultadoRespuesta', 'res')
+                        ->where('res.checkControlInternoResultadoCabecera = :cabecera_id')
+                        ->setParameter('cabecera_id', $controlInternoCabecera->getId())
+                        ->getQuery();
+                $query->execute();
+            } else {
+                $vehiculo->setCheckControlInternoResultadoCabecera($controlInternoCabecera);
+                $em->persist($vehiculo);
+            }
 
-                if ($vehiculosManager->crearCheckList($vehiculo, $checkList)) {
+            $preguntasOriginales = null;
+            foreach ($preguntas as $pregunta) {
+                $preguntasOriginales[] = $pregunta->getId();
+            }
 
-                    $this->get('session')->getFlashBag()->add(
-                            'success', 'Checklist Creado Correctamente'
-                    );
+            foreach ($preguntasSelecionadas as $preguntaId) {
+                if (in_array($preguntaId, $preguntasOriginales)) {
+                    $resultadoRespuesta = new \VehiculosBundle\Entity\CheckControlInternoResultadoRespuesta();
+                    $resultadoRespuesta->setCheckControlInternoResultadoCabecera($controlInternoCabecera);
+                    $pregunta = $em->getRepository('VehiculosBundle:CheckControlInternoPregunta')->find($preguntaId);
+                    $resultadoRespuesta->setCheckControlInternoPregunta($pregunta);
+                    $em->persist($resultadoRespuesta);
                 }
+            }
+            $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Checklist Guardado Correctamente'
+            );
+        } elseif (!$nuevo) {
+            $preguntasSelecionadas = null;
+            $respuestasGuardadas = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoRespuesta')->findByCheckControlInternoResultadoCabecera($controlInternoCabecera);
+            foreach ($respuestasGuardadas as $respuesta) {
+                $preguntasSelecionadas[] = $respuesta->getCheckControlInternoPregunta()->getId();
             }
         }
 
         return $this->render(
                         'VehiculosBundle:Vehiculo:checkControlInterno.html.twig', array(
-                    'preguntas' => $preguntas,
+                    'preguntasOriginales' => $preguntas,
+                    'preguntasSeleccionadas' => $preguntasSelecionadas,
                     'vehiculoId' => $vehiculoId,
                         )
         );

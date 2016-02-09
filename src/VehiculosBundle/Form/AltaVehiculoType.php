@@ -24,7 +24,9 @@ class AltaVehiculoType extends AbstractType {
                     ),
                 ))
                 ->add('vin')
-                ->add('chasis')
+                ->add('chasis', 'text', array(
+                    'attr' => array('readonly' => 'readonly')
+                ))
                 ->add('modelo', 'entity', array(
                     'class' => 'VehiculosBundle:CodigoModelo',
                     'attr' => array(
@@ -36,7 +38,18 @@ class AltaVehiculoType extends AbstractType {
             },
                         )
                 )
-                ->add('colorExterno')
+                ->add('colorVehiculo', 'entity', array(
+                    'class' => 'VehiculosBundle:ColorVehiculo',
+                    'attr' => array(
+                        'class' => 'select2'
+                    ),
+                    'query_builder' => function ( EntityRepository $er ) {
+                return $er->createQueryBuilder('cm')
+                        ->where('cm.activo = true');
+            },
+                        )
+                )
+//                ->add('colorVehiculo')
                 ->add('motor')
                 ->add('importe')
                 ->add('impuestos')

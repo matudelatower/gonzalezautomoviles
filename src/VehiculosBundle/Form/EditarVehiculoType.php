@@ -24,7 +24,9 @@ class EditarVehiculoType extends AbstractType {
                     ),
                 ))
                 ->add('vin')
-                ->add('chasis')
+                ->add('chasis', 'text', array(
+                    'attr' => array('readonly' => 'readonly')
+                ))
                 ->add('modelo', 'entity', array(
                     'class' => 'VehiculosBundle:CodigoModelo',
                     'attr' => array(
@@ -36,7 +38,17 @@ class EditarVehiculoType extends AbstractType {
             },
                         )
                 )
-                ->add('colorExterno')
+                ->add('colorVehiculo', 'entity', array(
+                    'class' => 'VehiculosBundle:ColorVehiculo',
+                    'attr' => array(
+                        'class' => 'select2'
+                    ),
+                    'query_builder' => function ( EntityRepository $er ) {
+                return $er->createQueryBuilder('cm')
+                        ->where('cm.activo = true');
+            },
+                        )
+                )
                 ->add('motor')
                 ->add('importe')
                 ->add('impuestos')
@@ -72,18 +84,12 @@ class EditarVehiculoType extends AbstractType {
                     'attr' => array(
                         'required' => 'true'
             )))
-                ->add('codigoRadio', 'text', array(
-                    'attr' => array(
-                        'required' => 'true'
-            )))
+                ->add('codigoRadio')
                 ->add('kmIngreso', 'text', array(
                     'attr' => array(
                         'required' => 'true'
             )))
-                ->add('codigoSeguridad', 'text', array(
-                    'attr' => array(
-                        'required' => 'true'
-            )))
+                ->add('codigoSeguridad')
                 ->add('transportista')
                 ->add('danioVehiculoGm', 'bootstrapcollection', array(
                     'type' => new DanioVehiculoGmType(),

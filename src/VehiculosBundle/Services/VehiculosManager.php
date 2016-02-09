@@ -117,20 +117,19 @@ class VehiculosManager {
 	}
 
 	public function setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo ) {
-		$em = $this->em;
+//		$em = $this->em;
 		//cambio actual=false en todos los registros de estado que tuvo el automovil
-		$qb = $em->getRepository( 'VehiculosBundle:Vehiculo' )->createQueryBuilder( 'e' )
-		         ->update( 'VehiculosBundle:EstadoVehiculo', 'e' )
-		         ->set( 'e.actual', 'false' )
-		         ->where( 'e.vehiculo=:vehiculoId' )
-		         ->setParameter( 'vehiculoId', $vehiculo );
-
-		$qb->getQuery()->getResult();
+//		$qb = $em->getRepository( 'VehiculosBundle:Vehiculo' )->createQueryBuilder( 'e' )
+//		         ->update( 'VehiculosBundle:EstadoVehiculo', 'e' )
+//		         ->set( 'e.actual', 'false' )
+//		         ->where( 'e.vehiculo=:vehiculoId' )
+//		         ->setParameter( 'vehiculoId', $vehiculo );
+//
+//		$qb->getQuery()->getResult();
 
 		$estadoVehiculo = new EstadoVehiculo();
 		$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
 		$estadoVehiculo->setVehiculo( $vehiculo );
-		$estadoVehiculo->setActual( 'true' );
 
 		$vehiculo->addEstadoVehiculo( $estadoVehiculo );
 	}

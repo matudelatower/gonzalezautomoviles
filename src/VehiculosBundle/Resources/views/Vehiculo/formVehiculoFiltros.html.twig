@@ -19,13 +19,23 @@
                         </div>
                         <label class="col-sm-2 control-label" for="inputEmail3">Color</label>
                         <div class="col-sm-4">
-                            {{ form_widget(form.colorExterno) }}
+                            {{ form_widget(form.colorVehiculo) }}
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputEmail3">Modelo</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.modelo) }}
+                        </div>
                         <label class="col-sm-2 control-label" for="inputEmail3">Tipo de Venta</label>
                         <div class="col-sm-4">
                             {{ form_widget(form.tipoVentaEspecial) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputEmail3">Depósito</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.deposito) }}
                         </div>
                     </div>
 
@@ -37,10 +47,10 @@
                                 </span>
                                 Buscar
                             </button>
-                            
+
                         </div>
                     </div>
-{#                </form>#}
+                    {#                </form>#}
             </div>
         </div>
     </div>

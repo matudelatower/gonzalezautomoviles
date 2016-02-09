@@ -26,12 +26,19 @@ class VehiculoFilterType extends AbstractType {
                     'required' => false,
                 ))
 //                ->add('modelo')
-                ->add('colorExterno', 'text', array(
+                ->add('colorVehiculo', 'entity', array(
+                    'class' => 'VehiculosBundle:ColorVehiculo',
+                    'choice_label' => 'color',
                     'required' => false,
                 ))
-                ->add('motor', 'text', array(
+               ->add('modelo', 'entity', array(
+                    'class' => 'VehiculosBundle:NombreModelo',
+                    'choice_label' => 'nombre',
                     'required' => false,
                 ))
+//                ->add('motor', 'text', array(
+//                    'required' => false,
+//                ))
 //                ->add('importe')
 //                ->add('impuestos')
 //                ->add('numeroPedido')
@@ -40,9 +47,18 @@ class VehiculoFilterType extends AbstractType {
                     'choice_label' => 'nombre',
                     'required' => false,
                 ))
+                ->add('deposito', 'entity', array(
+                    'class' => 'VehiculosBundle:Deposito',
+                    'choice_label' => 'nombre',
+                    'required' => false,
+                ))
+                
                 ->add('registrosPaginador', 'choice', array(
-                    'empty_value' => '10',
+                    
+                    'data' => '10',
                     'choices' => array(
+                        '5' => '5',
+                        '10' => '10',
                         '20' => '20',
                         '30' => '30',
                         '40' => '40',

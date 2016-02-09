@@ -37,15 +37,20 @@
                             <h3 class="box-title">Control Interno</h3>
                         </div>
                         <div class="box-body">
-                            {% for pregunta in preguntas %}
+                            {% for pregunta in preguntasOriginales %}
                                 <div class="form-group">
                                     <div class="checkbox"> 
-                                        <label><input type="checkbox" value="1" name="{{pregunta.id}}">{{ pregunta.pregunta }}</label>
+                                        <label><input type="checkbox" value="{{pregunta.id}}" name="{{pregunta.id}}"
+                                      {% if pregunta.id in preguntasSeleccionadas %} 
+                                          checked 
+                                      {% endif%} 
+                                      />{{ pregunta.pregunta }}
+                                      </label>
                                     </div>
                                 </div>
                             {% endfor %}
                             <button class="btn btn-primary" id="btn-guardar-checklist" type="submit">Guardar</button>
-                            <a class="btn btn-default" href="{{ path('vehiculos_recibidos_index') }}">
+                            <a class="btn btn-default" href="{{ path('vehiculos_facturados_index') }}">
                                 Volver
                             </a>
                         </div>

@@ -25,7 +25,7 @@ class CheckControlInternoResultadoRespuesta {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="respuesta", type="boolean")
+     * @ORM\Column(name="respuesta", type="boolean",nullable=true)
      */
     private $respuesta;
 

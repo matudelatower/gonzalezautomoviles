@@ -1,3 +1,7 @@
+personas_ajax:
+    resource: "@PersonasBundle/Resources/config/routing/ajax.yml"
+    prefix:   /ajax
+    
 personas_categoria_empleado:
     resource: "@PersonasBundle/Resources/config/routing/categoriaempleado.yml"
     prefix:   /categoria_empleado

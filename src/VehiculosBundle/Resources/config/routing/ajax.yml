@@ -21,3 +21,15 @@ get_tipo_danios_internos:
 get_fotos_danios_interno_ajax:
     path:     /get_fotos_danios_interno_ajax/danioId
     defaults: { _controller: "VehiculosBundle:Ajax:getFotosDaniosInterno" }    
+    
+get_slug_estado_patentamiento_ajax:
+    path:     /get_slug_estado_patentamiento_ajax/estadoPatentamiendoId
+    defaults: { _controller: "VehiculosBundle:Ajax:getSlugEstadoPatentamiento" }     
+ 
+new_registro_pago_a_gm_ajax:
+    path:     /new_registro_pago_a_gm_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:newRegistroPagoAGmAjax" }
+
+pago_a_gm_update_ajax:
+    path:     /pago_a_gm_update_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:pagoAGmUpdateAjax" }    

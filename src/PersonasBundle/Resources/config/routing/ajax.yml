@@ -1,0 +1,3 @@
+get_empleado_by_apellido:
+    path:     /get_empleado_by_apellido
+    defaults: { _controller: "PersonasBundle:Ajax:getEmpleadoByApellido" }

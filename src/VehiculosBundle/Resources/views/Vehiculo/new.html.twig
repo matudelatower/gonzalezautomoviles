@@ -29,8 +29,10 @@
                     }
                 });
 
-
             })
+            $('#{{ form.vin.vars.id }}').keyup(function () {
+                $('#{{ form.chasis.vars.id }}').val($('#{{ form.vin.vars.id }}').val());
+            });
         });
     </script>
 {% endblock %}

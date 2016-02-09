@@ -17,10 +17,6 @@ class CheckControlInternoPreguntaType extends AbstractType {
                 ->add('pregunta')
                 ->add('orden')
                 ->add('estado')
-                ->add('creado')
-                ->add('actualizado')
-                ->add('creadoPor')
-                ->add('actualizadoPor')
         ;
     }
 

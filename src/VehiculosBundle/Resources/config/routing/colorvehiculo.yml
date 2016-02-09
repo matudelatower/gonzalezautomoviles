@@ -1,0 +1,30 @@
+color_vehiculo:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:index" }
+
+color_vehiculo_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:show" }
+
+color_vehiculo_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:new" }
+
+color_vehiculo_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:create" }
+    methods:  POST
+
+color_vehiculo_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:edit" }
+
+color_vehiculo_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:update" }
+    methods:  [POST, PUT]
+
+color_vehiculo_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:ColorVehiculo:delete" }
+    methods:  [POST, DELETE]

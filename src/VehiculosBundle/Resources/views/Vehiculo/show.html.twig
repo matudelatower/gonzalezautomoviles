@@ -53,7 +53,7 @@
                             </tr>
                             <tr>
                                 <th>Color</th>
-                                <td>{{ entity.colorExterno }}</td>
+                                <td>{{ entity.colorVehiculo }}</td>
                             </tr>
                             <tr>
                                 <th>Motor</th>
@@ -67,6 +67,16 @@
                             <tr>
                                 <th>Impuestos</th>
                                 <td>{{ entity.impuestos }}</td>
+                            </tr>
+                            <tr>
+                                <th>Pagado</th>
+                                <td>
+                                    {%if entity.pagado%}
+                                        SI
+                                    {%else%}
+                                        NO
+                                    {%endif%}
+                                </td>
                             </tr>
                             <tr>
                                 <th>Numero pedido</th>
@@ -150,7 +160,7 @@
                             </tr>  
                             <tr>
                                 <th>Fecha recibido</th>
-                                <td>{{ entity.remito.fechaRecibido|date('d-m-Y') }}</td>
+                                <td>{{ entity.remito.fechaRecibido is null ? "" :entity.remito.fechaRecibido|date('d-m-Y') }}</td>
                             </tr> 
                             <tr>
                                 <th>Usuario Receptor</th>
@@ -162,146 +172,215 @@
 
             </div>
         </div>
+        {% if entity.Movimientodeposito%}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Deposito</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="record_properties">
+                            <tbody>
+                                <tr>
+                                    <th>Deposito</th>
+                                    <td>{{ entity.Movimientodeposito.last.depositoDestino | default ("") }}</td>
+                                </tr>   
+                                <tr>
+                                    <th>Fila</th>
+                                    <td>{{ entity.Movimientodeposito.last.fila | default ("") }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Posicion</th>
+                                    <td>{{ entity.Movimientodeposito.last.posicion | default ("") }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Usuario</th>
+                                    <td>{{ entity.Movimientodeposito.last.creadoPor | default ("") }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Observacion</th>
+                                    <td>{{ entity.Movimientodeposito.last.observacion | default ("") }}</td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
 
+                </div>
+            </div> 
+        {% endif %}
+        {% if entity.factura%}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Factura</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="record_properties">
+                            <tbody>
+                                <tr>
+                                    <th>Número</th>
+                                    <td>{{ entity.factura.numeroFactura | default ("") }}</td>
+                                </tr>   
+                                <tr>
+                                    <th>Fecha</th>
+                                    <td>{{ entity.factura.fecha is not defined ? "" :entity.factura.fecha|date('d-m-Y') }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Vendedor</th>
+                                    <td>{{ entity.vendedor  | default ("") }}</td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div> 
+        {% endif %}
+        {% if entity.Patentamiento%}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Patentamiento</h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="record_properties">
+                            <tbody>
+                                <tr>
+                                    <th>Estado</th>
+                                    <td>{{ entity.Patentamiento.estadoPatentamiento | default ("") }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Agente que inicio tramite</th>
+                                    <td>{{ entity.Patentamiento.agenteInicioPatente | default ("") }}</td>
+                                </tr>     
+                                <tr>
+                                    <th>Dominio</th>
+                                    <td>{{ entity.Patentamiento.dominio | default ("") }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Fecha</th>
+                                    <td>{{ entity.Patentamiento.fecha is not defined ? "" :entity.Patentamiento.fecha|date('d-m-Y') }}</td>
+                                </tr> 
+                                <tr>
+                                    <th>Registro</th>
+                                    <td>{{ entity.Patentamiento.registro | default ("") }}</td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div> 
+        {% endif %}
+        {% if entity.danioVehiculoGm%}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Daños GM</h3>
+                    </div>
+                    <div class="box-body">
+
+                        {% for danio in entity.danioVehiculoGm %}
+                            <div class="box box-danger">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">{{ danio.tipoDanio }}</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table class="record_properties">
+                                        <tbody>
+                                            <tr>
+                                                <th>Daño</th>
+                                                <td>{{ danio.codigoDanio.descripcion }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Gravedad</th>
+                                                <td>{{ danio.gravedadDanio.descripcion }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Estado</th>
+                                                <td>{{ danio.tipoEstadoDanioGm.descripcion | default('')}}</td>
+                                            </tr>
+                                            {% if danio.fotoDanio %}
+                                                <tr>
+                                                    <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
+                                                           data-target="#modalCarousel"
+                                                           data-url="{{ path('get_fotos_danios_gm_ajax', { 'danioId': danio.id }) }}"
+                                                           title="Ver fotos">Ver fotos</a>
+                                                    </th>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
+        {% if entity.danioVehiculoInterno %}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Daños Internos</h3>
+                    </div>
+                    <div class="box-body">
+
+                        {% for danio in entity.danioVehiculoInterno %}
+                            <div class="box box-danger">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">{{ danio.tipoDanioInterno.categoriaDanioInterno ~ ' - '~ danio.tipoDanioInterno}}</h3>
+                                </div>
+                                <div class="box-body">
+                                    <table class="record_properties">
+                                        <tbody>
+                                            <tr>
+                                                <th>Descripcion</th>
+                                                <td>{{ danio.detalle }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Solucionado</th>
+                                                <td>{% if danio.solucionado %}SI{% else %}NO{% endif %}</td>
+                                            </tr>
+                                            {% if danio.fotoDanioInterno %}
+                                                <tr>
+                                                    <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
+                                                           data-target="#modalCarousel"
+                                                           data-url="{{ path('get_fotos_danios_interno_ajax', { 'danioId': danio.id }) }}"
+                                                           title="Ver fotos">Ver fotos</a>
+                                                    </th>
+                                                </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Deposito</h3>
+                    <h3 class="box-title">Otros</h3>
                 </div>
                 <div class="box-body">
                     <table class="record_properties">
                         <tbody>
-                            <tr>
-                                <th>Deposito</th>
-                                <td>{{ entity.Movimientodeposito.last.depositoDestino | default ("") }}</td>
-                            </tr>   
-                            <tr>
-                                <th>Fila</th>
-                                <td>{{ entity.Movimientodeposito.last.fila | default ("") }}</td>
-                            </tr> 
-                            <tr>
-                                <th>Posicion</th>
-                                <td>{{ entity.Movimientodeposito.last.posicion | default ("") }}</td>
-                            </tr> 
-                            <tr>
-                                <th>Observacion</th>
-                                <td>{{ entity.Movimientodeposito.last.observacion | default ("") }}</td>
-                            </tr> 
+                            {% if entity.checkControlInternoResultadoCabecera%}
+                                <tr>
+                                    <th><a class="pull-right badge bg-red btn-carousel"
+                                           data-target=""
+                                           data-url=""
+                                           title="Ver">Ver checklist de control interno</a>
+                                    </th>
+                                </tr>  
+                            {%endif%}
                         </tbody>
                     </table>
-                </div>
-
-            </div>
-        </div> 
-
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Patentamiento</h3>
-                </div>
-                <div class="box-body">
-                    <table class="record_properties">
-                        <tbody>
-                            <tr>
-                                <th>Estado</th>
-                                <td>{{ entity.Patentamiento.estadoPatentamiento | default ("") }}</td>
-                            </tr>   
-                            <tr>
-                                <th>Dominio</th>
-                                <td>{{ entity.Patentamiento.dominio | default ("") }}</td>
-                            </tr> 
-                            <tr>
-                                <th>Fecha</th>
-                                <td>{{ entity.Patentamiento.fecha| default ("") }}</td>
-                            </tr> 
-                            <tr>
-                                <th>Registro</th>
-                                <td>{{ entity.Patentamiento.registro | default ("") }}</td>
-                            </tr> 
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div> 
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Daños GM</h3>
-                </div>
-                <div class="box-body">
-
-                    {% for danio in entity.danioVehiculoGm %}
-                        <div class="box box-danger">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">{{ danio.tipoDanio }}</h3>
-                            </div>
-                            <div class="box-body">
-                                <table class="record_properties">
-                                    <tbody>
-                                        <tr>
-                                            <th>Daño</th>
-                                            <td>{{ danio.codigoDanio.descripcion }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Gravedad</th>
-                                            <td>{{ danio.gravedadDanio.descripcion }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Estado</th>
-                                            <td>{{ danio.tipoEstadoDanioGm.descripcion | default('')}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
-                                                   data-target="#modalCarousel"
-                                                   data-url="{{ path('get_fotos_danios_gm_ajax', { 'danioId': danio.id }) }}"
-                                                   title="Ver fotos">Ver fotos</a>
-                                            </th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Daños Internos</h3>
-                </div>
-                <div class="box-body">
-
-                    {% for danio in entity.danioVehiculoInterno %}
-                        <div class="box box-danger">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">{{ danio.tipoDanioInterno.categoriaDanioInterno ~ ' - '~ danio.tipoDanioInterno}}</h3>
-                            </div>
-                            <div class="box-body">
-                                <table class="record_properties">
-                                    <tbody>
-                                        <tr>
-                                            <th>Descripcion</th>
-                                            <td>{{ danio.detalle }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Solucionado</th>
-                                            <td>{% if danio.solucionado %}SI{% else %}NO{% endif %}</td>
-                                        </tr>
-                                        <tr>
-                                            <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
-                                                   data-target="#modalCarousel"
-                                                   data-url="{{ path('get_fotos_danios_interno_ajax', { 'danioId': danio.id }) }}"
-                                                   title="Ver fotos">Ver fotos</a>
-                                            </th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    {% endfor %}
                 </div>
 
             </div>

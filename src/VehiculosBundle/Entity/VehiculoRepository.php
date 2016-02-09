@@ -30,29 +30,38 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
             $where.=" AND upper(v.vin) LIKE upper('%" . $filters['vin'] . "%')";
         }
-        if ($filters['colorExterno']) {
-            $where.=" AND upper(v.color_externo) LIKE upper('%" . $filters['colorExterno'] . "%')";
+        if ($filters['colorVehiculo']) {
+            $where.=" AND v.color_vehiculo_id=" . $filters['colorVehiculo']->getId();
         }
         if ($filters['tipoVentaEspecial']) {
             $where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
         }
+        if ($filters['deposito']) {
+            $where.=" AND d.id=" . $filters['deposito']->getId();
+        }
+        if ($filters['modelo']) {
+            $where.=" AND nm.id=" . $filters['modelo']->getId();
+        }
 
         $query = "SELECT   distinct(v.*),
-                                        codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,
+                                        cm.codigo||'|'||cm.anio||'|'||nm.nombre||'|'||cm.version as modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
-                                        remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,d.nombre as deposito_actual
+                                        remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,d.nombre as deposito_actual,
+                                        ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
 					INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
-                                        LEFT JOIN codigos_modelo ON v.codigo_modelo_id=codigos_modelo.id
-                                        LEFT JOIN nombres_modelo ON codigos_modelo.nombre_modelo_id=nombres_modelo.id
+                                        INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
+                                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
+                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
                                         LEFT JOIN remitos ON v.remito_id=remitos.id
                                         LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
                                         
                                         LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id =  mmdd.vehiculo_id
                                         LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
+                                        LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.check_control_interno_resultado_cabecera_id=ch_ci.id
                                         
                                         WHERE " . $where;
 

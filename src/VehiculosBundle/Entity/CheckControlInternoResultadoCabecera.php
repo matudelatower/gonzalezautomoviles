@@ -22,22 +22,24 @@ class CheckControlInternoResultadoCabecera {
      */
     private $id;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha", type="date")
-     */
-    private $fecha;
+    
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observacion", type="string", length=255)
+     * @ORM\Column(name="observacion", type="string", length=255, nullable=true)
      */
     private $observacion;
     
     /**
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoRespuesta", mappedBy="checkControlInternoResultadoCabecera", cascade={"persist"})
+     * @var boolean
+     *
+     * @ORM\Column(name="firmado", type="boolean")
+     */
+    private $firmado;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoRespuesta", mappedBy="resultadoCabecera",cascade={"remove", "persist"})
      *
      */
     private $checkControlInternoResultadoRespuesta;
@@ -48,11 +50,7 @@ class CheckControlInternoResultadoCabecera {
      */
     private $vehiculo;
     
-    /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoPregunta")
-     * @ORM\JoinColumn(name="check_control_interno_pregunta_id", referencedColumnName="id")
-     */
-    private $checkControlInternoPregunta;
+    
 
     /**
      * @var datetime $creado
@@ -97,27 +95,7 @@ class CheckControlInternoResultadoCabecera {
         return $this->id;
     }
 
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return CheckControlInternoResultadoCabecera
-     */
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha() {
-        return $this->fecha;
-    }
+    
 
     /**
      * Set observacion
@@ -255,29 +233,7 @@ class CheckControlInternoResultadoCabecera {
         return $this->vehiculo;
     }
 
-    /**
-     * Set checkControlInternoPregunta
-     *
-     * @param \VehiculosBundle\Entity\CheckControlInternoPregunta $checkControlInternoPregunta
-     *
-     * @return CheckControlInternoResultadoCabecera
-     */
-    public function setCheckControlInternoPregunta(\VehiculosBundle\Entity\CheckControlInternoPregunta $checkControlInternoPregunta = null)
-    {
-        $this->checkControlInternoPregunta = $checkControlInternoPregunta;
-
-        return $this;
-    }
-
-    /**
-     * Get checkControlInternoPregunta
-     *
-     * @return \VehiculosBundle\Entity\CheckControlInternoPregunta
-     */
-    public function getCheckControlInternoPregunta()
-    {
-        return $this->checkControlInternoPregunta;
-    }
+    
 
     /**
      * Set creadoPor
@@ -327,4 +283,28 @@ class CheckControlInternoResultadoCabecera {
         return $this->actualizadoPor;
     }
     
+
+    /**
+     * Set firmado
+     *
+     * @param boolean $firmado
+     *
+     * @return CheckControlInternoResultadoCabecera
+     */
+    public function setFirmado($firmado)
+    {
+        $this->firmado = $firmado;
+
+        return $this;
+    }
+
+    /**
+     * Get firmado
+     *
+     * @return boolean
+     */
+    public function getFirmado()
+    {
+        return $this->firmado;
+    }
 }

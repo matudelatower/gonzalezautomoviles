@@ -15,7 +15,6 @@ class CheckControlInternoResultadoCabeceraType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fecha')
             ->add('observacion')
             ->add('vehiculo')
             ->add('checkControlInternoPregunta')
