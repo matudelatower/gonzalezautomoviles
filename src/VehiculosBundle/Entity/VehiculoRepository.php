@@ -46,7 +46,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $query = "SELECT   distinct(v.*),
                                         cm.codigo||'|'||cm.anio||'|'||nm.nombre||'|'||cm.version as modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
-                                        remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,d.nombre as deposito_actual,
+                                        remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId

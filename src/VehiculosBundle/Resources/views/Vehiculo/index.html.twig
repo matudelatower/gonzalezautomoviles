@@ -14,10 +14,10 @@
         </div>
     </div>
     <!-- Modal Pago -->
-    <div id="modalPagado" class="modal fade" role="dialog">
+    <div id="modalGeneric" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
-            <div class="modal-content" id="cuerpoPagado">
+            <div class="modal-content" id="cuerpoGeneric">
 
             </div>
 
@@ -69,7 +69,7 @@
                                         SI
                                     {%else%}
                                         <a class="btn btn-pagado" data-toggle="modal"
-                                           data-target="#modalPagado"
+                                           data-target="#modalGeneric"
                                            data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito">NO</a>
                                         {%endif%}
@@ -85,7 +85,13 @@
                                                    data-target="#modalDeposito"
                                                    data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                                {% endif %}                                        
+                                                {% endif %}    
+                                                {% if entity.venta_especial_slug == 'convencional' %}
+                                                <a class="btn btn-default btn-asignar" data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
+                                                {% endif %}       
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -129,12 +135,20 @@
                                         type: 'get',
                                         url: url,
                                         success: function (data) {
-                                            $('#cuerpoPagado').html(data);
+                                            $('#cuerpoGeneric').html(data);
                                         },
                                     });
                                 });
-                                $('#btn-modal-pagado').click(function () {
-                                    alert('fwefew');
+                                
+                                 $('.btn-asignar').click(function () {
+                                    url = $(this).data('url');
+                                    $.ajax({
+                                        type: 'get',
+                                        url: url,
+                                        success: function (data) {
+                                            $('#cuerpoGeneric').html(data);
+                                        },
+                                    });
                                 });
 
                             {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
@@ -173,7 +187,7 @@
                                         }
                                     });
                                 });
-
+                               
                                 $(document).on('submit', '#formPagado', function (ev) {
                                     ev.preventDefault();
                                     url = $("#vehiculoIdPagado").val();
@@ -181,12 +195,32 @@
                                         type: 'post',
                                         url: url,
                                         success: function () {
-                                            $('#modalPagado').modal('toggle');
+                                            $('#modalGeneric').modal('toggle');
                                             modalAlert('La operación se realizó con exito');
                                             $('#btn-filtro-buscar').click();
                                         },
                                         error: function (jqXHR, textStatus, errorThrown) {
-                                            $('#modalPagado').modal('toggle');
+                                            $('#modalGeneric').modal('toggle');
+                                            modalAlert('La operación no se realizo');
+                                        }
+                                    });
+                                });
+                                
+                                 $(document).on('submit', '#formAsignar', function (ev) {
+                                    ev.preventDefault();
+                                    datos = $('#formAsignar').serializeArray();
+                                    url = $("#vehiculoIdAsignar").val();
+                                    $.ajax({
+                                        type: 'post',
+                                        url: url,
+                                        data: datos,
+                                        success: function (data) {
+                                            $('#modalGeneric').modal('toggle');
+                                            modalAlert('La operación se realizó con exito');
+                                            $('#btn-filtro-buscar').click();
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            $('#modalGeneric').modal('toggle');
                                             modalAlert('La operación no se realizo');
                                         }
                                     });

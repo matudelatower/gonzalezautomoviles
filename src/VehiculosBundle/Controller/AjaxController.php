@@ -25,6 +25,21 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
+    public function newMovimientoDepositoAction($vehiculoId) {
+        $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $entity->setVehiculo($vehiculo);
+        $entity->setFechaIngreso(new \DateTime("now"));
+        $form = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType(), $entity);
+
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig', array(
+            'form' => $form->createView(),
+                )
+        );
+        return new JsonResponse($html);
+    }
+
     public function movimientoDepositoCreateAjaxAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
@@ -67,19 +82,38 @@ class AjaxController extends Controller {
         return new JsonResponse(true);
     }
 
-    public function newMovimientoDepositoAction($vehiculoId) {
-        $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
+    /*
+     * Crea un modal para asignar el vehiculo a un cliente que puede ser o no un reventa
+     */
+
+    public function newAsignacionVehiculoAjaxAction($vehiculoId) {
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
-        $entity->setVehiculo($vehiculo);
-        $entity->setFechaIngreso(new \DateTime("now"));
-        $form = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType(), $entity);
+
+        $form = $this->createForm(new \VehiculosBundle\Form\AsignacionVehiculoType(), $vehiculo);
 
         $html = $this->renderView(
-                'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig', array(
+                'VehiculosBundle:Vehiculo:newAsignacionVehiculo.html.twig', array(
             'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
                 )
         );
         return new JsonResponse($html);
+    }
+
+    /*
+     * Registra que se asigna a un cliente un vehiculo
+     */
+
+    public function asignacionVehiculoUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $prueba=$request->request->get('vehiculosbundle_asignacion_vehiculo');
+        $cliente=$this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
+        $vehiculo->setCliente($cliente);
+        $em->persist($vehiculo);
+        $em->flush();
+
+        return new JsonResponse(true);
     }
 
     public function getFotosDaniosGmAction(Request $request) {

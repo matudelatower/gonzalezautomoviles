@@ -35,6 +35,13 @@ class TipoVentaEspecial
      * @ORM\Column(name="descripcion", type="string", length=255)
      */
     private $descripcion;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    private $slug;
 
 
     /**
@@ -259,5 +266,29 @@ class TipoVentaEspecial
     public function getMuestraPlanDeAhorro()
     {
         return $this->muestraPlanDeAhorro;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return TipoVentaEspecial
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

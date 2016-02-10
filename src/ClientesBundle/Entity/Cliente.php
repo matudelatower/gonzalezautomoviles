@@ -27,6 +27,13 @@ class Cliente
      * @ORM\Column(name="foraneo", type="boolean", nullable=true)
      */
     private $foraneo;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="reventa", type="boolean", nullable=true)
+     */
+    private $reventa;
 
     /**
      * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
@@ -242,5 +249,29 @@ class Cliente
     
     public function __toString() {
         return $this->personaTipo->first()->getPersona()->__toString();
+    }
+
+    /**
+     * Set reventa
+     *
+     * @param boolean $reventa
+     *
+     * @return Cliente
+     */
+    public function setReventa($reventa)
+    {
+        $this->reventa = $reventa;
+
+        return $this;
+    }
+
+    /**
+     * Get reventa
+     *
+     * @return boolean
+     */
+    public function getReventa()
+    {
+        return $this->reventa;
     }
 }
