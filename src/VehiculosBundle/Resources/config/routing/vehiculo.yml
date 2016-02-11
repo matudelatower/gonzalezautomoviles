@@ -75,7 +75,7 @@ checklist_preentrega:
     defaults: { _controller: "VehiculosBundle:Vehiculo:checklistPreEntrega" }
     
 check_control_interno:
-    path:     /{vehiculoId}/check_control_interno
+    path:     /{vehiculoId}/{tipoTransaccion}/check_control_interno
     defaults: { _controller: "VehiculosBundle:Vehiculo:checkControlInterno" }    
     
 vehiculos_edit_patente:

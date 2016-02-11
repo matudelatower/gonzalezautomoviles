@@ -73,14 +73,16 @@
                                     <td>
 
                                         <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                title="Ver" class="fa fa-eye"></i></a>
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                title="Editar"  class="fa fa-edit"></i></a>
+                                                title="Ver" class="fa fa-eye"></i></a>                                        
 
-                                        <a class="btn btn-default"
+                                        <a class="btn {%if(entity.dominio!='')%}btn-success{%else%}btn-default{%endif%}"
                                            href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                           title="Patente"><i class="fa fa-cc"></i></a>   
+                                           title="Patente"><i class="fa fa-cc"></i></a> 
+                                           
+                                        <a class="btn {%if(entity.dominio=='2asd')%}btn-success{%else%}btn-default{%endif%}"
+                                           href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                           title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>   
+                                           
                                             {#                                            {% endif %}#}
 
                                         {#<a class="btn btn-default btn-deposito" data-toggle="modal"

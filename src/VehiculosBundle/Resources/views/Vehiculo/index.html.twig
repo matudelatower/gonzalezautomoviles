@@ -4,16 +4,6 @@
 {% endblock title %}
 {% block content -%}
     <!-- Modal -->
-    <div id="modalDeposito" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content" id="cuerpoMovimientoDepostido">
-
-            </div>
-
-        </div>
-    </div>
-    <!-- Modal Pago -->
     <div id="modalGeneric" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -80,9 +70,9 @@
                                             <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                     class="fa fa-eye"></i></a>
 
-                                            {% if entity.vehiculo_estado_slug != 'pendiente-por-recibir' %}
+                                            {% if entity.vehiculo_estado_slug != 'transito' %}
                                                 <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                                   data-target="#modalDeposito"
+                                                   data-target="#modalGeneric"
                                                    data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                                 {% endif %}    
@@ -125,7 +115,7 @@
                                         type: 'get',
                                         url: url,
                                         success: function (data) {
-                                            $('#cuerpoMovimientoDepostido').html(data);
+                                            $('#cuerpoGeneric').html(data);
                                         },
                                     });
                                 });
@@ -177,12 +167,12 @@
                                         url: url,
                                         data: datos,
                                         success: function (data) {
-                                            $('#modalDeposito').modal('toggle');
+                                            $('#modalGeneric').modal('toggle');
                                             modalAlert('La operación se realizó con exito');
                                             $('#btn-filtro-buscar').click();
                                         },
                                         error: function (jqXHR, textStatus, errorThrown) {
-                                            $('#modalDeposito').modal('toggle');
+                                            $('#modalGeneric').modal('toggle');
                                             modalAlert('La operación no se realizo');
                                         }
                                     });

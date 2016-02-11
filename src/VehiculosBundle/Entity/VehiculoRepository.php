@@ -47,7 +47,8 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         cm.codigo||'|'||cm.anio||'|'||nm.nombre||'|'||cm.version as modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
-                                        ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo
+                                        ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,
+                                        pat.dominio
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
@@ -62,7 +63,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
                                         LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.check_control_interno_resultado_cabecera_id=ch_ci.id
-                                        
+                                        LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
                                         WHERE " . $where;
 
         $stmt = $db->prepare($query);

@@ -64,7 +64,7 @@ class VehiculoController extends Controller {
     public function vehiculosPendientesIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
-        $estado = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('pendiente-por-recibir');
+        $estado = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('transito');
         $form = $this->createForm(new VehiculoFilterType());
 
         if ($request->isMethod("post")) {
@@ -189,7 +189,7 @@ class VehiculoController extends Controller {
     public function vehiculosFacturadosIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new VehiculoFilterType());
-        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('facturado');
+        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('pendiente-por-entregar');
         $estados = array($estadoId1);
 
         if ($request->isMethod("post")) {
@@ -283,7 +283,7 @@ class VehiculoController extends Controller {
 
             $em = $this->getDoctrine()->getManager();
             $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                    'pendiente-por-recibir'
+                    'transito'
             );
 
             $estadoVehiculo = new EstadoVehiculo();
@@ -506,9 +506,9 @@ class VehiculoController extends Controller {
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                //busco el id del estado facturado
+                //busco el id del estado pendiente por entregar
                 $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                        'facturado'
+                        'pendiente-por-entregar'
                 );
 
                 if ($vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo) {
@@ -812,7 +812,7 @@ class VehiculoController extends Controller {
         );
     }
 
-    public function checkControlInternoAction(Request $request, $vehiculoId) {
+    public function checkControlInternoAction(Request $request, $vehiculoId, $tipoTransaccion = "edit") {
         $em = $this->getDoctrine()->getManager();
 
         $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
@@ -837,6 +837,19 @@ class VehiculoController extends Controller {
         }
 
         if ($request->getMethod() == 'POST') {
+            if ($tipoTransaccion == 'cierre') {
+                $controlInternoCabecera->setFirmado('true');
+                $em->persist($controlInternoCabecera);
+                $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                        'entregado'
+                );
+                $estadoVehiculo = new EstadoVehiculo();
+                $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+                $estadoVehiculo->setVehiculo($vehiculo);
+                $vehiculo->addEstadoVehiculo($estadoVehiculo);
+                
+                $em->flush();
+            }
             if (!$nuevo) {
                 $qb = $em->createQueryBuilder();
                 $query = $qb->delete('VehiculosBundle:CheckControlInternoResultadoRespuesta', 'res')
@@ -867,19 +880,26 @@ class VehiculoController extends Controller {
             $this->get('session')->getFlashBag()->add(
                     'success', 'Checklist Guardado Correctamente'
             );
+            $cabecera = $controlInternoCabecera;
         } elseif (!$nuevo) {
             $preguntasSelecionadas = null;
             $respuestasGuardadas = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoRespuesta')->findByCheckControlInternoResultadoCabecera($controlInternoCabecera);
             foreach ($respuestasGuardadas as $respuesta) {
                 $preguntasSelecionadas[] = $respuesta->getCheckControlInternoPregunta()->getId();
             }
+            $cabecera = $controlInternoCabecera;
+        } else {
+            $cabecera = false;
         }
+
 
         return $this->render(
                         'VehiculosBundle:Vehiculo:checkControlInterno.html.twig', array(
                     'preguntasOriginales' => $preguntas,
                     'preguntasSeleccionadas' => $preguntasSelecionadas,
                     'vehiculoId' => $vehiculoId,
+                    'cabecera' => $cabecera,
+                    'tipoTransaccion' => $tipoTransaccion,
                         )
         );
     }

@@ -76,10 +76,10 @@
                                         <a class="btn btn-default"
                                            href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
                                                 title="Editar"  class="fa fa-edit"></i></a>
-                                        <a class="btn btn-default"
-                                           href="{{ path('check_control_interno', { 'vehiculoId': entity.id }) }}"
-                                           title="Realizar checklist control interno"><i class="fa fa-check-square"></i></a>
-                                        <a class="btn btn-default"
+                                        <a class="btn {%if(entity.check_control_interno_resultado_cabecera_id!='')%}btn-success{%else%}btn-default{%endif%}"
+                                           href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
+                                           title="Checklist control interno"><i class="fa fa-check-square"></i></a>
+                                        <a class="btn {%if(entity.dominio!='')%}btn-success{%else%}btn-default{%endif%}"
                                            href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                            title="Patente"><i class="fa fa-cc"></i></a>   
                                             {#                                            {% endif %}#}
@@ -88,13 +88,6 @@
                                            data-target="#modalDeposito"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                          {# solo en caso de que se haya hecho el check de control interno y el mismo este firmado
-                                           se puede entregar el vehiculo#}
-                                            {% if entity.firmado==true %}
-                                            <a class="btn btn-default"
-                                               href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                               title="Entregar"><i class="fa fa-male"></i></a>
-                                            {% endif %}
                                     </td>
 
                                 </tr>
