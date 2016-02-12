@@ -170,6 +170,12 @@ class Vehiculo {
      * @ORM\JoinColumn(name="patentamiento_id", referencedColumnName="id",nullable=true)
      */
     private $patentamiento;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="VehiculosBundle\Entity\AgendaEntrega", inversedBy="vehiculo")
+     * @ORM\JoinColumn(name="agenda_entrega_id", referencedColumnName="id",nullable=true)
+     */
+    private $agendaEntrega;
 
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist"})
@@ -1121,4 +1127,28 @@ class Vehiculo {
         return $this->pagado;
     }
 
+
+    /**
+     * Set agendaEntrega
+     *
+     * @param \VehiculosBundle\Entity\AgendaEntrega $agendaEntrega
+     *
+     * @return Vehiculo
+     */
+    public function setAgendaEntrega(\VehiculosBundle\Entity\AgendaEntrega $agendaEntrega = null)
+    {
+        $this->agendaEntrega = $agendaEntrega;
+
+        return $this;
+    }
+
+    /**
+     * Get agendaEntrega
+     *
+     * @return \VehiculosBundle\Entity\AgendaEntrega
+     */
+    public function getAgendaEntrega()
+    {
+        return $this->agendaEntrega;
+    }
 }

@@ -1,0 +1,41 @@
+<form class="form-horizontal" id="formAjax" role="form" method="post">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Ingrese los datos de la entrega</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.fecha)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.fecha) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.hora)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.hora) }}
+            </div>    
+        </div>  
+
+        <div class="form-group">
+            <div class="col-sm-3"> 
+                {{ form_label(form.descripcion)}}
+            </div>
+            <div class="col-sm-6"> 
+                {{ form_widget(form.descripcion) }}
+            </div>    
+        </div>          
+    </div>
+    <div class="hidden">
+        {{form_rest(form)}}
+        <input id="url" value="{{path("agenda_entrega_create_ajax")}}">
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="btn-modal-movimiento" class="btn btn-primary">Aceptar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>

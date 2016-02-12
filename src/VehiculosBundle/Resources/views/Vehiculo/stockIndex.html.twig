@@ -70,11 +70,16 @@
                                         <a class="btn btn-default"
                                            href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
                                                 title="Editar"  class="fa fa-edit"></i></a>                                              
-                                        
+
                                         <a class="btn btn-default"
                                            href="{{ path('vehiculos_new_factura', { 'vehiculoId': entity.id }) }}"
                                            title="Facturar"><i class="fa fa-usd"></i></a>   
-                                            {#                                            {% endif %}#}
+                                            {% if entity.venta_especial_slug == 'convencional' %}
+                                            <a class="btn btn-default btn-asignar" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
+                                            {% endif %}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalGeneric"
@@ -105,7 +110,7 @@
     {% include "VehiculosBundle:Vehiculo:index.js.twig"%}
     <script>
         $(document).ready(function () {
-            
+
         {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
 
         {% if formFilter is not null %}
@@ -122,7 +127,7 @@
         {% endif %}
 
             });
-            
+
 
     </script>
 {% endblock %}

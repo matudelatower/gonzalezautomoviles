@@ -19,16 +19,16 @@ class FacturaVehiculoType extends AbstractType {
                 ->add('vendedor', 'jqueryautocomplete', array(
                     'label' => 'Vendedor (Por Apellido)',
                     'class' => 'PersonasBundle:Empleado',
-//					'property'      => 'nombreCompleto',
                     'search_method' => 'getEmpleadoByApellido',
                     'required' => false,
                     'route_name' => 'get_empleado_by_apellido'
-//					'route_name'    => "buscarPersonaConDominio",
-//					'class'         => 'PersonaBundle:Persona',
-//					'property'      => 'nombreCompleto',
-//					'search_method' => 'getEmpadronadoresPorSector',
-//                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
-//                    'attr' => array('class' => 'hidden tipo-venta-especial-field')
+                ))
+                ->add('cliente', 'jqueryautocomplete', array(
+                    'class' => 'ClientesBundle:Cliente',
+                    'search_method' => 'getClienteByDni',
+                    'required' => false,
+                    'route_name' => 'get_cliente_by_dni',
+                    'attr' => array('placeholder' => 'Ingrese DNI o CUIT')
         ));
     }
 

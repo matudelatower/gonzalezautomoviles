@@ -1,0 +1,30 @@
+agenda_entrega:
+    path:     /
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:index" }
+
+agenda_entrega_show:
+    path:     /{id}/show
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:show" }
+
+agenda_entrega_new:
+    path:     /new
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:new" }
+
+agenda_entrega_create:
+    path:     /create
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:create" }
+    methods:  POST
+
+agenda_entrega_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:edit" }
+
+agenda_entrega_update:
+    path:     /{id}/update
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:update" }
+    methods:  [POST, PUT]
+
+agenda_entrega_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:delete" }
+    methods:  [POST, DELETE]

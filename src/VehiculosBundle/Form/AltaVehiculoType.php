@@ -15,7 +15,9 @@ class AltaVehiculoType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('documento')
+                ->add('documento', 'text', array(
+                    'attr' => array('class' => 'maskdocumento')
+                ))
                 ->add('fechaEmisionDocumento', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'dd-MM-yyyy',
@@ -51,8 +53,12 @@ class AltaVehiculoType extends AbstractType {
                 )
 //                ->add('colorVehiculo')
                 ->add('motor')
-                ->add('importe')
-                ->add('impuestos')
+                ->add('importe', 'text', array(
+                    'attr' => array('class' => 'maskmoney')
+                ))
+                ->add('impuestos', 'text', array(
+                    'attr' => array('class' => 'maskmoney')
+                ))
                 ->add('numeroPedido')
                 ->add('tipoVentaEspecial')
                 ->add('numeroGrupo', 'text', array(

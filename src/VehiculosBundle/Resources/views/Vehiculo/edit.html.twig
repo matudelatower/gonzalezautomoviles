@@ -9,7 +9,8 @@
 
         var itemCant{{edit_form.danioVehiculoGm.vars.id}} = {{ edit_form.danioVehiculoGm.count | default(0)}};{#var itemCant{{edit_form.danioVehiculoGm.vars.data.fotoDanio.vars.id}} = {{ edit_form.danioVehiculoGm.vars.data.fotoDanio.count | default(0)}};#}
                 $(document).ready(function () {
-
+            $(".maskdocumento").inputmask({mask: "**[*][*]-*****[*][*]-*-**", greedy: false});
+            $(".maskmoney").inputmask('decimal', {rightAlign: false});
             $('.agregar-danio').click(function () {
 
                 var itemList = $('#danio-vehiculo-list table');

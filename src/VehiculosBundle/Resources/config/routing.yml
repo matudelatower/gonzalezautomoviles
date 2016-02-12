@@ -1,3 +1,7 @@
+vehiculos_agenda_entrega:
+    resource: "@VehiculosBundle/Resources/config/routing/agendaentrega.yml"
+    prefix:   /agenda_entrega
+
 vehiculos_color_vehiculo:
     resource: "@VehiculosBundle/Resources/config/routing/colorvehiculo.yml"
     prefix:   /color_vehiculo

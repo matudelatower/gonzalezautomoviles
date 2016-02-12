@@ -7,8 +7,9 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
-
-        $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
+        $(".maskdocumento").inputmask({mask: "**[*][*]-*****[*][*]-*-**", greedy: false});
+                $(".maskmoney").inputmask('decimal', {rightAlign: false});
+                $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
         console.log($(this).val());
                 var id = $(this).val()
 

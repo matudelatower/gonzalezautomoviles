@@ -76,8 +76,12 @@
                                         <a class="btn btn-default"
                                            href="{{ path('checklist_preentrega', { 'vehiculoId': entity.id }) }}"
                                            title="Realizar checklist pre-entrega"><i class="fa fa-check-square"></i></a>
-
-
+                                            {% if entity.venta_especial_slug == 'convencional' %}
+                                            <a class="btn btn-default btn-asignar" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
+                                            {% endif %}
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalGeneric"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
