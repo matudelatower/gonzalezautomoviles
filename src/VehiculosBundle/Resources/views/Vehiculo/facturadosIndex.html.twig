@@ -4,10 +4,10 @@
 {% endblock title %}
 {% block content -%}
     <!-- Modal -->
-    <div id="modalDeposito" class="modal fade" role="dialog">
+    <div id="modalGeneric" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
-            <div class="modal-content" id="cuerpoMovimientoDepostido">
+            <div class="modal-content" id="cuerpoGeneric">
 
             </div>
 
@@ -85,7 +85,7 @@
                                             {#                                            {% endif %}#}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                           data-target="#modalDeposito"
+                                           data-target="#modalGeneric"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                     </td>
@@ -109,41 +109,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        $(document).ready(function () {
-            $('.btn-deposito').click(function () {
-                url = $(this).data('url');
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    success: function (data) {
-                        $('#cuerpoMovimientoDepostido').html(data);
-                    },
-                });
-            });
-
-
-        });
-
-        $(document).on('submit', '#form', function (ev) {
-            ev.preventDefault();
-            datos = $('#form').serializeArray();
-            url = '{{ path('movimiento_deposito_create_ajax') }}';
-            $.ajax({
-                type: 'post',
-                url: url,
-                data: datos,
-                success: function (data) {
-                    $('#modalDeposito').modal('toggle');
-                    modalAlert('La operación se realizó con exito');
-
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    $('#modalDeposito').modal('toggle');
-                    modalAlert('La operación no se realizo');
-                }
-            });
-        });
-
-    </script>
+    {% include "VehiculosBundle:Vehiculo:index.js.twig"%}
+    
 {% endblock %}

@@ -1,0 +1,94 @@
+<script>
+    $(document).ready(function () {
+        $('.btn-deposito').click(function () {
+            url = $(this).data('url');
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $('#cuerpoGeneric').html(data);
+                },
+            });
+        });
+        $('.btn-pagado').click(function () {
+            url = $(this).data('url');
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $('#cuerpoGeneric').html(data);
+                },
+            });
+        });
+
+        $('.btn-asignar').click(function () {
+            url = $(this).data('url');
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function (data) {
+                    $('#cuerpoGeneric').html(data);
+                },
+            });
+        });
+
+    })
+
+    $(document).on('submit', '#form', function (ev) {
+        ev.preventDefault();
+        datos = $('#form').serializeArray();
+        url = '{{path('movimiento_deposito_create_ajax')}}';
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: datos,
+            success: function (data) {
+                $('#modalGeneric').modal('toggle');
+                modalAlert('La operación se realizó con exito');
+                $('#btn-filtro-buscar').click();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#modalGeneric').modal('toggle');
+                modalAlert('La operación no se realizo');
+            }
+        });
+    });
+
+    $(document).on('submit', '#formPagado', function (ev) {
+        ev.preventDefault();
+        url = $("#vehiculoIdPagado").val();
+        $.ajax({
+            type: 'post',
+            url: url,
+            success: function () {
+                $('#modalGeneric').modal('toggle');
+                modalAlert('La operación se realizó con exito');
+                $('#btn-filtro-buscar').click();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#modalGeneric').modal('toggle');
+                modalAlert('La operación no se realizo');
+            }
+        });
+    });
+
+    $(document).on('submit', '#formAsignar', function (ev) {
+        ev.preventDefault();
+        datos = $('#formAsignar').serializeArray();
+        url = $("#vehiculoIdAsignar").val();
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: datos,
+            success: function (data) {
+                $('#modalGeneric').modal('toggle');
+                modalAlert('La operación se realizó con exito');
+                $('#btn-filtro-buscar').click();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $('#modalGeneric').modal('toggle');
+                modalAlert('La operación no se realizo');
+            }
+        });
+    });
+</script>
