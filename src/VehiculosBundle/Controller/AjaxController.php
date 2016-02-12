@@ -14,12 +14,13 @@ class AjaxController extends Controller {
         $id = $request->query->get('id');
 
         if (!$id) {
-            $return = false;
+            $return['muestra_plan_ahorro'] = false;
         } else {
 
             $em = $this->getDoctrine()->getManager();
             $entities = $em->getRepository('VehiculosBundle:TipoVentaEspecial')->find($id);
-            $return = $entities->getMuestraPlanDeAhorro();
+            $return['muestra_plan_ahorro'] = $entities->getMuestraPlanDeAhorro();
+            $return['slug'] = $entities->getSlug();
         }
 
         return new JsonResponse($return);
@@ -107,8 +108,8 @@ class AjaxController extends Controller {
     public function asignacionVehiculoUpdateAjaxAction(Request $request, $vehiculoId) {
         $em = $this->getDoctrine()->getManager();
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
-        $prueba=$request->request->get('vehiculosbundle_asignacion_vehiculo');
-        $cliente=$this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
+        $prueba = $request->request->get('vehiculosbundle_asignacion_vehiculo');
+        $cliente = $this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
         $vehiculo->setCliente($cliente);
         $em->persist($vehiculo);
         $em->flush();

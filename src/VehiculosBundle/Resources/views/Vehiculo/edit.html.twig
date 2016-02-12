@@ -7,91 +7,96 @@
     {{ parent() }}
     <script type="text/javascript">
 
-        var itemCant{{edit_form.danioVehiculoGm.vars.id}} = {{ edit_form.danioVehiculoGm.count | default(0)}};        {#var itemCant{{edit_form.danioVehiculoGm.vars.data.fotoDanio.vars.id}} = {{ edit_form.danioVehiculoGm.vars.data.fotoDanio.count | default(0)}};#}
-                    $(document).ready(function () {
+        var itemCant{{edit_form.danioVehiculoGm.vars.id}} = {{ edit_form.danioVehiculoGm.count | default(0)}};{#var itemCant{{edit_form.danioVehiculoGm.vars.data.fotoDanio.vars.id}} = {{ edit_form.danioVehiculoGm.vars.data.fotoDanio.count | default(0)}};#}
+                $(document).ready(function () {
 
-                $('.agregar-danio').click(function () {
+            $('.agregar-danio').click(function () {
 
-                    var itemList = $('#danio-vehiculo-list table');
+                var itemList = $('#danio-vehiculo-list table');
 
-                    if (itemList.find('tbody tr').length < 9999) {
+                if (itemList.find('tbody tr').length < 9999) {
 
 //                    console.log(itemList)
-                        var newWidget = itemList.data('prototype');
-                        newWidget = newWidget.replace(/__daniovehiculo__/g, itemCant{{edit_form.danioVehiculoGm.vars.id}});
-                        var newTr = $('<tr item="' + itemCant{{edit_form.danioVehiculoGm.vars.id}} + '"></tr>').html(newWidget);
-                        itemCant{{edit_form.danioVehiculoGm.vars.id}}++;
-                        newTr.appendTo(itemList);
-                    }
+                    var newWidget = itemList.data('prototype');
+                    newWidget = newWidget.replace(/__daniovehiculo__/g, itemCant{{edit_form.danioVehiculoGm.vars.id}});
+                    var newTr = $('<tr item="' + itemCant{{edit_form.danioVehiculoGm.vars.id}} + '"></tr>').html(newWidget);
+                    itemCant{{edit_form.danioVehiculoGm.vars.id}}++;
+                    newTr.appendTo(itemList);
+                }
 //                                            inicializarFecha();
-                    $(this).trigger('clicked');
-                    return false;
-                });
+                $(this).trigger('clicked');
+                return false;
+            });
 
-                $(document).on('click', '.agregar-foto', function () {
-                    var itemCantFoto = $(this).data('cant');
+            $(document).on('click', '.agregar-foto', function () {
+                var itemCantFoto = $(this).data('cant');
 
-                    var btnAddFoto = $(this);
-                    var itemList = $(this).parent('.foto-list');
+                var btnAddFoto = $(this);
+                var itemList = $(this).parent('.foto-list');
 //                console.log(itemCantFoto)
 
-                    if (itemList.find('div').length < 9999) {
+                if (itemList.find('div').length < 9999) {
 
 
-                        var newWidget = itemList.data('prototype');
-                        newWidget = newWidget.replace(/__foto__/g, itemCantFoto);
-                        var newTr = $('<tr item="' + itemCantFoto + '"></tr>').html(newWidget);
-                        itemCantFoto++;
-                        btnAddFoto.parent('td').find('.elements').append(newTr);
-                    }
+                    var newWidget = itemList.data('prototype');
+                    newWidget = newWidget.replace(/__foto__/g, itemCantFoto);
+                    var newTr = $('<tr item="' + itemCantFoto + '"></tr>').html(newWidget);
+                    itemCantFoto++;
+                    btnAddFoto.parent('td').find('.elements').append(newTr);
+                }
 //                                            inicializarFecha();
-                    btnAddFoto.data('cant', itemCantFoto);
-                    $(this).trigger('clicked');
-                    return false;
-                });
+                btnAddFoto.data('cant', itemCantFoto);
+                $(this).trigger('clicked');
+                return false;
+            });
 
-                $(document).on('click', '.btn-remove-foto', function () {
-                    $(this).parent('tr').remove();
-                });
+            $(document).on('click', '.btn-remove-foto', function () {
+                $(this).parent('tr').remove();
+            });
 
 //            tipo de venta
-                $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
+            $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
 
 
-                    var id = $(this).val()
-
-                    checkTipoVenta(id);
-
-
-                });
-
-
-                var id = $('#{{ edit_form.tipoVentaEspecial.vars.id }}').val()
+                var id = $(this).val()
 
                 checkTipoVenta(id);
 
-                function checkTipoVenta(id) {
-                    $.ajax({
-                        url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
-                        method: "GET",
-                        data: {id: id},
-                        success: function (data) {
-                            if (data == true) {
-                                $('.tipo-venta-especial-field').removeClass('hidden');
-                                $('.tipo-venta-especial-field').add('required', 'required');
-                            } else {
 
-                                $('.tipo-venta-especial-field').addClass('hidden');
-                                $('.tipo-venta-especial-field').removeAttr('required');
-                            }
-                        }
-                    });
-                }
-
-                $('#{{ edit_form.vin.vars.id }}').keyup(function () {
-                    $('#{{ edit_form.chasis.vars.id }}').val($('#{{ edit_form.vin.vars.id }}').val());
-                });
             });
+
+
+            var id = $('#{{ edit_form.tipoVentaEspecial.vars.id }}').val()
+
+            checkTipoVenta(id);
+
+            function checkTipoVenta(id) {
+                $.ajax({
+                    url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
+                    method: "GET",
+                    data: {id: id},
+                    success: function (data) {
+                        if (data.muestra_plan_ahorro == true) {
+                            $('.tipo-venta-especial-field').removeClass('hidden');
+                            $('.tipo-venta-especial-field').add('required', 'required');
+                            if (data.slug == 'plan-de-ahorro-propio') {
+                                $('.cliente').addClass('hidden');
+                                $('.cliente').removeAttr('required');
+                                $('.cliente').val('');
+                            }
+                        } else {
+
+                            $('.tipo-venta-especial-field').addClass('hidden');
+                            $('.tipo-venta-especial-field').removeAttr('required');
+                        }
+                    }
+                });
+            }
+
+            $('#{{ edit_form.vin.vars.id }}').keyup(function () {
+                $('#{{ edit_form.chasis.vars.id }}').val($('#{{ edit_form.vin.vars.id }}').val());
+            });
+        });
     </script>
 {% endblock javascripts %}
 

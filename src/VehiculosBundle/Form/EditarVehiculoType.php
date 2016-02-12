@@ -76,8 +76,8 @@ class EditarVehiculoType extends AbstractType {
 //					'class'         => 'PersonaBundle:Persona',
 //					'property'      => 'nombreCompleto',
 //					'search_method' => 'getEmpadronadoresPorSector',
-                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
-                    'attr' => array('class' => 'hidden tipo-venta-especial-field')
+                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field cliente'),
+                    'attr' => array('class' => 'hidden tipo-venta-especial-field cliente')
                 ))
                 ->add('remito', new RemitoType())
                 ->add('codigoLlave', 'text', array(

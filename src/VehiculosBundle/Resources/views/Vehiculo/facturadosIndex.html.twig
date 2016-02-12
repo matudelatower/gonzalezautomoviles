@@ -29,22 +29,13 @@
                         <thead>
 
                             <tr>
-                                <th>Id</th>
-                                <th>Vin</th>
+                                <th>Id</th>                                
                                 <th>Modelo</th>
-                                    {#                                <th>Motor</th>#}
                                 <th>Color vehiculo</th>
-                                    {#<th>Numero remito</th>
-                                    <th>Fecha remito</th>
-                                    <th>Numero pedido</th>#}
+                                <th>Vin</th>
+                                <th>Dias stock</th>
+                                <th>Pagado</th>
                                 <th>Tipo de venta</th>
-                                    {# <th>Codigo llave</th>
-                                     <th>Codigo radio</th>
-                                     <th>Codigo seguridad</th>
-                                     <th>Codigo inmovilizador</th>
-                                     <th>Km ingreso</th>
-                                     <th>Observacion</th>#}
-                                    {#                                <th>Estado</th>#}
                                 <th>Deposito</th>
                                 <th>Actions</th>
                             </tr>
@@ -53,21 +44,23 @@
                             {% for entity in entities %}
                                 <tr>
                                     <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                    <td>{{ entity.vin }}</td>
-                                    <td>{{ entity.modelo }}</td>
-                                    {#                                    <td>{{ entity.motor }}</td>#}
+                                    <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_codigo~' | '~entity.modelo_version }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
-                                    {#<td>{{ entity.remito_numero }}</td>
-                                    <td>{{ entity.remito_fecha|date("d-m-Y") }}</td>
-                                    <td>{{ entity.numero_pedido }}</td>#}
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.dias_en_stock }}</td>
+                                    <td align="center">
+                                        {% if entity.venta_especial_slug == 'convencional' %}
+                                            {%if entity.pagado %}
+                                                SI
+                                            {%else%}
+                                                <a class="btn btn-pagado" data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Mover de Deposito">NO</a>
+                                            {%endif%}
+                                        {%endif%}
+                                    </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
-                                    {#<td>{{ entity.codigo_llave }}</td>
-                                    <td>{{ entity.codigo_radio }}</td>
-                                    <td>{{ entity.codigo_seguridad }}</td>
-                                    <td>{{ entity.codigo_inmovilizador }}</td>
-                                    <td>{{ entity.km_ingreso }}</td>
-                                    <td>{{ entity.observacion }}</td>#}
-                                    {#                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>#}
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>
 
@@ -82,7 +75,6 @@
                                         <a class="btn {%if(entity.dominio!='')%}btn-success{%else%}btn-default{%endif%}"
                                            href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                            title="Patente"><i class="fa fa-cc"></i></a>   
-                                            {#                                            {% endif %}#}
 
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalGeneric"

@@ -146,9 +146,7 @@ class VehiculoController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new VehiculoFilterType());
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('stock');
-        $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('asignado-a-cliente');
-        $estadoId3 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('asignado-a-reventa');
-        $estados = array($estadoId1, $estadoId2, $estadoId3);
+        $estados = array($estadoId1);
 
         if ($request->isMethod("post")) {
             $form->handleRequest($request);

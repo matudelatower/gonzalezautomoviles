@@ -29,14 +29,15 @@
                         <thead>
 
                             <tr>
-                                <th>Id</th>
-                                <th>Vin</th>
+                                <th>Id</th>                                
                                 <th>Modelo</th>
                                 <th>Color vehiculo</th>
+                                <th>Vin</th>
+                                <th>Dias stock</th>
+                                <th>Pagado</th>
                                 <th>Tipo de venta</th>
                                 <th>Deposito</th>
-                                <th>Estado</th>
-                                <th>Pagado</th>
+                                <th>Estado</th>                                
                                 <th>Actions</th>                                
 
                             </tr>
@@ -44,91 +45,90 @@
                         <tbody>
                             {% for entity in entities %}
                                 <tr>
-                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                    <td>{{ entity.vin }}</td>
-                                    <td>{{ entity.modelo }}</td>
-                                    {#                                    <td>{{ entity.motor }}</td>                                #}
+                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>                                    
+                                    <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_codigo~' | '~entity.modelo_version }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
-                                    {#<td>{{ entity.remito_numero }}</td>
-                                    <td>{{ entity.remito_fecha|date("d-m-Y") }}</td>
-                                    <td>{{ entity.numero_pedido }}</td>#}
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.dias_en_stock }}</td>
+                                    <td align="center">
+                                        {% if entity.venta_especial_slug == 'convencional' %}
+                                            {%if entity.pagado %}
+                                                SI
+                                            {%else%}
+                                                <a class="btn btn-pagado" data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Mover de Deposito">NO</a>
+                                            {%endif%}
+                                        {%endif%}
+                                    </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
-                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>                                    
-                                    <td align="center">{%if entity.pagado %}
-                                        SI
-                                    {%else%}
-                                        <a class="btn btn-pagado" data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Mover de Deposito">NO</a>
-                                        {%endif%}
-                                        </td>
-                                        {#                                    <td>{{ entity.observacion }}</td>#}
-                                        <td>
+                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>
+                                    <td>
 
-                                            <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                    class="fa fa-eye"></i></a>
+                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                                class="fa fa-eye"></i></a>
 
-                                            {% if entity.vehiculo_estado_slug != 'transito' %}
-                                                <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                                {% endif %}    
-                                                {% if entity.venta_especial_slug == 'convencional' %}
-                                                <a class="btn btn-default btn-asignar" data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
-                                                {% endif %}       
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="box-footer">
-                                <div class="col-xs-2">
-                                    <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
-                                        Alta
-                                    </a>
-                                </div>
-                                <label  class="control-label col-xs-1 col-xs-offset-7"> Registros:</label>
-                                <div class="col-xs-2">
-                                    {{ form_widget(form.registrosPaginador) }}
-                                </div> 
-                            </div>       
-                        </div>
-                    </div>
+                                        {% if entity.vehiculo_estado_slug != 'transito' %}
+                                            <a class="btn btn-default btn-deposito" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                            {% endif %}    
+                                            {% if entity.venta_especial_slug == 'convencional' %}
+                                            <a class="btn btn-default btn-asignar" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
+                                            {% endif %}       
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                {{ knp_pagination_render(entities) }}
-                {% endblock %}
+                <div class="box-footer">
+                    <div class="col-xs-2">
+                        <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
+                            Alta
+                        </a>
+                    </div>
+                    <label  class="control-label col-xs-1 col-xs-offset-7"> Registros:</label>
+                    <div class="col-xs-2">
+                        {{ form_widget(form.registrosPaginador) }}
+                    </div> 
+                </div>       
+            </div>
+        </div>
+    </div>
+    {{ knp_pagination_render(entities) }}
+{% endblock %}
 
-                    {% block javascripts %}
-                        {{ parent() }}
-                        {% include "VehiculosBundle:Vehiculo:index.js.twig"%}
-                        <script>
-                            $(document).ready(function () {
+{% block javascripts %}
+    {{ parent() }}
+    {% include "VehiculosBundle:Vehiculo:index.js.twig"%}
+    <script>
+        $(document).ready(function () {
 
-                            {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
+        {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
 
-                            {% if formFilter is not null %}
-                                    $('.pagination li a').click(function () {
+        {% if formFilter is not null %}
+                $('.pagination li a').click(function () {
 
-                                        $('#form_listado').attr('action', this.href);
-                                {% for row in form %}
-                                            $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
-                                {% endfor %}
+                    $('#form_listado').attr('action', this.href);
+            {% for row in form %}
+                        $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
+            {% endfor %}
 
-                                            $('#form_listado').submit();
-                                            return false;
-                                        });
-                            {% endif %}
+                        $('#form_listado').submit();
+                        return false;
+                    });
+        {% endif %}
 
-                                });
+            });
 
 
 
-                        </script>
-                    {% endblock %}
+    </script>
+{% endblock %}

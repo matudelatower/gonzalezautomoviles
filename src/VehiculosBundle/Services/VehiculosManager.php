@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: matias
@@ -8,7 +9,6 @@
 
 namespace VehiculosBundle\Services;
 
-
 use CuestionariosBundle\Entity\CuestionarioResultadoCabecera;
 use CuestionariosBundle\Entity\CuestionarioResultadoRespuesta;
 use CuestionariosBundle\Entity\PreguntaResultadoRespuesta;
@@ -17,108 +17,109 @@ use VehiculosBundle\Entity\EstadoVehiculo;
 
 class VehiculosManager {
 
-	private $container;
-	/* @var $em EntityManager */
-	private $em;
+    private $container;
+    /* @var $em EntityManager */
+    private $em;
 
-	public function __construct( $container ) {
-		$this->container = $container;
-		$this->em        = $container->get( 'doctrine' )->getManager();
-	}
+    public function __construct($container) {
+        $this->container = $container;
+        $this->em = $container->get('doctrine')->getManager();
+    }
 
-	public function guardarVehiculo( $vehiculo, $tipoEstadoDanioGm = null ) {
-		$em = $this->em;
+    public function guardarVehiculo($vehiculo, $tipoEstadoDanioGm = null) {
+        $em = $this->em;
 
-		if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
-			$vehiculo->getRemito()->setUsuarioReceptor( $this->container->get( 'security.token_storage' )->getToken()->getUser() );
-		}
-		if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
-			$vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
-		}
+        if (!$vehiculo->getRemito()->getUsuarioReceptor()) {
+            $vehiculo->getRemito()->setUsuarioReceptor($this->container->get('security.token_storage')->getToken()->getUser());
+        }
+        if (!$vehiculo->getRemito()->getFechaRecibido()) {
+            $vehiculo->getRemito()->setFechaRecibido(new \DateTime('now'));
+        }
 
-		if ( $vehiculo->getDanioVehiculoGm()->count() > 0 ) {
+        if ($vehiculo->getDanioVehiculoGm()->count() > 0) {
 
-			foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
-				$danioVehiculo->setVehiculo( $vehiculo );
-				if ( $tipoEstadoDanioGm ) {
-					$danioVehiculo->setTipoEstadoDanioGm( $tipoEstadoDanioGm );
-				}
-				foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
-					$fotoDanio->upload();
-					$fotoDanio->setDanioVehiculo( $danioVehiculo );
-				}
-			}
+            foreach ($vehiculo->getDanioVehiculoGm() as $danioVehiculo) {
+                $danioVehiculo->setVehiculo($vehiculo);
+                if ($tipoEstadoDanioGm) {
+                    $danioVehiculo->setTipoEstadoDanioGm($tipoEstadoDanioGm);
+                }
+                foreach ($danioVehiculo->getFotoDanio() as $fotoDanio) {
+                    $fotoDanio->upload();
+                    $fotoDanio->setDanioVehiculo($danioVehiculo);
+                }
+            }
 //estado 2
-			$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
-				'recibido-con-problemas'
-			);
-		} else {
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                    'recibido-con-problemas'
+            );
+        } else {
 //estado 3
-			$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
-				'recibido-conforme'
-			);
-		}
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                    'recibido-conforme'
+            );
+        }
 
-		$this->setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo );
+        $this->setEstadoActualVehiculo($vehiculo, $tipoEstadoVehiculo);
 
-		$em->flush();
+        $em->flush();
 
-		return true;
-	}
+        return true;
+    }
 
-	public function crearCheckList( $vehiculo, $checkList ) {
+    public function crearCheckList($vehiculo, $checkList) {
 
-		$em = $this->em;
+        $em = $this->em;
 
-		if ( $vehiculo->getDanioVehiculoInterno()->count() > 0 ) {
+        if ($vehiculo->getDanioVehiculoInterno()->count() > 0) {
 
-			foreach ( $vehiculo->getDanioVehiculoInterno() as $danioVehiculo ) {
-				$danioVehiculo->setVehiculo( $vehiculo );
+            foreach ($vehiculo->getDanioVehiculoInterno() as $danioVehiculo) {
+                $danioVehiculo->setVehiculo($vehiculo);
 
-				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
-					$fotoDanio->upload();
-					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
-				}
-			}
+                foreach ($danioVehiculo->getFotoDanioInterno() as $fotoDanio) {
+                    $fotoDanio->upload();
+                    $fotoDanio->setDanioVehiculoInterno($danioVehiculo);
+                }
+            }
+        }
 
-		}
-
-		$resultadoCabecera = new CuestionarioResultadoCabecera();
-		$resultadoCabecera->setVehiculo( $vehiculo );
+        $resultadoCabecera = new CuestionarioResultadoCabecera();
+        $resultadoCabecera->setVehiculo($vehiculo);
 
 
-		foreach ( $checkList as $preguntaId => $valor ) {
-			$resultadoRespuesta = new CuestionarioResultadoRespuesta();
-			$resultadoRespuesta->setResultadoCabecera( $resultadoCabecera );
-			$resultadoRespuesta->setTextoRespuesta( $valor );
+        foreach ($checkList as $preguntaId => $valor) {
+            $resultadoRespuesta = new CuestionarioResultadoRespuesta();
+            $resultadoRespuesta->setResultadoCabecera($resultadoCabecera);
+            $resultadoRespuesta->setTextoRespuesta($valor);
 
-			$pregunta = $em->getRepository( 'CuestionariosBundle:CuestionarioPregunta' )->find( $preguntaId );
+            $pregunta = $em->getRepository('CuestionariosBundle:CuestionarioPregunta')->find($preguntaId);
 
-			$preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
-			$preguntaResultadoRespuesta->setResultadoRespuesta( $resultadoRespuesta );
-			$preguntaResultadoRespuesta->setPregunta( $pregunta );
+            $preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
+            $preguntaResultadoRespuesta->setResultadoRespuesta($resultadoRespuesta);
+            $preguntaResultadoRespuesta->setPregunta($pregunta);
 
-			$em->persist( $preguntaResultadoRespuesta );
+            $em->persist($preguntaResultadoRespuesta);
+        }
+        $tipoVentaEspecialSlug = $vehiculo->getTipoVentaEspecial()->getSlug();
+        if ($tipoVentaEspecialSlug == 'plan-de-ahorro' || $tipoVentaEspecialSlug == 'plan-de-ahorro-propio' || $tipoVentaEspecialSlug == 'venta-especial') {
+            $slug = 'pendiente-por-entregar';
+        } else {
+            $slug = 'stock';
+        }
 
-		}
+        $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug($slug);
 
-		$tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
-			'stock'
-		);
+        if ($vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo) {
 
-		if ( $vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo ) {
+            $this->setEstadoActualVehiculo($vehiculo, $tipoEstadoVehiculo);
+        }
+        $em->flush();
 
-			$this->setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo );
-		}
-		$em->flush();
+        return true;
+    }
 
-		return true;
-
-	}
-
-	public function setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo ) {
+    public function setEstadoActualVehiculo($vehiculo, $tipoEstadoVehiculo) {
 //		$em = $this->em;
-		//cambio actual=false en todos los registros de estado que tuvo el automovil
+        //cambio actual=false en todos los registros de estado que tuvo el automovil
 //		$qb = $em->getRepository( 'VehiculosBundle:Vehiculo' )->createQueryBuilder( 'e' )
 //		         ->update( 'VehiculosBundle:EstadoVehiculo', 'e' )
 //		         ->set( 'e.actual', 'false' )
@@ -127,12 +128,11 @@ class VehiculosManager {
 //
 //		$qb->getQuery()->getResult();
 
-		$estadoVehiculo = new EstadoVehiculo();
-		$estadoVehiculo->setTipoEstadoVehiculo( $tipoEstadoVehiculo );
-		$estadoVehiculo->setVehiculo( $vehiculo );
+        $estadoVehiculo = new EstadoVehiculo();
+        $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+        $estadoVehiculo->setVehiculo($vehiculo);
 
-		$vehiculo->addEstadoVehiculo( $estadoVehiculo );
-	}
-
+        $vehiculo->addEstadoVehiculo($estadoVehiculo);
+    }
 
 }
