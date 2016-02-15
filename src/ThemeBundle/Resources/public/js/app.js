@@ -9,6 +9,42 @@ function inicializarFecha() {
         language: "es",
         autoclose: true
     });
+    //Date range picker
+    $('.daterange').daterangepicker({
+        format: 'DD/MM/YYYY',
+        "locale": {
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "Desde",
+            "toLabel": "Hasta",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa",
+                "Do"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Deciembre"
+            ],
+            "firstDay": 1
+        },
+    });
 }
 
 function modalAlert(msg) {
@@ -21,11 +57,11 @@ $(document).ready(function () {
 
     $(document).ajaxStart(function () {
         $.blockUI(
-                {
-                    message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
-                    css: {backgroundColor: 'none', border: 'none'},
-                    baseZ: 1050,
-                }
+            {
+                message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
+                css: {backgroundColor: 'none', border: 'none'},
+                baseZ: 1050,
+            }
         )
     });
     $(document).ajaxStop($.unblockUI);

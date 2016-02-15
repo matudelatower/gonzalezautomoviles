@@ -15,7 +15,7 @@ class ExcelTool
     private $filename;
     private $title;
     private $descripcion;
-    private $createby = 'BigD';
+    private $createby = 'Gonzalez Automóviles';
     private $doctrine;
     private $phpexcel;
 
@@ -148,7 +148,7 @@ class ExcelTool
      */
     public function buildSheetListUsers($resultados)
     {
-        $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
         $phpExcelObject->getProperties()->setTitle($this->title);
         $phpExcelObject->getProperties()->setDescription($this->descripcion);
@@ -230,30 +230,32 @@ class ExcelTool
      * @param type $areaStr
      * @return type
      */
-    public function buildSheetListArea($resultSet, $areaStr)
+    public function buildSheetgetReporteAutosVendidosPorVendedor($resultSet)
     {
-        $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject();
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
         $phpExcelObject->getProperties()->setTitle($this->title);
         $phpExcelObject->getProperties()->setDescription($this->descripcion);
         $phpExcelObject->getProperties()->setCreator($this->createby);
 
         $phpExcelObject->setActiveSheetIndex(0);
-        $phpExcelObject->getActiveSheet()->setCellValue('A1', $areaStr);
+
         $phpExcelObject->getActiveSheet()
-            ->setCellValue('A2', 'Id.')
-            ->setCellValue('B2', 'Nombre y Apellido')
-            ->setCellValue('C2', 'Tipo de Documento')
-            ->setCellValue('D2', 'Numero');
+            ->setCellValue('A2', 'Id')
+            ->setCellValue('B2', 'VIN')
+            ->setCellValue('C2', 'Modelo')
+            ->setCellValue('D2', 'Color Vehiculo')
+            ->setCellValue('E2', 'Fecha Facturación');
 
 
         $i = 3;
         if (is_array($resultSet) && !empty ($resultSet) || !is_null($resultSet)) {
-            foreach ($resultSet as $usuario) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A'.$i, $usuario['identificador']);
-                $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, $usuario['nombre_completo']);
-                $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $usuario['tipo']);
-                $phpExcelObject->getActiveSheet()->setCellValue('D'.$i, $usuario['documento']);
+            foreach ($resultSet as $entity) {
+                $phpExcelObject->getActiveSheet()->setCellValue('A'.$i, $entity['id']);
+                $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, $entity['vin']);
+                $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $entity['modelo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('D'.$i, $entity['colores_vehiculos_color']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E'.$i, $entity['facturas_fecha']);
                 $i++;
             }
 
@@ -261,9 +263,9 @@ class ExcelTool
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 
-        $writer = $this->container->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
         // create the response
-        $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
+        $response = $this->phpexcel->createStreamedResponse($writer);
 
         return $response;
 

@@ -21,7 +21,9 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "stof/doctrine-extensions-bundle": "^1.2",
         "knplabs/knp-menu-bundle": "~2",
-        "knplabs/knp-paginator-bundle": "dev-master"
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "knplabs/knp-snappy-bundle": "^1.4",
+        "liuggio/ExcelBundle": "^2.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

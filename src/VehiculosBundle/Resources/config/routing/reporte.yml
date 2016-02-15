@@ -1,0 +1,11 @@
+index_repote_autos_vendidos_por_vendedor:
+    path:     /index_repote_autos_vendidos_por_vendedor
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteAutosVendidosPorVendedor" }
+
+exportart_pdf_repote_autos_vendidos_por_vendedor:
+    path:     /exportart_pdf_repote_autos_vendidos_por_vendedor
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteAutosVendidosPorVendedor" }
+
+exportart_excel_repote_autos_vendidos_por_vendedor:
+    path:     /exportart_excel_repote_autos_vendidos_por_vendedor
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteAutosVendidosPorVendedor" }

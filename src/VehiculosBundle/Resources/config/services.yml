@@ -5,3 +5,10 @@ services:
             container: '@service_container'
         tags:
             - { name: manager.vehiculos, alias: manager.vehiculos }
+
+    manager.reportes:
+        class: VehiculosBundle\Services\ReportesManager
+        arguments:
+            container: '@service_container'
+        tags:
+            - { name: manager.reportes, alias: manager.reportes }

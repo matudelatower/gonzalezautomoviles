@@ -25,13 +25,13 @@ services:
         tags:
             - { name: form.type, alias: jqueryautocompletetext }
             
-#    excel.tool:
-#            class: UtilBundle\Services\ExcelTool
-#            arguments:
-#                phpexcel: "@phpexcel"
-#                entityManager: "@doctrine.orm.entity_manager"
-#            tags:
-#                - { name: excel.tool, alias: excel.tool }
+    excel.tool:
+            class: UtilBundle\Services\ExcelTool
+            arguments:
+                phpexcel: "@phpexcel"
+                entityManager: "@doctrine.orm.entity_manager"
+            tags:
+                - { name: excel.tool, alias: excel.tool }
 
     form.type.verticalcollection:
         class: UtilBundle\Form\Type\VerticalCollectionType

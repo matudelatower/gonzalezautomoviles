@@ -71,10 +71,67 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         WHERE " . $where .
                                         " ORDER BY modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
 
-        $stmt = $db->prepare($query);
-        $stmt->execute();
+		$stmt = $db->prepare( $query );
+		$stmt->execute();
 
-        return $stmt->fetchAll();
-    }
+		return $stmt->fetchAll();
+	}
+
+	public function getVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta ) {
+		$db         = $this->getEntityManager()->getConnection();
+		$vendedorId = $vendedor->getId();
+		$fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+		$fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+		$query      = "SELECT
+		     vehiculos.id AS id,
+		     vehiculos.codigo_modelo_id AS codigo_modelo_id,
+		     vehiculos.creado_por AS creado_por,
+		     vehiculos.actualizado_por AS actualizado_por,
+		     vehiculos.remito_id AS remito_id,
+		     vehiculos.cliente_id AS cliente_id,
+		     vehiculos.tipo_venta_especial_id AS tipo_venta_especial_id,
+		     vehiculos.factura_id AS factura_id,
+		     vehiculos.patentamiento_id AS patentamiento_id,
+		     vehiculos.transportista_id AS transportista_id,
+		     vehiculos.vin AS vin,
+		     vehiculos.motor AS motor,
+		     vehiculos.codigo_llave AS codigo_llave,
+		     vehiculos.codigo_radio AS codigo_radio,
+		     vehiculos.codigo_seguridad AS codigo_seguridad,
+		     vehiculos.codigo_inmovilizador AS codigo_inmovilizador,
+		     vehiculos.km_ingreso AS km_ingreso,
+		     vehiculos.observacion AS observacion,
+		     vehiculos.creado AS creado,
+		     vehiculos.actualizado AS actualizado,
+		     vehiculos.chasis AS chasis,
+		     vehiculos.documento AS documento,
+		     vehiculos.importe AS importe,
+		     vehiculos.impuestos AS impuestos,
+		     vehiculos.numero_pedido AS numero_pedido,
+		     vehiculos.numero_orden AS numero_orden,
+		     vehiculos.numero_grupo AS numero_grupo,
+		     vehiculos.numero_solicitud AS numero_solicitud,
+		     vehiculos.fecha_emision_documento AS fecha_emision_documento,
+		     vehiculos.vendedor_id AS vendedor_id,
+		     vehiculos.check_control_interno_resultado_cabecera_id AS check_control_interno_resultado_cabecera_id,
+		     vehiculos.color_vehiculo_id AS color_vehiculo_id,
+		     vehiculos.pagado AS pagado,
+		     colores_vehiculos.color AS colores_vehiculos_color,
+		     codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,
+		     facturas.fecha AS facturas_fecha
+		FROM
+		     facturas facturas INNER JOIN vehiculos vehiculos ON facturas.id = vehiculos.factura_id
+		     INNER JOIN colores_vehiculos colores_vehiculos ON vehiculos.color_vehiculo_id = colores_vehiculos.id
+		     INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
+		     INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
+		WHERE
+			 vehiculos.vendedor_id =$vendedorId
+		     AND facturas.fecha BETWEEN '$fechaDesde' and '$fechaHasta'";
+
+		$stmt = $db->prepare( $query );
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+	}
 
 }
