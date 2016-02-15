@@ -81,8 +81,8 @@
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                         
-                                           <a class="btn btn-default btn-agenda" data-toggle="modal"
-                                           data-target="#modalGeneric"
+                                           <a class="btn {%if(entity.fecha_entrega!='')%}btn-success{%else%}btn-default{%endif%} btn-agenda"
+                                           data-toggle="modal" data-target="#modalGeneric"
                                            data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Agendar entrega"><i class="fa fa-calendar"></i></a>   
                                     </td>
@@ -93,10 +93,11 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
-                        Alta
-                    </a>
-                </div>
+                    <label  class="control-label col-xs-1 col-xs-offset-9"> Registros:</label>
+                    <div class="col-xs-2">
+                        {{ form_widget(form.registrosPaginador) }}
+                    </div> 
+                </div>  
             </div>
         </div>
     </div>

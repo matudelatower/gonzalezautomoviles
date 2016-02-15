@@ -58,10 +58,10 @@ class VehiculoController extends Controller {
     }
 
     /**
-     * listado de vehiculos que se encuentren pendientes por recibir.
+     * listado de vehiculos que se encuentren en transito por recibir.
      *
      */
-    public function vehiculosPendientesIndexAction(Request $request) {
+    public function vehiculosTransitoIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
         $estado = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('transito');
@@ -90,7 +90,7 @@ class VehiculoController extends Controller {
         );
 
         return $this->render(
-                        'VehiculosBundle:Vehiculo:pendientesIndex.html.twig', array(
+                        'VehiculosBundle:Vehiculo:transitoIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView()
@@ -181,10 +181,10 @@ class VehiculoController extends Controller {
     }
 
     /**
-     * listado de vehiculos que fueron facturados.
+     * listado de vehiculos que estan pendientes por entregar.
      *
      */
-    public function vehiculosFacturadosIndexAction(Request $request) {
+    public function vehiculosPendientesPorEntregarIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new VehiculoFilterType());
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('pendiente-por-entregar');
@@ -213,7 +213,7 @@ class VehiculoController extends Controller {
         );
 
         return $this->render(
-                        'VehiculosBundle:Vehiculo:facturadosIndex.html.twig', array(
+                        'VehiculosBundle:Vehiculo:pendientesPorEntregarIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView()

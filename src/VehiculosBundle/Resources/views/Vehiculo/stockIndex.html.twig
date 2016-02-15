@@ -85,6 +85,10 @@
                                            data-target="#modalGeneric"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                        <a class="btn {%if(entity.fecha_entrega!='')%}btn-success{%else%}btn-default{%endif%} btn-agenda"
+                                           data-toggle="modal" data-target="#modalGeneric"
+                                           data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
+                                           title="Agendar entrega"><i class="fa fa-calendar"></i></a>    
                                     </td>
 
                                 </tr>

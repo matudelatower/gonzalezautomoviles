@@ -36,7 +36,7 @@ class CheckControlInternoResultadoRespuesta {
     private $checkControlInternoPregunta;
     
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera", inversedBy="CheckControlInternoResultadoRespuesta")
      * @ORM\JoinColumn(name="check_control_interno_resultado_cabecera_id", referencedColumnName="id")
      */
     private $checkControlInternoResultadoCabecera;

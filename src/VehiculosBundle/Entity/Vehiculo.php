@@ -171,12 +171,7 @@ class Vehiculo {
      */
     private $patentamiento;
     
-    /**
-     * @ORM\OneToOne(targetEntity="VehiculosBundle\Entity\AgendaEntrega", inversedBy="vehiculo")
-     * @ORM\JoinColumn(name="agenda_entrega_id", referencedColumnName="id",nullable=true)
-     */
-    private $agendaEntrega;
-
+   
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist"})
      *
@@ -271,7 +266,7 @@ class Vehiculo {
     private $transportista;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera", inversedBy="vehiculo")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera")
      * @ORM\JoinColumn(name="check_control_interno_resultado_cabecera_id", referencedColumnName="id",nullable=true)
      */
     private $checkControlInternoResultadoCabecera;

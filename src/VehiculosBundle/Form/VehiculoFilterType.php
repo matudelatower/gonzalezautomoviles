@@ -14,34 +14,19 @@ class VehiculoFilterType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-//                ->add('documento')
-//                ->add('fechaEmisionDocumento', 'date', array(
-//                    'widget' => 'single_text',
-//                    'format' => 'dd-MM-yyyy',
-//                    'attr' => array(
-//                        'class' => 'datepicker',
-//                    ),
-//                ))
                 ->add('vin', 'text', array(
                     'required' => false,
                 ))
-//                ->add('modelo')
                 ->add('colorVehiculo', 'entity', array(
                     'class' => 'VehiculosBundle:ColorVehiculo',
                     'choice_label' => 'color',
                     'required' => false,
                 ))
-               ->add('modelo', 'entity', array(
+                ->add('modelo', 'entity', array(
                     'class' => 'VehiculosBundle:NombreModelo',
                     'choice_label' => 'nombre',
                     'required' => false,
                 ))
-//                ->add('motor', 'text', array(
-//                    'required' => false,
-//                ))
-//                ->add('importe')
-//                ->add('impuestos')
-//                ->add('numeroPedido')
                 ->add('tipoVentaEspecial', 'entity', array(
                     'class' => 'VehiculosBundle:TipoVentaEspecial',
                     'choice_label' => 'nombre',
@@ -52,9 +37,14 @@ class VehiculoFilterType extends AbstractType {
                     'choice_label' => 'nombre',
                     'required' => false,
                 ))
-                
+                ->add('cliente', 'jqueryautocomplete', array(
+                    'label' => 'Cliente (Por DNI)',
+                    'class' => 'ClientesBundle:Cliente',
+                    'search_method' => 'getClienteByDni',
+                    'required' => false,
+                    'route_name' => 'get_cliente_by_dni',
+                ))
                 ->add('registrosPaginador', 'choice', array(
-                    
                     'data' => '10',
                     'choices' => array(
                         '5' => '5',
@@ -71,26 +61,6 @@ class VehiculoFilterType extends AbstractType {
                     ),
                     "attr" => array("onchange" => 'document.form_listado.submit()')
                 ))
-//                ->add('remito', new RemitoType())
-//            ->add('importe')
-//            ->add('impuestos')
-//            ->add('tipoVentaEspecial')
-//            ->add('nombreVehiculo')
-//            ->add('anioFabricacion')
-//            ->add('codigoLlave')
-//            ->add('codigoRadio')
-//            ->add('codigoSeguridad')
-//            ->add('codigoInmovilizador')
-//            ->add('kmIngreso')
-//            ->add('observacion')
-//            ->add('creado')
-//            ->add('actualizado')
-//            ->add('creadoPor')
-//            ->add('actualizadoPor')
-//            ->add('cliente')
-//            ->add('tipoCompra')
-//            ->add('factura')
-//            ->add('patentamiento')
         ;
     }
 

@@ -41,14 +41,17 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         }
         if ($filters['modelo']) {
             $where.=" AND nm.id=" . $filters['modelo']->getId();
-        }        
+        }                
+         if ($filters['cliente']) {
+            $where.=" AND v.cliente_id=" . $filters['cliente']->getId();
+        }  
 
         $query = "SELECT   distinct(v.*),
                                         cm.codigo as modelo_codigo,cm.anio as modelo_anio,nm.nombre as modelo_nombre,cm.version as modelo_version,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,
-                                        pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock
+                                        pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
@@ -64,6 +67,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
                                         LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.check_control_interno_resultado_cabecera_id=ch_ci.id
                                         LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
+                                        LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
                                         WHERE " . $where .
                                         " ORDER BY modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
 

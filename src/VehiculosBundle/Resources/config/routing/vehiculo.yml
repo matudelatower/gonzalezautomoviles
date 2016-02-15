@@ -46,9 +46,9 @@ vehiculos_actualizar_remito:
     path:     /{vehiculoId}/vehiculos_actualizar_remito
     defaults: { _controller: "VehiculosBundle:Vehiculo:actualizarVehiculoRemito" }
     
-vehiculos_pendientes_index:
-    path:     /vehiculos_pendientes_index
-    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosPendientesIndex" } 
+vehiculos_transito_index:
+    path:     /vehiculos_transito_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosTransitoIndex" } 
     
 vehiculos_recibidos_index:
     path:     /vehiculos_recibidos_index
@@ -58,9 +58,9 @@ vehiculos_stock_index:
     path:     /vehiculos_stock_index
     defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosStockIndex" } 
     
-vehiculos_facturados_index:
-    path:     /vehiculos_facturados_index
-    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosFacturadosIndex" } 
+vehiculos_pendientes_por_entregar_index:
+    path:     /vehiculos_pendientes_por_entregar_index
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosPendientesPorEntregarIndex" } 
     
 vehiculos_entregados_index:
     path:     /vehiculos_entregados_index
