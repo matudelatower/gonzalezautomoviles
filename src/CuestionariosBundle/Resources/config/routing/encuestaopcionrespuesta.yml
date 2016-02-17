@@ -1,0 +1,30 @@
+encuesta_opcion_respuesta:
+    path:     /
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:index" }
+
+encuesta_opcion_respuesta_show:
+    path:     /{id}/show
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:show" }
+
+encuesta_opcion_respuesta_new:
+    path:     /new
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:new" }
+
+encuesta_opcion_respuesta_create:
+    path:     /create
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:create" }
+    methods:  POST
+
+encuesta_opcion_respuesta_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:edit" }
+
+encuesta_opcion_respuesta_update:
+    path:     /{id}/update
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:update" }
+    methods:  [POST, PUT]
+
+encuesta_opcion_respuesta_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CuestionariosBundle:EncuestaOpcionRespuesta:delete" }
+    methods:  [POST, DELETE]

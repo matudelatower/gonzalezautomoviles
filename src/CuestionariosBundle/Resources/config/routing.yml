@@ -1,3 +1,11 @@
+cuestionarios_encuesta_opcion_respuesta:
+    resource: "@CuestionariosBundle/Resources/config/routing/encuestaopcionrespuesta.yml"
+    prefix:   /encuesta_opcion_respuesta
+
+cuestionarios_encuesta_pregunta:
+    resource: "@CuestionariosBundle/Resources/config/routing/encuestapregunta.yml"
+    prefix:   /encuesta_pregunta
+
 cuestionarios_preguntas:
     resource: "@CuestionariosBundle/Resources/config/routing/cuestionariopregunta.yml"
     prefix:   /preguntas
