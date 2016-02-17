@@ -70,17 +70,7 @@ class VehiculosManager {
 
         $em = $this->em;
 
-        if ($vehiculo->getDanioVehiculoInterno()->count() > 0) {
-
-            foreach ($vehiculo->getDanioVehiculoInterno() as $danioVehiculo) {
-                $danioVehiculo->setVehiculo($vehiculo);
-
-                foreach ($danioVehiculo->getFotoDanioInterno() as $fotoDanio) {
-                    $fotoDanio->upload();
-                    $fotoDanio->setDanioVehiculoInterno($danioVehiculo);
-                }
-            }
-        }
+        $vehiculo = $this->modificarDanioInterno($vehiculo);
 
         $resultadoCabecera = new CuestionarioResultadoCabecera();
         $resultadoCabecera->setVehiculo($vehiculo);
@@ -134,5 +124,21 @@ class VehiculosManager {
 
         $vehiculo->addEstadoVehiculo($estadoVehiculo);
     }
+
+	public function modificarDanioInterno( $vehiculo ) {
+		if ( $vehiculo->getDanioVehiculoInterno()->count() > 0 ) {
+
+			foreach ( $vehiculo->getDanioVehiculoInterno() as $danioVehiculo ) {
+				$danioVehiculo->setVehiculo( $vehiculo );
+
+				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
+					$fotoDanio->upload();
+					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
+				}
+			}
+		}
+
+		return $vehiculo;
+	}
 
 }

@@ -28,76 +28,78 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                            <tr>
-                                <th>Id</th>                                
-                                <th>Modelo</th>
-                                <th>Color vehiculo</th>
-                                <th>Vin</th>
-                                <th>Dias stock</th>
-                                <th>Pagado</th>
-                                <th>Tipo de venta</th>
-                                <th>Deposito</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>Id</th>
+                            <th>Modelo</th>
+                            <th>Color vehiculo</th>
+                            <th>Vin</th>
+                            <th>Dias stock</th>
+                            <th>Pagado</th>
+                            <th>Tipo de venta</th>
+                            <th>Deposito</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for entity in entities %}
-                                <tr>
-                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                    <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_codigo~' | '~entity.modelo_version }}</td>
-                                    <td>{{ entity.color_vehiculo }}</td>
-                                    <td>{{ entity.vin }}</td>
-                                    <td>{{ entity.dias_en_stock }}</td>
-                                    <td align="center">
-                                        {% if entity.venta_especial_slug == 'convencional' %}
-                                            {%if entity.pagado %}
-                                                SI
-                                            {%else%}
-                                                <a class="btn btn-pagado" data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Mover de Deposito">NO</a>
-                                            {%endif%}
-                                        {%endif%}
-                                    </td>
-                                    <td>{{ entity.tipo_venta_especial }}</td>
-                                    <td>{{ entity.deposito_actual | default ("") }}</td>
-                                    <td>
+                        {% for entity in entities %}
+                            <tr>
+                                <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_codigo~' | '~entity.modelo_version }}</td>
+                                <td>{{ entity.color_vehiculo }}</td>
+                                <td>{{ entity.vin }}</td>
+                                <td>{{ entity.dias_en_stock }}</td>
+                                <td align="center">
+                                    {% if entity.venta_especial_slug == 'convencional' %}
+                                        {% if entity.pagado %}
+                                            SI
+                                        {% else %}
+                                            <a class="btn btn-pagado" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Mover de Deposito">NO</a>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>{{ entity.tipo_venta_especial }}</td>
+                                <td>{{ entity.deposito_actual | default ("") }}</td>
+                                <td>
 
-                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                    <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                 title="Ver" class="fa fa-eye"></i></a>
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                title="Editar"  class="fa fa-edit"></i></a>
-                                        <a class="btn {%if(entity.check_control_interno_resultado_cabecera_id!='')%}btn-success{%else%}btn-default{%endif%}"
-                                           href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
-                                           title="Checklist control interno"><i class="fa fa-check-square"></i></a>
-                                        <a class="btn {%if(entity.dominio!='')%}btn-success{%else%}btn-default{%endif%}"
-                                           href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                           title="Patente"><i class="fa fa-cc"></i></a>   
+                                    <a class="btn btn-default"
+                                       href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
+                                                title="Editar" class="fa fa-edit"></i></a>
+                                    <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
+                                       href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
+                                       title="Checklist control interno"><i class="fa fa-check-square"></i></a>
+                                    <a class="btn {% if(entity.dominio!='') %}btn-success{% else %}btn-default{% endif %}"
+                                       href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                       title="Patente"><i class="fa icon-patente"></i></a>
 
-                                        <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                        
-                                           <a class="btn {%if(entity.fecha_entrega!='')%}btn-success{%else%}btn-default{%endif%} btn-agenda"
-                                           data-toggle="modal" data-target="#modalGeneric"
-                                           data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Agendar entrega"><i class="fa fa-calendar"></i></a>   
-                                    </td>
+                                    <a class="btn btn-default btn-deposito" data-toggle="modal"
+                                       data-target="#modalGeneric"
+                                       data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
+                                       title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
 
-                                </tr>
-                            {% endfor %}
+                                    <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
+                                       data-toggle="modal" data-target="#modalGeneric"
+                                       data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
+                                       title="Agendar entrega"><i class="fa fa-calendar"></i></a>
+                                    <a class="btn btn-default" href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
+                                       title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 <div class="box-footer">
-                    <label  class="control-label col-xs-1 col-xs-offset-9"> Registros:</label>
+                    <label class="control-label col-xs-1 col-xs-offset-9"> Registros:</label>
                     <div class="col-xs-2">
                         {{ form_widget(form.registrosPaginador) }}
-                    </div> 
-                </div>  
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -107,6 +109,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% include "VehiculosBundle:Vehiculo:index.js.twig"%}
-    
+    {% include "VehiculosBundle:Vehiculo:index.js.twig" %}
+
 {% endblock %}

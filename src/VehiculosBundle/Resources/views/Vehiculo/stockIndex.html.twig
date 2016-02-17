@@ -88,7 +88,9 @@
                                         <a class="btn {%if(entity.fecha_entrega!='')%}btn-success{%else%}btn-default{%endif%} btn-agenda"
                                            data-toggle="modal" data-target="#modalGeneric"
                                            data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Agendar entrega"><i class="fa fa-calendar"></i></a>    
+                                           title="Agendar entrega"><i class="fa fa-calendar"></i></a>
+                                        <a class="btn btn-default" href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
+                                           title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
                                     </td>
 
                                 </tr>

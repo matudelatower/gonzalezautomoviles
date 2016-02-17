@@ -1,0 +1,3 @@
+editar_danio_vehiculo_interno:
+    path: /{vehiculoId}/editar_danio_vehiculo_interno
+    defaults: { _controller: "VehiculosBundle:DanioVehiculoInterno:editarDanioInterno" }

@@ -1,3 +1,7 @@
+danio_vehiculo_interno:
+    resource: "@VehiculosBundle/Resources/config/routing/daniovehiculointerno.yml"
+    prefix:   /danio_vehiculo_interno
+
 vehiculos_agenda_entrega:
     resource: "@VehiculosBundle/Resources/config/routing/agendaentrega.yml"
     prefix:   /agenda_entrega
