@@ -5,34 +5,36 @@
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <div class="col-sm-3"> 
-                {{ form_label(form.fecha)}}
+            <div class="col-sm-3">
+                {{ form_label(form.fecha) }}
             </div>
-            <div class="col-sm-6"> 
+            <div class="col-sm-6">
                 {{ form_widget(form.fecha) }}
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-3"> 
-                {{ form_label(form.hora)}}
+            <div class="col-sm-3">
+                {{ form_label(form.hora) }}
             </div>
-            <div class="col-sm-6"> 
-                {{ form_widget(form.hora) }}
-            </div>    
-        </div>  
+            <div class="col-sm-6">
+                <div class="bootstrap-timepicker">
+                    {{ form_widget(form.hora) }}
+                </div>
+            </div>
+        </div>
 
         <div class="form-group">
-            <div class="col-sm-3"> 
-                {{ form_label(form.descripcion)}}
+            <div class="col-sm-3">
+                {{ form_label(form.descripcion) }}
             </div>
-            <div class="col-sm-6"> 
+            <div class="col-sm-6">
                 {{ form_widget(form.descripcion) }}
-            </div>    
-        </div>          
+            </div>
+        </div>
     </div>
     <div class="hidden">
-        {{form_rest(form)}}
-        <input id="url" value="{{path("agenda_entrega_create_ajax")}}">
+        {{ form_rest(form) }}
+        <input id="url" value="{{ path("agenda_entrega_create_ajax") }}">
     </div>
     <div class="modal-footer">
         <button type="submit" id="btn-modal-movimiento" class="btn btn-primary">Aceptar</button>

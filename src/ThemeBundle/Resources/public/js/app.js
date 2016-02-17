@@ -45,6 +45,11 @@ function inicializarFecha() {
             "firstDay": 1
         },
     });
+    //Timepicker
+    $(".timepicker").timepicker({
+        showInputs: false,
+        showMeridian: false,
+    });
 }
 
 function modalAlert(msg) {

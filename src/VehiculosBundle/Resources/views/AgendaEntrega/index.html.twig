@@ -36,7 +36,7 @@
                                             <a href="{{ path('agenda_entrega_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
                                         </td>
                                         <td>{% if entity.fecha %}{{ entity.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>{{ entity.hora }}</td>
+                                        <td>{{ entity.hora |date('H:i') }}</td>
                                         <td>{{ entity.descripcion }}</td>
                                         <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                         <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>

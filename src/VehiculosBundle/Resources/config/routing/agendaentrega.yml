@@ -28,3 +28,7 @@ agenda_entrega_delete:
     path:     /{id}/delete
     defaults: { _controller: "VehiculosBundle:AgendaEntrega:delete" }
     methods:  [POST, DELETE]
+
+agenda_ver_mi_agenda:
+    path:     /ver_mi_agenda
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:verMiAgenda" }

@@ -266,7 +266,7 @@ class Vehiculo {
     private $transportista;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera", inversedBy="vehiculo")
      * @ORM\JoinColumn(name="check_control_interno_resultado_cabecera_id", referencedColumnName="id",nullable=true)
      */
     private $checkControlInternoResultadoCabecera;
@@ -1123,27 +1123,4 @@ class Vehiculo {
     }
 
 
-    /**
-     * Set agendaEntrega
-     *
-     * @param \VehiculosBundle\Entity\AgendaEntrega $agendaEntrega
-     *
-     * @return Vehiculo
-     */
-    public function setAgendaEntrega(\VehiculosBundle\Entity\AgendaEntrega $agendaEntrega = null)
-    {
-        $this->agendaEntrega = $agendaEntrega;
-
-        return $this;
-    }
-
-    /**
-     * Get agendaEntrega
-     *
-     * @return \VehiculosBundle\Entity\AgendaEntrega
-     */
-    public function getAgendaEntrega()
-    {
-        return $this->agendaEntrega;
-    }
 }

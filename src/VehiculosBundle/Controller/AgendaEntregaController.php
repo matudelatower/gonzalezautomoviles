@@ -12,238 +12,259 @@ use VehiculosBundle\Form\AgendaEntregaType;
  * AgendaEntrega controller.
  *
  */
-class AgendaEntregaController extends Controller
-{
+class AgendaEntregaController extends Controller {
 
-    /**
-     * Lists all AgendaEntrega entities.
-     *
-     */
-    public function indexAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
+	/**
+	 * Lists all AgendaEntrega entities.
+	 *
+	 */
+	public function indexAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('VehiculosBundle:AgendaEntrega')->findAll();
+		$entities = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->findAll();
 
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-        $entities, $request->query->get('page', 1)/* page number */, 10/* limit per page */
-        );
+		$paginator = $this->get( 'knp_paginator' );
+		$entities  = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			10/* limit per page */
+		);
 
-        return $this->render('VehiculosBundle:AgendaEntrega:index.html.twig', array(
-            'entities' => $entities,
-        ));
-    }
-    /**
-     * Creates a new AgendaEntrega entity.
-     *
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new AgendaEntrega();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
+		return $this->render( 'VehiculosBundle:AgendaEntrega:index.html.twig',
+			array(
+				'entities' => $entities,
+			) );
+	}
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+	/**
+	 * Creates a new AgendaEntrega entity.
+	 *
+	 */
+	public function createAction( Request $request ) {
+		$entity = new AgendaEntrega();
+		$form   = $this->createCreateForm( $entity );
+		$form->handleRequest( $request );
 
-            $this->get('session')->getFlashBag()->add(
-                'success', 'AgendaEntrega creado correctamente.'
-            );
+		if ( $form->isValid() ) {
+			$em = $this->getDoctrine()->getManager();
+			$em->persist( $entity );
+			$em->flush();
 
-            return $this->redirect($this->generateUrl('agenda_entrega_show', array('id' => $entity->getId())));
-        }
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'AgendaEntrega creado correctamente.'
+			);
 
-        return $this->render('VehiculosBundle:AgendaEntrega:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
-    }
+			return $this->redirect( $this->generateUrl( 'agenda_entrega_show', array( 'id' => $entity->getId() ) ) );
+		}
 
-    /**
-     * Creates a form to create a AgendaEntrega entity.
-     *
-     * @param AgendaEntrega $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCreateForm(AgendaEntrega $entity)
-    {
-        $form = $this->createForm(new AgendaEntregaType(), $entity, array(
-            'action' => $this->generateUrl('agenda_entrega_create'),
-            'method' => 'POST',
-            'attr' => array('class' => 'box-body')
-        ));
+		return $this->render( 'VehiculosBundle:AgendaEntrega:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			) );
+	}
 
-        $form->add('submit', 'submit', array(
-            'label' => 'Crear',
-            'attr' => array('class' => 'btn btn-primary pull-right')
-        ));
+	/**
+	 * Creates a form to create a AgendaEntrega entity.
+	 *
+	 * @param AgendaEntrega $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createCreateForm( AgendaEntrega $entity ) {
+		$form = $this->createForm( new AgendaEntregaType(),
+			$entity,
+			array(
+				'action' => $this->generateUrl( 'agenda_entrega_create' ),
+				'method' => 'POST',
+				'attr'   => array( 'class' => 'box-body' )
+			) );
 
-        return $form;
-    }
+		$form->add( 'submit',
+			'submit',
+			array(
+				'label' => 'Crear',
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' )
+			) );
 
-    /**
-     * Displays a form to create a new AgendaEntrega entity.
-     *
-     */
-    public function newAction()
-    {
-        $entity = new AgendaEntrega();
-        $form   = $this->createCreateForm($entity);
+		return $form;
+	}
 
-        return $this->render('VehiculosBundle:AgendaEntrega:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
-    }
+	/**
+	 * Displays a form to create a new AgendaEntrega entity.
+	 *
+	 */
+	public function newAction() {
+		$entity = new AgendaEntrega();
+		$form   = $this->createCreateForm( $entity );
 
-    /**
-     * Finds and displays a AgendaEntrega entity.
-     *
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+		return $this->render( 'VehiculosBundle:AgendaEntrega:new.html.twig',
+			array(
+				'entity' => $entity,
+				'form'   => $form->createView(),
+			) );
+	}
 
-        $entity = $em->getRepository('VehiculosBundle:AgendaEntrega')->find($id);
+	/**
+	 * Finds and displays a AgendaEntrega entity.
+	 *
+	 */
+	public function showAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AgendaEntrega entity.');
-        }
+		$entity = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->find( $id );
 
-        $deleteForm = $this->createDeleteForm($id);
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find AgendaEntrega entity.' );
+		}
 
-        return $this->render('VehiculosBundle:AgendaEntrega:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
+		$deleteForm = $this->createDeleteForm( $id );
 
-    /**
-     * Displays a form to edit an existing AgendaEntrega entity.
-     *
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+		return $this->render( 'VehiculosBundle:AgendaEntrega:show.html.twig',
+			array(
+				'entity'      => $entity,
+				'delete_form' => $deleteForm->createView(),
+			) );
+	}
 
-        $entity = $em->getRepository('VehiculosBundle:AgendaEntrega')->find($id);
+	/**
+	 * Displays a form to edit an existing AgendaEntrega entity.
+	 *
+	 */
+	public function editAction( $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AgendaEntrega entity.');
-        }
+		$entity = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->find( $id );
 
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find AgendaEntrega entity.' );
+		}
 
-        return $this->render('VehiculosBundle:AgendaEntrega:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
+		$editForm   = $this->createEditForm( $entity );
+		$deleteForm = $this->createDeleteForm( $id );
 
-    /**
-    * Creates a form to edit a AgendaEntrega entity.
-    *
-    * @param AgendaEntrega $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(AgendaEntrega $entity)
-    {
-        $form = $this->createForm(new AgendaEntregaType(), $entity, array(
-            'action' => $this->generateUrl('agenda_entrega_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-            'attr' => array('class' => 'box-body')
-        ));
+		return $this->render( 'VehiculosBundle:AgendaEntrega:edit.html.twig',
+			array(
+				'entity'      => $entity,
+				'edit_form'   => $editForm->createView(),
+				'delete_form' => $deleteForm->createView(),
+			) );
+	}
 
-        $form->add(
-            'submit',
-            'submit',
-            array(
-                'label' => 'Actualizar',
-                'attr' => array('class' => 'btn btn-primary pull-right'),
-            )
-        );
+	/**
+	 * Creates a form to edit a AgendaEntrega entity.
+	 *
+	 * @param AgendaEntrega $entity The entity
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createEditForm( AgendaEntrega $entity ) {
+		$form = $this->createForm( new AgendaEntregaType(),
+			$entity,
+			array(
+				'action' => $this->generateUrl( 'agenda_entrega_update', array( 'id' => $entity->getId() ) ),
+				'method' => 'PUT',
+				'attr'   => array( 'class' => 'box-body' )
+			) );
 
-        return $form;
-    }
-    /**
-     * Edits an existing AgendaEntrega entity.
-     *
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
+		$form->add(
+			'submit',
+			'submit',
+			array(
+				'label' => 'Actualizar',
+				'attr'  => array( 'class' => 'btn btn-primary pull-right' ),
+			)
+		);
 
-        $entity = $em->getRepository('VehiculosBundle:AgendaEntrega')->find($id);
+		return $form;
+	}
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AgendaEntrega entity.');
-        }
+	/**
+	 * Edits an existing AgendaEntrega entity.
+	 *
+	 */
+	public function updateAction( Request $request, $id ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
+		$entity = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->find( $id );
 
-        if ($editForm->isValid()) {
-            $em->flush();
+		if ( ! $entity ) {
+			throw $this->createNotFoundException( 'Unable to find AgendaEntrega entity.' );
+		}
 
-            $this->get('session')->getFlashBag()->add(
-                'success', 'AgendaEntrega actualizado correctamente.'
-            );
+		$deleteForm = $this->createDeleteForm( $id );
+		$editForm   = $this->createEditForm( $entity );
+		$editForm->handleRequest( $request );
 
-            return $this->redirect($this->generateUrl('agenda_entrega_edit', array('id' => $id)));
-        }
+		if ( $editForm->isValid() ) {
+			$em->flush();
 
-        return $this->render('VehiculosBundle:AgendaEntrega:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-    /**
-     * Deletes a AgendaEntrega entity.
-     *
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
+			$this->get( 'session' )->getFlashBag()->add(
+				'success',
+				'AgendaEntrega actualizado correctamente.'
+			);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('VehiculosBundle:AgendaEntrega')->find($id);
+			return $this->redirect( $this->generateUrl( 'agenda_entrega_edit', array( 'id' => $id ) ) );
+		}
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find AgendaEntrega entity.');
-            }
+		return $this->render( 'VehiculosBundle:AgendaEntrega:edit.html.twig',
+			array(
+				'entity'      => $entity,
+				'edit_form'   => $editForm->createView(),
+				'delete_form' => $deleteForm->createView(),
+			) );
+	}
 
-            $em->remove($entity);
-            $em->flush();
-        }
+	/**
+	 * Deletes a AgendaEntrega entity.
+	 *
+	 */
+	public function deleteAction( Request $request, $id ) {
+		$form = $this->createDeleteForm( $id );
+		$form->handleRequest( $request );
 
-        return $this->redirect($this->generateUrl('agenda_entrega'));
-    }
+		if ( $form->isValid() ) {
+			$em     = $this->getDoctrine()->getManager();
+			$entity = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->find( $id );
 
-    /**
-     * Creates a form to delete a AgendaEntrega entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('agenda_entrega_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
-    }
+			if ( ! $entity ) {
+				throw $this->createNotFoundException( 'Unable to find AgendaEntrega entity.' );
+			}
+
+			$em->remove( $entity );
+			$em->flush();
+		}
+
+		return $this->redirect( $this->generateUrl( 'agenda_entrega' ) );
+	}
+
+	/**
+	 * Creates a form to delete a AgendaEntrega entity by id.
+	 *
+	 * @param mixed $id The entity id
+	 *
+	 * @return \Symfony\Component\Form\Form The form
+	 */
+	private function createDeleteForm( $id ) {
+		return $this->createFormBuilder()
+		            ->setAction( $this->generateUrl( 'agenda_entrega_delete', array( 'id' => $id ) ) )
+		            ->setMethod( 'DELETE' )
+		            ->add( 'submit', 'submit', array( 'label' => 'Delete' ) )
+		            ->getForm();
+	}
+
+	public function verMiAgendaAction() {
+
+		$entregas = array();
+
+		$usuario = $this->getUser();
+
+		$em     = $this->getDoctrine()->getManager();
+		$entregas = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->getEntregasVigentes( $usuario );
+
+
+		return $this->render( 'VehiculosBundle:AgendaEntrega:agenda.html.twig',
+			array( 'entregas' => $entregas)  );
+	}
 }
