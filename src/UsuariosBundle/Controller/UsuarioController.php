@@ -45,9 +45,11 @@ class UsuarioController extends Controller
 
         if ($form->isValid()) {
 
-            foreach ($entity->getGrupos() as $grupo) {
-                $grupo->setUsuario($entity);
-            }
+	        if ( $entity->getGrupos() ) {
+		        foreach ( $entity->getGrupos() as $grupo ) {
+			        $grupo->setUsuario( $entity );
+		        }
+	        }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);

@@ -26,7 +26,19 @@ class VehiculoController extends Controller {
      *
      */
     public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+
+	    $em         = $this->getDoctrine()->getManager();
+	    $requestUri = $request->getRequestUri();
+
+	    $usuario = $this->getUser();
+
+	    $permisosManager = $this->get( 'manager.permisos' );
+
+	    $permisosManager->checkPermiso( $requestUri, $usuario );
+
+        /* permiso usuario  */
+
+
         $form = $this->createForm(new VehiculoFilterType());
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
@@ -845,7 +857,7 @@ class VehiculoController extends Controller {
                 $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
                 $estadoVehiculo->setVehiculo($vehiculo);
                 $vehiculo->addEstadoVehiculo($estadoVehiculo);
-                
+
                 $em->flush();
             }
             if (!$nuevo) {

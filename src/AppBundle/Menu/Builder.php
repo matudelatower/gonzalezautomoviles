@@ -25,7 +25,9 @@ class Builder extends ContainerAware
 //        $userManager = $this->container->get('fos_user.user_manager');
         $usuario = $this->container->get('security.token_storage')->getToken()->getUser();
 
-        $usuarioGrupos = $this->container->get('doctrine.orm.entity_manager')->getRepository(
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        $usuarioGrupos = $em->getRepository(
             'UsuariosBundle:UsuarioGrupo'
         )->findByUsuario($usuario);
 
@@ -41,15 +43,15 @@ class Builder extends ContainerAware
             $permisosApp = $grupo->getPermisoAplicacion();
         }
         $i = 0;
-        foreach ($permisosApp as $permisoApp) {
-            $aplicativo[$permisoApp->getItemAplicativo()->getAplicativo()->getNombre()]['icono'] =
-                $permisoApp->getItemAplicativo()->getAplicativo()->getIcono();
+        foreach ( $permisosApp as $permisoApp ) {
+            if ( $permisoApp->getActivo() ) {
+                $aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['icono'] =
+                    $permisoApp->getItemAplicativo()->getAplicativo()->getIcono();
 
-            $aplicativo[$permisoApp->getItemAplicativo()->getAplicativo()->getNombre(
-            )]['hijos'][$i]['hijo'] = $permisoApp->getItemAplicativo()->getNombre();
-            $aplicativo[$permisoApp->getItemAplicativo()->getAplicativo()->getNombre(
-            )]['hijos'][$i]['ruta'] = $permisoApp->getItemAplicativo()->getRuta();
-            $i++;
+                $aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['hijo'] = $permisoApp->getItemAplicativo()->getNombre();
+                $aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['ruta'] = $permisoApp->getItemAplicativo()->getRuta();
+                $i ++;
+            }
         }
 
         foreach ($aplicativo as $key => $value) {
