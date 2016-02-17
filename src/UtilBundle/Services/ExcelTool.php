@@ -7,270 +7,198 @@ use Doctrine\ORM\EntityManager;
 use Liuggio\ExcelBundle\Factory;
 
 
-class ExcelTool
-{
+class ExcelTool {
 
 
-    private $container;
-    private $filename;
-    private $title;
-    private $descripcion;
-    private $createby = 'Gonzalez Automóviles';
-    private $doctrine;
-    private $phpexcel;
+	private $container;
+	private $filename;
+	private $title;
+	private $descripcion;
+	private $createby = 'Gonzalez Automóviles';
+	private $doctrine;
+	private $phpexcel;
+	private $body;
+	private $head;
 
-    /**
-     * @return mixed
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getContainer() {
+		return $this->container;
+	}
 
-    /**
-     * @param mixed $container
-     */
-    public function setContainer($container)
-    {
-        $this->container = $container;
-    }
+	/**
+	 * @param mixed $container
+	 */
+	public function setContainer( $container ) {
+		$this->container = $container;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getFilename()
-    {
-        return $this->filename;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getFilename() {
+		return $this->filename;
+	}
 
-    /**
-     * @param mixed $filename
-     */
-    public function setFilename($filename)
-    {
-        $this->filename = $filename;
-    }
+	/**
+	 * @param mixed $filename
+	 */
+	public function setFilename( $filename ) {
+		$this->filename = $filename;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getTitle() {
+		return $this->title;
+	}
 
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-    }
+	/**
+	 * @param mixed $title
+	 */
+	public function setTitle( $title ) {
+		$this->title = $title;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getDescripcion() {
+		return $this->descripcion;
+	}
 
-    /**
-     * @param mixed $descripcion
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    }
+	/**
+	 * @param mixed $descripcion
+	 */
+	public function setDescripcion( $descripcion ) {
+		$this->descripcion = $descripcion;
+	}
 
-    /**
-     * @return string
-     */
-    public function getCreateby()
-    {
-        return $this->createby;
-    }
+	/**
+	 * @return string
+	 */
+	public function getCreateby() {
+		return $this->createby;
+	}
 
-    /**
-     * @param string $createby
-     */
-    public function setCreateby($createby)
-    {
-        $this->createby = $createby;
-    }
+	/**
+	 * @param string $createby
+	 */
+	public function setCreateby( $createby ) {
+		$this->createby = $createby;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getDoctrine()
-    {
-        return $this->doctrine;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getDoctrine() {
+		return $this->doctrine;
+	}
 
-    /**
-     * @param mixed $doctrine
-     */
-    public function setDoctrine($doctrine)
-    {
-        $this->doctrine = $doctrine;
-    }
+	/**
+	 * @param mixed $doctrine
+	 */
+	public function setDoctrine( $doctrine ) {
+		$this->doctrine = $doctrine;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getPhpexcel()
-    {
-        return $this->phpexcel;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getPhpexcel() {
+		return $this->phpexcel;
+	}
 
-    /**
-     * @param mixed $phpexcel
-     */
-    public function setPhpexcel($phpexcel)
-    {
-        $this->phpexcel = $phpexcel;
-    }
+	/**
+	 * @param mixed $phpexcel
+	 */
+	public function setPhpexcel( $phpexcel ) {
+		$this->phpexcel = $phpexcel;
+	}
 
 
-    public function __construct(Factory $phpExcel, EntityManager $doctrine)
-    {
-        $this->phpexcel = $phpExcel;
-        $this->doctrine = $doctrine;
-    }
+	public function __construct( Factory $phpExcel, EntityManager $doctrine ) {
+		$this->phpexcel = $phpExcel;
+		$this->doctrine = $doctrine;
+
+		$this->head = array(
+			'allborders' =>
+				array(
+					'style' => 'thick',
+					'color' => array( 'Hex' => '#000' )
+				)
+		);
+		$this->body = array(
+			'allborders' =>
+				array(
+					'style' => 'thin',
+					'color' => array( 'Hex' => '#000' )
+				)
+		);
+	}
 
 
+	/**
+	 *
+	 * Arma la hoja para el listado de vehiculos vendidos por vendedor en un rango de
+	 * fecha
+	 *
+	 * @param type $resultSet
+	 *
+	 * @return type
+	 */
+	public function buildSheetgetReporteAutosVendidosPorVendedor( $resultSet ) {
+		$phpExcelObject = $this->phpexcel->createPHPExcelObject();
+		$phpExcelObject->getProperties()->setLastModifiedBy( $this->createby );
+		$phpExcelObject->getProperties()->setTitle( $this->title );
+		$phpExcelObject->getProperties()->setDescription( $this->descripcion );
+		$phpExcelObject->getProperties()->setCreator( $this->createby );
 
-    /**
-     * Arma la hoja para el listado de personas en la carga rapida de usuario, url: http://localhost/rismi/web/app_dev.php/rismi/persona/persona/list
-     *
-     * @param type $resultados
-     * @return type
-     */
-    public function buildSheetListUsers($resultados)
-    {
-        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
-        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
-        $phpExcelObject->getProperties()->setTitle($this->title);
-        $phpExcelObject->getProperties()->setDescription($this->descripcion);
-        $phpExcelObject->getProperties()->setCreator($this->createby);
+		$phpExcelObject->setActiveSheetIndex( 0 );
 
-        $phpExcelObject->setActiveSheetIndex(0);
-        $phpExcelObject->getActiveSheet()
-            ->setCellValue('A1', 'Id. Pers. Fed.')
-            ->setCellValue('B1', 'Id. Pers. Inst.')
-            ->setCellValue('C1', 'Id. Usuario')
-            ->setCellValue('D1', 'Nombre y Apellido')
-            ->setCellValue('E1', 'Usuario')
-            ->setCellValue('F1', 'Aplicativo')
-            ->setCellValue('G1', 'Grupos');
+		$phpExcelObject->getActiveSheet()
+		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'B1', 'VIN' )
+		               ->setCellValue( 'C1', 'Modelo' )
+		               ->setCellValue( 'D1', 'Color Vehiculo' )
+		               ->setCellValue( 'E1', 'Fecha Facturación' );
 
-
-        $i = 2;
-        $j = 2;
-        if (is_array($resultados) && !empty ($resultados) || !is_null($resultados)) {
-            foreach ($resultados as $usuario) {
-
-                $phpExcelObject->getActiveSheet()->setCellValue('A'.$i, $usuario->getIdentificadorFederacion());
-                if ($usuario->getPersonaInstitucional() != null) {
-                    $phpExcelObject->getActiveSheet()->setCellValue(
-                        'B'.$i,
-                        $usuario->getPersonaInstitucional()->getId()
-                    );
-                } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, null);
-                }
-                if ($usuario->getUsuario() != null) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $usuario->getUsuario()->getId());
-                } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, null);
-                }
-
-                $phpExcelObject->getActiveSheet()->setCellValue('D'.$i, $usuario->getNombreCompleto());
-
-                if ($usuario->getUsuario() != null) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E'.$i, $usuario->getUsuario()->getUsername());
-                } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E'.$i, null);
-                }
-
-                if ($usuario->getUsuario() != null) {
-                    if ($usuario->getUsuario()->getPermisos() != null) {
-                        foreach ($usuario->getUsuario()->getPermisos() as $permiso) {
-                            $phpExcelObject->getActiveSheet()
-                                ->setCellValue('F'.$i, $permiso->getAplicativo()->getNombre());
-
-                            $phpExcelObject->getActiveSheet()
-                                ->setCellValue('G'.$i, $permiso->getGrupo()->getName());
-
-                        }
-                    }
+		$phpExcelObject->getActiveSheet()->getStyle( 'A1:E1' )->getBorders()->applyFromArray( $this->head );
 
 
-                }
-                $j++;
-                $i++;
-            }
-        }
+		$i = 2;
+		if ( is_array( $resultSet ) && ! empty ( $resultSet ) || ! is_null( $resultSet ) ) {
+			foreach ( $resultSet as $entity ) {
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i, $entity['vin'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['modelo'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'D' . $i, $entity['colores_vehiculos_color'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'E' . $i, $entity['facturas_fecha'] );
+				$i ++;
+			}
 
-        $phpExcelObject->getActiveSheet()->setTitle($this->title);//Configura el titulo del archivo
+		}
 
-        $writer = $this->container->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
-        // create the response
-        $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
+		$phpExcelObject->getActiveSheet()->getStyle( 'A2:E' . $i )->getBorders()->applyFromArray( $this->body );
 
-        return $response;
+		/** autosize */
+		$phpExcelObject->getActiveSheet()->getColumnDimension( 'A' )->setAutoSize( 'true' );
+		$phpExcelObject->getActiveSheet()->getColumnDimension( 'B' )->setAutoSize( 'true' );
+		$phpExcelObject->getActiveSheet()->getColumnDimension( 'C' )->setAutoSize( 'true' );
+		$phpExcelObject->getActiveSheet()->getColumnDimension( 'D' )->setAutoSize( 'true' );
+		$phpExcelObject->getActiveSheet()->getColumnDimension( 'E' )->setAutoSize( 'true' );
 
-    }
+		$phpExcelObject->getActiveSheet()->setTitle( $this->title );
 
-    /**
-     *
-     * * Arma la hoja para el listado de personas que pertenecen al area
-     *
-     * @param type $resultSet
-     * @param type $areaStr
-     * @return type
-     */
-    public function buildSheetgetReporteAutosVendidosPorVendedor($resultSet)
-    {
-        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
-        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
-        $phpExcelObject->getProperties()->setTitle($this->title);
-        $phpExcelObject->getProperties()->setDescription($this->descripcion);
-        $phpExcelObject->getProperties()->setCreator($this->createby);
+		$writer = $this->phpexcel->createWriter( $phpExcelObject, 'Excel5' );
+		// create the response
+		$response = $this->phpexcel->createStreamedResponse( $writer );
 
-        $phpExcelObject->setActiveSheetIndex(0);
+		return $response;
 
-        $phpExcelObject->getActiveSheet()
-            ->setCellValue('A2', 'Id')
-            ->setCellValue('B2', 'VIN')
-            ->setCellValue('C2', 'Modelo')
-            ->setCellValue('D2', 'Color Vehiculo')
-            ->setCellValue('E2', 'Fecha Facturación');
-
-
-        $i = 3;
-        if (is_array($resultSet) && !empty ($resultSet) || !is_null($resultSet)) {
-            foreach ($resultSet as $entity) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A'.$i, $entity['id']);
-                $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, $entity['vin']);
-                $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $entity['modelo']);
-                $phpExcelObject->getActiveSheet()->setCellValue('D'.$i, $entity['colores_vehiculos_color']);
-                $phpExcelObject->getActiveSheet()->setCellValue('E'.$i, $entity['facturas_fecha']);
-                $i++;
-            }
-
-        }
-
-        $phpExcelObject->getActiveSheet()->setTitle($this->title);
-
-        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
-        // create the response
-        $response = $this->phpexcel->createStreamedResponse($writer);
-
-        return $response;
-
-    }
-
+	}
 
 
 }
