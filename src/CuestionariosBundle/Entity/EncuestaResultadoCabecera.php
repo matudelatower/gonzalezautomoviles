@@ -202,11 +202,11 @@ class EncuestaResultadoCabecera
     /**
      * Set vehiculo
      *
-     * @param \CuestionariosBundle\Entity\Vehiculo $vehiculo
+     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
      *
      * @return EncuestaResultadoCabecera
      */
-    public function setVehiculo(\CuestionariosBundle\Entity\Vehiculo $vehiculo = null)
+    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null)
     {
         $this->vehiculo = $vehiculo;
 
@@ -216,7 +216,7 @@ class EncuestaResultadoCabecera
     /**
      * Get vehiculo
      *
-     * @return \CuestionariosBundle\Entity\Vehiculo
+     * @return \VehiculosBundle\Entity\Vehiculo
      */
     public function getVehiculo()
     {
