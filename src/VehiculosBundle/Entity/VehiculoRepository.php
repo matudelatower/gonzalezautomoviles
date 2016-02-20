@@ -41,17 +41,18 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         }
         if ($filters['modelo']) {
             $where.=" AND nm.id=" . $filters['modelo']->getId();
-        }                
-         if ($filters['cliente']) {
+        }
+        if ($filters['cliente']) {
             $where.=" AND v.cliente_id=" . $filters['cliente']->getId();
-        }  
+        }
 
         $query = "SELECT   distinct(v.*),
                                         cm.codigo as modelo_codigo,cm.anio as modelo_anio,nm.nombre as modelo_nombre,cm.version as modelo_version,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,
-                                        pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega
+                                        pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega,
+                                        (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
@@ -65,24 +66,24 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id =  mmdd.vehiculo_id
                                         LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
-                                        LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.check_control_interno_resultado_cabecera_id=ch_ci.id
+                                        LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.id=ch_ci.vehiculo_id
                                         LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
                                         LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
                                         WHERE " . $where .
-                                        " ORDER BY modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
+                " ORDER BY modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
 
-		$stmt = $db->prepare( $query );
-		$stmt->execute();
+        $stmt = $db->prepare($query);
+        $stmt->execute();
 
-		return $stmt->fetchAll();
-	}
+        return $stmt->fetchAll();
+    }
 
-	public function getVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta ) {
-		$db         = $this->getEntityManager()->getConnection();
-		$vendedorId = $vendedor->getId();
-		$fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
-		$fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
-		$query      = "SELECT
+    public function getVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta) {
+        $db = $this->getEntityManager()->getConnection();
+        $vendedorId = $vendedor->getId();
+        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $query = "SELECT
 		     vehiculos.id AS id,
 		     vehiculos.codigo_modelo_id AS codigo_modelo_id,
 		     vehiculos.creado_por AS creado_por,
@@ -113,11 +114,10 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 		     vehiculos.numero_solicitud AS numero_solicitud,
 		     vehiculos.fecha_emision_documento AS fecha_emision_documento,
 		     vehiculos.vendedor_id AS vendedor_id,
-		     vehiculos.check_control_interno_resultado_cabecera_id AS check_control_interno_resultado_cabecera_id,
 		     vehiculos.color_vehiculo_id AS color_vehiculo_id,
 		     vehiculos.pagado AS pagado,
 		     colores_vehiculos.color AS colores_vehiculos_color,
-		     codigos_modelo.codigo||'|'||codigos_modelo.anio||'|'||nombres_modelo.nombre||'|'||codigos_modelo.version as modelo,
+		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
 		     facturas.fecha AS facturas_fecha
 		FROM
 		     facturas facturas INNER JOIN vehiculos vehiculos ON facturas.id = vehiculos.factura_id
@@ -128,10 +128,69 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 			 vehiculos.vendedor_id =$vendedorId
 		     AND facturas.fecha BETWEEN '$fechaDesde' and '$fechaHasta'";
 
-		$stmt = $db->prepare( $query );
-		$stmt->execute();
+        $stmt = $db->prepare($query);
+        $stmt->execute();
 
-		return $stmt->fetchAll();
-	}
+        return $stmt->fetchAll();
+    }
+
+    public function getVehiculosEnStock($estado, $filters = null) {
+//        $ids = array();
+//        if ($estado) {
+//            foreach ($estado as $item) {
+//                $ids[] = $item->getId();
+//            }
+//            $idsEstado = implode(',', $ids);
+//            $where = "tipo_estado_vehiculo.id in ($idsEstado)";
+//        } else {
+//        $where = "0=0";
+//        }
+
+        $where = "tipo_estado_vehiculo.slug in ('transito','recibido','stock')";
+        $db = $this->getEntityManager()->getConnection();
+
+        if ($filters['colorVehiculo']) {
+            $where.=" AND v.color_vehiculo_id=" . $filters['colorVehiculo']->getId();
+        }
+//        if ($filters['tipoVentaEspecial']) {
+//            $where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
+//        }
+        if ($filters['deposito']) {
+            $where.=" AND d.id=" . $filters['deposito']->getId();
+        }
+        if ($filters['modelo']) {
+            $where.=" AND nm.id=" . $filters['modelo']->getId();
+        }
+
+
+        $query = "SELECT   distinct(v.*),
+                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,
+                                        tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
+                                        remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
+                                        cv.color as color_vehiculo,
+                                        pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega
+					FROM     estados_vehiculos
+					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+					INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+                                        INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
+                                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
+                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
+                                        LEFT JOIN remitos ON v.remito_id=remitos.id
+                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
+                                        
+                                        LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id =  mmdd.vehiculo_id
+                                        LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
+                                        LEFT JOIN depositos d ON md.deposito_destino_id=d.id
+                                        LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
+                                        LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
+                                        WHERE " . $where .
+                " ORDER BY modelo,color_vehiculo asc";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 
 }

@@ -48,16 +48,11 @@ class VehiculosManager {
                     $fotoDanio->setDanioVehiculo($danioVehiculo);
                 }
             }
-//estado 2
-            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                    'recibido-con-problemas'
-            );
-        } else {
-//estado 3
-            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                    'recibido-conforme'
-            );
         }
+        $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                'recibido'
+        );
+
 
         $this->setEstadoActualVehiculo($vehiculo, $tipoEstadoVehiculo);
 
@@ -125,20 +120,20 @@ class VehiculosManager {
         $vehiculo->addEstadoVehiculo($estadoVehiculo);
     }
 
-	public function modificarDanioInterno( $vehiculo ) {
-		if ( $vehiculo->getDanioVehiculoInterno()->count() > 0 ) {
+    public function modificarDanioInterno($vehiculo) {
+        if ($vehiculo->getDanioVehiculoInterno()->count() > 0) {
 
-			foreach ( $vehiculo->getDanioVehiculoInterno() as $danioVehiculo ) {
-				$danioVehiculo->setVehiculo( $vehiculo );
+            foreach ($vehiculo->getDanioVehiculoInterno() as $danioVehiculo) {
+                $danioVehiculo->setVehiculo($vehiculo);
 
-				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
-					$fotoDanio->upload();
-					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
-				}
-			}
-		}
+                foreach ($danioVehiculo->getFotoDanioInterno() as $fotoDanio) {
+                    $fotoDanio->upload();
+                    $fotoDanio->setDanioVehiculoInterno($danioVehiculo);
+                }
+            }
+        }
 
-		return $vehiculo;
-	}
+        return $vehiculo;
+    }
 
 }

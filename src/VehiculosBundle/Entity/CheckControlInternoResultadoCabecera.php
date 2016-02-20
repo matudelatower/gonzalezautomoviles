@@ -38,16 +38,18 @@ class CheckControlInternoResultadoCabecera {
      */
     private $firmado;
     
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
+     * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
+     */
+    private $vehiculo;
+    
      /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoRespuesta", mappedBy="checkControlInternoResultadoCabecera",cascade={"remove", "persist"})
      *
      */
     private $checkControlInternoResultadoRespuesta;
     
-    /**
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\Vehiculo", mappedBy="checkControlInternoResultadoCabecera")
-     */
-    private $vehiculo;
     
     
 

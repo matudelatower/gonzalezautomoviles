@@ -302,7 +302,7 @@
                                             </tr>
                                             {% if danio.fotoDanio %}
                                                 <tr>
-                                                    <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
+                                                    <th><a class="pull-right badge bg-blue btn-carousel" data-toggle="modal"
                                                            data-target="#modalCarousel"
                                                            data-url="{{ path('get_fotos_danios_gm_ajax', { 'danioId': danio.id }) }}"
                                                            title="Ver fotos">Ver fotos</a>
@@ -345,7 +345,7 @@
                                             </tr>
                                             {% if danio.fotoDanioInterno %}
                                                 <tr>
-                                                    <th><a class="pull-right badge bg-red btn-carousel" data-toggle="modal"
+                                                    <th><a class="pull-right badge bg-blue btn-carousel" data-toggle="modal"
                                                            data-target="#modalCarousel"
                                                            data-url="{{ path('get_fotos_danios_interno_ajax', { 'danioId': danio.id }) }}"
                                                            title="Ver fotos">Ver fotos</a>
@@ -370,15 +370,15 @@
                 <div class="box-body">
                     <table class="record_properties">
                         <tbody>
-                            {% if entity.checkControlInternoResultadoCabecera%}
+{#                            {% if entity.checkControlInternoResultadoCabecera%}#}
                                 <tr>
-                                    <th><a class="pull-right badge bg-red btn-carousel"
+                                    <th><a class="pull-right badge bg-blue btn-carousel"
                                            data-target=""
                                            data-url=""
                                            title="Ver">Ver checklist de control interno</a>
                                     </th>
                                 </tr>  
-                            {%endif%}
+{#                            {%endif%}#}
                         </tbody>
                     </table>
                 </div>

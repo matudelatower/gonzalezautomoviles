@@ -9,3 +9,15 @@ exportart_pdf_repote_autos_vendidos_por_vendedor:
 exportart_excel_repote_autos_vendidos_por_vendedor:
     path:     /exportart_excel_repote_autos_vendidos_por_vendedor
     defaults: { _controller: "VehiculosBundle:Reporte:excelReporteAutosVendidosPorVendedor" }
+    
+index_reporte_vehiculos_en_stock:
+    path:     /index_reporte_vehiculos_en_stock
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosEnStock" }
+
+exportar_pdf_reporte_vehiculos_en_stock:
+    path:     /exportar_pdf_repote_vehiculos_en_stock
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosEnStock" }
+
+exportar_excel_reporte_vehiculos_en_stock:
+    path:     /exportar_excel_reporte_vehiculos_en_stock
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosEnStock" }    

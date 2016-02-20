@@ -115,10 +115,9 @@ class VehiculoController extends Controller {
      *
      */
     public function vehiculosRecibidosIndexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido-con-problemas');
-        $estadoId2 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido-conforme');
-        $estados = array($estadoId1, $estadoId2);
+        $em = $this->getDoctrine()->getManager();        
+        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido');
+        $estados = array($estadoId1);
         $form = $this->createForm(new VehiculoFilterType());
         if ($request->isMethod("post")) {
             $form->handleRequest($request);

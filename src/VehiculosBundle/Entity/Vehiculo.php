@@ -265,12 +265,7 @@ class Vehiculo {
      */
     private $transportista;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera", inversedBy="vehiculo")
-     * @ORM\JoinColumn(name="check_control_interno_resultado_cabecera_id", referencedColumnName="id",nullable=true)
-     */
-    private $checkControlInternoResultadoCabecera;
-
+   
     public function __toString() {
         return $this->vin;
     }
