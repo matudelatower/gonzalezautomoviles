@@ -45,48 +45,51 @@ class ReporteController extends Controller {
         ));
     }
 
-    public function pdfReporteAutosVendidosPorVendedorAction(Request $request) {
+	public function pdfReporteAutosVendidosPorVendedorAction( Request $request ) {
 
-        $form = $this->createForm(new AutosVendidosPorVendedorFilterType());
+		$form = $this->createForm( new AutosVendidosPorVendedorFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $vendedor = $formData['vendedor'];
+			$vendedor = $formData['vendedor'];
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->getAutosVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta );
+		}
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.pdf.twig', array(
-            'entities' => $entities
-                )
-        );
+		$title = 'Reporte de Autos Vendidos Por Vendedor';
 
-        return new Response(
-                $this->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
-                    'margin-left' => '1cm',
-                    'margin-right' => '1cm',
-                    'margin-top' => '1cm',
-                    'margin-bottom' => '1cm',
-                )), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="Reporte_autos_por_vendedor.pdf"'
-                )
-        );
-    }
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'vendedor'   => $vendedor,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta
+			)
+		);
+
+		return new Response(
+			$reportesManager->imprimir( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
     public function excelReporteAutosVendidosPorVendedorAction(Request $request) {
 
@@ -200,41 +203,41 @@ class ReporteController extends Controller {
 
         return $response;
     }
-    
-    public function pdfReporteVehiculosEnStockAction(Request $request) {
 
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType());
+	public function pdfReporteVehiculosEnStockAction( Request $request ) {
 
-        $entities = array();
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosEnStockFilterType() );
 
-//        $reportesManager = $this->get('manager.reportes');
+		$entities = array();
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock(false, $data);
-            }
-        }
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosEnStock.pdf.twig', array(
-            'entities' => $entities
-                )
-        );
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEnStock( false, $data );
+			}
+		}
 
-        return new Response(
-                $this->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
-                    'margin-left' => '1cm',
-                    'margin-right' => '1cm',
-                    'margin-top' => '1cm',
-                    'margin-bottom' => '1cm',
-                )), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="Reporte_vehiculos_en_stock.pdf"'
-                )
-        );
-    }
+		$title = 'Reporte de Autos Vendidos Por Vendedor';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosEnStock.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+
+			)
+		);
+
+		return new Response(
+			$reportesManager->imprimir( $html ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
 }

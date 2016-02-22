@@ -1,58 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Reporte de Autos Vendidos Por Vendedor</title>
-        <style>
-            table {
-                border-collapse: collapse;
-            }
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
 
-            table, th {
-                border: 2px solid black;
-            }
+{% block body %}
 
-            table, td {
-                border: 1px solid black;
-            }
-        </style>
-    </head>
-    <body>
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
 
-        <div class="box-body">
-            <table class="data-table table table-bordered table-striped">
-                <thead>
-
-                    <tr>
-                        <th>Id</th>
-                        <th>Modelo</th>
-                        <th>Color vehiculo</th>
-                        <th>Vin</th>
-                        <th>Dias en stock</th>
-                        <th>Deposito</th>
-                        <th>Se pagó</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for entity in entities %}
-                        <tr>
-                            <td>{{ entity.id }}</td>
-                            <td>{{ entity.modelo }}</td>
-                            <td>{{ entity.color_vehiculo }}</td>
-                            <td>{{ entity.vin }}</td>
-                            <td>{{ entity.dias_en_stock }}</td>
-                            <td>{{ entity.deposito_actual | default ("") }}</td>
-                            <td align="center">
-                                {%if entity.pagado %}
-                                    SI
-                                {%else%}
-                                    NO
-                                {%endif%}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </body>
-</html>
+            <tr>
+                <th>Id</th>
+                <th>Modelo</th>
+                <th>Color vehiculo</th>
+                <th>Vin</th>
+                <th>Dias en stock</th>
+                <th>Deposito</th>
+                <th>Se pagó</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>
+                    <td>{{ entity.modelo }}</td>
+                    <td>{{ entity.color_vehiculo }}</td>
+                    <td>{{ entity.vin }}</td>
+                    <td>{{ entity.dias_en_stock }}</td>
+                    <td>{{ entity.deposito_actual | default ("") }}</td>
+                    <td align="center">
+                        {% if entity.pagado %}
+                            SI
+                        {% else %}
+                            NO
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

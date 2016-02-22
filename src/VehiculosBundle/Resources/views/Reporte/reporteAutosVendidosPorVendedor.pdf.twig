@@ -1,32 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Reporte de Autos Vendidos Por Vendedor</title>
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+{% block body %}
     <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        table, th {
-            border: 2px solid black;
-        }
-
-        table, td {
-            border: 1px solid black;
+        label{
+            font-weight: bold;
         }
     </style>
-</head>
-<body>
 
-<div class="box-body">
+    <div>
+        <label>Vendedor: </label> <span>{{ vendedor }}</span> <br>
+        <label>Fecha: </label><span>{{ fechaDesde |date('d/m/Y') }} al {{ fechaHasta |date('d/m/Y') }}</span>
+    </div>
+    <br>
+
+    <div class="box-body">
     <table class="data-table table table-bordered table-striped">
         <thead>
 
         <tr>
-            <th>Id</th>            
+            <th>Id</th>
             <th>Modelo</th>
-            <th>Color vehiculo</th>
+            <th>Color vehículo</th>
             <th>Vin</th>
             <th>Fecha Facturación</th>
         </tr>
@@ -34,7 +27,7 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.id }}</td>                
+                <td>{{ entity.id }}</td>
                 <td>{{ entity.modelo }}</td>
                 <td>{{ entity.colores_vehiculos_color }}</td>
                 <td>{{ entity.vin }}</td>
@@ -44,6 +37,4 @@
         {% endfor %}
         </tbody>
     </table>
-</div>
-</body>
-</html>
+{% endblock %}
