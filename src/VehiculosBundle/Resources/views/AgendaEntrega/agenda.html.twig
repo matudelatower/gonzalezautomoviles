@@ -32,7 +32,7 @@
         {% for entrega in entregas %}
             {
                 title: '{{ entrega.vehiculo.vin }} - {{ entrega.descripcion }}',
-                start: new Date({{ entrega.fecha| date('Y, m, d') }} + 1, {{ entrega.hora| date('H, i') }}),
+                start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
                 backgroundColor: "#00a65a", //Success (green)
                 borderColor: "#00a65a" //Success (green)
             },

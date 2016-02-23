@@ -1,0 +1,34 @@
+encuestas:
+    path:     /
+    defaults: { _controller: "CuestionariosBundle:Encuesta:index" }
+
+encuestas_show:
+    path:     /{id}/show
+    defaults: { _controller: "CuestionariosBundle:Encuesta:show" }
+
+encuestas_new:
+    path:     /new
+    defaults: { _controller: "CuestionariosBundle:Encuesta:new" }
+
+encuestas_create:
+    path:     /create
+    defaults: { _controller: "CuestionariosBundle:Encuesta:create" }
+    methods:  POST
+
+encuestas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CuestionariosBundle:Encuesta:edit" }
+
+encuestas_update:
+    path:     /{id}/update
+    defaults: { _controller: "CuestionariosBundle:Encuesta:update" }
+    methods:  [POST, PUT]
+
+encuestas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CuestionariosBundle:Encuesta:delete" }
+    methods:  [POST, DELETE]
+
+crear_alerta_temprana:
+    path: /{vehiculoId}/crear_alerta_temprana
+    defaults: { _controller: "CuestionariosBundle:Encuesta:crearAlertaTemprana" }

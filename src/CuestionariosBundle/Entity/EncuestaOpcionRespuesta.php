@@ -37,7 +37,7 @@ class EncuestaOpcionRespuesta {
     private $orden;
     
     /**
-     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaPregunta")
+     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaPregunta" ,inversedBy="opcionesRespuestas")
      * @ORM\JoinColumn(name="encuesta_pregunta_id", referencedColumnName="id")
      */
     private $encuestaPregunta;

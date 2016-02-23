@@ -90,6 +90,12 @@ class EncuestaPregunta
     private $actualizadoPor;
 
     /**
+     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\EncuestaOpcionRespuesta", mappedBy="encuestaPregunta")
+     *
+     */
+    private $opcionesRespuestas;
+
+    /**
      * Get id
      *
      * @return integer
@@ -317,5 +323,46 @@ class EncuestaPregunta
     
     public function __toString() {
         return $this->pregunta;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->opcionesRespuestas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add opcionesRespuesta
+     *
+     * @param \CuestionariosBundle\Entity\EncuestaOpcionRespuesta $opcionesRespuesta
+     *
+     * @return EncuestaPregunta
+     */
+    public function addOpcionesRespuesta(\CuestionariosBundle\Entity\EncuestaOpcionRespuesta $opcionesRespuesta)
+    {
+        $this->opcionesRespuestas[] = $opcionesRespuesta;
+
+        return $this;
+    }
+
+    /**
+     * Remove opcionesRespuesta
+     *
+     * @param \CuestionariosBundle\Entity\EncuestaOpcionRespuesta $opcionesRespuesta
+     */
+    public function removeOpcionesRespuesta(\CuestionariosBundle\Entity\EncuestaOpcionRespuesta $opcionesRespuesta)
+    {
+        $this->opcionesRespuestas->removeElement($opcionesRespuesta);
+    }
+
+    /**
+     * Get opcionesRespuestas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOpcionesRespuestas()
+    {
+        return $this->opcionesRespuestas;
     }
 }

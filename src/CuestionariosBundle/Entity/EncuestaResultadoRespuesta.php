@@ -35,7 +35,7 @@ class EncuestaResultadoRespuesta
     private $encuestaOpcionRespuesta;
     
     /**
-     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaResultadoCabecera")
+     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaResultadoCabecera", cascade={"persist"})
      * @ORM\JoinColumn(name="encuesta_resultado_cabecera_id", referencedColumnName="id")
      */
     private $encuestaResultadoCabecera;

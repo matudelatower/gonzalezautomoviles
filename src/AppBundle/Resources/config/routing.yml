@@ -9,3 +9,7 @@ app_aplicativo:
 app_homepage:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
+
+app_pantalla_vacia:
+    path: /app_pantalla_vacia
+    defaults: { _controller: "AppBundle:Default:pantallaVacia" }

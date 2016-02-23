@@ -1,0 +1,29 @@
+{% extends 'AppBundle:Default:pantallaVacia.html.twig' %}
+
+{% block content_title %}
+    Alerta Temprana
+{% endblock %}
+
+{% block content -%}
+    <div class="row">
+        <div class="col-md-12">
+
+            <form method="post" id="form-checklist"
+                  action="{{ path('crear_alerta_temprana', {'vehiculoId':vehiculo.id }) }}">
+
+                <div class="col-md-12">
+                    <div class="box box-primary">
+
+                        <div class="box-body">
+
+                            {{ render(controller('CuestionariosBundle:Encuesta:getOpcionesPorPregunta', { 'id':encuesta.id } )) }}
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btn-guardar-checklist" type="submit">Guardar</button>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
