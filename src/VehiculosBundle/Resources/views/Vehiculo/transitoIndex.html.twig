@@ -71,7 +71,7 @@
                                            href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
                                            title="Actualizar remito"><i class="fa fa-file-text"></i></a>
                                             {% if entity.venta_especial_slug == 'convencional' %}
-                                            <a class="btn btn-default btn-asignar" data-toggle="modal"
+                                            <a class="btn {%if(entity.cliente_id!='')%}btn-success{%else%}btn-default{%endif%} btn-asignar" data-toggle="modal"
                                                data-target="#modalGeneric"
                                                data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
                                                title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>

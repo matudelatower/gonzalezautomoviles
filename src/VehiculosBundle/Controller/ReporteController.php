@@ -5,6 +5,7 @@ namespace VehiculosBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
+use VehiculosBundle\Form\Filter\ReporteAgendaEntregasFilterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,51 +46,50 @@ class ReporteController extends Controller {
         ));
     }
 
-	public function pdfReporteAutosVendidosPorVendedorAction( Request $request ) {
+    public function pdfReporteAutosVendidosPorVendedorAction(Request $request) {
 
-		$form = $this->createForm( new AutosVendidosPorVendedorFilterType() );
+        $form = $this->createForm(new AutosVendidosPorVendedorFilterType());
 
-		$entities = array();
+        $entities = array();
 
-		$reportesManager = $this->get( 'manager.reportes' );
+        $reportesManager = $this->get('manager.reportes');
 
-		if ( $request->getMethod() == 'POST' ) {
+        if ($request->getMethod() == 'POST') {
 
-			$form->handleRequest( $request );
+            $form->handleRequest($request);
 
-			$formData = $form->getData();
+            $formData = $form->getData();
 
-			$vendedor = $formData['vendedor'];
+            $vendedor = $formData['vendedor'];
 
-			$aFecha = explode( ' - ', $formData['rango'] );
+            $aFecha = explode(' - ', $formData['rango']);
 
-			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
-			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
 
-			$entities = $reportesManager->getAutosVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta );
-		}
+            $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
+        }
 
-		$title = 'Reporte de Autos Vendidos Por Vendedor';
+        $title = 'Reporte de Autos Vendidos Por Vendedor';
 
-		$html = $this->renderView(
-			'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.pdf.twig',
-			array(
-				'entities'   => $entities,
-				'title'      => $title,
-				'vendedor'   => $vendedor,
-				'fechaDesde' => $fechaDesde,
-				'fechaHasta' => $fechaHasta
-			)
-		);
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+            'vendedor' => $vendedor,
+            'fechaDesde' => $fechaDesde,
+            'fechaHasta' => $fechaHasta
+                )
+        );
 
-		return new Response(
-			$reportesManager->imprimir( $html )
-			, 200, array(
-				'Content-Type'        => 'application/pdf',
-				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-			)
-		);
-	}
+        return new Response(
+                $reportesManager->imprimir($html)
+                , 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
 
     public function excelReporteAutosVendidosPorVendedorAction(Request $request) {
 
@@ -190,7 +190,6 @@ class ReporteController extends Controller {
 
 
 //        $managerEncuestas = $this->get('manager.reportes');
-
 //        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
 
@@ -204,40 +203,165 @@ class ReporteController extends Controller {
         return $response;
     }
 
-	public function pdfReporteVehiculosEnStockAction( Request $request ) {
+    public function pdfReporteVehiculosEnStockAction(Request $request) {
 
-		$em   = $this->getDoctrine()->getManager();
-		$form = $this->createForm( new VehiculosEnStockFilterType() );
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosEnStockFilterType());
 
-		$entities = array();
+        $entities = array();
 
-		$reportesManager = $this->get( 'manager.reportes' );
+        $reportesManager = $this->get('manager.reportes');
 
-		if ( $request->getMethod() == 'POST' ) {
-			$form->handleRequest( $request );
-			if ( $form->isValid() ) {
-				$data     = $form->getData();
-				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEnStock( false, $data );
-			}
-		}
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock(false, $data);
+            }
+        }
 
-		$title = 'Reporte de Autos Vendidos Por Vendedor';
+        $title = 'Reporte de Vehiculos en Stock';
 
-		$html = $this->renderView(
-			'VehiculosBundle:Reporte:reporteVehiculosEnStock.pdf.twig',
-			array(
-				'entities' => $entities,
-				'title'    => $title,
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteVehiculosEnStock.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+                )
+        );
 
-			)
-		);
+        return new Response(
+                $reportesManager->imprimir($html), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
 
-		return new Response(
-			$reportesManager->imprimir( $html ), 200, array(
-				'Content-Type'        => 'application/pdf',
-				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-			)
-		);
-	}
+    /*
+     * devuelve las entregas programadas en un rango de fechas.
+     */
+
+    public function indexReporteAgendaEntregasAction(Request $request) {
+
+        $form = $this->createForm(new ReporteAgendaEntregasFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+//            $vendedor = $formData['vendedor'];
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteAgendaEntregas.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView()
+        ));
+    }
+
+    /*
+     * 
+     */
+
+    public function pdfReporteAgendaEntregasAction(Request $request) {
+
+        $form = $this->createForm(new ReporteAgendaEntregasFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
+        }
+
+        $title = 'Reporte de Entregas Programadas';
+
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteAgendaEntregas.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+            'fechaDesde' => $fechaDesde,
+            'fechaHasta' => $fechaHasta
+                )
+        );
+
+        return new Response(
+                $reportesManager->imprimir($html)
+                , 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+
+    public function excelReporteAgendaEntregasAction(Request $request) {
+
+        $form = $this->createForm(new ReporteAgendaEntregasFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
+        }
+
+        $filename = "reporte_entregas_programadas.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Entregas Programadas');
+        $exportExcel->setDescripcion('Listado de Entregas Programadas');
+
+
+        $response = $exportExcel->buildSheetgetReporteAgendaEntregas($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
+    }
+
 
 }

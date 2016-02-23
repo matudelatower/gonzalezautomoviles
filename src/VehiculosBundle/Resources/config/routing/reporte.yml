@@ -20,4 +20,16 @@ exportar_pdf_reporte_vehiculos_en_stock:
 
 exportar_excel_reporte_vehiculos_en_stock:
     path:     /exportar_excel_reporte_vehiculos_en_stock
-    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosEnStock" }    
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosEnStock" }   
+    
+index_reporte_agenda_entregas:
+    path:     /index_reporte_agenda_entregas
+    defaults: { _controller: "VehiculosBundle:Reporte:IndexReporteAgendaEntregas" }
+
+exportar_pdf_reporte_agenda_entregas:
+    path:     /exportar_pdf_reporte_agenda_entregas
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteAgendaEntregas" }
+
+exportar_excel_reporte_agenda_entregas:
+    path:     /exportar_excel_reporte_agenda_entregas
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteAgendaEntregas" }        

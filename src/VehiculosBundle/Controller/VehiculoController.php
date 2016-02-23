@@ -27,14 +27,14 @@ class VehiculoController extends Controller {
      */
     public function indexAction(Request $request) {
 
-	    $em         = $this->getDoctrine()->getManager();
-	    $requestUri = $request->getRequestUri();
+        $em = $this->getDoctrine()->getManager();
+        $requestUri = $request->getRequestUri();
 
-	    $usuario = $this->getUser();
+        $usuario = $this->getUser();
 
-	    $permisosManager = $this->get( 'manager.permisos' );
+        $permisosManager = $this->get('manager.permisos');
 
-	    $permisosManager->checkPermiso( $requestUri, $usuario );
+        $permisosManager->checkPermiso($requestUri, $usuario);
 
         /* permiso usuario  */
 
@@ -115,7 +115,7 @@ class VehiculoController extends Controller {
      *
      */
     public function vehiculosRecibidosIndexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();        
+        $em = $this->getDoctrine()->getManager();
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido');
         $estados = array($estadoId1);
         $form = $this->createForm(new VehiculoFilterType());
@@ -377,6 +377,7 @@ class VehiculoController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
+        $encuestaResultadoCabecera = $em->getRepository('CuestionariosBundle:EncuestaResultadoCabecera')->findOneByVehiculo($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Vehiculo entity.');
@@ -387,6 +388,7 @@ class VehiculoController extends Controller {
         return $this->render(
                         'VehiculosBundle:Vehiculo:show.html.twig', array(
                     'entity' => $entity,
+                    'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
                     'delete_form' => $deleteForm->createView(),
                         )
         );

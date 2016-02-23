@@ -134,6 +134,40 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
+    /*
+     * devulve las entregas programadas en un rango de fechas
+     */
+
+    public function getAgendaEntregas($fechaDesde, $fechaHasta) {
+        $db = $this->getEntityManager()->getConnection();
+        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $query = "SELECT v.*,
+		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
+                     colores_vehiculos.color,a.fecha as fecha_entrega,a.hora as hora_entrega,a.hora,a.descripcion as descripcion_entrega,d.nombre as deposito_actual
+		
+                    FROM     estados_vehiculos
+                    INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+                    INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+                    INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+
+                    INNER JOIN agenda_entregas a ON a.vehiculo_id=v.id 
+                    INNER JOIN colores_vehiculos colores_vehiculos ON v.color_vehiculo_id = colores_vehiculos.id
+                    INNER JOIN codigos_modelo codigos_modelo ON v.codigo_modelo_id = codigos_modelo.id
+                    INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
+                    LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd ON v.id =  mmdd.vehiculo_id
+                    LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
+                    LEFT JOIN depositos d ON md.deposito_destino_id=d.id		     
+		WHERE
+                        tipo_estado_vehiculo.slug <> 'entregado' AND
+		      a.fecha BETWEEN '$fechaDesde' and '$fechaHasta'";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function getVehiculosEnStock($estado, $filters = null) {
 //        $ids = array();
 //        if ($estado) {
@@ -146,7 +180,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 //        $where = "0=0";
 //        }
 
-        $where = "tipo_estado_vehiculo.slug in ('transito','recibido','stock')";
+        $where = "tipo_estado_vehiculo.slug in ('transito','recibido','stock') and (v.cliente_id is null or clientes.reventa=false)";
         $db = $this->getEntityManager()->getConnection();
 
         if ($filters['colorVehiculo']) {
@@ -184,6 +218,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
                                         LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
                                         LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
+                                        LEFT JOIN clientes ON v.cliente_id=clientes.id
                                         WHERE " . $where .
                 " ORDER BY modelo,color_vehiculo asc";
 

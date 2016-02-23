@@ -1,0 +1,41 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+{% block body %}
+    <style>
+        label{
+            font-weight: bold;
+        }
+    </style>
+
+    <div>
+        <label>Fecha: </label><span>{{ fechaDesde |date('d/m/Y') }} al {{ fechaHasta |date('d/m/Y') }}</span>
+    </div>
+    <br>
+
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Vehiculo</th>
+                    <th>Color</th>
+                    <th>Vin</th>
+                    <th>Deposito</th>
+                    <th>Fecha y hora</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>                                
+                        <td>{{ entity.modelo }}</td>
+                        <td>{{ entity.color }}</td>
+                        <td>{{ entity.vin }}</td>
+                        <td>{{ entity.deposito_actual }}</td>
+                        <td>{{ entity.fecha_entrega~' '~entity.hora_entrega }}</td>
+                        <td>{{ entity.descripcion_entrega }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endblock %}

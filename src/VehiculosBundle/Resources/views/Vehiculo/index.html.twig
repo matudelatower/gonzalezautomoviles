@@ -76,7 +76,7 @@
                                                data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                             {% endif %}    
-                                                   
+
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -121,6 +121,12 @@
                     });
         {% endif %}
 
+               {# $('.data-table').dataTable({
+                    "orderFixed": {
+                        "pre": [[1, 'asc'], [2, 'asc'], [3, 'asc']],
+                        "post": [[1, 'asc'], [2, 'asc'], [3, 'asc']]
+                    }
+                })#}
             });
 
 
