@@ -69,10 +69,11 @@
                                         <a class="btn {%if(entity.dominio!='')%}btn-success{%else%}btn-default{%endif%}"
                                            href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                            title="Patente"><i class="fa icon-patente"></i></a> 
-
-                                        <a class="btn {%if(entity.dominio=='2asd')%}btn-success{%else%}btn-default{%endif%}"
-                                           href="{{ path('crear_alerta_temprana', { 'vehiculoId': entity.id }) }}"
-                                           title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>   
+                                            {% if (entity.encuesta_alerta_temprana=='') %}
+                                            <a class="btn {%if(entity.dominio=='2asd')%}btn-success{%else%}btn-default{%endif%}"
+                                               href="{{ path('crear_alerta_temprana', { 'vehiculoId': entity.id }) }}"
+                                               title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>   
+                                            {%endif%}
 
                                     </td>
 
