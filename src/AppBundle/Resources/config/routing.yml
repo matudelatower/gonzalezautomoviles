@@ -13,3 +13,11 @@ app_homepage:
 app_pantalla_vacia:
     path: /app_pantalla_vacia
     defaults: { _controller: "AppBundle:Default:pantallaVacia" }
+
+app_bloquear_pantalla:
+    path: /app_bloquear_pantalla
+    defaults: { _controller: "AppBundle:Default:bloquearPantalla" }
+
+app_desbloquear_pantalla:
+    path: /app_desbloquear_pantalla
+    defaults: { _controller: "AppBundle:Default:desbloquearPantalla" }

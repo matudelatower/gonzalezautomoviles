@@ -296,10 +296,11 @@ class EncuestaController extends Controller {
 
 			$this->get( 'session' )->getFlashBag()->add(
 				'success',
-				'Cuestionario guardado correctamente. <br> Muchas Gracias Por su tiempo.'
+				'Cuestionario guardado correctamente.
+				 Muchas Gracias Por su tiempo.'
 			);
 
-			return $this->redirectToRoute( 'app_pantalla_vacia' );
+			return $this->redirectToRoute( 'app_bloquear_pantalla' );
 
 		}
 

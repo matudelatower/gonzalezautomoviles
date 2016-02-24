@@ -32,13 +32,12 @@
     <header class="main-header">
         <nav class="navbar navbar-static-top">
             <div class="container">
-                <a href="{{ path('app_homepage') }}" class="logo">
-                    <!-- mini logo for sidebar mini 50x50 pixels -->
-                    <span class="logo-mini"><b>G</b>A</span>
-                    <!-- logo for regular state and mobile devices -->
-                    <span class="logo-lg"><b>González</b> Automóviles</span>
-                </a>
-
+                <div class="navbar-header">
+                    <a href="{{ path('app_homepage') }}" class="navbar-brand">
+                        <!-- logo for regular state and mobile devices -->
+                        <span class="logo-lg"><b>González</b> Automóviles</span>
+                    </a>
+                </div>
 
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
@@ -88,7 +87,7 @@
         <div class="container">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-
+                <h1>{{ title |default("")}}</h1>
             </section>
 
             <section class="content">
@@ -128,7 +127,7 @@
             <div class="pull-right hidden-xs">
                 <b>Version</b> Demo
             </div>
-            <strong>Copyright &copy; 2015.</strong> Todos los
+            <strong>Copyright &copy; {{ "now"|date('Y') }}.</strong> Todos los
             derechos reservados.
         </footer>
 
@@ -144,7 +143,7 @@
     <!-- FastClick -->
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fastclick/fastclick.min.js') }}"></script>
     <!-- AdminLTE App -->
-    <script src="{{ asset('bundles/theme/js/app.js') }}"></script>
+    {#<script src="{{ asset('bundles/theme/js/app.js') }}"></script>#}
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/dist/js/demo.js') }}"></script>
 </body>
