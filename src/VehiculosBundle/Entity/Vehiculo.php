@@ -170,8 +170,7 @@ class Vehiculo {
      * @ORM\JoinColumn(name="patentamiento_id", referencedColumnName="id",nullable=true)
      */
     private $patentamiento;
-    
-   
+
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist"})
      *
@@ -265,7 +264,20 @@ class Vehiculo {
      */
     private $transportista;
 
-   
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tiene_manual", type="boolean",nullable=true)
+     */
+    private $tieneManual;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="tiene_llaves", type="boolean",nullable=true)
+     */
+    private $tieneLlaves;
+
     public function __toString() {
         return $this->vin;
     }
@@ -1118,4 +1130,51 @@ class Vehiculo {
     }
 
 
+    /**
+     * Set tieneManual
+     *
+     * @param boolean $tieneManual
+     *
+     * @return Vehiculo
+     */
+    public function setTieneManual($tieneManual)
+    {
+        $this->tieneManual = $tieneManual;
+
+        return $this;
+    }
+
+    /**
+     * Get tieneManual
+     *
+     * @return boolean
+     */
+    public function getTieneManual()
+    {
+        return $this->tieneManual;
+    }
+
+    /**
+     * Set tieneLlaves
+     *
+     * @param boolean $tieneLlaves
+     *
+     * @return Vehiculo
+     */
+    public function setTieneLlaves($tieneLlaves)
+    {
+        $this->tieneLlaves = $tieneLlaves;
+
+        return $this;
+    }
+
+    /**
+     * Get tieneLlaves
+     *
+     * @return boolean
+     */
+    public function getTieneLlaves()
+    {
+        return $this->tieneLlaves;
+    }
 }

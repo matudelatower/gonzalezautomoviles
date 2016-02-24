@@ -89,6 +89,26 @@
                                 <td>{{ entity.numeroPedido }}</td>
                             </tr>
                             <tr>
+                                <th>Tiene llaves</th>
+                                <td>
+                                    {%if(entity.tieneLlaves)%}
+                                        SI
+                                    {%else%}
+                                        NO
+                                    {%endif%}
+                                <td>
+                            </tr>
+                            <tr>
+                                <th>Tiene Manual</th>
+                                <td>
+                                    {%if(entity.tieneManual)%}
+                                        SI
+                                    {%else%}
+                                        NO
+                                    {%endif%}
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Tipo de venta</th>
                                 <td>{{ entity.tipoVentaEspecial }}</td>
                             </tr>

@@ -60,6 +60,8 @@ class AltaVehiculoType extends AbstractType {
                     'attr' => array('class' => 'maskmoney')
                 ))
                 ->add('numeroPedido')
+                ->add('tieneLlaves')
+                ->add('tieneManual')
                 ->add('tipoVentaEspecial')
                 ->add('numeroGrupo', 'text', array(
                     'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
