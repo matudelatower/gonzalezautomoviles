@@ -363,5 +363,31 @@ class ReporteController extends Controller {
         return $response;
     }
 
+    /*
+     * crea un pdf con los datos del show de un vehiculo
+     */
+
+    public function resumenVehiculoPdfAction($vehiculoId) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+
+        $title = 'Resumen de Vehículo';
+        $reportesManager = $this->get('manager.reportes');
+        $html = $this->render(
+                'VehiculosBundle:Reporte:resumenVehiculo.pdf.twig', array(
+            'entity' => $entity,
+            'title' => $title,
+                )
+        );
+
+        return new Response(
+                $reportesManager->imprimir($html), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
 
 }

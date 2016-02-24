@@ -141,11 +141,6 @@
                     </table>
                 </div>
 
-                <div class="box-footer">
-                    <a class="btn btn-default" href="{{  app.request.headers.get('referer')  }}">
-                        Volver
-                    </a>
-                </div>
             </div>
         </div>        
         <div class="col-md-6">
@@ -383,15 +378,25 @@
 
                                     </th>
                                 </tr>  
-                            {%endif%}
+                            {%endif%}                             
                         </tbody>
                     </table>
                 </div>
 
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="box-footer">
+                <a class="btn btn-default" href="{{  app.request.headers.get('referer')  }}">
+                    Volver
+                </a>
+                <a href="{{ path('resumen_vehiculo_pdf', {'vehiculoId':entity.id}) }}" target="_blank" class="btn btn-primary">
+                    Imprimir Resumen
+                </a>
+
+            </div>
+        </div>
     </div>
-    {#{{ form(delete_form) }}#}
 
 
 {% endblock %}

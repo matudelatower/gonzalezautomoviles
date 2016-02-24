@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ title }}</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
 
-        table, th {
-            border: 2px solid black;
-        }
+            table, th {
+                border: 2px solid black;
+            }
 
-        table, td {
-            border: 1px solid black;
-        }
+            table, td {
+                border: 1px solid black;
+            }
 
-        body {
-            font-size: 12pt;
-        }
+            body {
+                font-size: 12pt;
+            }
 
-        .titulo-reporte {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-<h2 class="titulo-reporte">{{ title }}</h2>
-{% block body %}
-{% endblock %}
+            .titulo-reporte {
+                text-align: center;
+            }
 
 
-</div>
+        </style>
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+    </head>
+    <body>
+        <h2 class="titulo-reporte">{{ title }}</h2>
+        {% block body %}
+        {% endblock %}
+
+
+    </div>
 </body>
 </html>

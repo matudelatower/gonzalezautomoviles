@@ -252,8 +252,6 @@ class VehiculoController extends Controller {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
         }
 
-//        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
-
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
             $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
@@ -263,17 +261,11 @@ class VehiculoController extends Controller {
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
-//        $entities = $paginator->paginate(
-//            $entities,
-//            $this->get('request')->query->get('page', 1)/* page number */,
-//            10/* limit per page */
-//        );
 
         return $this->render(
                         'VehiculosBundle:Vehiculo:entregadosIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView()
-//                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
                         )
         );
     }

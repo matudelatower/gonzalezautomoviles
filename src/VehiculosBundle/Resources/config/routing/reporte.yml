@@ -32,4 +32,8 @@ exportar_pdf_reporte_agenda_entregas:
 
 exportar_excel_reporte_agenda_entregas:
     path:     /exportar_excel_reporte_agenda_entregas
-    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteAgendaEntregas" }        
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteAgendaEntregas" }      
+
+resumen_vehiculo_pdf:
+    path:     /{vehiculoId}/resumen_vehiculo_pdf
+    defaults: { _controller: "VehiculosBundle:Reporte:ResumenVehiculoPdf" }    
