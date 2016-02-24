@@ -32,3 +32,7 @@ encuestas_delete:
 crear_alerta_temprana:
     path: /{vehiculoId}/crear_alerta_temprana
     defaults: { _controller: "CuestionariosBundle:Encuesta:crearAlertaTemprana" }
+
+pdf_ver_encuesta_alta_temprana:
+    path: /{vehiculoId}/pdf_ver_encuesta_alta_temprana
+    defaults: { _controller: "CuestionariosBundle:Encuesta:pdfVerEncuestaAltaTemprana" }

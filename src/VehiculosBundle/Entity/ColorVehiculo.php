@@ -76,6 +76,13 @@ class ColorVehiculo {
     private $actualizadoPor;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="hexadecimal", type="string", length=255, nullable=true)
+     */
+    private $hexadecimal;
+
+    /**
      * Get id
      *
      * @return integer
@@ -251,5 +258,29 @@ class ColorVehiculo {
     public function getCodigo()
     {
         return $this->codigo;
+    }
+
+    /**
+     * Set hexadecimal
+     *
+     * @param string $hexadecimal
+     *
+     * @return ColorVehiculo
+     */
+    public function setHexadecimal($hexadecimal)
+    {
+        $this->hexadecimal = $hexadecimal;
+
+        return $this;
+    }
+
+    /**
+     * Get hexadecimal
+     *
+     * @return string
+     */
+    public function getHexadecimal()
+    {
+        return $this->hexadecimal;
     }
 }

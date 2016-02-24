@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use CuestionariosBundle\Entity\Encuesta;
 use CuestionariosBundle\Form\EncuestaType;
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Encuesta controller.
  *
@@ -282,11 +284,8 @@ class EncuestaController extends Controller {
 				$resultadoRespuesta->setEncuestaResultadoCabecera( $encuestaResultadoCabecera );
 
 				$pregunta                = $em->getRepository( 'CuestionariosBundle:EncuestaPregunta' )->findOneById( $preguntaId );
-				$criteria                = array(
-					'encuestaPregunta' => $pregunta,
-					'textoOpcion'      => $valor
-				);
-				$encuestaOpcionRespuesta = $em->getRepository( 'CuestionariosBundle:EncuestaOpcionRespuesta' )->findOneBy($criteria);
+
+				$encuestaOpcionRespuesta = $em->getRepository( 'CuestionariosBundle:EncuestaOpcionRespuesta' )->findOneById( $valor );
 				$resultadoRespuesta->setEncuestaOpcionRespuesta( $encuestaOpcionRespuesta );
 				$resultadoRespuesta->setEncuestaPregunta( $pregunta );
 				$em->persist( $resultadoRespuesta );
@@ -337,5 +336,46 @@ class EncuestaController extends Controller {
 			)
 		);
 
+	}
+
+	public function pdfVerEncuestaAltaTempranaAction( $vehiculoId ) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
+
+//		$criteria = array(
+//			'vehiculo' => $vehiculo,
+//			'slug'     => 'alerta-temprana'
+//		);
+
+//		$encuesta = $em->getRepository( 'CuestionariosBundle:Encuesta' )->findOneBySlug( 'alerta-temprana' );
+//
+//		$encuestaPreguntas = $em->getRepository( 'CuestionariosBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
+
+		$encuestaResultadoCabecera  = $em->getRepository( 'CuestionariosBundle:EncuestaResultadoCabecera' )->findOneByVehiculo( $vehiculo );
+		$encuestaResultadoRespuesta = $em->getRepository( 'CuestionariosBundle:EncuestaResultadoRespuesta' )->findByEncuestaResultadoCabecera( $encuestaResultadoCabecera );
+
+
+		$title = 'Encuesta Alerta Temprana';
+
+		$html = $this->renderView(
+			'CuestionariosBundle:Encuesta:alertaTemprana.pdf.twig',
+			array(
+				'title'                      => $title,
+				'encuestaResultadoRespuesta' => $encuestaResultadoRespuesta,
+				'vehiculo' => $vehiculo,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
 	}
 }

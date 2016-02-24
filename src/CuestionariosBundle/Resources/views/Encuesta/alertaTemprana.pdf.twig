@@ -1,0 +1,40 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+{% block body %}
+    <style>
+        label {
+            font-weight: bold;
+        }
+
+        .pregunta {
+            text-align: justify;
+        }
+    </style>
+
+    <div class="box-body">
+
+        {% for item in encuestaResultadoRespuesta %}
+            <p>
+                <span class="pregunta">{{ item.encuestaPregunta }}</span> <br>
+            <div>
+                {% for opcion in item.encuestaPregunta.opcionesRespuestas %}
+                    {{ opcion }} <input
+                        type="checkbox" {% if item.encuestaOpcionRespuesta.id == opcion.id %} checked {% endif %}>
+                {% endfor %}
+            </div>
+            <br>
+            </p>
+        {% endfor %}
+
+    </div>
+
+    <div class="row">
+        {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
+        <label>Apellido y Nombre: </label> <span>{{ vehiculo.cliente }}</span> <br>
+        <label>Dirección: </label><span>{{ cliente.barrio }} - {{ cliente.calle }} {{ cliente.numeroCalle }}</span><br>
+        <label>Teléfono: </label><span> {{ cliente.telefono }}</span><br>
+        <label>E-Mail: </label><span>{{ cliente.mail }}</span><br>
+        <label>Fecha Nacimiento: </label><span>{{ cliente.fechaNacimiento | date('d/m/Y') }}</span><br>
+        <label>Localidad: </label><span></span> <label>CP: </label><span></span>
+    </div>
+
+{% endblock %}

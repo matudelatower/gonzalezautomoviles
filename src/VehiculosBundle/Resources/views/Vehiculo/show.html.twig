@@ -53,7 +53,13 @@
                             </tr>
                             <tr>
                                 <th>Color</th>
-                                <td>{{ entity.colorVehiculo }}</td>
+                                <td>
+                                    {% set colorVehiculo = '' %}
+                                    {% if entity.colorVehiculo.hexadecimal %}
+                                        {% set colorVehiculo = entity.colorVehiculo.hexadecimal %}
+                                    {% endif %}
+                                    <span style="background-color: {{ colorVehiculo }}">{{ entity.colorVehiculo }}</span>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Motor</th>
@@ -372,10 +378,9 @@
                         <tbody>
                             {% if encuestaResultadoCabecera %}
                                 <tr>
-                                    <th><a class="pull-right badge bg-blue btn-carousel"
-                                           data-target=""
-                                           data-url=""
-                                           title="Ver">Ver Encuesta de Alerta Temprana</a>
+                                    <th>
+                                        <a href="{{ path('pdf_ver_encuesta_alta_temprana', {'vehiculoId':entity.id}) }}" target="_blank" class="btn btn-block btn-primary">Ver Encuesta de Alerta Temprana</a>
+
                                     </th>
                                 </tr>  
                             {%endif%}

@@ -76,6 +76,10 @@ class EncuestaOpcionRespuesta {
      */
     private $actualizadoPor;
 
+    public function __toString() {
+        return $this->textoOpcion;
+    }
+
     /**
      * Get id
      *
