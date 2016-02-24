@@ -318,7 +318,7 @@ class EncuestaController extends Controller {
 
 		$encuesta = $em->getRepository( 'CuestionariosBundle:Encuesta' )->find( $id );
 
-		$encuestaPreguntas = $em->getRepository( 'CuestionariosBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
+		$encuestaPreguntas = $em->getRepository( 'CuestionariosBundle:EncuestaPregunta' )->findByEncuestaOrdenado( $encuesta );
 //		$opcionesPregunta = $em->getRepository( 'CuestionariosBundle:EncuestaOpcionRespuesta' )->findByEncuestaPregunta( $pregunta );
 
 		if ( ! $encuesta ) {

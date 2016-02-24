@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * EncuestaResultadoRespuesta
  *
  * @ORM\Table(name="encuesta_resultados_respuestas")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CuestionariosBundle\Entity\Repository\EncuestaResultadoRespuestaRepository")
  */
 class EncuestaResultadoRespuesta
 {
@@ -31,6 +31,7 @@ class EncuestaResultadoRespuesta
     /**
      * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaOpcionRespuesta")
      * @ORM\JoinColumn(name="encuesta_opcion_respuesta_id", referencedColumnName="id")
+     * @ORM\OrderBy({"orden" = "ASC"})
      */
     private $encuestaOpcionRespuesta;
     

@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * EncuestaPregunta
  *
  * @ORM\Table(name="encuesta_preguntas")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CuestionariosBundle\Entity\Repository\EncuestaPreguntaRepository")
  */
 class EncuestaPregunta
 {
@@ -42,13 +42,13 @@ class EncuestaPregunta
      * @ORM\Column(name="orden", type="integer")
      */
     private $orden;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaTipoPregunta")
      * @ORM\JoinColumn(name="encuesta_tipo_pregunta_id", referencedColumnName="id")
      */
     private $encuestaTipoPregunta;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\Encuesta")
      * @ORM\JoinColumn(name="encuesta_id", referencedColumnName="id")
@@ -89,11 +89,11 @@ class EncuestaPregunta
      */
     private $actualizadoPor;
 
-    /**
-     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\EncuestaOpcionRespuesta", mappedBy="encuestaPregunta")
-     *
-     */
-    private $opcionesRespuestas;
+	/**
+	 * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\EncuestaOpcionRespuesta", mappedBy="encuestaPregunta")
+	 * @ORM\OrderBy({"orden"= "ASC"})
+	 */
+	private $opcionesRespuestas;
 
     /**
      * Get id
@@ -320,7 +320,7 @@ class EncuestaPregunta
     {
         return $this->encuesta;
     }
-    
+
     public function __toString() {
         return $this->pregunta;
     }
