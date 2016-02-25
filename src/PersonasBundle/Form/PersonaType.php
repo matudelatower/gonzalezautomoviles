@@ -5,6 +5,10 @@ namespace PersonasBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use UbicacionBundle\Form\EventListener\AddDepartamentoFieldSubscriber;
+use UbicacionBundle\Form\EventListener\AddLocalidadFieldSubscriber;
+use UbicacionBundle\Form\EventListener\AddPaisFieldSubscriber;
+use UbicacionBundle\Form\EventListener\AddProvinciaFieldSubscriber;
 
 class PersonaType extends AbstractType {
 	/**
@@ -12,6 +16,7 @@ class PersonaType extends AbstractType {
 	 * @param array $options
 	 */
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
+		$factory                         = $builder->getFormFactory();
 		$builder
 			->add( 'nombre' )
 			->add( 'apellido' )
@@ -36,6 +41,11 @@ class PersonaType extends AbstractType {
 			->add( 'calle' )
 			->add( 'numeroCalle' )
 			->add( 'barrio' );
+
+		$builder->addEventSubscriber(new AddPaisFieldSubscriber($factory));
+		$builder->addEventSubscriber(new AddProvinciaFieldSubscriber($factory));
+		$builder->addEventSubscriber(new AddDepartamentoFieldSubscriber($factory));
+		$builder->addEventSubscriber(new AddLocalidadFieldSubscriber($factory));
 	}
 
 	/**

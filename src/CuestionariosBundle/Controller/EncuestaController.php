@@ -344,15 +344,6 @@ class EncuestaController extends Controller {
 
 		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
 
-//		$criteria = array(
-//			'vehiculo' => $vehiculo,
-//			'slug'     => 'alerta-temprana'
-//		);
-
-//		$encuesta = $em->getRepository( 'CuestionariosBundle:Encuesta' )->findOneBySlug( 'alerta-temprana' );
-//
-//		$encuestaPreguntas = $em->getRepository( 'CuestionariosBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
-
 		$encuestaResultadoCabecera  = $em->getRepository( 'CuestionariosBundle:EncuestaResultadoCabecera' )->findOneByVehiculo( $vehiculo );
 		$encuestaResultadoRespuesta = $em->getRepository( 'CuestionariosBundle:EncuestaResultadoRespuesta' )->findByEncuestaResultadoCabecera( $encuestaResultadoCabecera );
 

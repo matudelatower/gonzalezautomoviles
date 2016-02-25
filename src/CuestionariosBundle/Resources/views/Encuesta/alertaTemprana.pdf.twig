@@ -34,7 +34,7 @@
         <label>Teléfono: </label><span> {{ cliente.telefono }}</span><br>
         <label>E-Mail: </label><span>{{ cliente.mail }}</span><br>
         <label>Fecha Nacimiento: </label><span>{{ cliente.fechaNacimiento | date('d/m/Y') }}</span><br>
-        <label>Localidad: </label><span></span> <label>CP: </label><span></span>
+        <label>Localidad: </label><span>{{ cliente.localidad }}</span> <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('')}}</span>
     </div>
 
 {% endblock %}

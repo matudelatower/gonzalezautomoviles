@@ -146,6 +146,12 @@ class Persona
      */
     private $personaTipo;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="UbicacionBundle\Entity\Localidad")
+     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
+     */
+    private $localidad;
+
     public function __toString() {
         return $this->apellido. ', '. $this->nombre;
     }
@@ -583,5 +589,29 @@ class Persona
     public function getPersonaTipo()
     {
         return $this->personaTipo;
+    }
+
+    /**
+     * Set localidad
+     *
+     * @param \UbicacionBundle\Entity\Localidad $localidad
+     *
+     * @return Persona
+     */
+    public function setLocalidad(\UbicacionBundle\Entity\Localidad $localidad = null)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return \UbicacionBundle\Entity\Localidad
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
     }
 }

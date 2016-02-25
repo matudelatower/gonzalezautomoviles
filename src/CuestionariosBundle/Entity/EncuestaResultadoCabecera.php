@@ -61,6 +61,12 @@ class EncuestaResultadoCabecera {
 	 */
 	private $actualizadoPor;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="CuestionariosBundle\Entity\Encuesta")
+	 * @ORM\JoinColumn(name="encuesta_id", referencedColumnName="id")
+	 */
+	private $encuesta;
+
 
 	/**
 	 * Get id
@@ -181,4 +187,28 @@ class EncuestaResultadoCabecera {
 	public function getVehiculo() {
 		return $this->vehiculo;
 	}
+
+    /**
+     * Set encuesta
+     *
+     * @param \CuestionariosBundle\Entity\Encuesta $encuesta
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setEncuesta(\CuestionariosBundle\Entity\Encuesta $encuesta = null)
+    {
+        $this->encuesta = $encuesta;
+
+        return $this;
+    }
+
+    /**
+     * Get encuesta
+     *
+     * @return \CuestionariosBundle\Entity\Encuesta
+     */
+    public function getEncuesta()
+    {
+        return $this->encuesta;
+    }
 }

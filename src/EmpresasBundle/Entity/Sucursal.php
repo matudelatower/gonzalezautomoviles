@@ -113,6 +113,12 @@ class Sucursal
     private $empresa;
 
     /**
+     * @ORM\ManyToOne(targetEntity="UbicacionBundle\Entity\Localidad")
+     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
+     */
+    private $localidad;
+
+    /**
      * Get id
      *
      * @return integer
@@ -408,5 +414,29 @@ class Sucursal
     public function getEmpresa()
     {
         return $this->empresa;
+    }
+
+    /**
+     * Set localidad
+     *
+     * @param \UbicacionBundle\Entity\Localidad $localidad
+     *
+     * @return Sucursal
+     */
+    public function setLocalidad(\UbicacionBundle\Entity\Localidad $localidad = null)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return \UbicacionBundle\Entity\Localidad
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
     }
 }

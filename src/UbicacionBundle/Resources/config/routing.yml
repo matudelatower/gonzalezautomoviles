@@ -18,3 +18,7 @@ UbicacionBundle_departamento:
 UbicacionBundle_localidad:
         resource: "@UbicacionBundle/Resources/config/routing/localidad.yml"
         prefix:   /localidad
+
+UbicacionBundle_ajax:
+        resource: "@UbicacionBundle/Resources/config/routing/ajax.yml"
+        prefix:   /ajax
