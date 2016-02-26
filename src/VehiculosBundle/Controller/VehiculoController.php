@@ -201,14 +201,15 @@ class VehiculoController extends Controller {
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('pendiente-por-entregar');
         $estados = array($estadoId1);
 
+        $order = " fecha_entrega asc,hora_entrega asc,modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data,$order);
             }
         } else {
-            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
         }
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());

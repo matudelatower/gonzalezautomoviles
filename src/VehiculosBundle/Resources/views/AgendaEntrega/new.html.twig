@@ -34,7 +34,7 @@
     </div>
     <div class="hidden">
         {{ form_rest(form) }}
-        <input id="url" value="{{ path("agenda_entrega_create_ajax") }}">
+        <input id="url" value="{{ path("agenda_entrega_create_ajax",{'vehiculoId':vehiculoId}) }}">
     </div>
     <div class="modal-footer">
         <button type="submit" id="btn-modal-movimiento" class="btn btn-primary">Aceptar</button>

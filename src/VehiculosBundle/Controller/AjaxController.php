@@ -132,7 +132,8 @@ class AjaxController extends Controller {
 
         $html = $this->renderView(
                 'VehiculosBundle:AgendaEntrega:new.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'vehiculoId' => $vehiculoId
                 )
         );
         return new JsonResponse($html);
@@ -142,16 +143,18 @@ class AjaxController extends Controller {
      * guarda los datos de la entrega de un vehiculo
      */
 
-    public function AgendaEntregaCreateAjaxAction(Request $request) {
-        $agendaEntrega = new \VehiculosBundle\Entity\AgendaEntrega();
+    public function AgendaEntregaCreateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $agendaEntrega = $em->getRepository('VehiculosBundle:AgendaEntrega')->findOneByVehiculo($vehiculoId);
+        if (!$agendaEntrega) {
+            $agendaEntrega = new \VehiculosBundle\Entity\AgendaEntrega();
+        }
         $form = $this->createForm(new \VehiculosBundle\Form\AgendaEntregaType, $agendaEntrega);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($agendaEntrega);
             $em->flush();
-
             return new JsonResponse(true);
         } else {
             return new JsonResponse(false);

@@ -18,7 +18,7 @@
                         method: "GET",
                         data: {id: id},
                         success: function (data) {
-                        if (data == true) {
+                        if (data.muestra_plan_ahorro == true) {
                         $('.tipo-venta-especial-field').removeClass('hidden');
                                 $('.tipo-venta-especial-field').attr('required', 'required');
                         } else {

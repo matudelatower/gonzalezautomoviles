@@ -47,5 +47,5 @@ new_agenda_entrega_ajax:
     defaults: { _controller: "VehiculosBundle:Ajax:newAgendaEntregaAjax" }
 
 agenda_entrega_create_ajax:
-    path:     /agenda_entrega_create_ajax/
+    path:     /agenda_entrega_create_ajax/{vehiculoId}
     defaults: { _controller: "VehiculosBundle:Ajax:agendaEntregaCreateAjax" }     
