@@ -25,7 +25,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="data-table table table-bordered table-striped">
+                    <table class="data-table table table-bordered table-striped" id="tabla-listado">
                         <thead>
 
                             <tr>
@@ -111,5 +111,10 @@
 {% block javascripts %}
     {{ parent() }}
     {% include "VehiculosBundle:Vehiculo:index.js.twig" %}
-
+    <script>
+        $(document).ready(function () {
+            oTable = $('#tabla-listado').dataTable();
+            oTable.fnSort([[1, 'asc'], [2, 'asc'], [4, 'asc']]);
+        });
+    </script>
 {% endblock %}

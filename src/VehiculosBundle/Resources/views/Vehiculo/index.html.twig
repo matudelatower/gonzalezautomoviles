@@ -25,7 +25,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <table class="data-table table table-bordered table-striped">
+                    <table class="data-table table table-bordered table-striped" id="tabla-listado">
                         <thead>
 
                             <tr>
@@ -120,13 +120,8 @@
                         return false;
                     });
         {% endif %}
-
-               {# $('.data-table').dataTable({
-                    "orderFixed": {
-                        "pre": [[1, 'asc'], [2, 'asc'], [3, 'asc']],
-                        "post": [[1, 'asc'], [2, 'asc'], [3, 'asc']]
-                    }
-                })#}
+                oTable = $('#tabla-listado').dataTable();
+                oTable.fnSort([[1, 'asc'], [2, 'asc'], [4, 'asc']]);
             });
 
 
