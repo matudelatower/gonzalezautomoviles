@@ -86,6 +86,9 @@
                                            data-target="#modalGeneric"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                            title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                        <a class="btn {%if(entity.danio_interno_sin_solucionar!='')%}btn-danger{%else%}btn-default{%endif%}"
+                                           href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
+                                           title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>   
                                     </td>
                                 </tr>
                             {% endfor %}
