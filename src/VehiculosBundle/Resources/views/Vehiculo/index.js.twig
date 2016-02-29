@@ -71,6 +71,10 @@
             }
         });
     });
+
+    $(document).on('click', '#btn-desasignar-cliente',function() {
+        $("#vehiculoIdAsignar").val($(this).data('url'));
+    });
     
     $(document).on('submit', '#formAjax', function (ev) {
         ev.preventDefault();

@@ -19,6 +19,9 @@
         <input id="vehiculoIdAsignar" value="{{ path('asignacion_vehiculo_update_ajax', { 'vehiculoId': vehiculo.id }) }}"/>
     </div> 
     <div class="modal-footer">
+        {% if vehiculo.cliente %}
+        <button type="submit" id="btn-desasignar-cliente" data-url="{{ path('desasignacion_vehiculo_update_ajax', { 'vehiculoId': vehiculo.id }) }}" class="btn btn-danger" ><span class="glyphicon glyphicon-trash"></span> Desasignar Cliente</button>
+        {% endif %}
         <button type="submit" id="btn-modal-asignar" class="btn btn-primary">Aceptar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
     </div>

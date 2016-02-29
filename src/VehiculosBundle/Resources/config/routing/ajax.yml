@@ -40,7 +40,11 @@ new_asignacion_vehiculo_ajax:
 
 asignacion_vehiculo_update_ajax:
     path:     /asignacion_vehiculo_update_ajax/{vehiculoId}
-    defaults: { _controller: "VehiculosBundle:Ajax:asignacionVehiculoUpdateAjax" }        
+    defaults: { _controller: "VehiculosBundle:Ajax:asignacionVehiculoUpdateAjax" }
+
+desasignacion_vehiculo_update_ajax:
+    path:     /desasignacion_vehiculo_update_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:desasignacionVehiculoUpdateAjax" }
   
 new_agenda_entrega_ajax:
     path:     /new_agenda_entrega_ajax/{vehiculoId}

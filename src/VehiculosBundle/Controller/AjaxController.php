@@ -117,6 +117,23 @@ class AjaxController extends Controller {
         return new JsonResponse(true);
     }
 
+    /**
+     * @param Request $request
+     * @param $vehiculoId el ide del vehiculo
+     *
+     * @return JsonResponse true si la operacion se realiza con exito
+     */
+    public function desasignacionVehiculoUpdateAjaxAction( Request $request, $vehiculoId ) {
+        $em       = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository( "VehiculosBundle:Vehiculo" )->find( $vehiculoId );
+
+        $vehiculo->setCliente( null );
+        $em->persist( $vehiculo );
+        $em->flush();
+
+        return new JsonResponse( true );
+    }
+
     /*
      * Crea un modal para registrar la fecha de entrega del vehiculo
      */
