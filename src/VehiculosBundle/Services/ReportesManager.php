@@ -58,7 +58,7 @@ class ReportesManager {
                                 <html>
                                 <body style="margin:0; position: absolute;width: 100%;">
                                 <div style="margin:0;">
-                                <div style="float: left;width: 33%;" >
+                                <div style="float: left;width: 45%;" >
                                     <img style="max-width:100%; " src="' . $rutaLogo . '" />
                                 </div>
                                 <div style="float:left; width:33%;text-align:center; height:100% " >
