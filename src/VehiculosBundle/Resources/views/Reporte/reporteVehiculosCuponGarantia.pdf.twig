@@ -17,7 +17,6 @@
                     <th>Modelo</th>
                     <th>Color vehiculo</th>
                     <th>Vin</th>
-                    <th>Se pagó</th>
                         {%if(tipo=='SI')%}
                         <th>Cupon</th>
                         {%endif%}
@@ -30,13 +29,7 @@
                         <td>{{ entity.modelo }}</td>
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
-                        <td align="center">
-                            {% if entity.pagado %}
-                                SI
-                            {% else %}
-                                NO
-                            {% endif %}
-                        </td>
+                        
                         {%if(tipo=='SI')%}
                             <th>{{entity.cupon_garantia}}</th>
                             {%endif%}

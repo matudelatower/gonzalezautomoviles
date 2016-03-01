@@ -22,11 +22,11 @@
                         if (data.muestra_plan_ahorro == true) {
                             $('.tipo-venta-especial-field').removeClass('hidden');
                             $('.tipo-venta-especial-field').attr('required', 'required');
-                            if (data.slug == 'plan-de-ahorro-propio') {
+                            {#if (data.slug == 'plan-de-ahorro-propio') {
                                 $('.cliente').addClass('hidden');
                                 $('.cliente').removeAttr('required');
                                 $('.cliente').val('');
-                            }
+                            }#}
                         } else {
                             $('.tipo-venta-especial-field').addClass('hidden');
                             $('.tipo-venta-especial-field').removeAttr('required');

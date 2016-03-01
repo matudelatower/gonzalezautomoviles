@@ -110,7 +110,7 @@
                                 <th>Vin</th>
                                 <th>Dias en stock</th>
                                 <th>Deposito</th>
-                                <th>Se pagó</th>
+                                <th>Estado pago</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,9 +124,9 @@
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td align="center">
                                         {%if entity.pagado %}
-                                            SI
+                                            Gonzalez
                                         {%else%}
-                                            NO
+                                            Gpat
                                         {%endif%}
                                     </td>
                                 </tr>

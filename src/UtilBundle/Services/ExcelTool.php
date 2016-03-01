@@ -217,7 +217,7 @@ class ExcelTool {
                 ->setCellValue('D1', 'VIN')
                 ->setCellValue('E1', 'Dias En Stock')
                 ->setCellValue('F1', 'Deposito')
-                ->setCellValue('G1', 'Se Pagó');
+                ->setCellValue('G1', 'Estado pago');
 
         $phpExcelObject->getActiveSheet()->getStyle('A1:G1')->getBorders()->applyFromArray($this->head);
 
@@ -232,9 +232,9 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['dias_en_stock']);
                 $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['deposito_actual']);
                 if ($entity['pagado']) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'SI');
+                    $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'Gonzalez');
                 } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'NO');
+                    $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'Gpat');
                 }
                 $i ++;
             }
@@ -342,10 +342,9 @@ class ExcelTool {
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
-                ->setCellValue('E1', 'Se Pagó')
-                ->setCellValue('F1', 'Cupon');
+                ->setCellValue('E1', 'Cupon');
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:F1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:E1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
@@ -355,17 +354,12 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
-                if ($entity['pagado']) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, 'SI');
-                } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, 'NO');
-                }
-                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['cupon_garantia']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['cupon_garantia']);
                 $i ++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:F' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:E' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
@@ -373,7 +367,6 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
-        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 
@@ -403,10 +396,9 @@ class ExcelTool {
                 ->setCellValue('A1', 'Id')
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
-                ->setCellValue('D1', 'VIN')
-                ->setCellValue('E1', 'Se Pagó');
+                ->setCellValue('D1', 'VIN');
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:E1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:D1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
@@ -416,23 +408,17 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
-                if ($entity['pagado']) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, 'SI');
-                } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, 'NO');
-                }
                 $i ++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:E' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:D' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setAutoSize('true');
-        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 

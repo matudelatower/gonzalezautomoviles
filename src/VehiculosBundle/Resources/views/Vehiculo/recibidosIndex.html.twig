@@ -38,7 +38,7 @@
                                 <th>Dias stock</th>
                                 <th>Pagado</th>
                                 <th>Tipo de venta</th>
-                                <th>Estado</th>
+                                <th>Estado Pago</th>
                                 <th>Deposito</th>
                                 <th>Actions</th>
                             </tr>
@@ -54,12 +54,12 @@
                                     <td align="center">
                                         {% if entity.venta_especial_slug == 'convencional' %}
                                             {%if entity.pagado %}
-                                                SI
+                                                Gonzalez
                                             {%else%}
                                                 <a class="btn btn-pagado" data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Mover de Deposito">NO</a>
+                                                   title="Mover de Deposito">Gpat</a>
                                             {%endif%}
                                         {%endif%}
                                     </td>

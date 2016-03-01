@@ -98,7 +98,7 @@
                                 <th>Modelo</th>
                                 <th>Color vehiculo</th>
                                 <th>Vin</th>
-                                <th>Se pagó</th>
+                                <th>Cupon</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -108,13 +108,7 @@
                                     <td>{{ entity.modelo }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
                                     <td>{{ entity.vin }}</td>
-                                    <td align="center">
-                                        {%if entity.pagado %}
-                                            SI
-                                        {%else%}
-                                            NO
-                                        {%endif%}
-                                    </td>
+                                    <td>{{ entity.cupon_garantia }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
