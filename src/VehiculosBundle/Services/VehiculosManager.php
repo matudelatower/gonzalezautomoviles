@@ -85,7 +85,7 @@ class VehiculosManager {
             $em->persist($preguntaResultadoRespuesta);
         }
         $tipoVentaEspecialSlug = $vehiculo->getTipoVentaEspecial()->getSlug();
-        if ($tipoVentaEspecialSlug == 'plan-de-ahorro' || $tipoVentaEspecialSlug == 'plan-de-ahorro-propio' || $tipoVentaEspecialSlug == 'venta-especial') {
+        if ($tipoVentaEspecialSlug == 'plan-de-ahorro'  || $tipoVentaEspecialSlug == 'venta-especial') {
             $slug = 'pendiente-por-entregar';
         } else {
             $slug = 'stock';
