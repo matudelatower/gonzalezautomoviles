@@ -3,6 +3,15 @@
 {% block content_title %}
     Formulario de Factura
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $(".maskNumeroFactura").inputmask({mask: "9999-99999999", greedy: false});
+        })
+    </script>
+{% endblock javascripts %}
+
 
 {% block content -%}
     <div class="row">

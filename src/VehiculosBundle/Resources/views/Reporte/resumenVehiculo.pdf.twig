@@ -222,6 +222,10 @@
                             <table class="record_properties">
                                 <tbody>
                                     <tr>
+                                        <th>Tipo factura</th>
+                                        <td>{{ entity.factura.tipoFactura | default ("") }}</td>
+                                    </tr>  
+                                    <tr>
                                         <th>Número</th>
                                         <td>{{ entity.factura.numeroFactura | default ("") }}</td>
                                     </tr>   

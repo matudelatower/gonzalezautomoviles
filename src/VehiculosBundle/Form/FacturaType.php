@@ -14,7 +14,10 @@ class FacturaType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('numeroFactura')
+                ->add('tipoFactura')
+                ->add('numeroFactura', 'text', array(
+                    'attr' => array('class' => 'maskNumeroFactura')
+                ))
                 ->add('fecha', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'dd-MM-yyyy',

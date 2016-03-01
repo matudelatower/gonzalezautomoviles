@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Factura
+ * TipoFactura
  *
- * @ORM\Table(name="facturas")
- * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\FacturaRepository")
+ * @ORM\Table(name="tipo_factura")
+ * @ORM\Entity
  */
-class Factura
+class TipoFactura
 {
     /**
      * @var integer
@@ -25,24 +25,17 @@ class Factura
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_factura", type="string", length=255)
+     * @ORM\Column(name="tipo", type="string", length=255)
      */
-    private $numeroFactura;
+    private $tipo;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="fecha", type="datetime")
+     * @ORM\Column(name="descripcion", type="string", length=255)
      */
-    private $fecha;
+    private $descripcion;
     
-     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\TipoFactura")
-     * @ORM\JoinColumn(name="tipo_factura_id", referencedColumnName="id")
-     */
-    private $tipoFactura;
-
-
     /**
      * @var datetime $creado
      *
@@ -77,6 +70,7 @@ class Factura
      */
     private $actualizadoPor;
 
+
     /**
      * Get id
      *
@@ -88,51 +82,51 @@ class Factura
     }
 
     /**
-     * Set numeroFactura
+     * Set tipo
      *
-     * @param string $numeroFactura
+     * @param string $tipo
      *
-     * @return Factura
+     * @return TipoFactura
      */
-    public function setNumeroFactura($numeroFactura)
+    public function setTipo($tipo)
     {
-        $this->numeroFactura = $numeroFactura;
+        $this->tipo = $tipo;
 
         return $this;
     }
 
     /**
-     * Get numeroFactura
+     * Get tipo
      *
      * @return string
      */
-    public function getNumeroFactura()
+    public function getTipo()
     {
-        return $this->numeroFactura;
+        return $this->tipo;
     }
 
     /**
-     * Set fecha
+     * Set descripcion
      *
-     * @param \DateTime $fecha
+     * @param string $descripcion
      *
-     * @return Factura
+     * @return TipoFactura
      */
-    public function setFecha($fecha)
+    public function setDescripcion($descripcion)
     {
-        $this->fecha = $fecha;
+        $this->descripcion = $descripcion;
 
         return $this;
     }
 
     /**
-     * Get fecha
+     * Get descripcion
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getFecha()
+    public function getDescripcion()
     {
-        return $this->fecha;
+        return $this->descripcion;
     }
 
     /**
@@ -140,7 +134,7 @@ class Factura
      *
      * @param \DateTime $creado
      *
-     * @return Factura
+     * @return TipoFactura
      */
     public function setCreado($creado)
     {
@@ -164,7 +158,7 @@ class Factura
      *
      * @param \DateTime $actualizado
      *
-     * @return Factura
+     * @return TipoFactura
      */
     public function setActualizado($actualizado)
     {
@@ -188,7 +182,7 @@ class Factura
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return Factura
+     * @return TipoFactura
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -212,7 +206,7 @@ class Factura
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return Factura
+     * @return TipoFactura
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -230,28 +224,8 @@ class Factura
     {
         return $this->actualizadoPor;
     }
-
-    /**
-     * Set tipoFactura
-     *
-     * @param \VehiculosBundle\Entity\TipoFactura $tipoFactura
-     *
-     * @return Factura
-     */
-    public function setTipoFactura(\VehiculosBundle\Entity\TipoFactura $tipoFactura = null)
-    {
-        $this->tipoFactura = $tipoFactura;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoFactura
-     *
-     * @return \VehiculosBundle\Entity\TipoFactura
-     */
-    public function getTipoFactura()
-    {
-        return $this->tipoFactura;
+    
+    public function __toString() {
+        return $this->tipo;
     }
 }
