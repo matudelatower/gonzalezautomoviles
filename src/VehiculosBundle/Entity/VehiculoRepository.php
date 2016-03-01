@@ -172,17 +172,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
-    public function getVehiculosEnStock($estado, $filters = null) {
-//        $ids = array();
-//        if ($estado) {
-//            foreach ($estado as $item) {
-//                $ids[] = $item->getId();
-//            }
-//            $idsEstado = implode(',', $ids);
-//            $where = "tipo_estado_vehiculo.id in ($idsEstado)";
-//        } else {
-//        $where = "0=0";
-//        }
+    public function getVehiculosEnStock($filters = null) {
 
         $where = "tipo_estado_vehiculo.slug in ('transito','recibido','stock') and (v.cliente_id is null or clientes.reventa=false)";
         $db = $this->getEntityManager()->getConnection();
@@ -232,4 +222,34 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
+    
+     public function getVehiculosCuponGarantia($filters = null) {
+
+        $where = " v.factura_id is not null ";
+        $db = $this->getEntityManager()->getConnection();
+
+        if ($filters['conCupon']=='SI') {
+            $where.=" AND v.cupon_garantia is not null";
+        }else{
+             $where.=" AND v.cupon_garantia is null";
+        }           
+
+
+        $query = "SELECT   distinct(v.*),
+                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,                                        
+                                        tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,
+                                        cv.color as color_vehiculo                                        
+					FROM     vehiculos v 					
+                                        INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
+                                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
+                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id                                        
+                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id     
+                                        WHERE " . $where .
+                " ORDER BY modelo,color_vehiculo asc";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }

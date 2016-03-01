@@ -37,3 +37,11 @@ exportar_excel_reporte_agenda_entregas:
 resumen_vehiculo_pdf:
     path:     /{vehiculoId}/resumen_vehiculo_pdf
     defaults: { _controller: "VehiculosBundle:Reporte:ResumenVehiculoPdf" }    
+    
+index_reporte_vehiculos_cupon_garantia:
+    path:     /index_reporte_vehiculos_cupon_garantia
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosCuponGarantia" }
+
+exportar_pdf_reporte_vehiculos_cupon_garantia:
+    path:     /exportar_pdf_reporte_vehiculos_cupon_garantia
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosCuponGarantia" }    

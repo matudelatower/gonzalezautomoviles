@@ -117,6 +117,47 @@ class AjaxController extends Controller {
         return new JsonResponse(true);
     }
 
+    /*
+     * Crea un modal para guardar cupon de garantia
+     */
+
+    public function newCuponGarantiaAjaxAction($vehiculoId) {
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+
+        $form = $this->createForm(new \VehiculosBundle\Form\CuponGarantiaVehiculoType(), $vehiculo);
+
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:newCuponGarantiaVehiculo.html.twig', array(
+            'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
+                )
+        );
+        return new JsonResponse($html);
+    }
+    
+    /*
+     * Registra que se asigna a un cliente un vehiculo
+     */
+
+    public function cuponGarantiaUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+//        $prueba = $request->request->get('vehiculosbundle_asignacion_vehiculo');
+//        $cliente = $this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
+        
+        $form = $this->createForm(new \VehiculosBundle\Form\CuponGarantiaVehiculoType(), $vehiculo);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->persist($vehiculo);
+            $em->flush();
+            return new JsonResponse(true);
+        } else {
+            return new JsonResponse(false);
+        }
+    }
+    
+    
     /**
      * @param Request $request
      * @param $vehiculoId el ide del vehiculo

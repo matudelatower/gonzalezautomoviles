@@ -5,6 +5,7 @@ namespace VehiculosBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
+use VehiculosBundle\Form\Filter\VehiculosCuponGarantiaFilterType;
 use VehiculosBundle\Form\Filter\ReporteAgendaEntregasFilterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -150,7 +151,7 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock(false, $data);
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }
 
@@ -177,7 +178,7 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock(false, $data);
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }
         $filename = "reporte_vehiculos_en_stock.xls";
@@ -216,7 +217,7 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock(false, $data);
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }
 
@@ -378,6 +379,71 @@ class ReporteController extends Controller {
         $html = $this->render(
                 'VehiculosBundle:Reporte:resumenVehiculo.pdf.twig', array(
             'entity' => $entity,
+            'title' => $title,
+                )
+        );
+
+        return new Response(
+                $reportesManager->imprimir($html), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+
+    public function indexReporteVehiculosCuponGarantiaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosCuponGarantiaFilterType());
+
+        $entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
+            }
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView()
+        ));
+    }
+
+    public function pdfReporteVehiculosCuponGarantiaAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosCuponGarantiaFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
+            }
+        }
+        if ($data['conCupon'] == 'SI') {
+            $title = 'Reporte de Vehiculos que tienen Cupon de Garantia';
+        } else {
+            $title = 'Reporte de Vehiculos NO tienen Cupon de Garantia';
+        }
+
+//        $reportesManager = $this->get('manager.reportes');
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.pdf.twig', array(
+            'entities' => $entities,
             'title' => $title,
                 )
         );

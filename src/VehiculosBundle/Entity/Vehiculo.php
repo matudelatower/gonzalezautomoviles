@@ -278,6 +278,13 @@ class Vehiculo {
      */
     private $tieneLlaves;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cupon_garantia", type="string", length=255, nullable=true)
+     */
+    private $cuponGarantia;
+
     public function __toString() {
         return $this->vin;
     }
@@ -1129,7 +1136,6 @@ class Vehiculo {
         return $this->pagado;
     }
 
-
     /**
      * Set tieneManual
      *
@@ -1137,8 +1143,7 @@ class Vehiculo {
      *
      * @return Vehiculo
      */
-    public function setTieneManual($tieneManual)
-    {
+    public function setTieneManual($tieneManual) {
         $this->tieneManual = $tieneManual;
 
         return $this;
@@ -1149,8 +1154,7 @@ class Vehiculo {
      *
      * @return boolean
      */
-    public function getTieneManual()
-    {
+    public function getTieneManual() {
         return $this->tieneManual;
     }
 
@@ -1161,8 +1165,7 @@ class Vehiculo {
      *
      * @return Vehiculo
      */
-    public function setTieneLlaves($tieneLlaves)
-    {
+    public function setTieneLlaves($tieneLlaves) {
         $this->tieneLlaves = $tieneLlaves;
 
         return $this;
@@ -1173,8 +1176,32 @@ class Vehiculo {
      *
      * @return boolean
      */
-    public function getTieneLlaves()
-    {
+    public function getTieneLlaves() {
         return $this->tieneLlaves;
+    }
+
+
+    /**
+     * Set cuponGarantia
+     *
+     * @param string $cuponGarantia
+     *
+     * @return Vehiculo
+     */
+    public function setCuponGarantia($cuponGarantia)
+    {
+        $this->cuponGarantia = $cuponGarantia;
+
+        return $this;
+    }
+
+    /**
+     * Get cuponGarantia
+     *
+     * @return string
+     */
+    public function getCuponGarantia()
+    {
+        return $this->cuponGarantia;
     }
 }

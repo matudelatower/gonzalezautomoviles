@@ -93,7 +93,7 @@
                                 <td>
                                     {%if(entity.tieneLlaves)%}
                                         SI
-                                    {%else%}
+                                    {%elseif(entity.tieneLlaves is not null)%}
                                         NO
                                     {%endif%}
                                 <td>
@@ -103,7 +103,7 @@
                                 <td>
                                     {%if(entity.tieneManual)%}
                                         SI
-                                    {%else%}
+                                    {%elseif(entity.tieneManual is not null)%}
                                         NO
                                     {%endif%}
                                 </td>

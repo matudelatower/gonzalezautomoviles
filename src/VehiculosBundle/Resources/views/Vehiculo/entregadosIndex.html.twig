@@ -74,6 +74,10 @@
                                                href="{{ path('crear_alerta_temprana', { 'vehiculoId': entity.id }) }}"
                                                title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>   
                                             {%endif%}
+                                        <a class="btn {%if(entity.cupon_garantia!='')%}btn-success{%else%}btn-default{%endif%} btn-cupon-garantia" data-toggle="modal"
+                                           data-target="#modalGeneric"
+                                           data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
+                                           title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>    
 
                                     </td>
 

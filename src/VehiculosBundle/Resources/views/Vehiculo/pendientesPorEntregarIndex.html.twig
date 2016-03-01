@@ -90,6 +90,12 @@
                                         <a class="btn {%if(entity.danio_interno_sin_solucionar!='')%}btn-danger{%else%}btn-default{%endif%}"
                                            href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
                                            title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
+
+                                        <a class="btn {%if(entity.cupon_garantia!='')%}btn-success{%else%}btn-default{%endif%} btn-cupon-garantia" data-toggle="modal"
+                                           data-target="#modalGeneric"
+                                           data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
+                                           title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
+
                                     </td>
 
                                 </tr>
@@ -116,7 +122,7 @@
     <script>
         $(document).ready(function () {
             oTable = $('#tabla-listado').dataTable();
-            oTable.fnSort([[8, 'asc'],[1, 'asc'], [2, 'asc'], [4, 'asc']]);
+            oTable.fnSort([[8, 'asc'], [1, 'asc'], [2, 'asc'], [4, 'asc']]);
         });
     </script>
 {% endblock %}
