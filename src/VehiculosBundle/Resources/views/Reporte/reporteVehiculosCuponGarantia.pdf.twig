@@ -12,30 +12,36 @@
         <table class="data-table table table-bordered table-striped">
             <thead>
 
-            <tr>
-                <th>Id</th>
-                <th>Modelo</th>
-                <th>Color vehiculo</th>
-                <th>Vin</th>
-                <th>Se pagó</th>
-            </tr>
+                <tr>
+                    <th>Id</th>
+                    <th>Modelo</th>
+                    <th>Color vehiculo</th>
+                    <th>Vin</th>
+                    <th>Se pagó</th>
+                        {%if(tipo=='SI')%}
+                        <th>Cupon</th>
+                        {%endif%}
+                </tr>
             </thead>
             <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.id }}</td>
-                    <td>{{ entity.modelo }}</td>
-                    <td>{{ entity.color_vehiculo }}</td>
-                    <td>{{ entity.vin }}</td>
-                    <td align="center">
-                        {% if entity.pagado %}
-                            SI
-                        {% else %}
-                            NO
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>
+                        <td>{{ entity.modelo }}</td>
+                        <td>{{ entity.color_vehiculo }}</td>
+                        <td>{{ entity.vin }}</td>
+                        <td align="center">
+                            {% if entity.pagado %}
+                                SI
+                            {% else %}
+                                NO
+                            {% endif %}
+                        </td>
+                        {%if(tipo=='SI')%}
+                            <th>{{entity.cupon_garantia}}</th>
+                            {%endif%}
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

@@ -8,7 +8,7 @@
         $(document).ready(function () {
             $('#btn-exportar-excel').click(function () {
                 $('#filter-form').attr('target', '_blank');
-                $('#filter-form').attr('action', '{{ path('exportar_excel_reporte_vehiculos_en_stock') }}');
+                $('#filter-form').attr('action', '{{ path('exportar_excel_reporte_vehiculos_cupon_garantia') }}');
                 $('#filter-form').submit();
                 $('#filter-form').removeAttr('target');
                 $('#filter-form').removeAttr('action');

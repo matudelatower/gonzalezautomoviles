@@ -440,11 +440,11 @@ class ReporteController extends Controller {
             $title = 'Reporte de Vehiculos NO tienen Cupon de Garantia';
         }
 
-//        $reportesManager = $this->get('manager.reportes');
         $html = $this->renderView(
                 'VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.pdf.twig', array(
             'entities' => $entities,
             'title' => $title,
+            'tipo' => $data['conCupon'],
                 )
         );
 
@@ -454,6 +454,53 @@ class ReporteController extends Controller {
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
         );
+    }
+
+    public function excelReporteVehiculosCuponGarantiaAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosCuponGarantiaFilterType());
+
+        $entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
+            }
+        }
+
+        $exportExcel = $this->get('excel.tool');
+
+        if ($data['conCupon'] == 'SI') {
+            $filename = "reporte_vehiculos_con_cupon_garantia.xls";
+            $exportExcel->setTitle('Vehiculos Con Cupon de Garantia');
+            $exportExcel->setDescripcion('Vehiculos Con Cupon de Garantia');
+            $response = $exportExcel->buildSheetgetReporteVehiculosConCuponGarantia($entities);
+        } else {
+            $filename = "reporte_vehiculos_sin_cupon_garantia.xls";
+            $exportExcel->setTitle('Vehiculos Sin Cupon de Garantia');
+            $exportExcel->setDescripcion('Vehiculos Sin Cupon de Garantia');
+            $response = $exportExcel->buildSheetgetReporteVehiculosSinCuponGarantia($entities);
+        }
+
+
+
+
+//        $managerEncuestas = $this->get('manager.reportes');
+//        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
+
+
+        $response = $exportExcel->buildSheetgetReporteVehiculosConCuponGarantia($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
     }
 
 }

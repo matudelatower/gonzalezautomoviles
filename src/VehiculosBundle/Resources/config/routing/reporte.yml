@@ -45,3 +45,7 @@ index_reporte_vehiculos_cupon_garantia:
 exportar_pdf_reporte_vehiculos_cupon_garantia:
     path:     /exportar_pdf_reporte_vehiculos_cupon_garantia
     defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosCuponGarantia" }    
+    
+exportar_excel_reporte_vehiculos_cupon_garantia:
+    path:     /exportar_excel_reporte_vehiculos_cupon_garantia
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosCuponGarantia" }     
