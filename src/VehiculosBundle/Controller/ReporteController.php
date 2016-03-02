@@ -84,7 +84,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimir($html)
+                $reportesManager->imprimirVertical($html)
                 , 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
@@ -231,7 +231,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimir($html), 200, array(
+                $reportesManager->imprimirVertical($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
@@ -315,7 +315,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimir($html)
+                $reportesManager->imprimirHorizontal($html)
                 , 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
@@ -384,7 +384,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimir($html), 200, array(
+                $reportesManager->imprimirVertical($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
@@ -449,7 +449,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimir($html), 200, array(
+                $reportesManager->imprimirVertical($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )

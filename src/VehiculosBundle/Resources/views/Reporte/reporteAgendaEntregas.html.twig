@@ -53,22 +53,22 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-4">
                                 <button class="btn btn-primary btn-label-left" type="submit" id="btn-filtro-buscar">
-                                <span>
-                                    <i class="fa fa-filter"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa fa-filter"></i>
+                                    </span>
                                     Buscar
                                 </button>
                                 <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
                                         title="exportar excel">
-                                <span>
-                                    <i class="fa fa-file-excel-o"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa fa-file-excel-o"></i>
+                                    </span>
                                 </button>
                                 <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
                                         title="exportar PDF">
-                                <span>
-                                    <i class="fa fa-file-pdf-o"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </span>
                                 </button>
 
                             </div>
@@ -93,29 +93,35 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                        <tr>
-                            <th>Id</th>
-                            <th>Vehiculo</th>
-                            <th>Color</th>
-                            <th>Vin</th>
-                            <th>Deposito</th>
-                            <th>Fecha y hora</th>
-                            <th>Descripcion</th>
-                        </tr>
+                            <tr>
+                                <th>Id</th>
+                                <th>Vehiculo</th>
+                                <th>Color</th>
+                                <th>Vin</th>
+                                <th>Deposito</th>
+                                <th>Cliente</th>
+                                <th>Vendedor</th>
+                                <th>Descripcion</th>
+                                <th>Fecha y hora</th>
+                                
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for entity in entities %}
-                            <tr>
-                                <td>{{ entity.id }}</td>                                
-                                <td>{{ entity.modelo }}</td>
-                                <td>{{ entity.color }}</td>
-                                <td>{{ entity.vin }}</td>
-                                <td>{{ entity.deposito_actual }}</td>
-                                <td>{{ entity.fecha_entrega~' '~entity.hora_entrega }}</td>
-                                <td>{{ entity.descripcion_entrega }}</td>
+                            {% for entity in entities %}
+                                <tr>
+                                    <td>{{ entity.id }}</td>                                
+                                    <td>{{ entity.modelo }}</td>
+                                    <td>{{ entity.color }}</td>
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.deposito_actual }}</td>
+                                    <td>{{ entity.cliente }}</td>
+                                    <td>{{ entity.vendedor }}</td>
+                                    <td>{{ entity.descripcion_entrega }}</td>
+                                    <td>{{ entity.fecha_entrega~' '~entity.hora_entrega }}</td>
+                                    
 
-                            </tr>
-                        {% endfor %}
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

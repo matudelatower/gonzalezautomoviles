@@ -148,7 +148,14 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
         $query = "SELECT v.*,
 		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
-                     colores_vehiculos.color,a.fecha as fecha_entrega,a.hora as hora_entrega,a.hora,a.descripcion as descripcion_entrega,d.nombre as deposito_actual
+                     colores_vehiculos.color,a.fecha as fecha_entrega,a.hora as hora_entrega,a.hora,a.descripcion as descripcion_entrega,d.nombre as deposito_actual,
+                     personas.apellido ||', '||personas.nombre as cliente,
+                     (select personas.apellido||', '||personas.nombre
+			from empleados
+                    LEFT JOIN persona_tipos ON empleados.id=persona_tipos.empleado_id
+                    LEFT JOIN personas ON persona_tipos.persona_id=personas.id
+                    where empleados.id=v.vendedor_id
+                     ) as vendedor
 		
                     FROM     estados_vehiculos
                     INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
@@ -161,7 +168,10 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                     INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
                     LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd ON v.id =  mmdd.vehiculo_id
                     LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
-                    LEFT JOIN depositos d ON md.deposito_destino_id=d.id		     
+                    LEFT JOIN depositos d ON md.deposito_destino_id=d.id
+                    LEFT JOIN clientes ON v.cliente_id=clientes.id
+                    LEFT JOIN persona_tipos ON clientes.id=persona_tipos.cliente_id
+                    LEFT JOIN personas ON persona_tipos.persona_id=personas.id
 		WHERE
                         tipo_estado_vehiculo.slug <> 'entregado' AND
 		      a.fecha BETWEEN '$fechaDesde' and '$fechaHasta'";

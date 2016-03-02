@@ -33,9 +33,11 @@ class ReportesManager {
 
         return $aRegistros;
     }
+
     /*
      * devuelve listado de entregas en un rago de fechas
      */
+
     public function getAgendaEntregas($fechaDesde = null, $fechaHasta = null) {
 
         $em = $this->em;
@@ -108,7 +110,7 @@ class ReportesManager {
         return $footerHtml;
     }
 
-    public function imprimir($html) {
+    public function imprimirVertical($html) {
         return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
                     'margin-left' => '2cm',
                     'margin-right' => '1cm',
@@ -118,7 +120,21 @@ class ReportesManager {
                     'header-html' => $this->getHeader(),
                     'header-spacing' => '5',
                     'page-size' => 'A4',
-                ));
+                    'orientation' => 'portrait',
+        ));
+    }
+    public function imprimirHorizontal($html) {
+        return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
+                    'margin-left' => '1cm',
+                    'margin-right' => '1cm',
+                    'margin-top' => '4cm',
+                    'margin-bottom' => '1cm',
+                    'footer-right' => 'Pag [page] de [topage]',
+                    'header-html' => $this->getHeader(),
+                    'header-spacing' => '5',
+                    'page-size' => 'A4',
+                    'orientation' => 'Landscape',
+        ));
     }
 
 }

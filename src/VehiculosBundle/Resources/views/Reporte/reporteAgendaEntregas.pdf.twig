@@ -4,6 +4,9 @@
         label{
             font-weight: bold;
         }
+        table{
+            width: 100%;
+        }
     </style>
 
     <div>
@@ -20,8 +23,10 @@
                     <th>Color</th>
                     <th>Vin</th>
                     <th>Deposito</th>
-                    <th>Fecha y hora</th>
+                    <th>Cliente</th>
+                    <th>Vendedor</th>
                     <th>Descripcion</th>
+                    <th>Fecha y hora</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,8 +37,10 @@
                         <td>{{ entity.color }}</td>
                         <td>{{ entity.vin }}</td>
                         <td>{{ entity.deposito_actual }}</td>
-                        <td>{{ entity.fecha_entrega~' '~entity.hora_entrega }}</td>
+                        <td>{{ entity.cliente }}</td>
+                        <td>{{ entity.vendedor }}</td>
                         <td>{{ entity.descripcion_entrega }}</td>
+                        <td style="font-weight: bold">{{ entity.fecha_entrega~' '~entity.hora_entrega }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

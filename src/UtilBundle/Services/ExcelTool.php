@@ -275,7 +275,6 @@ class ExcelTool {
         $phpExcelObject->getProperties()->setTitle($this->title);
         $phpExcelObject->getProperties()->setDescription($this->descripcion);
         $phpExcelObject->getProperties()->setCreator($this->createby);
-
         $phpExcelObject->setActiveSheetIndex(0);
         $phpExcelObject->getActiveSheet()
                 ->setCellValue('A1', 'Id')
@@ -283,10 +282,12 @@ class ExcelTool {
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
                 ->setCellValue('E1', 'Deposito')
-                ->setCellValue('F1', 'Fecha y hora')
-                ->setCellValue('G1', 'descripcion');
+                ->setCellValue('F1', 'Cliente')
+                ->setCellValue('G1', 'Vendedor')
+                ->setCellValue('H1', 'Descripcion')
+                ->setCellValue('I1', 'Fecha y hora');
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:G1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:I1')->getBorders()->applyFromArray($this->head);
 
         $i = 2;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
@@ -296,13 +297,16 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
                 $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['deposito_actual']);
-                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['fecha_entrega'] . "" . $entity['hora_entrega']);
-                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['descripcion_entrega']);
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['cliente']);
+                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['vendedor']);
+                $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['descripcion_entrega']);
+                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, $entity['fecha_entrega'] . "" . $entity['hora_entrega']);
+
                 $i ++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:G' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:I' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
@@ -312,6 +316,8 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setAutoSize('true');
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 
@@ -321,13 +327,13 @@ class ExcelTool {
 
         return $response;
     }
-    
-      /**
-       * Arma la hoja para el listado de vehiculos con cupon de garantia
-       * @param type $tipo
-       * @param type $resultSet
-       * @return type
-       */
+
+    /**
+     * Arma la hoja para el listado de vehiculos con cupon de garantia
+     * @param type $tipo
+     * @param type $resultSet
+     * @return type
+     */
     public function buildSheetgetReporteVehiculosConCuponGarantia($resultSet) {
         $phpExcelObject = $this->phpexcel->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
@@ -376,13 +382,13 @@ class ExcelTool {
 
         return $response;
     }
-    
+
     /**
-       * Arma la hoja para el listado de vehiculos sin cupon de garantia
-       * @param type $tipo
-       * @param type $resultSet
-       * @return type
-       */
+     * Arma la hoja para el listado de vehiculos sin cupon de garantia
+     * @param type $tipo
+     * @param type $resultSet
+     * @return type
+     */
     public function buildSheetgetReporteVehiculosSinCuponGarantia($resultSet) {
         $phpExcelObject = $this->phpexcel->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);

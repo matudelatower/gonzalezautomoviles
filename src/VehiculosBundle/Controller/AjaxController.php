@@ -5,6 +5,7 @@ namespace VehiculosBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use VehiculosBundle\Entity\EstadoVehiculo;
 
 class AjaxController extends Controller {
 
@@ -118,6 +119,51 @@ class AjaxController extends Controller {
     }
 
     /*
+     * Crea un modal para hacer sesion de factura IDEM asignar vehiculo
+     */
+
+    public function newSesionFacturaAjaxAction($vehiculoId) {
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+
+        $form = $this->createForm(new \VehiculosBundle\Form\SesionFacturaType(), $vehiculo);
+
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:newSesionFactura.html.twig', array(
+            'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
+                )
+        );
+        return new JsonResponse($html);
+    }
+
+    /*
+     * Registra que se registra una sesion de factura IDEM asignacion de vehiculo
+     */
+
+    public function sesionFacturaUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $prueba = $request->request->get('vehiculosbundle_sesion_factura');
+        $cliente = $this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
+        $vehiculo->setCliente($cliente);
+
+        //una vez que se realiza la sesion de factura el vehiculo pasa a estado pendiente por entregar
+        $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                'pendiente-por-entregar'
+        );
+
+        $estadoVehiculo = new EstadoVehiculo();
+        $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+        $estadoVehiculo->setVehiculo($vehiculo);
+        $vehiculo->addEstadoVehiculo($estadoVehiculo);
+
+        $em->persist($vehiculo);
+        $em->flush();
+
+        return new JsonResponse(true);
+    }
+
+    /*
      * Crea un modal para guardar cupon de garantia
      */
 
@@ -134,7 +180,7 @@ class AjaxController extends Controller {
         );
         return new JsonResponse($html);
     }
-    
+
     /*
      * Registra que se asigna a un cliente un vehiculo
      */
@@ -144,7 +190,7 @@ class AjaxController extends Controller {
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
 //        $prueba = $request->request->get('vehiculosbundle_asignacion_vehiculo');
 //        $cliente = $this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
-        
+
         $form = $this->createForm(new \VehiculosBundle\Form\CuponGarantiaVehiculoType(), $vehiculo);
         $form->handleRequest($request);
 
@@ -156,23 +202,22 @@ class AjaxController extends Controller {
             return new JsonResponse(false);
         }
     }
-    
-    
+
     /**
      * @param Request $request
      * @param $vehiculoId el ide del vehiculo
      *
      * @return JsonResponse true si la operacion se realiza con exito
      */
-    public function desasignacionVehiculoUpdateAjaxAction( Request $request, $vehiculoId ) {
-        $em       = $this->getDoctrine()->getManager();
-        $vehiculo = $this->getDoctrine()->getManager()->getRepository( "VehiculosBundle:Vehiculo" )->find( $vehiculoId );
+    public function desasignacionVehiculoUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
 
-        $vehiculo->setCliente( null );
-        $em->persist( $vehiculo );
+        $vehiculo->setCliente(null);
+        $em->persist($vehiculo);
         $em->flush();
 
-        return new JsonResponse( true );
+        return new JsonResponse(true);
     }
 
     /*

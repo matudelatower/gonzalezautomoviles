@@ -61,3 +61,11 @@ new_cupon_garantia_ajax:
 cupon_garantia_update_ajax:
     path:     /cupon_garantia_update_ajax/{vehiculoId}
     defaults: { _controller: "VehiculosBundle:Ajax:cuponGarantiaUpdateAjax" }    
+    
+new_sesion_factura_ajax:
+    path:     /new_sesion_factura_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:newSesionFacturaAjax" }
+
+sesion_factura_update_ajax:
+    path:     /sesion_factura_update_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:sesionFacturaUpdateAjax" }    
