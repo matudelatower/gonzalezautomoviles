@@ -4,6 +4,7 @@ namespace VehiculosBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
+use VehiculosBundle\Form\Filter\ReporteVehiculosConDaniosFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
 use VehiculosBundle\Form\Filter\VehiculosCuponGarantiaFilterType;
 use VehiculosBundle\Form\Filter\ReporteAgendaEntregasFilterType;
@@ -501,6 +502,38 @@ class ReporteController extends Controller {
         $response->headers->set('Cache-Control', 'maxage=1');
 
         return $response;
+    }
+
+    public function reporteVehiculosRecibidosConDaniosAction(Request $request  ) {
+        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig', array(
+            'entities' => $entities,
+            'form' => $form->createView()
+        ));
     }
 
 }

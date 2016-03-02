@@ -36,16 +36,28 @@ exportar_excel_reporte_agenda_entregas:
 
 resumen_vehiculo_pdf:
     path:     /{vehiculoId}/resumen_vehiculo_pdf
-    defaults: { _controller: "VehiculosBundle:Reporte:ResumenVehiculoPdf" }    
-    
+    defaults: { _controller: "VehiculosBundle:Reporte:ResumenVehiculoPdf" }
+
 index_reporte_vehiculos_cupon_garantia:
     path:     /index_reporte_vehiculos_cupon_garantia
     defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosCuponGarantia" }
 
 exportar_pdf_reporte_vehiculos_cupon_garantia:
     path:     /exportar_pdf_reporte_vehiculos_cupon_garantia
-    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosCuponGarantia" }    
-    
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosCuponGarantia" }
+
 exportar_excel_reporte_vehiculos_cupon_garantia:
     path:     /exportar_excel_reporte_vehiculos_cupon_garantia
-    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosCuponGarantia" }     
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosCuponGarantia" }
+
+index_reporte_vehiculos_con_danios:
+    path:     /index_reporte_vehiculos_con_danios
+    defaults: { _controller: "VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios" }
+
+exportar_pdf_reporte_vehiculos_con_danios:
+    path:     /exportar_pdf_reporte_vehiculos_con_danios
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosRecibidosConDanios" }
+
+exportar_excel_reporte_vehiculos_con_danios:
+    path:     /exportar_excel_reporte_vehiculos_con_danios
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosRecibidosConDanios" }

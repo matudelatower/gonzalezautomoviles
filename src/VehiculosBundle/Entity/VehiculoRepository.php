@@ -232,7 +232,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
-    
+
      public function getVehiculosCuponGarantia($filters = null) {
 
         $where = " v.factura_id is not null ";
@@ -242,18 +242,18 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             $where.=" AND v.cupon_garantia is not null";
         }else{
              $where.=" AND v.cupon_garantia is null";
-        }           
+        }
 
 
         $query = "SELECT   distinct(v.*),
-                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,                                        
+                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,
                                         tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,
-                                        cv.color as color_vehiculo                                        
-					FROM     vehiculos v 					
+                                        cv.color as color_vehiculo
+					FROM     vehiculos v
                                         INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
                                         LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
-                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id                                        
-                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id     
+                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
+                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
                                         WHERE " . $where .
                 " ORDER BY modelo,color_vehiculo asc";
 
@@ -261,5 +261,15 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    public function reporteVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta ) {
+        $db = $this->getEntityManager()->getConnection();
+        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $query = "";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
     }
 }
