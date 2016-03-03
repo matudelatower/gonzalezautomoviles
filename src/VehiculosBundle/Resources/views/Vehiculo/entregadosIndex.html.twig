@@ -66,7 +66,7 @@
                                         <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                 title="Ver" class="fa fa-eye"></i></a>                                        
 
-                                        <a class="btn {%if(entity.dominio!='')%}btn-success{%else%}btn-default{%endif%}"
+                                        <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
                                            href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                            title="Patente"><i class="fa icon-patente"></i></a> 
                                             {% if (entity.encuesta_alerta_temprana=='') %}

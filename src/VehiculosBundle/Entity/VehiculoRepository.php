@@ -53,7 +53,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         cm.codigo as modelo_codigo,cm.anio as modelo_anio,nm.nombre as modelo_nombre,cm.version as modelo_version,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
-                                        ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,
+                                        ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,epat.slug as estado_patentamiento,
                                         pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega,age.hora as hora_entrega,encuesta.id as encuesta_alerta_temprana,
                                         (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar
 					FROM     estados_vehiculos
@@ -71,6 +71,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN depositos d ON md.deposito_destino_id=d.id
                                         LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.id=ch_ci.vehiculo_id
                                         LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
+                                        LEFT JOIN estados_patentamiento epat ON pat.estado_patentamiento_id=epat.id
                                         LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
                                         LEFT JOIN encuesta_resultados_cabeceras encuesta ON v.id=encuesta.vehiculo_id
                                         WHERE " . $where .

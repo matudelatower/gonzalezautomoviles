@@ -74,7 +74,7 @@
                                         <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
                                            href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
                                            title="Checklist control interno"><i class="fa fa-check-square"></i></a>
-                                        <a class="btn {% if(entity.dominio!='') %}btn-success{% else %}btn-default{% endif %}"
+                                        <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
                                            href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                            title="Patente"><i class="fa icon-patente"></i></a>
 
