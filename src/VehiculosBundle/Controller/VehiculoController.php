@@ -206,7 +206,7 @@ class VehiculoController extends Controller {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data,$order);
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data, $order);
             }
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
@@ -510,13 +510,21 @@ class VehiculoController extends Controller {
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                //busco el id del estado pendiente por entregar
-                $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                        'pendiente-por-entregar'
-                );
+                $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($vehiculo);
+                if (!$controlInternoCabecera) {
+                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                            'pendiente-por-entregar'
+                    );
+                } else {
+                    //di tiene $controlInternoCabecera significa que se hizo el check de control interno
+                    //por ende pasa a estado estregado
+                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                            'entregado'
+                    );
+                }
+
 
                 if ($vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo) {
-
                     $estadoVehiculo = new EstadoVehiculo();
                     $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
                     $estadoVehiculo->setVehiculo($vehiculo);
@@ -816,19 +824,18 @@ class VehiculoController extends Controller {
         );
     }
 
+    /*
+     * 
+     */
+
     public function checkControlInternoAction(Request $request, $vehiculoId, $tipoTransaccion = "edit") {
         $em = $this->getDoctrine()->getManager();
 
         $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
 
-//        $cuestionario = $em->getRepository('CuestionariosBundle:Cuestionario')->find(1);
-//        $categorias = $em->getRepository('CuestionariosBundle:CuestionarioCategoria')->getCategoriasConCampos(
-//                $cuestionario
-//        );
         $preguntas = $em->getRepository('VehiculosBundle:CheckControlInternoPregunta')->findBy(array('estado' => 'true'), array('orden' => 'asc'));
         $preguntasSelecionadas = $request->request;
         $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($vehiculo);
-
 
         if (!$controlInternoCabecera) {
             $controlInternoCabecera = new \VehiculosBundle\Entity\CheckControlInternoResultadoCabecera();
@@ -844,15 +851,19 @@ class VehiculoController extends Controller {
             if ($tipoTransaccion == 'cierre') {
                 $controlInternoCabecera->setFirmado('true');
                 $em->persist($controlInternoCabecera);
-                $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                        'entregado'
-                );
-                $estadoVehiculo = new EstadoVehiculo();
-                $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-                $estadoVehiculo->setVehiculo($vehiculo);
-                $vehiculo->addEstadoVehiculo($estadoVehiculo);
-
-                $em->flush();
+                $estadoActualVehiculo = $vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo()->getSlug();
+                if ($estadoActualVehiculo == 'pendiente-por-entregar') {
+                    //si esta en estado 'pendiente-por-entregar' significa que el vehiculo se le esta haciendo 
+                    //un check para entregarlo al cliente final por lo tanto se pasa a estado 'entregado'
+                    //de lo contrario sigue en stock solo que se le hizo un check list para llevarlo a un reventa
+                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                            'entregado'
+                    );
+                    $estadoVehiculo = new EstadoVehiculo();
+                    $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+                    $estadoVehiculo->setVehiculo($vehiculo);
+                    $vehiculo->addEstadoVehiculo($estadoVehiculo);
+                }
             }
             if (!$nuevo) {
                 $qb = $em->createQueryBuilder();

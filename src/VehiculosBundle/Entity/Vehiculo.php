@@ -173,7 +173,7 @@ class Vehiculo {
 
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist"})
-     *
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $estadoVehiculo;
 

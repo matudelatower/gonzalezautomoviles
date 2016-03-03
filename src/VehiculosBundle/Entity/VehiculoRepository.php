@@ -55,7 +55,8 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,epat.slug as estado_patentamiento,
                                         pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega,age.hora as hora_entrega,encuesta.id as encuesta_alerta_temprana,
-                                        (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar
+                                        (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar,
+                                        cli.reventa
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
@@ -74,6 +75,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN estados_patentamiento epat ON pat.estado_patentamiento_id=epat.id
                                         LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
                                         LEFT JOIN encuesta_resultados_cabeceras encuesta ON v.id=encuesta.vehiculo_id
+                                        LEFT JOIN clientes cli ON v.cliente_id=cli.id
                                         WHERE " . $where .
                 " ORDER BY " . $order;
 

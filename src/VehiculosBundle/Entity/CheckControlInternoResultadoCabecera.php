@@ -22,35 +22,35 @@ class CheckControlInternoResultadoCabecera {
      */
     private $id;
 
-    
-
     /**
      * @var string
      *
      * @ORM\Column(name="observacion", type="string", length=255, nullable=true)
      */
     private $observacion;
-    
+
     /**
      * @var boolean
      *
      * @ORM\Column(name="firmado", type="boolean")
      */
     private $firmado;
-    
+     
+
+
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
      * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
      */
     private $vehiculo;
-    
-     /**
+
+    /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoRespuesta", mappedBy="checkControlInternoResultadoCabecera",cascade={"remove", "persist"})
      *
      */
     private $checkControlInternoResultadoRespuesta;
-    
-    
+
+   
     
 
     /**
@@ -87,16 +87,24 @@ class CheckControlInternoResultadoCabecera {
      */
     private $actualizadoPor;
 
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->checkControlInternoResultadoRespuesta = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-
-    
 
     /**
      * Set observacion
@@ -105,7 +113,8 @@ class CheckControlInternoResultadoCabecera {
      *
      * @return CheckControlInternoResultadoCabecera
      */
-    public function setObservacion($observacion) {
+    public function setObservacion($observacion)
+    {
         $this->observacion = $observacion;
 
         return $this;
@@ -116,16 +125,33 @@ class CheckControlInternoResultadoCabecera {
      *
      * @return string
      */
-    public function getObservacion() {
+    public function getObservacion()
+    {
         return $this->observacion;
     }
 
     /**
-     * Constructor
+     * Set firmado
+     *
+     * @param boolean $firmado
+     *
+     * @return CheckControlInternoResultadoCabecera
      */
-    public function __construct()
+    public function setFirmado($firmado)
     {
-        $this->checkControlInternoResultadoRespuesta = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->firmado = $firmado;
+
+        return $this;
+    }
+
+    /**
+     * Get firmado
+     *
+     * @return boolean
+     */
+    public function getFirmado()
+    {
+        return $this->firmado;
     }
 
     /**
@@ -177,6 +203,30 @@ class CheckControlInternoResultadoCabecera {
     }
 
     /**
+     * Set vehiculo
+     *
+     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
+     *
+     * @return CheckControlInternoResultadoCabecera
+     */
+    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null)
+    {
+        $this->vehiculo = $vehiculo;
+
+        return $this;
+    }
+
+    /**
+     * Get vehiculo
+     *
+     * @return \VehiculosBundle\Entity\Vehiculo
+     */
+    public function getVehiculo()
+    {
+        return $this->vehiculo;
+    }
+
+    /**
      * Add checkControlInternoResultadoRespuestum
      *
      * @param \VehiculosBundle\Entity\CheckControlInternoResultadoRespuesta $checkControlInternoResultadoRespuestum
@@ -209,32 +259,6 @@ class CheckControlInternoResultadoCabecera {
     {
         return $this->checkControlInternoResultadoRespuesta;
     }
-
-    /**
-     * Set vehiculo
-     *
-     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
-     *
-     * @return CheckControlInternoResultadoCabecera
-     */
-    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null)
-    {
-        $this->vehiculo = $vehiculo;
-
-        return $this;
-    }
-
-    /**
-     * Get vehiculo
-     *
-     * @return \VehiculosBundle\Entity\Vehiculo
-     */
-    public function getVehiculo()
-    {
-        return $this->vehiculo;
-    }
-
-    
 
     /**
      * Set creadoPor
@@ -282,30 +306,5 @@ class CheckControlInternoResultadoCabecera {
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
-    }
-    
-
-    /**
-     * Set firmado
-     *
-     * @param boolean $firmado
-     *
-     * @return CheckControlInternoResultadoCabecera
-     */
-    public function setFirmado($firmado)
-    {
-        $this->firmado = $firmado;
-
-        return $this;
-    }
-
-    /**
-     * Get firmado
-     *
-     * @return boolean
-     */
-    public function getFirmado()
-    {
-        return $this->firmado;
     }
 }

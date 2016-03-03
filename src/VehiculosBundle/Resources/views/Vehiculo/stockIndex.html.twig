@@ -86,7 +86,13 @@
                                                data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
                                                title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
                                             {% endif %}
-
+                                            {#si esta asignado a un cliente y este es un reventa, se le puede hacer el
+                                            check de control interno#}
+                                            {% if entity.reventa and entity.firmado!=true %}
+                                            <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
+                                               href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
+                                               title="Checklist control interno"><i class="fa fa-check-square"></i></a>
+                                            {% endif %}
                                         <a class="btn btn-default btn-deposito" data-toggle="modal"
                                            data-target="#modalGeneric"
                                            data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
