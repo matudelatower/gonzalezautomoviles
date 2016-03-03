@@ -300,7 +300,7 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['cliente']);
                 $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['vendedor']);
                 $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['descripcion_entrega']);
-                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, $entity['fecha_entrega'] . "" . $entity['hora_entrega']);
+                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, date("d-m-Y",strtotime($entity['fecha_entrega'])) . " " . $entity['hora_entrega']);
 
                 $i ++;
             }
