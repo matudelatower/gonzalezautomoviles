@@ -28,43 +28,44 @@
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/lang-all.js') }}"></script>
     <script>
 
-        entregas =[
-        {% for entrega in entregas %}
-            {
-                title: '{{ entrega.vehiculo.vin }} - {{ entrega.descripcion }}',
-                start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
-                backgroundColor: "#00a65a", //Success (green)
-                borderColor: "#00a65a" //Success (green)
-            },
+        entregas = [        {% for entrega in entregas %}
+                {
+                    title: ' - {{  entrega.vehiculo.vin }} - {{ entrega.vehiculo.cliente }}',
+                    start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
+                    backgroundColor: "#00a65a", //Success (green)
+            {%if(entrega.vehiculo.estadoVehiculo.last.tipoEstadoVehiculo.slug=='entregado')%}
+                    backgroundColor: "#367fa9", // (blue)
+            {% endif %}
+                                borderColor: "#00a65a" //Success (green)
+                    },
         {% endfor %}]
-        ;
+                    ;
 
 
-        /* initialize the calendar
-         -----------------------------------------------------------------*/
-        //Date for the calendar events (dummy data)
-        var date = new Date();
-        var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
-        $('#calendar').fullCalendar({
-            lang: 'es',
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-            buttonText: {
-                today: 'Hoy',
-                month: 'Mes',
-                week: 'Semana',
-                day: 'Dia'
-            },
-            //Random default events
-            events:
-                entregas,
-            
-        });
+            /* initialize the calendar
+             -----------------------------------------------------------------*/
+            //Date for the calendar events (dummy data)
+            var date = new Date();
+            var d = date.getDate(),
+                    m = date.getMonth(),
+                    y = date.getFullYear();
+            $('#calendar').fullCalendar({
+                lang: 'es',
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Dia'
+                },
+                //Random default events
+                events:
+                        entregas,
+            });
     </script>
 
 {% endblock %}

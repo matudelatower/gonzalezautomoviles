@@ -258,10 +258,10 @@ class AgendaEntregaController extends Controller {
 
 		$entregas = array();
 
-		$usuario = $this->getUser();
+    //		$usuario = $this->getUser();
 
 		$em     = $this->getDoctrine()->getManager();
-		$entregas = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->getEntregasVigentes( $usuario );
+		$entregas = $em->getRepository( 'VehiculosBundle:AgendaEntrega' )->getEntregasVigentes();
 
 
 		return $this->render( 'VehiculosBundle:AgendaEntrega:agenda.html.twig',

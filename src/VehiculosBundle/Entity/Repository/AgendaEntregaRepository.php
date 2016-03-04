@@ -14,10 +14,10 @@ use Doctrine\ORM\EntityRepository;
 class AgendaEntregaRepository extends EntityRepository {
 
 
-	public function getEntregasVigentes( $usuario ) {
+	public function getEntregasVigentes() {
 		$qb = $this->createQueryBuilder( 'ae' );
-		$qb->where( 'ae.creadoPor = :creado' )
-		   ->setParameter( 'creado', $usuario );
+		$qb->where( 'ae.fecha >= :fecha' )  
+		   ->setParameter( 'fecha', date("Y-m-d") );
 
 		return $qb->getQuery()->getResult();
 	}
