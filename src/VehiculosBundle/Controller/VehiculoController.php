@@ -371,6 +371,7 @@ class VehiculoController extends Controller {
 
         $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
         $encuestaResultadoCabecera = $em->getRepository('CuestionariosBundle:EncuestaResultadoCabecera')->findOneByVehiculo($entity);
+        $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Vehiculo entity.');
@@ -382,6 +383,7 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:show.html.twig', array(
                     'entity' => $entity,
                     'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
+                    'controlInternoCabecera' => $controlInternoCabecera,
                     'delete_form' => $deleteForm->createView(),
                         )
         );
@@ -914,6 +916,7 @@ class VehiculoController extends Controller {
                     'preguntasSeleccionadas' => $preguntasSelecionadas,
                     'vehiculoId' => $vehiculoId,
                     'cabecera' => $cabecera,
+                    'nuevo' => $nuevo,
                     'tipoTransaccion' => $tipoTransaccion,
                         )
         );

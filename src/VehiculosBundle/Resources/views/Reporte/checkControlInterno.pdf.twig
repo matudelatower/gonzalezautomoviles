@@ -1,0 +1,74 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+{% block body %}
+    <style>
+        label {
+            font-weight: bold;
+        }
+
+        .pregunta {
+            text-align: justify;
+        }
+    </style>
+
+
+    <div class="box-body">
+        <div style="position: absolute;width: 100%;height: 30%">
+            <div style="float: left;" >
+                <img src="C:\xampp\htdocs\logiautos\src\ThemeBundle\Resources\public\images\logo-izquierdo-control-interno.png"/>
+            </div>
+            <div style="float: right;" >
+                <img src="C:\xampp\htdocs\logiautos\src\ThemeBundle\Resources\public\images\logo-derecho-control-interno.png"/>
+                <div style="position: absolute;width: 40px;height: 40px;border: 3px solid #0000cc;">
+                    DIA
+                </div>
+                <div style="float: right;position: absolute;width: 40px;height: 40px;border: 3px solid #555;">
+                    MES
+                </div>
+                {#<div style="float: right;width: 40px;height: 20px;border: 3px solid #555;">
+                    AÑO
+                </div>#}
+
+            </div>
+
+
+            <div style="float: left;width: 45%;" >
+                <h2>González Automoviles S.A.</h1>
+            </div>
+            <div style="float: left;padding-left: 100px" >
+                <h4>INSPECCION DEL VEHICULO</h4>
+                <div style="padding-left: 40px">
+                    <h4>CONTROL INTERNO</h4>
+                </div>
+            </div>
+            <div >
+
+            </div>
+        </div>
+    </div>
+
+    {% for pregunta in preguntasOriginales %}
+        <div class="form-group">
+            <div class="checkbox"> 
+                <label><input type="checkbox" value="{{pregunta.id}}" name="{{pregunta.id}}"
+                              {% if pregunta.id in preguntasSeleccionadas %} 
+                                  checked 
+                              {% endif%} 
+                              />{{ pregunta.pregunta }}
+                </label>
+            </div>
+        </div>
+    {% endfor %}   
+
+</div>
+
+<div class="row">
+    {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
+    <label>Apellido y Nombre: </label> <span>{{ vehiculo.cliente }}</span> <br>
+    <label>Dirección: </label><span>{{ cliente.barrio }} - {{ cliente.calle }} {{ cliente.numeroCalle }}</span><br>
+    <label>Teléfono: </label><span> {{ cliente.telefono }}</span><br>
+    <label>E-Mail: </label><span>{{ cliente.mail }}</span><br>
+    <label>Fecha Nacimiento: </label><span>{{ cliente.fechaNacimiento | date('d/m/Y') }}</span><br>
+    <label>Localidad: </label><span>{{ cliente.localidad }}</span> <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('')}}</span>
+</div>
+
+{% endblock %}

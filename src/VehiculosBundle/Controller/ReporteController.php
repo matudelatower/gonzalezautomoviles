@@ -85,7 +85,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimirVertical($html)
+                $reportesManager->imprimir($html)
                 , 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
@@ -232,7 +232,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimirVertical($html), 200, array(
+                $reportesManager->imprimir($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
@@ -316,7 +316,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimirHorizontal($html)
+                $reportesManager->imprimir($html,'H')
                 , 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
@@ -385,7 +385,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimirVertical($html), 200, array(
+                $reportesManager->imprimir($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
@@ -450,7 +450,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimirVertical($html), 200, array(
+                $reportesManager->imprimir($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
@@ -504,7 +504,7 @@ class ReporteController extends Controller {
         return $response;
     }
 
-    public function reporteVehiculosRecibidosConDaniosAction(Request $request  ) {
+    public function reporteVehiculosRecibidosConDaniosAction(Request $request) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -527,13 +527,48 @@ class ReporteController extends Controller {
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
-            $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
         );
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig', array(
-            'entities' => $entities,
-            'form' => $form->createView()
+                    'entities' => $entities,
+                    'form' => $form->createView()
         ));
+    }
+
+    public function pdfCheckControlInternoAction($vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+        $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($vehiculo);
+
+        $preguntas = $em->getRepository('VehiculosBundle:CheckControlInternoPregunta')->findBy(array('estado' => 'true'), array('orden' => 'asc'));
+
+
+        $preguntasSeleccionadas = null;
+        $respuestasGuardadas = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoRespuesta')->findByCheckControlInternoResultadoCabecera($controlInternoCabecera);
+        foreach ($respuestasGuardadas as $respuesta) {
+            $preguntasSeleccionadas[] = $respuesta->getCheckControlInternoPregunta()->getId();
+        }
+
+        $title = 'Inspeccion del vehiculo Control Interno';
+
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:checkControlInterno.pdf.twig', array(
+            'preguntasSeleccionadas' => $preguntasSeleccionadas,
+            'vehiculo' => $vehiculo,
+            'title' => '',
+            'preguntasOriginales' => $preguntas,
+                )
+        );
+        $reportesManager = $this->get('manager.reportes');
+        return new Response(
+                $reportesManager->imprimirCheckControlInterno($html)
+                , 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
     }
 
 }

@@ -15,49 +15,48 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class ReportesManager {
 
-	/** @var $container Container */
-	private $container;
-	/* @var $em EntityManager */
-	private $em;
+    /** @var $container Container */
+    private $container;
+    /* @var $em EntityManager */
+    private $em;
 
-	public function __construct( $container ) {
-		$this->container = $container;
-		$this->em        = $container->get( 'doctrine' )->getManager();
-	}
+    public function __construct($container) {
+        $this->container = $container;
+        $this->em = $container->get('doctrine')->getManager();
+    }
 
-	public function getAutosVendidosPorVendedor( $vendedor, $fechaDesde = null, $fechaHasta = null ) {
+    public function getAutosVendidosPorVendedor($vendedor, $fechaDesde = null, $fechaHasta = null) {
 
-		$em = $this->em;
+        $em = $this->em;
 
-		$aRegistros = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVendidosPorVendedor( $vendedor,
-			$fechaDesde,
-			$fechaHasta );
+        $aRegistros = $em->getRepository('VehiculosBundle:Vehiculo')->getVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
-		return $aRegistros;
-	}
+        return $aRegistros;
+    }
 
-	/*
-	 * devuelve listado de entregas en un rago de fechas
-	 */
-	public function getAgendaEntregas( $fechaDesde = null, $fechaHasta = null ) {
+    /*
+     * devuelve listado de entregas en un rago de fechas
+     */
 
-		$em = $this->em;
+    public function getAgendaEntregas($fechaDesde = null, $fechaHasta = null) {
 
-		$aRegistros = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getAgendaEntregas( $fechaDesde, $fechaHasta );
+        $em = $this->em;
 
-		return $aRegistros;
-	}
+        $aRegistros = $em->getRepository('VehiculosBundle:Vehiculo')->getAgendaEntregas($fechaDesde, $fechaHasta);
 
-	public function getHeader() {
+        return $aRegistros;
+    }
 
-		$usuario = $this->container->get( 'security.token_storage' )->getToken()->getUser();
+    public function getHeader() {
 
-		$rutaLogo = $this->container->get( 'router' )->getContext()->getScheme() . '://' . $this->container->get( 'router' )->getContext()->getHost() .
-		            $this->container->get( 'templating.helper.assets' )->getUrl( 'bundles/theme/images/gonzalez_automoviles.jpg' );
+        $usuario = $this->container->get('security.token_storage')->getToken()->getUser();
 
-		$fechaHoraActual = new \DateTime( 'now' );
+        $rutaLogo = $this->container->get('router')->getContext()->getScheme() . '://' . $this->container->get('router')->getContext()->getHost() .
+                $this->container->get('templating.helper.assets')->getUrl('bundles/theme/images/gonzalez_automoviles.jpg');
 
-		$headerHtml = '<!DOCTYPE html>
+        $fechaHoraActual = new \DateTime('now');
+
+        $headerHtml = '<!DOCTYPE html>
                                 <html>
                                 <body style="margin:0; position: absolute;width: 100%;">
                                 <div style="margin:0;">
@@ -68,20 +67,20 @@ class ReportesManager {
 
                                 </div>
                                 <div style="float:right;width:33%; font-size:12pt">
-									<span>' . $usuario . ' - ' . $fechaHoraActual->format( 'd-m-Y H:i:s' ) . '</span>
+									<span>' . $usuario . ' - ' . $fechaHoraActual->format('d-m-Y H:i:s') . '</span>
                                 </div>
                                </div>
 
                                </body>
                                </html>';
 
-		return $headerHtml;
-	}
+        return $headerHtml;
+    }
 
-	public function getFooterHtml( $piePrimeraLinea, $pieSegundaLinea = null ) {
+    public function getFooterHtml($piePrimeraLinea, $pieSegundaLinea = null) {
 
 
-		$footerHtml = '<html><head><script>' . "
+        $footerHtml = '<html><head><script>' . "
             function subst() {
               var vars={};
               var x=document.location.search.substring(1).split('&');
@@ -108,42 +107,60 @@ class ReportesManager {
             </table>
             </body></html>';
 
-		return $footerHtml;
-	}
+        return $footerHtml;
+    }
 
-    public function imprimirVertical($html) {
+    /*
+     * $orientation V=vertical H=horizontal
+     * $margin array con margenes
+     */
+
+    public function imprimir($html, $orientation = "V", $margin = null, $pageSize = 'A4') {
+        $orientation = ($orientation == 'V') ? 'portrait' : 'Landscape';
+        if ($margin == null) {
+            $margin = array(
+                'left' => '1cm',
+                'right' => '1cm',
+                'top' => '4cm',
+                'bottom' => '1cm',
+            );
+        }
         return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
-                    'margin-left' => '2cm',
-                    'margin-right' => '1cm',
-                    'margin-top' => '2cm',
-                    'margin-bottom' => '1cm',
+                    'margin-left' => $margin['left'],
+                    'margin-right' => $margin['right'],
+                    'margin-top' => $margin['top'],
+                    'margin-bottom' => $margin['bottom'],
                     'footer-right' => 'Pag [page] de [topage]',
                     'header-html' => $this->getHeader(),
                     'header-spacing' => '5',
+                    'page-size' => $pageSize,
+                    'orientation' => "$orientation",
+        ));
+    }
+
+    
+    public function imprimirCheckControlInterno($html) {
+
+
+
+
+        return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
+                    'margin-left' => '1cm',
+                    'margin-right' => '1cm',
+                    'margin-top' => '1cm',
+                    'margin-bottom' => '1cm',
+                    'footer-right' => 'Pag [page] de [topage]',
                     'page-size' => 'A4',
                     'orientation' => 'portrait',
         ));
     }
-    public function imprimirHorizontal($html) {
-        return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
-                    'margin-left' => '1cm',
-                    'margin-right' => '1cm',
-                    'margin-top' => '4cm',
-                    'margin-bottom' => '1cm',
-                    'footer-right' => 'Pag [page] de [topage]',
-                    'header-html' => $this->getHeader(),
-                    'header-spacing' => '5',
-                    'page-size' => 'A4',
-                    'orientation' => 'Landscape',
-        ));
+
+    public function reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
+        $em = $this->em;
+
+        $aRegistros = $em->getRepository('VehiculosBundle:Vehiculo')->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
+
+        return $aRegistros;
     }
-
-	public function reporteVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta ) {
-		$em = $this->em;
-
-		$aRegistros = $em->getRepository( 'VehiculosBundle:Vehiculo' )->reporteVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta );
-
-		return $aRegistros;
-	}
 
 }

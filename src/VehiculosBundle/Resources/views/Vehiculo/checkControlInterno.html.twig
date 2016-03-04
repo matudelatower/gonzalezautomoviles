@@ -50,6 +50,12 @@
                             <a class="btn btn-default" href="{{ path('vehiculos_pendientes_por_entregar_index') }}">
                                 Volver
                             </a>
+                            {% if cabecera %}
+                                <a href="{{ path('pdf_check_control_interno', {'vehiculoId':vehiculoId}) }}" target="_blank" class="btn  btn-primary">
+                                    Imprimir
+                                </a>
+
+                            {%endif%}  
                         </div>
                     </div>
                 </div>

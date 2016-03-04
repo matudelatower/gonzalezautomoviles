@@ -402,7 +402,15 @@
 
                                     </th>
                                 </tr>  
-                            {%endif%}                             
+                            {%endif%}  
+                            {% if controlInternoCabecera is not null and controlInternoCabecera.firmado==true %}
+                                <tr>
+                                    <th>
+                                        <a href="{{ path('pdf_check_control_interno', {'vehiculoId':entity.id}) }}" target="_blank" class="btn btn-block btn-primary">Ver Inspección del Vehiculo - Control Interno</a>
+
+                                    </th>
+                                </tr>  
+                            {%endif%}  
                         </tbody>
                     </table>
                 </div>
