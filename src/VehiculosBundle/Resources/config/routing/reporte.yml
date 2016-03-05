@@ -52,7 +52,7 @@ exportar_excel_reporte_vehiculos_cupon_garantia:
 
 index_reporte_vehiculos_con_danios:
     path:     /index_reporte_vehiculos_con_danios
-    defaults: { _controller: "VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios" }
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosRecibidosConDanios" }
 
 exportar_pdf_reporte_vehiculos_con_danios:
     path:     /exportar_pdf_reporte_vehiculos_con_danios

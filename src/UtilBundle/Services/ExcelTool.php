@@ -434,5 +434,53 @@ class ExcelTool {
 
         return $response;
     }
+    /**
+     * Arma la hoja para el listado de vehiculos recibidos con danios
+     * @param type $tipo
+     * @param type $resultSet
+     * @return type
+     */
+    public function buildSheetReporteVehiculosRecibidosConDanios( $resultSet ) {
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setLastModifiedBy( $this->createby );
+        $phpExcelObject->getProperties()->setTitle( $this->title );
+        $phpExcelObject->getProperties()->setDescription( $this->descripcion );
+        $phpExcelObject->getProperties()->setCreator( $this->createby );
+
+        $phpExcelObject->setActiveSheetIndex( 0 );
+
+        $phpExcelObject->getActiveSheet()
+                       ->setCellValue( 'A1', 'Total de Vehículos Recibidos' )
+                       ->setCellValue( 'A2', 'Vehiculos Recibidos con Daños' )
+                       ->setCellValue( 'A3', 'Vehiculos Recibidos sin Daños' )
+                       ->setCellValue( 'A4', '% Vehiculos Recibidos con Daños' )
+                       ->setCellValue( 'A5', '% Vehiculos Recibidos sin Daños' );
+
+        $phpExcelObject->getActiveSheet()->getStyle( 'A1:B1' )->getBorders()->applyFromArray( $this->head );
+
+
+        $i = 2;
+        $phpExcelObject->getActiveSheet()->setCellValue( 'B1', $resultSet['autosRecibidos'] );
+        $phpExcelObject->getActiveSheet()->setCellValue( 'B2', $resultSet['autosRecibidosConDanos'] );
+        $phpExcelObject->getActiveSheet()->setCellValue( 'B3', $resultSet['autosRecibidosSinDanos'] );
+        $phpExcelObject->getActiveSheet()->setCellValue( 'B4',
+            ( $resultSet['autosRecibidosConDanos'] * 100 / $resultSet['autosRecibidos'] ) . "%" );
+        $phpExcelObject->getActiveSheet()->setCellValue( 'B5',
+            ( $resultSet['autosRecibidosSinDanos'] * 100 / $resultSet['autosRecibidos'] ) . "%" );
+
+        $phpExcelObject->getActiveSheet()->getStyle( 'A2:B' . $i )->getBorders()->applyFromArray( $this->body );
+
+        /** autosize */
+        $phpExcelObject->getActiveSheet()->getColumnDimension( 'A' )->setAutoSize( 'true' );
+        $phpExcelObject->getActiveSheet()->getColumnDimension( 'B' )->setAutoSize( 'true' );
+
+        $phpExcelObject->getActiveSheet()->setTitle( $this->title );
+
+        $writer = $this->phpexcel->createWriter( $phpExcelObject, 'Excel5' );
+// create the response
+        $response = $this->phpexcel->createStreamedResponse( $writer );
+
+        return $response;
+    }
 
 }

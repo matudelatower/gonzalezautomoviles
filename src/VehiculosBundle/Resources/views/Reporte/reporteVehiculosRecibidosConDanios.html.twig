@@ -91,60 +91,217 @@
         </div>
     </div>
     <!-- FIN FILTROS -->
+    {% if entities is not empty %}
+        <style>
+            .doughnut-legend li span {
+                display: block;
+                width: 14px;
+                height: 14px;
+                border-radius: 7px;
+                float: left;
+                margin-top: 4px;
+                margin-right: 8px;
+            }
 
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-car"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total de Vehículos Recibidos</span>
-                    <span class="info-box-number">90</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
+            .doughnut-legend {
+                list-style: none;
+                margin: 0;
+                padding-bottom: 5%;
+                padding-left: 5%;
+                font-size: 14px;
+                margin-top: 20px;
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Vehículos recibidos CON daños</span>
-                    <span class="info-box-number">90</span>
+            }
+
+            .doughnut-legend li {
+                margin-bottom: 4px;
+            }
+
+            .doughnut-legend li:first-letter {
+                text-transform: capitalize;
+            }
+        </style>
+        <div class="content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-danger">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Cantidad</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <canvas id="pieChart" style="height:250px"></canvas>
+
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-danger">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Porcentajes</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <canvas id="pieChartPercent" style="height:250px"></canvas>
+
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Vehículos recibidos SIN daños</span>
-                    <span class="info-box-number">90</span>
+
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-aqua"><i class="fa fa-car"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Total de Vehículos Recibidos</span>
+                        <span class="info-box-number">{{ entities.autosRecibidos }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Vehículos recibidos con daños</span>
-                    <span class="info-box-number">90<small>%</small></span>
+        <div class="row">
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Vehículos recibidos CON daños</span>
+                        <span class="info-box-number">{{ entities.autosRecibidosConDanos }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Vehículos recibidos SIN daños</span>
+                        <span class="info-box-number">{{ entities.autosRecibidosSinDanos }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Vehículos recibidos con daños</span>
-                    <span class="info-box-number">90<small>%</small></span>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Porcentaje Vehículos recibidos con daños</span>
+                        <span class="info-box-number">{{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }}
+                            <small>%</small></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                    <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Porcentaje Vehículos recibidos con daños</span>
+                        <span class="info-box-number">{{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }}
+                            <small>%</small></span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- ChartJS 1.0.1 -->
+        <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/chartjs/Chart.min.js') }}"></script>
+
+        <script>
+            //-------------
+            //- PIE CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+            var pieChartCanvasPercent = $("#pieChartPercent").get(0).getContext("2d");
+            var pieChart = new Chart(pieChartCanvas);
+            var pieChartPercent = new Chart(pieChartCanvasPercent);
+            var PieData = [
+                {
+                    value: {{ entities.autosRecibidosConDanos }},
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Recibidos Con Danos"
+                },
+                {
+                    value: {{ entities.autosRecibidosSinDanos }},
+                    color: "#00a65a",
+                    highlight: "#00a65a",
+                    label: "Recibidos Sin Danos"
+                }
+
+            ];
+            var PieDataPercent = [
+                {
+                    value: {{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }},
+                    color:"#F7464A",
+                    highlight: "#FF5A5E",
+                    label: "Recibidos Con Danos"
+                },
+                {
+                    value: {{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }},
+                    color: "#00a65a",
+                    highlight: "#00a65a",
+                    label: "Recibidos Sin Danos"
+                }
+
+            ];
+            var pieOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke: true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor: "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth: 2,
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout: 50, // This is 0 for Pie charts
+                //Number - Amount of animation steps
+                animationSteps: 100,
+                //String - Animation easing effect
+                animationEasing: "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate: true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale: false,
+                //Boolean - whether to make the chart responsive to window resizing
+                responsive: true,
+                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                maintainAspectRatio: true,
+                //String - A legend template
+                legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){ %><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){ %><%=segments[i].label%><%}%></li><% }%></ul>"
+            };
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            var chartC = pieChart.Doughnut(PieData, pieOptions);
+            pieOptions = {
+                tooltipTemplate: "<%if (label){  %><%=label%>: <% }%><%= value %>%",
+            }
+            var chartP = pieChartPercent.Doughnut(PieDataPercent, pieOptions);
+
+            var helpers = Chart.helpers
+
+            var legendHolder = document.createElement('div');
+            legendHolder.innerHTML = chartC.generateLegend();
+
+            chartC.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+
+            legendHolder.innerHTML = chartP.generateLegend();
+
+            chartP.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+
+        </script>
+    {% endif %}
 
 
-    {{ knp_pagination_render(entities) }}
 {% endblock %}
+

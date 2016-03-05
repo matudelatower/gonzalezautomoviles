@@ -504,7 +504,7 @@ class ReporteController extends Controller {
         return $response;
     }
 
-    public function reporteVehiculosRecibidosConDaniosAction(Request $request) {
+    public function indexReporteVehiculosRecibidosConDaniosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -525,15 +525,90 @@ class ReporteController extends Controller {
             $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
         }
 
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig', array(
+            'entities' => $entities,
+            'form' => $form->createView()
+        ));
+    }
+
+    public function pdfReporteVehiculosRecibidosConDaniosAction(Request $request  ) {
+        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
+        }
+
+        $title = 'Reporte de Autos Recibidos Con Daños';
+
+        $html = $this->renderView(
+            'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
+                'entities' => $entities,
+                'title' => $title,
+                'fechaDesde' => $fechaDesde,
+                'fechaHasta' => $fechaHasta
+            )
         );
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView()
-        ));
+        return new Response(
+            $reportesManager->imprimir($html)
+            , 200, array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+            )
+        );
+    }
+
+    public function excelReporteVehiculosRecibidosConDaniosAction(Request $request  ) {
+        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
+        }
+
+        $filename = "reporte_vehiculos_recibidos_con_danios.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Vehiculos Recibidos Con Daños');
+        $exportExcel->setDescripcion('Listado de Vehiculos Recibidos Con Daños');
+
+        $response = $exportExcel->buildSheetReporteVehiculosRecibidosConDanios($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
     }
 
     public function pdfCheckControlInternoAction($vehiculoId) {

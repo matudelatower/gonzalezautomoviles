@@ -138,7 +138,7 @@ class ReportesManager {
         ));
     }
 
-    
+
     public function imprimirCheckControlInterno($html) {
 
 
@@ -158,9 +158,20 @@ class ReportesManager {
     public function reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
         $em = $this->em;
 
-        $aRegistros = $em->getRepository('VehiculosBundle:Vehiculo')->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
+		$autosRecibidos = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosRecibidos( $fechaDesde,
+			$fechaHasta );
 
-        return $aRegistros;
-    }
+		$autosRecibidosConDanos = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosRecibidosConDanios($fechaDesde,
+			$fechaHasta );
+
+		$autosRecibidosSinDanos = $autosRecibidos - $autosRecibidosConDanos;
+
+
+		return array(
+			'autosRecibidos' => $autosRecibidos,
+			'autosRecibidosConDanos' => $autosRecibidosConDanos,
+			'autosRecibidosSinDanos' => $autosRecibidosSinDanos,
+		);
+	}
 
 }
