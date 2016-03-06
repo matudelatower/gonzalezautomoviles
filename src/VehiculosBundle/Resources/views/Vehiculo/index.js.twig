@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function () {
-        $('.btn-deposito,.btn-agenda,.btn-pagado,.btn-asignar,.btn-cupon-garantia,.btn-sesion-factura').click(function () {
+        $('.btn-deposito,.btn-pagado,.btn-asignar,.btn-cupon-garantia,.btn-sesion-factura').click(function () {
             url = $(this).data('url');
             $.ajax({
                 type: 'get',

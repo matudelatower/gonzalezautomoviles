@@ -44,15 +44,7 @@ asignacion_vehiculo_update_ajax:
 
 desasignacion_vehiculo_update_ajax:
     path:     /desasignacion_vehiculo_update_ajax/{vehiculoId}
-    defaults: { _controller: "VehiculosBundle:Ajax:desasignacionVehiculoUpdateAjax" }
-  
-new_agenda_entrega_ajax:
-    path:     /new_agenda_entrega_ajax/{vehiculoId}
-    defaults: { _controller: "VehiculosBundle:Ajax:newAgendaEntregaAjax" }
-
-agenda_entrega_create_ajax:
-    path:     /agenda_entrega_create_ajax/{vehiculoId}
-    defaults: { _controller: "VehiculosBundle:Ajax:agendaEntregaCreateAjax" }     
+    defaults: { _controller: "VehiculosBundle:Ajax:desasignacionVehiculoUpdateAjax" }     
     
 new_cupon_garantia_ajax:
     path:     /new_cupon_garantia_ajax/{vehiculoId}

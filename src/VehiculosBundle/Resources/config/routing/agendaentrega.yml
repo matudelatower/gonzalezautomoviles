@@ -7,7 +7,7 @@ agenda_entrega_show:
     defaults: { _controller: "VehiculosBundle:AgendaEntrega:show" }
 
 agenda_entrega_new:
-    path:     /new
+    path:     /new/{vehiculoId}/
     defaults: { _controller: "VehiculosBundle:AgendaEntrega:new" }
 
 agenda_entrega_create:
@@ -19,10 +19,10 @@ agenda_entrega_edit:
     path:     /{id}/edit
     defaults: { _controller: "VehiculosBundle:AgendaEntrega:edit" }
 
-agenda_entrega_update:
-    path:     /{id}/update
-    defaults: { _controller: "VehiculosBundle:AgendaEntrega:update" }
-    methods:  [POST, PUT]
+#agenda_entrega_update:
+#    path:     /{id}/update
+#    defaults: { _controller: "VehiculosBundle:AgendaEntrega:update" }
+#    methods:  [POST, PUT]
 
 agenda_entrega_delete:
     path:     /{id}/delete
@@ -32,3 +32,7 @@ agenda_entrega_delete:
 agenda_ver_mi_agenda:
     path:     /ver_mi_agenda
     defaults: { _controller: "VehiculosBundle:AgendaEntrega:verMiAgenda" }
+    
+agenda_entrega_update:
+    path:     /agenda_entrega_update/{vehiculoId}/
+    defaults: { _controller: "VehiculosBundle:AgendaEntrega:agendaEntregaUpdate" }    
