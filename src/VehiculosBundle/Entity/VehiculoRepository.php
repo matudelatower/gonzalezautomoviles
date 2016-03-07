@@ -46,12 +46,12 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             $where.=" AND v.cliente_id=" . $filters['cliente']->getId();
         }
         if ($filters['fechaEstadoDesde'] && $filters['fechaEstadoHasta']) {
-            $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaEstadoDesde']."' AND '". $filters['fechaEstadoDesde']."'";
+            $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaEstadoDesde'] . "' AND '" . $filters['fechaEstadoDesde'] . "'";
         }
 
         if (!$order) {
             $order = " modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
-        } 
+        }
 
         $query = "SELECT   distinct(v.*),
                                         cm.codigo as modelo_codigo,cm.anio as modelo_anio,nm.nombre as modelo_nombre,cm.version as modelo_version,
@@ -197,9 +197,6 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['colorVehiculo']) {
             $where.=" AND v.color_vehiculo_id=" . $filters['colorVehiculo']->getId();
         }
-//        if ($filters['tipoVentaEspecial']) {
-//            $where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
-//        }
         if ($filters['deposito']) {
             $where.=" AND d.id=" . $filters['deposito']->getId();
         }
@@ -207,9 +204,17 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             $where.=" AND nm.id=" . $filters['modelo']->getId();
         }
 
+        if ($filters['diaInicio']) {
+            $where.=" AND (current_date-fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
+        }
+        
+        if ($filters['diaFin']) {
+            $where.=" AND (current_date-fecha_emision_documento::date <= " . $filters['diaFin'] . ")";
+        }
+
 
         $query = "SELECT   distinct(v.*),
-                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,
+                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,nm.nombre as nombre_modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         cv.color as color_vehiculo,
@@ -239,16 +244,15 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
-
-     public function getVehiculosCuponGarantia($filters = null) {
+    public function getVehiculosCuponGarantia($filters = null) {
 
         $where = " v.factura_id is not null ";
         $db = $this->getEntityManager()->getConnection();
 
-        if ($filters['conCupon']=='SI') {
+        if ($filters['conCupon'] == 'SI') {
             $where.=" AND v.cupon_garantia is not null";
-        }else{
-             $where.=" AND v.cupon_garantia is null";
+        } else {
+            $where.=" AND v.cupon_garantia is null";
         }
 
 
@@ -270,7 +274,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
-    public function getVehiculosRecibidos($fechaDesde, $fechaHasta ) {
+    public function getVehiculosRecibidos($fechaDesde, $fechaHasta) {
 
         $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
         $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
@@ -295,11 +299,9 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['total'];
-
-
     }
 
-    public function getVehiculosRecibidosConDanios($fechaDesde, $fechaHasta ) {
+    public function getVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
 
         $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
         $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
@@ -330,7 +332,6 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['cantidad'];
-
-
     }
+
 }

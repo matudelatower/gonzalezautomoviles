@@ -58,6 +58,14 @@
                             <div class="col-sm-4">
                                 {{ form_widget(form.deposito) }}
                             </div>
+                            <label class="col-sm-2 control-label">Dias en stock</label>
+                            <div class="col-sm-1">
+                                {{ form_widget(form.diaInicio) }}
+                            </div>
+                            <label class="col-sm-1 control-label">a</label>
+                            <div class="col-sm-1">
+                                {{ form_widget(form.diaFin) }}
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -104,7 +112,7 @@
                         <thead>
 
                             <tr>
-                                <th>Id</th>
+                                <th>N°</th>
                                 <th>Modelo</th>
                                 <th>Color vehiculo</th>
                                 <th>Vin</th>
@@ -114,9 +122,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for entity in entities %}
+                             {% set contador=1%}
+                            {% for entity in entities %}                                
                                 <tr>
-                                    <td>{{ entity.id }}</td>
+                                    <td>{{ contador }}</td>
                                     <td>{{ entity.modelo }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
                                     <td>{{ entity.vin }}</td>
@@ -130,6 +139,7 @@
                                         {%endif%}
                                     </td>
                                 </tr>
+                                {% set contador=contador+1%}
                             {% endfor %}
                         </tbody>
                     </table>

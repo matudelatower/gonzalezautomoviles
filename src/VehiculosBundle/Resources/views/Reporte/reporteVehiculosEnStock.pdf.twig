@@ -1,39 +1,54 @@
 {% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
 
 {% block body %}
+    <style>
+        td{
+            text-align: center;
+        }
 
+    </style>
     <div class="box-body">
         <table class="data-table table table-bordered table-striped">
             <thead>
 
-            <tr>
-                <th>Id</th>
-                <th>Modelo</th>
-                <th>Color vehiculo</th>
-                <th>Vin</th>
-                <th>Dias en stock</th>
-                <th>Deposito</th>
-                <th>Estado pago</th>
-            </tr>
+                <tr>
+                    <th>N°</th>
+                    <th>Modelo</th>
+                    <th>Color vehiculo</th>
+                    <th>Vin</th>
+                    <th>Dias en stock</th>
+                    <th>Deposito</th>
+                    <th>Estado pago</th>
+                </tr>
             </thead>
             <tbody>
-            {% for entity in entities %}
-                <tr>
-                    <td>{{ entity.id }}</td>
-                    <td>{{ entity.modelo }}</td>
-                    <td>{{ entity.color_vehiculo }}</td>
-                    <td>{{ entity.vin }}</td>
-                    <td>{{ entity.dias_en_stock }}</td>
-                    <td>{{ entity.deposito_actual | default ("") }}</td>
-                    <td align="center">
-                        {% if entity.pagado %}
-                            Gonzalez
-                        {% else %}
-                            Gpat
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+                {% set modelo=""%}                
+                {% for entity in entities %}
+                    {%if(entity.nombre_modelo!=modelo)%}
+                        {% set contador=1%}
+                        {% set modelo = entity.nombre_modelo%}
+                        <tr>
+                            <td></td>
+                            <td colspan="6" style="font-weight: bold; text-align: left">{{ entity.nombre_modelo }}</td>
+                        </tr>
+                    {%endif%}    
+                    <tr>
+                        <td>{{ contador }}</td>
+                        <td style="text-align: left">{{ entity.modelo }}</td>
+                        <td>{{ entity.color_vehiculo }}</td>
+                        <td>{{ entity.vin }}</td>
+                        <td>{{ entity.dias_en_stock }}</td>
+                        <td>{{ entity.deposito_actual | default ("") }}</td>
+                        <td align="center">
+                            {% if entity.pagado %}
+                                Gonzalez
+                            {% else %}
+                                Gpat
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% set contador=contador+1%}
+                {% endfor %}
             </tbody>
         </table>
     </div>

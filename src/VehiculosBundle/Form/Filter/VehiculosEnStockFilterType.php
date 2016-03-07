@@ -24,25 +24,26 @@ class VehiculosEnStockFilterType extends AbstractType {
                     'choice_label' => 'color',
                     'required' => false,
                 ))
-//                
-//                ->add('tipoVentaEspecial', 'entity', array(
-//                    'class' => 'VehiculosBundle:TipoVentaEspecial',
-//                    'choice_label' => 'nombre',
-//                    'required' => false,
-//                ))
                 ->add('deposito', 'entity', array(
                     'class' => 'VehiculosBundle:Deposito',
                     'choice_label' => 'nombre',
                     'required' => false,
                 ))
-//                ->add('cliente', 'jqueryautocomplete', array(
-//                    'label' => 'Cliente (Por DNI)',
-//                    'class' => 'ClientesBundle:Cliente',
-//                    'search_method' => 'getClienteByDni',
-//                    'required' => false,
-//                    'route_name' => 'get_cliente_by_dni',
-//                ))
-                
+                ->add('diaInicio', 'integer', array(
+                    'required' => false,
+                    'attr' => array('class' => 'bfh-number',
+                        'min' => '0', 'step' => '1',
+                        'data-bind' => 'value:replyNumber'
+                    )
+                ))
+                ->add('diaFin', 'integer', array(
+                    'required' => false,
+                    'attr' => array('class' => 'bfh-number',
+                        'min' => '0', 'step' => '1',
+                        'data-bind' => 'value:replyNumber'
+                    )
+                ))
+
         ;
     }
 

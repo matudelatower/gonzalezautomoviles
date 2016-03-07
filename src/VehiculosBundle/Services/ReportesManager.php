@@ -121,9 +121,12 @@ class ReportesManager {
             $margin = array(
                 'left' => '1cm',
                 'right' => '1cm',
-                'top' => '4cm',
+                'top' => '2cm',
                 'bottom' => '1cm',
             );
+        }
+        if ($orientation != 'V') {
+            $margin['top'] = '4cm';
         }
         return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
                     'margin-left' => $margin['left'],
@@ -137,7 +140,6 @@ class ReportesManager {
                     'orientation' => "$orientation",
         ));
     }
-
 
     public function imprimirCheckControlInterno($html) {
 
@@ -158,20 +160,18 @@ class ReportesManager {
     public function reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
         $em = $this->em;
 
-		$autosRecibidos = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosRecibidos( $fechaDesde,
-			$fechaHasta );
+        $autosRecibidos = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosRecibidos($fechaDesde, $fechaHasta);
 
-		$autosRecibidosConDanos = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosRecibidosConDanios($fechaDesde,
-			$fechaHasta );
+        $autosRecibidosConDanos = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
 
-		$autosRecibidosSinDanos = $autosRecibidos - $autosRecibidosConDanos;
+        $autosRecibidosSinDanos = $autosRecibidos - $autosRecibidosConDanos;
 
 
-		return array(
-			'autosRecibidos' => $autosRecibidos,
-			'autosRecibidosConDanos' => $autosRecibidosConDanos,
-			'autosRecibidosSinDanos' => $autosRecibidosSinDanos,
-		);
-	}
+        return array(
+            'autosRecibidos' => $autosRecibidos,
+            'autosRecibidosConDanos' => $autosRecibidosConDanos,
+            'autosRecibidosSinDanos' => $autosRecibidosSinDanos,
+        );
+    }
 
 }

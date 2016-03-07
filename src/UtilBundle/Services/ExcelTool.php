@@ -211,7 +211,7 @@ class ExcelTool {
         $phpExcelObject->setActiveSheetIndex(0);
 
         $phpExcelObject->getActiveSheet()
-                ->setCellValue('A1', 'Id')
+                ->setCellValue('A1', 'N°')
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
@@ -224,8 +224,16 @@ class ExcelTool {
 
         $i = 2;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
+            $modelo = "";
             foreach ($resultSet as $entity) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $entity['id']);
+
+                if ($modelo != $entity['nombre_modelo']) {
+                    $contador = 1;
+                    $modelo = $entity['nombre_modelo'];
+                    $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo']);
+                    $i ++;
+                }
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
@@ -237,6 +245,7 @@ class ExcelTool {
                     $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'Gpat');
                 }
                 $i ++;
+                $contador++;
             }
         }
 
@@ -300,7 +309,7 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['cliente']);
                 $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['vendedor']);
                 $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['descripcion_entrega']);
-                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, date("d-m-Y",strtotime($entity['fecha_entrega'])) . " " . $entity['hora_entrega']);
+                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, date("d-m-Y", strtotime($entity['fecha_entrega'])) . " " . $entity['hora_entrega']);
 
                 $i ++;
             }
@@ -434,51 +443,50 @@ class ExcelTool {
 
         return $response;
     }
+
     /**
      * Arma la hoja para el listado de vehiculos recibidos con danios
      * @param type $tipo
      * @param type $resultSet
      * @return type
      */
-    public function buildSheetReporteVehiculosRecibidosConDanios( $resultSet ) {
+    public function buildSheetReporteVehiculosRecibidosConDanios($resultSet) {
         $phpExcelObject = $this->phpexcel->createPHPExcelObject();
-        $phpExcelObject->getProperties()->setLastModifiedBy( $this->createby );
-        $phpExcelObject->getProperties()->setTitle( $this->title );
-        $phpExcelObject->getProperties()->setDescription( $this->descripcion );
-        $phpExcelObject->getProperties()->setCreator( $this->createby );
+        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
+        $phpExcelObject->getProperties()->setTitle($this->title);
+        $phpExcelObject->getProperties()->setDescription($this->descripcion);
+        $phpExcelObject->getProperties()->setCreator($this->createby);
 
-        $phpExcelObject->setActiveSheetIndex( 0 );
+        $phpExcelObject->setActiveSheetIndex(0);
 
         $phpExcelObject->getActiveSheet()
-                       ->setCellValue( 'A1', 'Total de Vehículos Recibidos' )
-                       ->setCellValue( 'A2', 'Vehiculos Recibidos con Daños' )
-                       ->setCellValue( 'A3', 'Vehiculos Recibidos sin Daños' )
-                       ->setCellValue( 'A4', '% Vehiculos Recibidos con Daños' )
-                       ->setCellValue( 'A5', '% Vehiculos Recibidos sin Daños' );
+                ->setCellValue('A1', 'Total de Vehículos Recibidos')
+                ->setCellValue('A2', 'Vehiculos Recibidos con Daños')
+                ->setCellValue('A3', 'Vehiculos Recibidos sin Daños')
+                ->setCellValue('A4', '% Vehiculos Recibidos con Daños')
+                ->setCellValue('A5', '% Vehiculos Recibidos sin Daños');
 
-        $phpExcelObject->getActiveSheet()->getStyle( 'A1:B1' )->getBorders()->applyFromArray( $this->head );
+        $phpExcelObject->getActiveSheet()->getStyle('A1:B1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
-        $phpExcelObject->getActiveSheet()->setCellValue( 'B1', $resultSet['autosRecibidos'] );
-        $phpExcelObject->getActiveSheet()->setCellValue( 'B2', $resultSet['autosRecibidosConDanos'] );
-        $phpExcelObject->getActiveSheet()->setCellValue( 'B3', $resultSet['autosRecibidosSinDanos'] );
-        $phpExcelObject->getActiveSheet()->setCellValue( 'B4',
-            ( $resultSet['autosRecibidosConDanos'] * 100 / $resultSet['autosRecibidos'] ) . "%" );
-        $phpExcelObject->getActiveSheet()->setCellValue( 'B5',
-            ( $resultSet['autosRecibidosSinDanos'] * 100 / $resultSet['autosRecibidos'] ) . "%" );
+        $phpExcelObject->getActiveSheet()->setCellValue('B1', $resultSet['autosRecibidos']);
+        $phpExcelObject->getActiveSheet()->setCellValue('B2', $resultSet['autosRecibidosConDanos']);
+        $phpExcelObject->getActiveSheet()->setCellValue('B3', $resultSet['autosRecibidosSinDanos']);
+        $phpExcelObject->getActiveSheet()->setCellValue('B4', ( $resultSet['autosRecibidosConDanos'] * 100 / $resultSet['autosRecibidos'] ) . "%");
+        $phpExcelObject->getActiveSheet()->setCellValue('B5', ( $resultSet['autosRecibidosSinDanos'] * 100 / $resultSet['autosRecibidos'] ) . "%");
 
-        $phpExcelObject->getActiveSheet()->getStyle( 'A2:B' . $i )->getBorders()->applyFromArray( $this->body );
+        $phpExcelObject->getActiveSheet()->getStyle('A2:B' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
-        $phpExcelObject->getActiveSheet()->getColumnDimension( 'A' )->setAutoSize( 'true' );
-        $phpExcelObject->getActiveSheet()->getColumnDimension( 'B' )->setAutoSize( 'true' );
+        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setAutoSize('true');
 
-        $phpExcelObject->getActiveSheet()->setTitle( $this->title );
+        $phpExcelObject->getActiveSheet()->setTitle($this->title);
 
-        $writer = $this->phpexcel->createWriter( $phpExcelObject, 'Excel5' );
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
 // create the response
-        $response = $this->phpexcel->createStreamedResponse( $writer );
+        $response = $this->phpexcel->createStreamedResponse($writer);
 
         return $response;
     }
