@@ -45,8 +45,10 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['cliente']) {
             $where.=" AND v.cliente_id=" . $filters['cliente']->getId();
         }
-        if ($filters['fechaEstadoDesde'] && $filters['fechaEstadoHasta']) {
-            $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaEstadoDesde'] . "' AND '" . $filters['fechaEstadoDesde'] . "'";
+        if (isset($filters['fechaEstadoDesde'])) {
+            if ($filters['fechaEstadoDesde'] && $filters['fechaEstadoHasta']) {
+                $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaEstadoDesde'] . "' AND '" . $filters['fechaEstadoDesde'] . "'";
+            }
         }
 
         if (!$order) {
@@ -207,7 +209,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['diaInicio']) {
             $where.=" AND (current_date-fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
         }
-        
+
         if ($filters['diaFin']) {
             $where.=" AND (current_date-fecha_emision_documento::date <= " . $filters['diaFin'] . ")";
         }
