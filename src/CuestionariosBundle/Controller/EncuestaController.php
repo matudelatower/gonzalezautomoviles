@@ -356,6 +356,7 @@ class EncuestaController extends Controller {
 			array(
 				'title'                      => $title,
 				'encuestaResultadoRespuesta' => $encuestaResultadoRespuesta,
+				'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
 				'vehiculo' => $vehiculo,
 			)
 		);

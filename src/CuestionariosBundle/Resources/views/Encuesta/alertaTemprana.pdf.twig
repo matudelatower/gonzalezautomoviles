@@ -36,5 +36,9 @@
         <label>Fecha Nacimiento: </label><span>{{ cliente.fechaNacimiento | date('d/m/Y') }}</span><br>
         <label>Localidad: </label><span>{{ cliente.localidad }}</span> <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('')}}</span>
     </div>
+    <div class="row">
+        <label>VIN: </label> <span>{{ vehiculo.vin }}</span> <br>
+        <label>Fecha Encuesta: </label> <span>{{ encuestaResultadoCabecera.creado | date('d/m/Y')}}</span> <br>
+        </div>
 
 {% endblock %}
