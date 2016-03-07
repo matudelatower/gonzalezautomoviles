@@ -646,4 +646,111 @@ class ReporteController extends Controller {
         );
     }
 
+    public function indexReporteVehiculosConDaniosInternosAction(Request $request  ) {
+        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
+        }
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosConDaniosInternos.html.twig', array(
+            'entities' => $entities,
+            'form' => $form->createView()
+        ));
+    }
+
+    public function pdfReporteVehiculosConDaniosInternosAction(Request $request  ) {
+        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
+        }
+
+        $title = 'Reporte de Autos  Con Daños Internos';
+
+        $html = $this->renderView(
+            'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
+                'entities' => $entities,
+                'title' => $title,
+                'fechaDesde' => $fechaDesde,
+                'fechaHasta' => $fechaHasta
+            )
+        );
+
+        return new Response(
+            $reportesManager->imprimir($html)
+            , 200, array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+            )
+        );
+    }
+
+    public function excelReporteVehiculosConDaniosInternosAction(Request $request  ) {
+        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+
+            $form->handleRequest($request);
+
+            $formData = $form->getData();
+
+            $aFecha = explode(' - ', $formData['rango']);
+
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+            $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
+        }
+
+        $filename = "reporte_vehiculos_recibidos_con_danios.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Vehiculos Con Daños Internos');
+        $exportExcel->setDescripcion('Listado de Vehiculos Con Daños Internos');
+
+        $response = $exportExcel->buildSheetReporteVehiculosRecibidosConDanios($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
+    }
+
 }

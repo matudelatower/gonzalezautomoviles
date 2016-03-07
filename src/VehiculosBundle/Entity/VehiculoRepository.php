@@ -276,13 +276,40 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
-    public function getVehiculosRecibidos($fechaDesde, $fechaHasta) {
+    public function getTotalVehiculosPorFecha(  $fechaDesde, $fechaHasta) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
+
+
+        $query = "SELECT
+             count(vehiculos.id) as total
+        FROM
+             vehiculos vehiculos
+        WHERE vehiculos.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
+
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+
+        return $stmt->fetchAll()[0]['total'];
+    }
+
+    public function getVehiculosPorEstado( $fechaDesde, $fechaHasta, $estado = null ) {
+
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+
+        $db = $this->getEntityManager()->getConnection();
+
+        $where = '';
+
+        if ( $estado ) {
+            $where = " tipo_estado_vehiculo.slug = '$estado'
+            AND ";
+        }
 
         $query = "SELECT
                  count(vehiculos.id) AS total
@@ -290,23 +317,29 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                  tipo_estado_vehiculo tipo_estado_vehiculo INNER JOIN estados_vehiculos estados_vehiculos ON tipo_estado_vehiculo.id = estados_vehiculos.tipo_estado_vehiculo_id
                  INNER JOIN vehiculos vehiculos ON estados_vehiculos.vehiculo_id = vehiculos.id
             WHERE
-                 tipo_estado_vehiculo.slug = 'recibido'
-            AND estados_vehiculos.id in (
+                $where
+                estados_vehiculos.id in (
                 SELECT max(id) FROM estados_vehiculos estados_vehiculos_sq
                 WHERE estados_vehiculos_sq.creado BETWEEN '$fechaDesde' AND '$fechaHasta'
                 Group by estados_vehiculos_sq.vehiculo_id
             )";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['total'];
     }
 
-    public function getVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
+    public function getVehiculosRecibidos( $fechaDesde, $fechaHasta ) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        return $this->getVehiculosPorEstado( $fechaDesde, $fechaHasta, 'recibido' );
+
+    }
+
+    public function getVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta ) {
+
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
@@ -330,7 +363,50 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 )
              )";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+
+        return $stmt->fetchAll()[0]['cantidad'];
+    }
+
+    public function getVehiculosConDaniosGm( $fechaDesde, $fechaHasta ) {
+
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+
+        $db = $this->getEntityManager()->getConnection();
+
+
+        $query = "SELECT
+             count(vehiculos.id) as cantidad
+        FROM
+             tipos_danio_gm tipos_danio_gm INNER JOIN danios_vehiculo_gm danios_vehiculo_gm ON tipos_danio_gm.id = danios_vehiculo_gm.tipo_danio_id
+             INNER JOIN vehiculos vehiculos ON danios_vehiculo_gm.vehiculo_id = vehiculos.id
+        WHERE
+             danios_vehiculo_gm.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
+
+        $stmt = $db->prepare( $query );
+        $stmt->execute();
+
+        return $stmt->fetchAll()[0]['cantidad'];
+    }
+
+    public function getVehiculosConDaniosInternos( $fechaDesde, $fechaHasta ) {
+
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+
+        $db = $this->getEntityManager()->getConnection();
+
+
+        $query = "SELECT
+                 count(vehiculos.id) as cantidad
+            FROM
+                 vehiculos vehiculos INNER JOIN danios_vehiculos_interno danios_vehiculos_interno ON vehiculos.id = danios_vehiculos_interno.vehiculo_id
+            WHERE
+                 danios_vehiculos_interno.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
+
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['cantidad'];

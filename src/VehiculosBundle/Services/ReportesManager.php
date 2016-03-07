@@ -160,9 +160,25 @@ class ReportesManager {
     public function reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
         $em = $this->em;
 
-        $autosRecibidos = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosRecibidos($fechaDesde, $fechaHasta);
+        $autosRecibidos = $em->getRepository('VehiculosBundle:Vehiculo')->getTotalVehiculosPorFecha($fechaDesde, $fechaHasta);
 
-        $autosRecibidosConDanos = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
+        $autosRecibidosConDanos = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosConDaniosGm($fechaDesde, $fechaHasta);
+
+        $autosRecibidosSinDanos = $autosRecibidos - $autosRecibidosConDanos;
+
+
+        return array(
+            'autosRecibidos' => $autosRecibidos,
+            'autosRecibidosConDanos' => $autosRecibidosConDanos,
+            'autosRecibidosSinDanos' => $autosRecibidosSinDanos,
+        );
+    }
+    public function reporteVehiculosConDanios($fechaDesde, $fechaHasta) {
+        $em = $this->em;
+
+        $autosRecibidos = $em->getRepository('VehiculosBundle:Vehiculo')->getTotalVehiculosPorFecha($fechaDesde, $fechaHasta);
+
+        $autosRecibidosConDanos = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosConDaniosInternos($fechaDesde, $fechaHasta);
 
         $autosRecibidosSinDanos = $autosRecibidos - $autosRecibidosConDanos;
 
