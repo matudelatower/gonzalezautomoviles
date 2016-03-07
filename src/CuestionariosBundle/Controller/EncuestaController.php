@@ -308,6 +308,7 @@ class EncuestaController extends Controller {
 				'vehiculo'  => $vehiculo,
 				'preguntas' => $preguntas,
 				'encuesta'  => $encuesta,
+				'linkLogo' => false,
 			) );
 	}
 

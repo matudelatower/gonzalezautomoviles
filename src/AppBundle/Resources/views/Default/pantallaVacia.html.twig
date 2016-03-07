@@ -33,7 +33,7 @@
         <nav class="navbar navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a href="{{ path('app_homepage') }}" class="navbar-brand">
+                    <a href="{% if linkLogo is not defined %}{{ path('app_homepage') }}{% endif %}" class="navbar-brand">
                         <!-- logo for regular state and mobile devices -->
                         <span class="logo-lg"><b>González</b> Automóviles</span>
                     </a>
