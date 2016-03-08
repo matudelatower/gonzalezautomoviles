@@ -65,7 +65,7 @@ exportar_excel_reporte_vehiculos_con_danios:
 pdf_check_control_interno:
     path:     /pdf_check_control_interno{vehiculoId}
     defaults: { _controller: "VehiculosBundle:Reporte:pdfCheckControlInterno" }    
-    
+
 index_reporte_vehiculos_con_danios_internos:
     path:     /index_reporte_vehiculos_con_danios_internos
     defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosConDaniosInternos" }
@@ -77,3 +77,16 @@ exportar_pdf_reporte_vehiculos_con_danios_internos:
 exportar_excel_reporte_vehiculos_con_danios_internos:
     path:     /exportar_excel_reporte_vehiculos_con_danios_internos
     defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosConDaniosInternos" }
+
+index_reporte_vehiculos_por_deposito:
+    path:     /index_reporte_vehiculos_por_deposito
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosPorDeposito" }
+
+exportar_pdf_reporte_vehiculos_por_deposito:
+    path:     /exportar_pdf_reporte_vehiculos_por_deposito
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosPorDeposito" }
+
+exportar_excel_reporte_vehiculos_por_deposito:
+    path:     /exportar_excel_reporte_vehiculos_por_deposito
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPorDeposito" }     
+

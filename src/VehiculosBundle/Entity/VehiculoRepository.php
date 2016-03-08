@@ -412,4 +412,45 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll()[0]['cantidad'];
     }
 
+    public function getVehiculosPorDeposito($filters = null) {
+
+
+        $db = $this->getEntityManager()->getConnection();
+
+
+        $where=" d.id=" . $filters['deposito']->getId();
+
+        if ($filters['colorVehiculo']) {
+            $where.=" AND v.color_vehiculo_id=" . $filters['colorVehiculo']->getId();
+        }
+        if ($filters['tipoVentaEspecial']) {
+            $where.=" AND tv.id=" . $filters['tipoVentaEspecial']->getId();
+        }
+        if ($filters['modelo']) {
+            $where.=" AND nm.id=" . $filters['modelo']->getId();
+        }
+
+
+        $query = "SELECT   distinct(v.*),
+                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,nm.nombre as nombre_modelo,                                        
+                                        v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
+                                        cv.color as color_vehiculo                                        
+					FROM    vehiculos v
+                                        INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
+                                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
+                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
+                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
+                                        
+                                        LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id =  mmdd.vehiculo_id
+                                        LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
+                                        LEFT JOIN depositos d ON md.deposito_destino_id=d.id
+                                        WHERE " . $where .
+                " ORDER BY modelo,color_vehiculo asc";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
 }

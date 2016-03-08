@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosConDaniosFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
+use VehiculosBundle\Form\Filter\VehiculosPorDepositoFilterType;
 use VehiculosBundle\Form\Filter\VehiculosCuponGarantiaFilterType;
 use VehiculosBundle\Form\Filter\ReporteAgendaEntregasFilterType;
 use Symfony\Component\HttpFoundation\Request;
@@ -640,6 +641,108 @@ class ReporteController extends Controller {
         return new Response(
                 $reportesManager->imprimirCheckControlInterno($html)
                 , 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+    
+    /*
+     * 
+     */
+     public function indexReporteVehiculosPorDepositoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosPorDepositoFilterType());
+
+        $entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
+            }
+        }
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosPorDeposito.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView()
+        ));
+    }
+    
+    public function excelReporteVehiculosPorDepositoAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosPorDepositoFilterType());
+
+        $entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
+            }
+        }
+        $filename = "reporte_vehiculos_por_deposito.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Vehiculos Por Deposito');
+        $exportExcel->setDescripcion('Listado de Vehiculos Por Deposito');
+
+
+//        $managerEncuestas = $this->get('manager.reportes');
+//        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
+
+
+        $response = $exportExcel->buildSheetgetReporteVehiculosPorDeposito($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
+    }
+
+    public function pdfReporteVehiculosPorDepositoAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosPorDepositoFilterType());
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
+            }
+        }
+
+        $title = 'Reporte de Vehiculos por Deposito';
+
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteVehiculosPorDeposito.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+                )
+        );
+
+        return new Response(
+                $reportesManager->imprimir($html), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )

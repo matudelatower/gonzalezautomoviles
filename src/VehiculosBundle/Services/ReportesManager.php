@@ -117,17 +117,21 @@ class ReportesManager {
 
     public function imprimir($html, $orientation = "V", $margin = null, $pageSize = 'A4') {
         $orientation = ($orientation == 'V') ? 'portrait' : 'Landscape';
+
         if ($margin == null) {
             $margin = array(
-                'left' => '1cm',
                 'right' => '1cm',
-                'top' => '2cm',
                 'bottom' => '1cm',
             );
+            if ($orientation == 'portrait') {
+                $margin['top'] = '2cm';
+                $margin['left'] = '2cm';
+            } else {
+                $margin['top'] = '4cm';
+                $margin['left'] = '1cm';
+            }
         }
-        if ($orientation != 'V') {
-            $margin['top'] = '4cm';
-        }
+
         return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
                     'margin-left' => $margin['left'],
                     'margin-right' => $margin['right'],
@@ -142,10 +146,6 @@ class ReportesManager {
     }
 
     public function imprimirCheckControlInterno($html) {
-
-
-
-
         return $this->container->get('knp_snappy.pdf')->getOutputFromHtml($html, array(
                     'margin-left' => '1cm',
                     'margin-right' => '1cm',
