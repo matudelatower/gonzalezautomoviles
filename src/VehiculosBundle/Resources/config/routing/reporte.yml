@@ -100,4 +100,16 @@ exportar_pdf_reporte_vehiculos_patentamientos:
 
 exportar_excel_reporte_vehiculos_patentamientos:
     path:     /exportar_excel_reporte_vehiculos_patentamientos
-    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPatentamientos" }     
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPatentamientos" }
+
+index_reporte_vehiculos_asignados_a_reventa:
+    path: /index_reporte_vehiculos_asignados_a_reventa
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosAsignadosAReventa" }
+
+exportar_pdf_reporte_vehiculos_asignados_reventa:
+    path:     /exportar_pdf_reporte_vehiculos_asignados_reventa
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosAsignadosAReventa" }
+
+exportar_excel_reporte_vehiculos_asignados_reventa:
+    path:     /exportar_excel_reporte_vehiculos_asignados_reventa
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosAsignadosAReventa" }

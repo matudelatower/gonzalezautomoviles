@@ -560,6 +560,74 @@ class ExcelTool {
         return $response;
     }
 
+    /**
+     *
+     * Arma la hoja para el listado de vehiculos asignados a un reventa
+     *
+     * @param type $resultSet
+     *
+     * @return type
+     */
+    public function buildSheetReporteVehiculosAsignadosAReventa($resultSet) {
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
+        $phpExcelObject->getProperties()->setTitle($this->title);
+        $phpExcelObject->getProperties()->setDescription($this->descripcion);
+        $phpExcelObject->getProperties()->setCreator($this->createby);
+
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        $phpExcelObject->getActiveSheet()
+                       ->setCellValue('A1', 'N°')
+                       ->setCellValue('B1', 'Modelo')
+                       ->setCellValue('C1', 'Color vehiculo')
+                       ->setCellValue('D1', 'Vin')
+                       ->setCellValue('E1', 'Facturado')
+                       ->setCellValue('F1', 'Estado Patentamiento')
+                       ->setCellValue('G1', 'Dias de recibido')
+        ;
+
+        $phpExcelObject->getActiveSheet()->getStyle('A1:G1')->getBorders()->applyFromArray($this->head);
+
+
+        $i = 2;
+        $contador=1;
+        if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
+
+            foreach ($resultSet as $entity) {
+
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
+                $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['factura_id']?'SI':'NO');
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['estado_patentamiento']? $entity['estado_patentamiento']:'');
+                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['dias_de_recibido']);
+                $i ++;
+                $contador++;
+            }
+        }
+
+        $phpExcelObject->getActiveSheet()->getStyle('A2:G' . $i)->getBorders()->applyFromArray($this->body);
+
+        /** autosize */
+        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
+
+        $phpExcelObject->getActiveSheet()->setTitle($this->title);
+
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
+// create the response
+        $response = $this->phpexcel->createStreamedResponse($writer);
+
+        return $response;
+    }
+
     public function buildSheetReporteVehiculosPatentamientos($resultSet) {
         $phpExcelObject = $this->phpexcel->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);

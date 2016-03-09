@@ -4,6 +4,7 @@ namespace VehiculosBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
+use VehiculosBundle\Form\Filter\ReporteVehiculosAsignadosAReventaFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosConDaniosFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
 use VehiculosBundle\Form\Filter\VehiculosPorDepositoFilterType;
@@ -318,7 +319,7 @@ class ReporteController extends Controller {
         );
 
         return new Response(
-                $reportesManager->imprimir($html, 'H')
+                $reportesManager->imprimir($html,'H')
                 , 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
@@ -506,7 +507,7 @@ class ReporteController extends Controller {
         return $response;
     }
 
-    public function indexReporteVehiculosRecibidosConDaniosAction(Request $request) {
+    public function indexReporteVehiculosRecibidosConDaniosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -528,12 +529,12 @@ class ReporteController extends Controller {
         }
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView()
+            'entities' => $entities,
+            'form' => $form->createView()
         ));
     }
 
-    public function pdfReporteVehiculosRecibidosConDaniosAction(Request $request) {
+    public function pdfReporteVehiculosRecibidosConDaniosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -557,24 +558,24 @@ class ReporteController extends Controller {
         $title = 'Reporte de Autos Recibidos Con Daños';
 
         $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta
-                )
+            'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
+                'entities' => $entities,
+                'title' => $title,
+                'fechaDesde' => $fechaDesde,
+                'fechaHasta' => $fechaHasta
+            )
         );
 
         return new Response(
-                $reportesManager->imprimir($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
+            $reportesManager->imprimir($html)
+            , 200, array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+            )
         );
     }
 
-    public function excelReporteVehiculosRecibidosConDaniosAction(Request $request) {
+    public function excelReporteVehiculosRecibidosConDaniosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -647,12 +648,11 @@ class ReporteController extends Controller {
                 )
         );
     }
-
+    
     /*
      * 
      */
-
-    public function indexReporteVehiculosPorDepositoAction(Request $request) {
+     public function indexReporteVehiculosPorDepositoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new VehiculosPorDepositoFilterType());
 
@@ -678,7 +678,7 @@ class ReporteController extends Controller {
                     'form' => $form->createView()
         ));
     }
-
+    
     public function excelReporteVehiculosPorDepositoAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new VehiculosPorDepositoFilterType());
@@ -751,7 +751,7 @@ class ReporteController extends Controller {
         );
     }
 
-    public function indexReporteVehiculosConDaniosInternosAction(Request $request) {
+    public function indexReporteVehiculosConDaniosInternosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -773,12 +773,12 @@ class ReporteController extends Controller {
         }
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosConDaniosInternos.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView()
+            'entities' => $entities,
+            'form' => $form->createView()
         ));
     }
 
-    public function pdfReporteVehiculosConDaniosInternosAction(Request $request) {
+    public function pdfReporteVehiculosConDaniosInternosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -802,24 +802,24 @@ class ReporteController extends Controller {
         $title = 'Reporte de Autos  Con Daños Internos';
 
         $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta
-                )
+            'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
+                'entities' => $entities,
+                'title' => $title,
+                'fechaDesde' => $fechaDesde,
+                'fechaHasta' => $fechaHasta
+            )
         );
 
         return new Response(
-                $reportesManager->imprimir($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
+            $reportesManager->imprimir($html)
+            , 200, array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+            )
         );
     }
 
-    public function excelReporteVehiculosConDaniosInternosAction(Request $request) {
+    public function excelReporteVehiculosConDaniosInternosAction(Request $request  ) {
         $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
 
         $entities = array();
@@ -858,8 +858,106 @@ class ReporteController extends Controller {
         return $response;
     }
 
+    public function indexReporteVehiculosAsignadosAReventaAction( Request $request ) {
+        $form = $this->createForm( new ReporteVehiculosAsignadosAReventaFilterType() );
+
+        $entities = array();
+
+        $reportesManager = $this->get( 'manager.reportes' );
+
+        if ( $request->getMethod() == 'POST' ) {
+
+            $form->handleRequest( $request );
+
+            $formData = $form->getData();
+
+            $entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
+        }
+
+        $paginator = $this->get( 'knp_paginator' );
+        $entities  = $paginator->paginate(
+            $entities,
+            $request->query->get( 'page', 1 )/* page number */,
+            30/* limit per page */
+        );
+
+        return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.html.twig',
+            array(
+                'entities' => $entities,
+                'form'     => $form->createView()
+            ) );
+    }
+
+    public function pdfReporteVehiculosAsignadosAReventaAction( Request $request ) {
+        $form = $this->createForm( new ReporteVehiculosAsignadosAReventaFilterType() );
+
+        $entities = array();
+
+        $reportesManager = $this->get( 'manager.reportes' );
+
+        if ( $request->getMethod() == 'POST' ) {
+
+            $form->handleRequest( $request );
+
+            $formData = $form->getData();
+
+            $entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
+        }
+
+        $title = 'Reporte de Autos Asignados a Reventa';
+
+        $html = $this->renderView(
+            'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.pdf.twig',
+            array(
+                'entities'   => $entities,
+                'title'      => $title,
+            )
+        );
+
+        return new Response(
+            $reportesManager->imprimir( $html )
+            , 200, array(
+                'Content-Type'        => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+            )
+        );
+    }
+
+    public function excelReporteVehiculosAsignadosAReventaAction( Request $request ) {
+        $form = $this->createForm( new ReporteVehiculosAsignadosAReventaFilterType() );
+
+        $entities = array();
+
+        $reportesManager = $this->get( 'manager.reportes' );
+
+        if ( $request->getMethod() == 'POST' ) {
+
+            $form->handleRequest( $request );
+
+            $formData = $form->getData();
+
+            $entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
+        }
+
+        $filename = "reporte_vehiculos_asignados_a_reventa.xls";
+
+
+        $exportExcel = $this->get( 'excel.tool' );
+        $exportExcel->setTitle( 'Vehiculos Asignados a Reventa' );
+        $exportExcel->setDescripcion( 'Listado de Vehiculos Asignados a Reventa' );
+
+        $response = $exportExcel->buildSheetReporteVehiculosAsignadosAReventa( $entities );
+
+        $response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+        $response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+        $response->headers->set( 'Pragma', 'public' );
+        $response->headers->set( 'Cache-Control', 'maxage=1' );
+
+        return $response;
+    }
+
     /*
-     * 
+     *
      */
 
     public function indexReporteVehiculosPatentamientosAction(Request $request) {
@@ -936,7 +1034,7 @@ class ReporteController extends Controller {
         );
     }
 
-    
+
     public function excelReporteVehiculosPatentamientosAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new ReportePatentamientosFilterType());

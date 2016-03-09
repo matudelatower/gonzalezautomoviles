@@ -26,4 +26,18 @@ class ClienteRepository extends EntityRepository {
 
 
 	}
+
+	public function getClienteReventaByDni( $dni ) {
+		$qb = $this->createQueryBuilder( 'c' );
+		$qb
+			->join( 'c.personaTipo', 'pt' )
+			->join( 'pt.persona', 'pers' )
+			->where( "pers.numeroDocumento like upper(:numeroDocumento)" )
+		->andWhere('c.reventa = :reventa');
+
+		$qb->setParameter( 'numeroDocumento', '%' . $dni . '%' );
+		$qb->setParameter( 'reventa', 'TRUE' );
+
+		return $qb->getQuery()->getResult();
+	}
 }

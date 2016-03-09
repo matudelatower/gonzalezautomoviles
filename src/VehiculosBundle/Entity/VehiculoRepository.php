@@ -276,10 +276,10 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         return $stmt->fetchAll();
     }
 
-    public function getTotalVehiculosPorFecha($fechaDesde, $fechaHasta) {
+    public function getTotalVehiculosPorFecha(  $fechaDesde, $fechaHasta) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
@@ -291,22 +291,22 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
              vehiculos vehiculos
         WHERE vehiculos.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['total'];
     }
 
-    public function getVehiculosPorEstado($fechaDesde, $fechaHasta, $estado = null) {
+    public function getVehiculosPorEstado( $fechaDesde, $fechaHasta, $estado = null ) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
         $where = '';
 
-        if ($estado) {
+        if ( $estado ) {
             $where = " tipo_estado_vehiculo.slug = '$estado'
             AND ";
         }
@@ -324,21 +324,22 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 Group by estados_vehiculos_sq.vehiculo_id
             )";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['total'];
     }
 
-    public function getVehiculosRecibidos($fechaDesde, $fechaHasta) {
+    public function getVehiculosRecibidos( $fechaDesde, $fechaHasta ) {
 
-        return $this->getVehiculosPorEstado($fechaDesde, $fechaHasta, 'recibido');
+        return $this->getVehiculosPorEstado( $fechaDesde, $fechaHasta, 'recibido' );
+
     }
 
-    public function getVehiculosRecibidosConDanios($fechaDesde, $fechaHasta) {
+    public function getVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta ) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
@@ -362,16 +363,16 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 )
              )";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['cantidad'];
     }
 
-    public function getVehiculosConDaniosGm($fechaDesde, $fechaHasta) {
+    public function getVehiculosConDaniosGm( $fechaDesde, $fechaHasta ) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
@@ -384,16 +385,16 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         WHERE
              danios_vehiculo_gm.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['cantidad'];
     }
 
-    public function getVehiculosConDaniosInternos($fechaDesde, $fechaHasta) {
+    public function getVehiculosConDaniosInternos( $fechaDesde, $fechaHasta ) {
 
-        $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-        $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+        $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
         $db = $this->getEntityManager()->getConnection();
 
@@ -405,7 +406,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             WHERE
                  danios_vehiculos_interno.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
 
-        $stmt = $db->prepare($query);
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll()[0]['cantidad'];
@@ -417,7 +418,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $db = $this->getEntityManager()->getConnection();
 
 
-        $where = " d.id=" . $filters['deposito']->getId();
+        $where=" d.id=" . $filters['deposito']->getId();
 
         if ($filters['colorVehiculo']) {
             $where.=" AND v.color_vehiculo_id=" . $filters['colorVehiculo']->getId();
@@ -447,6 +448,59 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 " ORDER BY modelo,color_vehiculo asc";
 
         $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getVehiculosAsignadosAReventa( $filters ) {
+        $db = $this->getEntityManager()->getConnection();
+
+        $where = '1=1';
+
+        if ( $filters['facturado'] ) {
+            $where .= " AND vehiculos.factura_id IS NOT NULL";
+        } else if ( $filters['facturado'] == 2 ) {
+            $where .= " AND vehiculos.factura_id IS NULL";
+        }
+
+        if ( $filters['reventa'] ) {
+            $where .= " AND vehiculos.cliente_id = " . $filters['reventa']->getId();
+            $where .= " AND clientes.reventa = true";
+        }
+
+        if ( $filters['diaInicio'] ) {
+            $where .= " AND (current_date-vehiculos.fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
+        }
+
+        if ( $filters['diaFin'] ) {
+            $where .= " AND (current_date-vehiculos.fecha_emision_documento::date <= " . $filters['diaFin'] . ")";
+        }
+
+
+        $query = "
+        SELECT
+             vehiculos.*,
+             current_date-vehiculos.fecha_emision_documento::date as dias_de_recibido,
+             nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
+             colores_vehiculos.color AS color_vehiculo,
+             personas.nombre AS personas_nombre,
+             personas.apellido AS personas_apellido,
+             estados_patentamiento.estado AS estado_patentamiento
+        FROM
+             colores_vehiculos colores_vehiculos INNER JOIN vehiculos vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
+             INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
+             LEFT OUTER JOIN clientes clientes ON vehiculos.cliente_id = clientes.id
+             LEFT OUTER JOIN patentamientos patentamientos ON vehiculos.patentamiento_id = patentamientos.id
+             LEFT OUTER JOIN estados_patentamiento estados_patentamiento ON patentamientos.estado_patentamiento_id = estados_patentamiento.id
+             LEFT OUTER JOIN persona_tipos persona_tipos ON clientes.id = persona_tipos.cliente_id
+             LEFT OUTER JOIN personas personas ON persona_tipos.persona_id = personas.id
+             INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
+         WHERE
+             $where
+        ";
+
+        $stmt = $db->prepare( $query );
         $stmt->execute();
 
         return $stmt->fetchAll();

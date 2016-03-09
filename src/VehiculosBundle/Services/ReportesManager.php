@@ -190,4 +190,14 @@ class ReportesManager {
         );
     }
 
+    public function getVehiculosAsignadosAReventa( $filters ) {
+
+        $em = $this->em;
+
+        $vehiculos = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosAsignadosAReventa( $filters );
+
+        return $vehiculos;
+
+    }
+
 }

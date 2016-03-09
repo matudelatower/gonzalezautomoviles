@@ -1,0 +1,52 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+
+{% block body %}
+    <style>
+        td {
+            text-align: center;
+        }
+
+    </style>
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
+
+            <tr>
+                <th>N°</th>
+                <th>Modelo</th>
+                <th>Color vehiculo</th>
+                <th>Vin</th>
+                <th>Facturado</th>
+                <th>Estado Patentamiento</th>
+                <th>Dias de recibido</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ entity.modelo }}</td>
+                    <td>{{ entity.color_vehiculo }}</td>
+                    <td>{{ entity.vin }}</td>
+                    <td>
+                        {% if entity.factura_id %}
+                            SI
+                        {% else %}
+                            NO
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if entity.estado_patentamiento %}
+                            {{ entity.estado_patentamiento }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ entity.dias_de_recibido }}
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
