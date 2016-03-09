@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use VehiculosBundle\Entity\EstadoVehiculo;
+use VehiculosBundle\Form\PagoGmVehiculoType;
 
 class AjaxController extends Controller {
 
@@ -37,6 +38,7 @@ class AjaxController extends Controller {
         $html = $this->renderView(
                 'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig', array(
             'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
                 )
         );
         return new JsonResponse($html);
@@ -63,9 +65,11 @@ class AjaxController extends Controller {
 
     public function newRegistroPagoAGmAjaxAction($vehiculoId) {
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $form = $this->createForm(new \VehiculosBundle\Form\PagoGmVehiculoType(), $vehiculo);
         $html = $this->renderView(
                 'VehiculosBundle:Vehiculo:newRegistroPagoAGm.html.twig', array(
             'vehiculo' => $vehiculo,
+            'form' => $form->createView(),
                 )
         );
         return new JsonResponse($html);
@@ -75,13 +79,19 @@ class AjaxController extends Controller {
      * Registra que el vehiculo fue pagado a gm. cambia estado pagado a true
      */
 
-    public function pagoAGmUpdateAjaxAction($vehiculoId) {
+    public function pagoAGmUpdateAjaxAction(Request $request, $vehiculoId) {
         $em = $this->getDoctrine()->getManager();
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
-        $vehiculo->setPagado(true);
-        $em->persist($vehiculo);
-        $em->flush();
-        return new JsonResponse(true);
+        $form = $this->createForm(new PagoGmVehiculoType(), $vehiculo);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $vehiculo->setPagado(true);
+            $em->persist($vehiculo);
+            $em->flush();
+            return new JsonResponse(true);
+        } else {
+            return new JsonResponse(false);
+        }
     }
 
     /*

@@ -69,6 +69,10 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <th>Fecha pago</th>
+                                    <td>{{ entity.fechaPagoGm is null ? "" :entity.fechaPagoGm|date('d-m-Y') }}</td>
+                                </tr>
+                                <tr>
                                     <th>Numero pedido</th>
                                     <td>{{ entity.numeroPedido }}</td>
                                 </tr>

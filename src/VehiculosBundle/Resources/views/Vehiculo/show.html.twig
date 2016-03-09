@@ -75,14 +75,18 @@
                                 <td>{{ entity.impuestos }}</td>
                             </tr>
                             <tr>
-                                <th>Pagado</th>
+                                <th>Estado Pago</th>
                                 <td>
                                     {%if entity.pagado%}
-                                        SI
+                                        Gonzalez
                                     {%else%}
-                                        NO
+                                        Gpat
                                     {%endif%}
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>Fecha pago</th>
+                                <td>{{ entity.fechaPagoGm is null ? "" :entity.fechaPagoGm|date('d-m-Y') }}</td>
                             </tr>
                             <tr>
                                 <th>Numero pedido</th>

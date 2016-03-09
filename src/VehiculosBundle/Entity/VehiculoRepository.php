@@ -378,7 +378,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT
-             count(vehiculos.id) as cantidad
+             count(distinct(vehiculos.id)) as cantidad
         FROM
              tipos_danio_gm tipos_danio_gm INNER JOIN danios_vehiculo_gm danios_vehiculo_gm ON tipos_danio_gm.id = danios_vehiculo_gm.tipo_danio_id
              INNER JOIN vehiculos vehiculos ON danios_vehiculo_gm.vehiculo_id = vehiculos.id

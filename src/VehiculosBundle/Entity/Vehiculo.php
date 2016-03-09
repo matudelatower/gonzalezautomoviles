@@ -229,6 +229,13 @@ class Vehiculo {
      * @ORM\Column(name="pagado", type="boolean")
      */
     private $pagado = false;
+    
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="fecha_pago_gm", type="date", nullable=true)
+     */
+    private $fechaPagoGm;
 
     /**
      * @var string
@@ -1203,5 +1210,29 @@ class Vehiculo {
     public function getCuponGarantia()
     {
         return $this->cuponGarantia;
+    }
+
+    /**
+     * Set fechaPagoGm
+     *
+     * @param \DateTime $fechaPagoGm
+     *
+     * @return Vehiculo
+     */
+    public function setFechaPagoGm($fechaPagoGm)
+    {
+        $this->fechaPagoGm = $fechaPagoGm;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPagoGm
+     *
+     * @return \DateTime
+     */
+    public function getFechaPagoGm()
+    {
+        return $this->fechaPagoGm;
     }
 }
