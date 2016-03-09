@@ -560,6 +560,7 @@ class ExcelTool {
         return $response;
     }
 
+
     /**
      *
      * Arma la hoja para el listado de vehiculos asignados a un reventa

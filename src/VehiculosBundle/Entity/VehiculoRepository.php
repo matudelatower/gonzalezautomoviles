@@ -281,7 +281,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $fechaDesde = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
         $fechaHasta = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
 
-        $db = $this->getEntityManager()->getConnection();
+        $db = $this->getEntityManager()->getConnection(); 
 
 
 
@@ -565,5 +565,4 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
         return $stmt->fetchAll();
     }
-
 }

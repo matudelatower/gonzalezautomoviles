@@ -830,6 +830,7 @@ class ReporteController extends Controller {
 
             $form->handleRequest($request);
 
+
             $formData = $form->getData();
 
             $aFecha = explode(' - ', $formData['rango']);

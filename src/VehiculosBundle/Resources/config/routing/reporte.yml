@@ -64,7 +64,7 @@ exportar_excel_reporte_vehiculos_con_danios:
     
 pdf_check_control_interno:
     path:     /pdf_check_control_interno{vehiculoId}
-    defaults: { _controller: "VehiculosBundle:Reporte:pdfCheckControlInterno" }    
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfCheckControlInterno" } 
 
 index_reporte_vehiculos_con_danios_internos:
     path:     /index_reporte_vehiculos_con_danios_internos
