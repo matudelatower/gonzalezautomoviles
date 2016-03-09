@@ -67,28 +67,32 @@
                                     <td>{{ entity.vehiculo_estado | default ("") }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>
+                                        <div class="btn-group">
 
-                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                class="fa fa-eye"></i></a>
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                class="fa fa-edit"></i></a>
-                                        <a class="btn btn-default"
-                                           href="{{ path('checklist_preentrega', { 'vehiculoId': entity.id }) }}"
-                                           title="Realizar checklist pre-entrega"><i class="fa fa-check-square"></i></a>
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                                        class="fa fa-eye"></i></a>
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
+                                                        class="fa fa-edit"></i></a>
+                                            <a class="btn btn-default"
+                                               href="{{ path('checklist_preentrega', { 'vehiculoId': entity.id }) }}"
+                                               title="Realizar checklist pre-entrega"><i class="fa fa-check-square"></i></a>
                                             {% if entity.venta_especial_slug == 'convencional' %}
-                                            <a class="btn {%if(entity.cliente_id!='')%}btn-success{%else%}btn-default{%endif%} btn-asignar" data-toggle="modal"
-                                               data-target="#modalGeneric"
-                                               data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
-                                               title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
+                                                <a class="btn {% if(entity.cliente_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
+                                                   data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
                                             {% endif %}
-                                        <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                        <a class="btn {%if(entity.danio_interno_sin_solucionar!='')%}btn-danger{%else%}btn-default{%endif%}"
-                                           href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
-                                           title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>   
+                                            <a class="btn btn-default btn-deposito" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                            <a class="btn {% if(entity.danio_interno_sin_solucionar!='') %}btn-danger{% else %}btn-default{% endif %}"
+                                               href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
+                                               title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}

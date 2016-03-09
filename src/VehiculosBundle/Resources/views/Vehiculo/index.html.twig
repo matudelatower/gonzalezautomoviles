@@ -66,17 +66,18 @@
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>{{ entity.vehiculo_estado | default ("") }}</td>
                                     <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                                        class="fa fa-eye"></i></a>
 
-                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                class="fa fa-eye"></i></a>
-
-                                        {% if entity.vehiculo_estado_slug != 'transito' %}
-                                            <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                               data-target="#modalGeneric"
-                                               data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                               title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                            {% endif %}    
-
+                                            {% if entity.vehiculo_estado_slug != 'transito' %}
+                                                <a class="btn btn-default btn-deposito" data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                            {% endif %}
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}

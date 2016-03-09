@@ -735,7 +735,7 @@ class VehiculoController extends Controller {
                 $vehiculosManager = $this->get('manager.vehiculos');
 
                 $tipoEstadoDanioGm = $em->getRepository('VehiculosBundle:TipoEstadoDanioGm')->findOneBySlug(
-                        'tipo-danio-gm-registrado'
+                        'registrado'
                 );
 
                 if ($vehiculosManager->guardarVehiculo($vehiculo, $tipoEstadoDanioGm)) {
