@@ -25,7 +25,7 @@
                 {% set modelo=""%}                
                 {% for entity in entities %}
                     {%if(entity.nombre_modelo!=modelo)%}
-                        {% set contador=1%}
+
                         {% set modelo = entity.nombre_modelo%}
                         <tr>
                             <td></td>
@@ -33,7 +33,7 @@
                         </tr>
                     {%endif%}    
                     <tr>
-                        <td>{{ contador }}</td>
+                        <td>{{ loop.index }}</td>
                         <td style="text-align: left">{{ entity.modelo }}</td>
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
@@ -47,7 +47,6 @@
                             {% endif %}
                         </td>
                     </tr>
-                    {% set contador=contador+1%}
                 {% endfor %}
             </tbody>
         </table>

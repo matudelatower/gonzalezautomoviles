@@ -119,10 +119,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% set contador=1%}
+
                             {% for entity in entities %}                                
                                 <tr>
-                                    <td>{{ contador }}</td>
+                                    <td>{{ loop.index }}</td>
                                     <td>{{ entity.modelo }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
                                     <td>{{ entity.vin }}</td>
@@ -136,7 +136,6 @@
                                         {%endif%}
                                     </td>#}
                                 </tr>
-                                {% set contador=contador+1%}
                             {% endfor %}
                         </tbody>
                     </table>
