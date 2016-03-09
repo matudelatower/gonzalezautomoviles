@@ -98,6 +98,7 @@
                data-cant="0"
                href="#"><i class="fa fa-plus"></i></a>
         </td>
+        <td>{{ form_widget(formDanioInterno.danioVehiculoInterno.vars.prototype.solucionado) }}</td>
         <td>
             <a class="btn btn-default" title="Borrar item"
                href="javascript:void(0)"
@@ -127,6 +128,7 @@
                                         <th>Tipo Daño</th>
                                         <th>Detalle</th>
                                         <th>Foto</th>
+                                        <th>Solucionado</th>
                                         <th>Acción</th>
 
                                     </tr>
@@ -158,6 +160,9 @@
                                                 <a class="btn btn-default pull-right agregar-foto"
                                                    data-cant="{{ danioVehiculo.fotoDanioInterno.count + 1 }}"
                                                    href="#"><i class="fa fa-plus"></i></a>
+                                            </td>
+                                            <td>
+                                                {{ form_widget(danioVehiculo.solucionado) }}
                                             </td>
                                             <td>
                                                 <a class="btn btn-default" title="Borrar item"

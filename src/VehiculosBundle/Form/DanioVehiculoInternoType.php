@@ -24,7 +24,7 @@ class DanioVehiculoInternoType extends AbstractType {
 		$builder
 //            ->add('numeroOrdenArreglo')
 			->add( 'detalle' )
-//            ->add('solucionado')
+            ->add('solucionado')
 //			->add( 'tipoDanioInterno' )
 			->add( 'fotoDanioInterno',
 				'collection',
