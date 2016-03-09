@@ -32,9 +32,16 @@ class Patentamiento {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="datetime", nullable=true)
+     * @ORM\Column(name="fecha_inicio", type="datetime")
      */
-    private $fecha;
+    private $fechaInicio;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha_patentamiento", type="datetime", nullable=true)
+     */
+    private $fechaPatentamiento;
 
     /**
      * @var string
@@ -79,13 +86,13 @@ class Patentamiento {
 
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\EstadoPatentamiento")
-     * @ORM\JoinColumn(name="estado_patentamiento_id", referencedColumnName="id",nullable=true)
+     * @ORM\JoinColumn(name="estado_patentamiento_id", referencedColumnName="id")
      */
     private $estadoPatentamiento;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\AgenteInicioPatente")
-     * @ORM\JoinColumn(name="agente_inicio_patente_id", referencedColumnName="id",nullable=true)
+     * @ORM\JoinColumn(name="agente_inicio_patente_id", referencedColumnName="id")
      */
     private $agenteInicioPatente;
 
@@ -118,28 +125,6 @@ class Patentamiento {
      */
     public function getDominio() {
         return $this->dominio;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Patentamiento
-     */
-    public function setFecha($fecha) {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha() {
-        return $this->fecha;
     }
 
     /**
@@ -274,7 +259,6 @@ class Patentamiento {
         return $this->estadoPatentamiento;
     }
 
-
     /**
      * Set agenteInicioPatente
      *
@@ -282,8 +266,7 @@ class Patentamiento {
      *
      * @return Patentamiento
      */
-    public function setAgenteInicioPatente(\VehiculosBundle\Entity\AgenteInicioPatente $agenteInicioPatente = null)
-    {
+    public function setAgenteInicioPatente(\VehiculosBundle\Entity\AgenteInicioPatente $agenteInicioPatente = null) {
         $this->agenteInicioPatente = $agenteInicioPatente;
 
         return $this;
@@ -294,8 +277,56 @@ class Patentamiento {
      *
      * @return \VehiculosBundle\Entity\AgenteInicioPatente
      */
-    public function getAgenteInicioPatente()
-    {
+    public function getAgenteInicioPatente() {
         return $this->agenteInicioPatente;
+    }
+
+
+    /**
+     * Set fechaInicio
+     *
+     * @param \DateTime $fechaInicio
+     *
+     * @return Patentamiento
+     */
+    public function setFechaInicio($fechaInicio)
+    {
+        $this->fechaInicio = $fechaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaInicio()
+    {
+        return $this->fechaInicio;
+    }
+
+    /**
+     * Set fechaPatentamiento
+     *
+     * @param \DateTime $fechaPatentamiento
+     *
+     * @return Patentamiento
+     */
+    public function setFechaPatentamiento($fechaPatentamiento)
+    {
+        $this->fechaPatentamiento = $fechaPatentamiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPatentamiento
+     *
+     * @return \DateTime
+     */
+    public function getFechaPatentamiento()
+    {
+        return $this->fechaPatentamiento;
     }
 }

@@ -1,0 +1,52 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+
+{% block body %}
+    <style>
+        label{
+            font-weight: bold;
+        }
+    </style>
+
+    <div>
+        <label>Estado Patentamiento: </label> <span>{{ estado }}</span> <br>
+        {%if(fecha)%}
+            <label>Fecha: </label><span>{{ fechaDesde |date('d/m/Y') }} al {{ fechaHasta |date('d/m/Y') }}</span>
+        {%endif%}
+    </div>
+    <br>
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped"  style="width: 100%">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Cliente</th>
+                    <th>Modelo</th>
+                    <th>Vin</th>
+                    <th>Agente inicio Pat.</th>
+                    <th>Fecha inicio</th>                    
+                    <th>Dominio</th>
+                    <th>Fecha patent.</th>
+                    <th>N° registro</th>
+                    <th>Tel Cliente</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set modelo=""%}                
+                {% for entity in entities %}                      
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ entity.cliente }}</td>
+                        <td>{{ entity.modelo }}</td>
+                        <td>{{ entity.vin }}</td>
+                        <td>{{ entity.agente_patentamiento }}</td>
+                        <td>{{ entity.fecha_inicio|date("d-m-Y") }}</td>
+                        <td>{{ entity.dominio }}</td>
+                        <td>{{ entity.fecha_patentamiento|date("d-m-Y") }}</td>
+                        <td>{{ entity.registro }}</td>
+                        <td>{{ entity.celular }}</td>                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

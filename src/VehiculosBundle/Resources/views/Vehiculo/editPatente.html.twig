@@ -53,8 +53,9 @@
                 {{ form_start(form) }}
                 {{ form_row(form.estadoPatentamiento) }}
                 {{ form_row(form.agenteInicioPatente) }}
+                {{ form_row(form.fechaInicio) }}
                 {{ form_row(form.dominio) }}
-                {{ form_row(form.fecha) }}
+                {{ form_row(form.fechaPatentamiento) }}
                 {{ form_row(form.registro) }}
                 {{ form_end(form) }}
                 <a class="btn btn-default" href="{{ path('vehiculos_pendientes_por_entregar_index') }}">

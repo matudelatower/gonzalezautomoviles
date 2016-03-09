@@ -90,3 +90,14 @@ exportar_excel_reporte_vehiculos_por_deposito:
     path:     /exportar_excel_reporte_vehiculos_por_deposito
     defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPorDeposito" }     
 
+index_reporte_vehiculos_patentamientos:
+    path:     /index_reporte_vehiculos_patentamientos
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosPatentamientos" }
+
+exportar_pdf_reporte_vehiculos_patentamientos:
+    path:     /exportar_pdf_reporte_vehiculos_patentamientos
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosPatentamientos" }
+
+exportar_excel_reporte_vehiculos_patentamientos:
+    path:     /exportar_excel_reporte_vehiculos_patentamientos
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPatentamientos" }     

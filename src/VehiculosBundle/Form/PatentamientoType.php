@@ -16,11 +16,16 @@ class PatentamientoType extends AbstractType {
         $builder
                 ->add('estadoPatentamiento')
                 ->add('agenteInicioPatente')
+                ->add('fechaInicio', 'date', array(
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                     'attr' => array('class' => 'datepicker'),
+                ))
                 ->add('dominio', 'text', array(
                     'label_attr' => array('class' => 'hidden estado-patente-field'),
                     'attr' => array('class' => 'hidden estado-patente-field')
                 ))
-                ->add('fecha', 'date', array(
+                ->add('fechaPatentamiento', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'dd-MM-yyyy',
                     'attr' => array('class' => 'datepicker  hidden estado-patente-field'),
