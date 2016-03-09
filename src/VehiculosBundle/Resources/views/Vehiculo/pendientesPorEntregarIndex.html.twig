@@ -65,43 +65,45 @@
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>{{ entity.fecha_entrega is null ? "" :entity.fecha_entrega|date('d-m-Y')~' '~entity.hora_entrega }}</td>
                                     <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                                        title="Ver" class="fa fa-eye"></i></a>
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
+                                                        title="Editar" class="fa fa-edit"></i></a>
+                                            <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
+                                               href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
+                                               title="Checklist control interno"><i class="fa fa-check-square"></i></a>
+                                            <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
+                                               href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                               title="Patente"><i class="fa icon-patente"></i></a>
 
-                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                title="Ver" class="fa fa-eye"></i></a>
-                                        <a class="btn btn-default"
-                                           href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                title="Editar" class="fa fa-edit"></i></a>
-                                        <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
-                                           href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
-                                           title="Checklist control interno"><i class="fa fa-check-square"></i></a>
-                                        <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
-                                           href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                           title="Patente"><i class="fa icon-patente"></i></a>
+                                            <a class="btn btn-default btn-deposito" data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
 
-                                        <a class="btn btn-default btn-deposito" data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+                                            {#  <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
+                                                 data-toggle="modal" data-target="#modalGeneric"
+                                                 data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
+                                                 title="Agendar entrega"><i class="fa fa-calendar"></i></a>#}
+                                            <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
 
-                                      {#  <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
-                                           data-toggle="modal" data-target="#modalGeneric"
-                                           data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Agendar entrega"><i class="fa fa-calendar"></i></a>#}
-                                        <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
-                                          
-                                           href="{{ path('agenda_entrega_new', { 'vehiculoId': entity.id }) }}"
-                                           title="Agendar entrega"><i class="fa fa-calendar"></i></a>   
-                                           
-                                           
-                                        <a class="btn {%if(entity.danio_interno_sin_solucionar!='')%}btn-danger{%else%}btn-default{%endif%}"
-                                           href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
-                                           title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
+                                               href="{{ path('agenda_entrega_new', { 'vehiculoId': entity.id }) }}"
+                                               title="Agendar entrega"><i class="fa fa-calendar"></i></a>
 
-                                        <a class="btn {%if(entity.cupon_garantia!='')%}btn-success{%else%}btn-default{%endif%} btn-cupon-garantia" data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
 
+                                            <a class="btn {% if(entity.danio_interno_sin_solucionar!='') %}btn-danger{% else %}btn-default{% endif %}"
+                                               href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
+                                               title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
+
+                                            <a class="btn {% if(entity.cupon_garantia!='') %}btn-success{% else %}btn-default{% endif %} btn-cupon-garantia"
+                                               data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -125,14 +127,8 @@
 {% block javascripts %}
     {{ parent() }}
     {% include "VehiculosBundle:Vehiculo:index.js.twig" %}
-    <script>
-        $(document).ready(function () {
-            oTable = $('#tabla-listado').dataTable();
-            oTable.fnSort([[8, 'asc'], [1, 'asc'], [2, 'asc'], [4, 'asc']]);
-        });
-    </script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+    <script src="{{ asset('bundles/theme/js/moment.min.js') }}"></script>
 <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/lang-all.js') }}"></script>
 

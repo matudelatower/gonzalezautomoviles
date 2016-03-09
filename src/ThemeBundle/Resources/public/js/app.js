@@ -86,6 +86,7 @@ $(document).ready(function () {
         "autoWidth": true,
         "info": false,
         "scrollX": true,
+        "order": [],
         "language": {
             "search": "Buscar:",
             "zeroRecords": "Sin resultados"

@@ -62,23 +62,25 @@
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-default"
+                                               href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                                        title="Ver" class="fa fa-eye"></i></a>
 
-                                        <a class="btn btn-default" href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                title="Ver" class="fa fa-eye"></i></a>                                        
-
-                                        <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
-                                           href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                           title="Patente"><i class="fa icon-patente"></i></a> 
+                                            <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
+                                               href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                               title="Patente"><i class="fa icon-patente"></i></a>
                                             {% if (entity.encuesta_alerta_temprana=='') %}
-                                            <a class="btn {%if(entity.dominio=='2asd')%}btn-success{%else%}btn-default{%endif%}"
-                                               href="{{ path('crear_alerta_temprana', { 'vehiculoId': entity.id }) }}"
-                                               title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>   
-                                            {%endif%}
-                                        <a class="btn {%if(entity.cupon_garantia!='')%}btn-success{%else%}btn-default{%endif%} btn-cupon-garantia" data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
-                                           title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>    
-
+                                                <a class="btn {% if(entity.dominio=='2asd') %}btn-success{% else %}btn-default{% endif %}"
+                                                   href="{{ path('crear_alerta_temprana', { 'vehiculoId': entity.id }) }}"
+                                                   title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>
+                                            {% endif %}
+                                            <a class="btn {% if(entity.cupon_garantia!='') %}btn-success{% else %}btn-default{% endif %} btn-cupon-garantia"
+                                               data-toggle="modal"
+                                               data-target="#modalGeneric"
+                                               data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
+                                               title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -120,8 +122,7 @@
                         return false;
                     });
         {% endif %}
-                oTable = $('#tabla-listado').dataTable();
-                oTable.fnSort([[1, 'asc'], [2, 'asc'], [4, 'asc']]);
+                
             });
 
 
