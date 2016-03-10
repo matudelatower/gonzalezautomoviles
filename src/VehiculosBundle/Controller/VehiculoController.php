@@ -34,7 +34,8 @@ class VehiculoController extends Controller {
 
         $permisosManager = $this->get('manager.permisos');
 
-        $permisosManager->checkPermiso($requestUri, $usuario);
+//        TODO controlar cuando se pagina
+//        $permisosManager->checkPermiso($requestUri, $usuario);
 
         /* permiso usuario  */
 
