@@ -91,7 +91,7 @@
         </div>
     </div>
     <!-- FIN FILTROS -->
-    {% if entities is not empty %}
+    {% if entities is not empty and entities.autosRecibidos != 0 %}
         <style>
             .doughnut-legend li span {
                 display: block;
@@ -193,22 +193,24 @@
             </div>
         </div>
         <div class="row">
+            {% set autosRecibidosConDanos=(entities.autosRecibidosConDanos * 100 / entities.autosRecibidos)|round(2) %}
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Porcentaje Vehículos recibidos con daños</span>
-                        <span class="info-box-number">{{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }}
+                        <span class="info-box-number">{{ autosRecibidosConDanos }}
                             <small>%</small></span>
                     </div>
                 </div>
             </div>
+            {% set autosRecibidosSinDanos = (entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos)|round(2)%}
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Porcentaje Vehículos recibidos con daños</span>
-                        <span class="info-box-number">{{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }}
+                        <span class="info-box-number">{{ autosRecibidosSinDanos  }}
                             <small>%</small></span>
                     </div>
                 </div>
@@ -243,13 +245,13 @@
             ];
             var PieDataPercent = [
                 {
-                    value: {{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }},
+                    value: {{ autosRecibidosConDanos }},
                     color:"#F7464A",
                     highlight: "#FF5A5E",
                     label: "Recibidos Con Danos"
                 },
                 {
-                    value: {{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }},
+                    value: {{ autosRecibidosSinDanos }},
                     color: "#00a65a",
                     highlight: "#00a65a",
                     label: "Recibidos Sin Danos"
@@ -300,6 +302,19 @@
             chartP.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
 
         </script>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <div class="box-body">
+                            <h1> Sin Resultados</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     {% endif %}
 
 

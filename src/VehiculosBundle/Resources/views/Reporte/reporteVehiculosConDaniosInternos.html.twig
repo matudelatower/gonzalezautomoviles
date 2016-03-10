@@ -91,7 +91,7 @@
         </div>
     </div>
     <!-- FIN FILTROS -->
-    {% if entities is not empty %}
+    {% if entities is not empty and entities.autosRecibidos != 0 %}
         <style>
             .doughnut-legend li span {
                 display: block;
@@ -302,6 +302,19 @@
             chartP.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
 
         </script>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <div class="box-body">
+                            <h1> Sin Resultados</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     {% endif %}
 
 
