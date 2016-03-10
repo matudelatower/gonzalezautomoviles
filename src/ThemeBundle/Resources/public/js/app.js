@@ -57,6 +57,20 @@ function modalAlert(msg) {
     $('#modal-alert').modal('toggle');
 }
 
+/**
+ * Funcion para limpiar los campos de un form
+ *
+ * @param form el formulario a limpiar
+ */
+function resetFormulario(form) {
+
+    form.find('input, textarea, input:not([type="submit"])').removeAttr('value');
+    form.find('input, textarea, input:not([type="submit"])').val('');
+    form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+
+    form.find('select option').removeAttr('selected').find('option:first').attr('selected', 'selected');
+
+}
 
 $(document).ready(function () {
 
@@ -99,4 +113,7 @@ $(document).ready(function () {
     //    radioClass: 'iradio_minimal-blue'
     //});
 
+    $("button:reset").click(function () {
+        resetFormulario($(this).parents('form'));
+    })
 });

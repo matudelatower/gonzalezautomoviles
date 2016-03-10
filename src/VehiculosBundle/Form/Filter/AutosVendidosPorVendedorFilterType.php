@@ -21,7 +21,6 @@ class AutosVendidosPorVendedorFilterType extends AbstractType {
 				        'class'         => 'PersonasBundle:Empleado',
 //					'property'      => 'nombreCompleto',
 				        'search_method' => 'getEmpleadoByApellido',
-				        'required'      => false,
 				        'route_name'    => 'get_empleado_by_apellido'
 			        ) );;
 	}
