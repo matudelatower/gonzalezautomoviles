@@ -89,6 +89,7 @@
             {
                 title: ' - {{  entrega.vehiculo.vin }} - {{ entrega.vehiculo.cliente }}',
                 start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
+                end: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H+1, i') }}),
                 backgroundColor: "#00a65a", //Success (green)
         {%if(entrega.vehiculo.estadoVehiculo.last.tipoEstadoVehiculo.slug=='entregado')%}
                     backgroundColor: "#367fa9", // (blue)

@@ -312,17 +312,14 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         }
 
         $query = "SELECT
-                 count(vehiculos.id) AS total
+                 COUNT (DISTINCT (vehiculos.id)) AS total
             FROM
                  tipo_estado_vehiculo tipo_estado_vehiculo INNER JOIN estados_vehiculos estados_vehiculos ON tipo_estado_vehiculo.id = estados_vehiculos.tipo_estado_vehiculo_id
                  INNER JOIN vehiculos vehiculos ON estados_vehiculos.vehiculo_id = vehiculos.id
             WHERE
                 $where
-                estados_vehiculos.id in (
-                SELECT max(id) FROM estados_vehiculos estados_vehiculos_sq
-                WHERE estados_vehiculos_sq.creado BETWEEN '$fechaDesde' AND '$fechaHasta'
-                Group by estados_vehiculos_sq.vehiculo_id
-            )";
+                estados_vehiculos.creado BETWEEN '$fechaDesde' AND '$fechaHasta'
+                ";
 
         $stmt = $db->prepare( $query );
         $stmt->execute();
@@ -400,7 +397,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT
-                 count(vehiculos.id) as cantidad
+                 count(DISTINCT (vehiculos.id)) as cantidad
             FROM
                  vehiculos vehiculos INNER JOIN danios_vehiculos_interno danios_vehiculos_interno ON vehiculos.id = danios_vehiculos_interno.vehiculo_id
             WHERE

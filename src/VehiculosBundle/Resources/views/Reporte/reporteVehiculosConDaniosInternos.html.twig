@@ -193,22 +193,24 @@
             </div>
         </div>
         <div class="row">
+            {% set porcentajeSinDanio=(entities.autosRecibidosConDanos * 100 / entities.autosRecibidos)| round(2) %}
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Porcentaje Vehículos con daños</span>
-                        <span class="info-box-number">{{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }}
+                        <span class="info-box-number">{{ porcentajeSinDanio }}
                             <small>%</small></span>
                     </div>
                 </div>
             </div>
+            {% set porcentajeConDanio = (entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos) | round(2) %}
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Porcentaje Vehículos con daños</span>
-                        <span class="info-box-number">{{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }}
+                        <span class="info-box-number">{{ porcentajeConDanio }}
                             <small>%</small></span>
                     </div>
                 </div>
@@ -229,7 +231,7 @@
             var PieData = [
                 {
                     value: {{ entities.autosRecibidosConDanos }},
-                    color:"#F7464A",
+                    color: "#F7464A",
                     highlight: "#FF5A5E",
                     label: "Recibidos Con Danos"
                 },
@@ -243,13 +245,13 @@
             ];
             var PieDataPercent = [
                 {
-                    value: {{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }},
-                    color:"#F7464A",
+                    value: {{ porcentajeConDanio }},
+                    color: "#F7464A",
                     highlight: "#FF5A5E",
                     label: "Recibidos Con Danos"
                 },
                 {
-                    value: {{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }},
+                    value: {{ porcentajeSinDanio }},
                     color: "#00a65a",
                     highlight: "#00a65a",
                     label: "Recibidos Sin Danos"
