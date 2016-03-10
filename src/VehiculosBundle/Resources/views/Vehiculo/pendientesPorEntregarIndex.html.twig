@@ -44,7 +44,7 @@
                         <tbody>
                             {% for entity in entities %}
                                 <tr>
-                                    <td><a href="{{ path('vehiculos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                    <td>{{ loop.index }}</td>
                                     <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_codigo~' | '~entity.modelo_version }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
                                     <td>{{ entity.vin }}</td>
