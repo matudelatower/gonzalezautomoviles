@@ -46,6 +46,8 @@
 
         <link rel="stylesheet"
               href="{{ asset('bundles/theme/css/icomoon/style.css') }}">
+        <!-- slider -->
+        <link rel="stylesheet" href="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/bootstrap-slider/slider.css') }}">
 
         {% block stylesheets %}
         {% endblock stylesheets %}
@@ -125,7 +127,9 @@
             <script src="{{ asset('bundles/theme/js/jquery.inputmask/js/jquery.inputmask.js') }}"></script>
             <script src="{{ asset('bundles/theme/js/jquery.inputmask/js/inputmask.numeric.extensions.js') }}"></script>
 
-
+             <!-- bootstrap slider -->
+            <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/bootstrap-slider/bootstrap-slider.js') }}"></script>
+            
         {% endblock javascripts %}
         {% include 'ThemeBundle:Default:app.js.twig' %}
     </head>
