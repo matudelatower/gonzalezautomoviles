@@ -30,25 +30,6 @@ class VehiculosEnStockFilterType extends AbstractType {
 					'required'     => false,
 					'attr'=>array('class'=>'modelo')
 				) )
-//			->add( 'anio',
-//				'choice',
-//				array(
-//					'choice_label' => 'Año',
-//					'required'     => false,
-//					'attr'         => array( 'class' => 'anio' )
-//				) )
-//			->add( 'codigo',
-//				'choice',
-//				array(
-//					'required' => false,
-//					'attr'     => array( 'class' => 'codigo' )
-//				) )
-//			->add( 'version',
-//				'choice',
-//				array(
-//					'required' => false,
-//					'attr'     => array( 'class' => 'version' )
-//				) )
 			->add( 'colorVehiculo',
 				'entity',
 				array(

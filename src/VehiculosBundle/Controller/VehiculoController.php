@@ -2,6 +2,7 @@
 
 namespace VehiculosBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Entity\EstadoVehiculo;
@@ -762,16 +763,24 @@ class VehiculoController extends Controller {
         $form = $this->createCreateForm($vehiculo, new EditarVehiculoType(), $ruta, 'Actualizar');
 
 
+        $daniosGmOriginal = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($vehiculo->getDanioVehiculoGm() as $danioGm) {
+            $daniosGmOriginal->add($danioGm);
+        }
+
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ( $form->isValid() ) {
 
-                $vehiculosManager = $this->get('manager.vehiculos');
+                $vehiculosManager = $this->get( 'manager.vehiculos' );
 
-                if ($vehiculosManager->guardarVehiculo($vehiculo)) {
+                if ( $vehiculosManager->guardarVehiculo( $vehiculo, null, $daniosGmOriginal ) ) {
 
-                    $this->get('session')->getFlashBag()->add(
-                            'success', 'Datos del Vehiculo actualizados correctamente.'
+                    $this->get( 'session' )->getFlashBag()->add(
+                        'success',
+                        'Datos del Vehiculo actualizados correctamente.'
                     );
                 }
             }

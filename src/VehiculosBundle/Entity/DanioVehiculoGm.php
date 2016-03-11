@@ -63,7 +63,7 @@ class DanioVehiculoGm
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\FotoDanioGm", mappedBy="danioVehiculo", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\FotoDanioGm", mappedBy="danioVehiculo", cascade={"persist", "remove"})
      */
     private $fotoDanio;
 

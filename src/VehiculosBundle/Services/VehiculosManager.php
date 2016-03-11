@@ -26,35 +26,42 @@ class VehiculosManager {
         $this->em = $container->get('doctrine')->getManager();
     }
 
-    public function guardarVehiculo($vehiculo, $tipoEstadoDanioGm = null) {
+    public function guardarVehiculo( $vehiculo, $tipoEstadoDanioGm = null, $daniosGmOriginal = null ) {
         $em = $this->em;
 
-        if (!$vehiculo->getRemito()->getUsuarioReceptor()) {
-            $vehiculo->getRemito()->setUsuarioReceptor($this->container->get('security.token_storage')->getToken()->getUser());
+        if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
+            $vehiculo->getRemito()->setUsuarioReceptor( $this->container->get( 'security.token_storage' )->getToken()->getUser() );
         }
-        if (!$vehiculo->getRemito()->getFechaRecibido()) {
-            $vehiculo->getRemito()->setFechaRecibido(new \DateTime('now'));
+        if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
+            $vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
         }
 
-        if ($vehiculo->getDanioVehiculoGm()->count() > 0) {
+        foreach ( $daniosGmOriginal as $item ) {
+            if ( false === $vehiculo->getDanioVehiculoGm()->contains( $item ) ) {
+                $item->setVehiculo( null );
+                $em->remove( $item );
+            }
+        }
 
-            foreach ($vehiculo->getDanioVehiculoGm() as $danioVehiculo) {
-                $danioVehiculo->setVehiculo($vehiculo);
-                if ($tipoEstadoDanioGm) {
-                    $danioVehiculo->setTipoEstadoDanioGm($tipoEstadoDanioGm);
+        if ( $vehiculo->getDanioVehiculoGm()->count() > 0 ) {
+
+            foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
+                $danioVehiculo->setVehiculo( $vehiculo );
+                if ( $tipoEstadoDanioGm ) {
+                    $danioVehiculo->setTipoEstadoDanioGm( $tipoEstadoDanioGm );
                 }
-                foreach ($danioVehiculo->getFotoDanio() as $fotoDanio) {
+                foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
                     $fotoDanio->upload();
-                    $fotoDanio->setDanioVehiculo($danioVehiculo);
+                    $fotoDanio->setDanioVehiculo( $danioVehiculo );
                 }
             }
         }
-        $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                'recibido'
+        $tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
+            'recibido'
         );
 
 
-        $this->setEstadoActualVehiculo($vehiculo, $tipoEstadoVehiculo);
+        $this->setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo );
 
         $em->flush();
 
