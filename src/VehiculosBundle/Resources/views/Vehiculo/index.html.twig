@@ -58,7 +58,7 @@
                                                 <a class="btn btn-pagado" data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Mover de Deposito">Gpat</a>
+                                                   title="Registrar pago">Gpat</a>
                                             {%endif%}
                                         {%endif%}
                                     </td>
@@ -68,7 +68,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <a class="btn btn-default"
-                                               href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
+                                               href="{{ path('vehiculos_show', { 'id': entity.id }) }}" title="Ver resumen"><i
                                                         class="fa fa-eye"></i></a>
 
                                             {% if entity.vehiculo_estado_slug != 'transito' %}

@@ -55,7 +55,7 @@
                                                 <a class="btn btn-pagado" data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Mover de Deposito">Gpat</a>
+                                                   title="Registrar pago">Gpat</a>
                                             {%endif%}
                                         {%endif%}
                                     </td>
@@ -65,7 +65,7 @@
                                         <div class="btn-group">
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                        title="Ver" class="fa fa-eye"></i></a>
+                                                        title="Ver resumen" class="fa fa-eye"></i></a>
 
                                             <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
                                                href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"

@@ -20,6 +20,7 @@
                                 <th>Id</th>
                                 <th>Nombre</th>
                                 <th>Foraneo</th>
+                                <th>Reventa</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -32,6 +33,14 @@
                                     <td>{{ entity.personaTipo.first.persona }}</td>
                                     <td>
                                         {% if entity.foraneo %}
+                                            <span class="badge bg-green">SI</span>
+                                        {% else %}
+                                            <span class="badge bg-red">NO</span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td>
+                                        {% if entity.reventa %}
                                             <span class="badge bg-green">SI</span>
                                         {% else %}
                                             <span class="badge bg-red">NO</span>
