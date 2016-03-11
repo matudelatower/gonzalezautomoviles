@@ -61,3 +61,7 @@ new_sesion_factura_ajax:
 sesion_factura_update_ajax:
     path:     /sesion_factura_update_ajax/{vehiculoId}
     defaults: { _controller: "VehiculosBundle:Ajax:sesionFacturaUpdateAjax" }    
+    
+get_codigo_anio_version_por_modelo:
+    path: /get_codigo_anio_version_por_modelo
+    defaults: { _controller: "VehiculosBundle:Ajax:getAnioCodigoVersionPorModelo" }

@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * CodigoModelo
  *
  * @ORM\Table(name="codigos_modelo")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\Repository\CodigoModeloRepository")
  */
 class CodigoModelo {
 	/**

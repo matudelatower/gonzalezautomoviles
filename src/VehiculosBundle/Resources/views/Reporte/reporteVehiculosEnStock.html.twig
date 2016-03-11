@@ -21,6 +21,34 @@
                 $('#filter-form').removeAttr('target');
                 $('#filter-form').removeAttr('action');
             });
+
+            $('.modelo').change(function () {
+                var id = $(this).val();
+                $('.anio').empty();
+                $('.anio').append($('<option>').text('Seleccionar').attr('value', ''));
+                $('.codigo').empty();
+                $('.codigo').append($('<option>').text('Seleccionar').attr('value', ''));
+                $('.version').empty();
+                $('.version').append($('<option>').text('Seleccionar').attr('value', ''));
+                $.ajax({
+                    data: {id: id},
+                    type: 'get',
+                    url: '{{ path('get_codigo_anio_version_por_modelo') }}',
+                    success: function (data) {
+
+                        $.each(data.anio, function(i, value) {
+                            $('.anio').append($('<option>').text(value).attr('value', value));
+                        });
+                        $.each(data.codigo, function(i, value) {
+                            $('.codigo').append($('<option>').text(value).attr('value', value));
+                        });
+                        $.each(data.version, function(i, value) {
+                            $('.version').append($('<option>').text(value).attr('value', value));
+                        });
+                    },
+                });
+            });
+
         });
     </script>
 {% endblock %}
@@ -42,31 +70,26 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <form class="form-horizontal" id="filter-form" name="filter-form" role="form" method="post">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Modelo</label>
-                            <div class="col-sm-4">
-                                {{ form_widget(form.modelo) }}
-                            </div>
-                            <label class="col-sm-2 control-label">Color</label>
-                            <div class="col-sm-4">
-                                {{ form_widget(form.colorVehiculo) }}
-                            </div>
+                    <form id="filter-form" name="filter-form" role="form" method="post">
+                        <div class="col-md-6">
+
+                            {{ form_row(form.modelo) }}
+                            {{ form_row(form.anio) }}
+                            {{ form_row(form.codigo) }}
+                            {{ form_row(form.version) }}
+
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Deposito</label>
-                            <div class="col-sm-4">
-                                {{ form_widget(form.deposito) }}
-                            </div>
-                            <label class="col-sm-2 control-label">Dias en stock</label>
-                            <div class="col-sm-1">
-                                {{ form_widget(form.diaInicio) }}
-                            </div>
-                            <label class="col-sm-1 control-label">a</label>
-                            <div class="col-sm-1">
-                                {{ form_widget(form.diaFin) }}
-                            </div>
+
+                        <div class="col-md-6">
+
+                            {{ form_row(form.colorVehiculo) }}
+                            {{ form_row(form.deposito) }}
+                            {{ form_row(form.diaInicio) }}
+                            {{ form_row(form.diaFin) }}
+
                         </div>
+
+
 
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-4">
@@ -111,35 +134,35 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                            <tr>
-                                <th>N°</th>
-                                <th>Modelo</th>
-                                <th>Color vehiculo</th>
-                                <th>Vin</th>
-                                <th>Dias en stock</th>
-                                <th>Deposito</th>
-                                <th>Estado pago</th>
-                            </tr>
+                        <tr>
+                            <th>N°</th>
+                            <th>Modelo</th>
+                            <th>Color vehiculo</th>
+                            <th>Vin</th>
+                            <th>Dias en stock</th>
+                            <th>Deposito</th>
+                            <th>Estado pago</th>
+                        </tr>
                         </thead>
                         <tbody>
 
-                            {% for entity in entities %}                                
-                                <tr>
-                                    <td>{{ loop.index }}</td>
-                                    <td>{{ entity.modelo }}</td>
-                                    <td>{{ entity.color_vehiculo }}</td>
-                                    <td>{{ entity.vin }}</td>
-                                    <td>{{ entity.dias_en_stock }}</td>
-                                    <td>{{ entity.deposito_actual | default ("") }}</td>
-                                    <td align="center">
-                                        {%if entity.pagado %}
-                                            Gonzalez
-                                        {%else%}
-                                            Gpat
-                                        {%endif%}
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ entity.modelo }}</td>
+                                <td>{{ entity.color_vehiculo }}</td>
+                                <td>{{ entity.vin }}</td>
+                                <td>{{ entity.dias_en_stock }}</td>
+                                <td>{{ entity.deposito_actual | default ("") }}</td>
+                                <td align="center">
+                                    {% if entity.pagado %}
+                                        Gonzalez
+                                    {% else %}
+                                        Gpat
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

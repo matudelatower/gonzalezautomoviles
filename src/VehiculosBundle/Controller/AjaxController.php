@@ -299,4 +299,31 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
+	public function getAnioCodigoVersionPorModeloAction( Request $request ) {
+		$id = $request->get( 'id' );
+
+		$em = $this->getDoctrine()->getManager();
+
+		$modelo        = $em->getRepository( 'VehiculosBundle:NombreModelo' )->find( $id );
+		$codigoModelos = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->findByNombreModelo( $modelo );
+
+		$aAnio    = array();
+		$aCodigo  = array();
+		$aVersion = array();
+
+		foreach ( $codigoModelos as $codigoModelo ) {
+			$aAnio[$codigoModelo->getAnio()]    = $codigoModelo->getAnio();
+			$aCodigo[$codigoModelo->getCodigo()]  = $codigoModelo->getCodigo();
+			$aVersion[$codigoModelo->getVersion()] = $codigoModelo->getVersion();
+		}
+
+		$return = array(
+			'anio'    => $aAnio,
+			'codigo'  => $aCodigo,
+			'version' => $aVersion,
+		);
+
+		return new JsonResponse( $return );
+	}
+
 }

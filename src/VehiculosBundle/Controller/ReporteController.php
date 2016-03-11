@@ -145,7 +145,7 @@ class ReporteController extends Controller {
 
     public function indexReporteVehiculosEnStockAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType());
+        $form = $this->createForm(new VehiculosEnStockFilterType($em));
 
         $entities = array();
 
@@ -172,7 +172,7 @@ class ReporteController extends Controller {
 
     public function excelReporteVehiculosEnStockAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType());
+        $form = $this->createForm(new VehiculosEnStockFilterType($em));
 
         $entities = array();
 

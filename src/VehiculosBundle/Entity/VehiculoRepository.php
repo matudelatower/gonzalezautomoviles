@@ -205,6 +205,15 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['modelo']) {
             $where.=" AND nm.id=" . $filters['modelo']->getId();
         }
+        if ( $filters['anio'] ) {
+            $where .= " AND cm.anio='" . $filters['anio'] . "'";
+        }
+        if ( $filters['codigo'] ) {
+            $where .= " AND cm.codigo='" . $filters['codigo'] . "'";
+        }
+        if ( $filters['version'] ) {
+            $where .= " AND cm.version='" . $filters['version'] . "'";
+        }
 
         if ($filters['diaInicio']) {
             $where.=" AND (current_date-fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
