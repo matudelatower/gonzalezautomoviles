@@ -77,6 +77,9 @@
                                                    data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                             {% endif %}
+                                            {% if (entity.danio_gm_sin_solucionar!='') %}
+                                                <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
+                                            {%endif%} 
                                         </div>
                                     </td>
                                 </tr>

@@ -103,7 +103,10 @@
                                                data-toggle="modal"
                                                data-target="#modalGeneric"
                                                data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
-                                               title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
+                                               title="Cupón de garantia"><i class="fa fa-bookmark"></i></a
+                                            {% if (entity.danio_gm_sin_solucionar!='') %}
+                                                <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
+                                            {%endif%} 
                                         </div>
                                     </td>
 

@@ -28,7 +28,6 @@
                 <div class="box-body">
                     <table class="data-table table table-bordered table-striped" id="tabla-listado">
                         <thead>
-
                             <tr>
                                 <th>N°</th>                                
                                 <th>Modelo</th>
@@ -66,20 +65,20 @@
 
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}" title="Ver resumen"><i
-                                                        class="fa fa-eye"></i></a>
+                                                    class="fa fa-eye"></i></a>
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_edit', { 'id': entity.id }) }}" title="Editar"><i
-                                                        class="fa fa-edit"></i></a>
+                                                    class="fa fa-edit"></i></a>
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
                                                title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                            {% if entity.venta_especial_slug == 'convencional' %}
+                                                {% if entity.venta_especial_slug == 'convencional' %}
                                                 <a class="btn {% if(entity.cliente_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
                                                    data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
-                                            {% endif %}
+                                                {% endif %}                                                
                                         </div>
                                     </td>
                                 </tr>
