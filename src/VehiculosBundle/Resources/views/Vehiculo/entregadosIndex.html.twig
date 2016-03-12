@@ -21,7 +21,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listado Vehiculos Entregados</h3>
+                    <h3 class="box-title">Listado Vehiculos Entregados - {{cantidadRegistros}} vehiculos encontrados</h3>
 
                 </div>
                 <!-- /.box-header -->
@@ -43,7 +43,7 @@
                         <tbody>
                             {% for entity in entities %}
                                 <tr>
-                                    <td>{{ loop.index }}</td>
+                                    <td>{{ entity.id }}</td>
                                     <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_codigo~' | '~entity.modelo_version }}</td>
                                     <td>{{ entity.color_vehiculo }}</td>
                                     <td>{{ entity.vin }}</td>

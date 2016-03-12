@@ -51,6 +51,7 @@ class VehiculoController extends Controller {
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false);
         }
+        $cantidadRegistros = count($entities);
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
@@ -66,7 +67,8 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:index.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
                         )
         );
     }
@@ -90,7 +92,7 @@ class VehiculoController extends Controller {
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estado);
         }
-
+        $cantidadRegistros = count($entities);
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
         $paginator = $this->get('knp_paginator');
@@ -107,7 +109,8 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:transitoIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
                         )
         );
     }
@@ -130,7 +133,7 @@ class VehiculoController extends Controller {
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
         }
-
+        $cantidadRegistros = count($entities);
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
         $paginator = $this->get('knp_paginator');
@@ -146,7 +149,8 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:recibidosIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
                         )
         );
     }
@@ -170,6 +174,7 @@ class VehiculoController extends Controller {
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
         }
+        $cantidadRegistros = count($entities);
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
@@ -188,7 +193,8 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:stockIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
                         )
         );
     }
@@ -213,6 +219,7 @@ class VehiculoController extends Controller {
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
         }
+        $cantidadRegistros = count($entities);
 
         $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
@@ -230,7 +237,8 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:pendientesPorEntregarIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView()
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
                         )
         );
     }
@@ -254,6 +262,7 @@ class VehiculoController extends Controller {
         } else {
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
         }
+        $cantidadRegistros = count($entities);
 
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
@@ -268,7 +277,8 @@ class VehiculoController extends Controller {
         return $this->render(
                         'VehiculosBundle:Vehiculo:entregadosIndex.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
                         )
         );
     }
@@ -772,15 +782,14 @@ class VehiculoController extends Controller {
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
-            if ( $form->isValid() ) {
+            if ($form->isValid()) {
 
-                $vehiculosManager = $this->get( 'manager.vehiculos' );
+                $vehiculosManager = $this->get('manager.vehiculos');
 
-                if ( $vehiculosManager->guardarVehiculo( $vehiculo, null, $daniosGmOriginal ) ) {
+                if ($vehiculosManager->guardarVehiculo($vehiculo, null, $daniosGmOriginal)) {
 
-                    $this->get( 'session' )->getFlashBag()->add(
-                        'success',
-                        'Datos del Vehiculo actualizados correctamente.'
+                    $this->get('session')->getFlashBag()->add(
+                            'success', 'Datos del Vehiculo actualizados correctamente.'
                     );
                 }
             }
