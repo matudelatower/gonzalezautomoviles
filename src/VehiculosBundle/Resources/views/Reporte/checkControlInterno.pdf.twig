@@ -1,6 +1,559 @@
-{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/theme/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css', absolute=true) }}">#}
+    {#<link rel="stylesheet" type="text/css" href="{{ asset('bundles/theme/AdminLTE-2.3.0/dist/css/AdminLTE.min.css', absolute=true) }}">#}
     <style>
+        table {
+            border-collapse: separate;
+        }
+
+        .table-curved tr:last-child td {
+            /*border-bottom-left-radius: 25px;*/
+            /*border-bottom-right-radius: 25px;*/
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        /*table, th {*/
+        /*border: 2px solid black;*/
+        /*}*/
+
+        .fecha {
+            font-size: 8pt;
+            margin-left: 15%;
+        }
+
+        .fecha td {
+            width: 300px;
+            height: 15px;
+            text-align: center;
+            overflow: auto;
+        }
+
+        td {
+            border: 1px solid black;
+        }
+
+        body {
+            font-size: 14pt;
+        }
+
+        .titulo-reporte {
+            text-align: center;
+        }
+
+        /*.col4 {*/
+        /*width: 33%;*/
+        /*float: left;*/
+        /*position: relative;*/
+        /*}*/
+
+        /*bootstrap stolen*/
+        img {
+            vertical-align: middle;
+        }
+
+        .img-responsive,
+        .thumbnail > img,
+        .thumbnail a > img,
+        .carousel-inner > .item > img,
+        .carousel-inner > .item > a > img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .row {
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+            float: left;
+        }
+
+        .col-sm-12 {
+            width: 100%;
+        }
+
+        .col-sm-11 {
+            width: 91.66666667%;
+        }
+
+        .col-sm-10 {
+            width: 83.33333333%;
+        }
+
+        .col-sm-9 {
+            width: 75%;
+        }
+
+        .col-sm-8 {
+            width: 66.66666667%;
+        }
+
+        .col-sm-7 {
+            width: 58.33333333%;
+        }
+
+        .col-sm-6 {
+            width: 50%;
+        }
+
+        .col-sm-5 {
+            width: 41.66666667%;
+        }
+
+        .col-sm-4 {
+            width: 33.33333333%;
+        }
+
+        .col-sm-3 {
+            width: 25%;
+        }
+
+        .col-sm-2 {
+            width: 16.66666667%;
+        }
+
+        .col-sm-1 {
+            width: 8.33333333%;
+        }
+
+        .col-sm-pull-12 {
+            right: 100%;
+        }
+
+        .col-sm-pull-11 {
+            right: 91.66666667%;
+        }
+
+        .col-sm-pull-10 {
+            right: 83.33333333%;
+        }
+
+        .col-sm-pull-9 {
+            right: 75%;
+        }
+
+        .col-sm-pull-8 {
+            right: 66.66666667%;
+        }
+
+        .col-sm-pull-7 {
+            right: 58.33333333%;
+        }
+
+        .col-sm-pull-6 {
+            right: 50%;
+        }
+
+        .col-sm-pull-5 {
+            right: 41.66666667%;
+        }
+
+        .col-sm-pull-4 {
+            right: 33.33333333%;
+        }
+
+        .col-sm-pull-3 {
+            right: 25%;
+        }
+
+        .col-sm-pull-2 {
+            right: 16.66666667%;
+        }
+
+        .col-sm-pull-1 {
+            right: 8.33333333%;
+        }
+
+        .col-sm-pull-0 {
+            right: auto;
+        }
+
+        .col-sm-push-12 {
+            left: 100%;
+        }
+
+        .col-sm-push-11 {
+            left: 91.66666667%;
+        }
+
+        .col-sm-push-10 {
+            left: 83.33333333%;
+        }
+
+        .col-sm-push-9 {
+            left: 75%;
+        }
+
+        .col-sm-push-8 {
+            left: 66.66666667%;
+        }
+
+        .col-sm-push-7 {
+            left: 58.33333333%;
+        }
+
+        .col-sm-push-6 {
+            left: 50%;
+        }
+
+        .col-sm-push-5 {
+            left: 41.66666667%;
+        }
+
+        .col-sm-push-4 {
+            left: 33.33333333%;
+        }
+
+        .col-sm-push-3 {
+            left: 25%;
+        }
+
+        .col-sm-push-2 {
+            left: 16.66666667%;
+        }
+
+        .col-sm-push-1 {
+            left: 8.33333333%;
+        }
+
+        .col-sm-push-0 {
+            left: auto;
+        }
+
+        .col-sm-offset-12 {
+            margin-left: 100%;
+        }
+
+        .col-sm-offset-11 {
+            margin-left: 91.66666667%;
+        }
+
+        .col-sm-offset-10 {
+            margin-left: 83.33333333%;
+        }
+
+        .col-sm-offset-9 {
+            margin-left: 75%;
+        }
+
+        .col-sm-offset-8 {
+            margin-left: 66.66666667%;
+        }
+
+        .col-sm-offset-7 {
+            margin-left: 58.33333333%;
+        }
+
+        .col-sm-offset-6 {
+            margin-left: 50%;
+        }
+
+        .col-sm-offset-5 {
+            margin-left: 41.66666667%;
+        }
+
+        .col-sm-offset-4 {
+            margin-left: 33.33333333%;
+        }
+
+        .col-sm-offset-3 {
+            margin-left: 25%;
+        }
+
+        .col-sm-offset-2 {
+            margin-left: 16.66666667%;
+        }
+
+        .col-sm-offset-1 {
+            margin-left: 8.33333333%;
+        }
+
+        .col-sm-offset-0 {
+            margin-left: 0;
+        }
+
+        .form-group {
+            margin-left: 5%;
+            margin-bottom: 15px;
+        }
+
+        /*
+ * Component: Box
+ * --------------
+ */
+        .box {
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 3px solid #d2d6de;
+            margin-bottom: 20px;
+            width: 100%;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .box.box-primary {
+            border-top-color: #3c8dbc;
+        }
+
+        .box.box-info {
+            border-top-color: #00c0ef;
+        }
+
+        .box.box-danger {
+            border-top-color: #dd4b39;
+        }
+
+        .box.box-warning {
+            border-top-color: #f39c12;
+        }
+
+        .box.box-success {
+            border-top-color: #00a65a;
+        }
+
+        .box.box-default {
+            border-top-color: #d2d6de;
+        }
+
+        .box.collapsed-box .box-body,
+        .box.collapsed-box .box-footer {
+            display: none;
+        }
+
+        .box .nav-stacked > li {
+            border-bottom: 1px solid #f4f4f4;
+            margin: 0;
+        }
+
+        .box .nav-stacked > li:last-of-type {
+            border-bottom: none;
+        }
+
+        .box.height-control .box-body {
+            max-height: 300px;
+            overflow: auto;
+        }
+
+        .box .border-right {
+            border-right: 1px solid #f4f4f4;
+        }
+
+        .box .border-left {
+            border-left: 1px solid #f4f4f4;
+        }
+
+        .box.box-solid {
+            border-top: 0;
+        }
+
+        .box.box-solid > .box-header .btn.btn-default {
+            background: transparent;
+        }
+
+        .box.box-solid > .box-header .btn:hover,
+        .box.box-solid > .box-header a:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .box.box-solid.box-primary {
+            border: 1px solid #3c8dbc;
+        }
+
+        .box.box-solid.box-primary > .box-header {
+            color: #ffffff;
+            background: #3c8dbc;
+            background-color: #3c8dbc;
+        }
+
+        .box.box-solid.box-primary > .box-header a,
+        .box.box-solid.box-primary > .box-header .btn {
+            color: #ffffff;
+        }
+
+        .box > .overlay,
+        .overlay-wrapper > .overlay,
+        .box > .loading-img,
+        .overlay-wrapper > .loading-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .box .overlay,
+        .overlay-wrapper .overlay {
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 3px;
+        }
+
+        .box .overlay > .fa,
+        .overlay-wrapper .overlay > .fa {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -15px;
+            margin-top: -15px;
+            color: #000;
+            font-size: 30px;
+        }
+
+        .box .overlay.dark,
+        .overlay-wrapper .overlay.dark {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .box-header:before,
+        .box-body:before,
+        .box-footer:before,
+        .box-header:after,
+        .box-body:after,
+        .box-footer:after {
+            content: " ";
+            display: table;
+        }
+
+        .box-header:after,
+        .box-body:after,
+        .box-footer:after {
+            clear: both;
+        }
+
+        .box-header {
+            color: #444;
+            display: block;
+            padding: 10px;
+            position: relative;
+        }
+
+        .box-header.with-border {
+            border-bottom: 1px solid #f4f4f4;
+        }
+
+        .collapsed-box .box-header.with-border {
+            border-bottom: none;
+        }
+
+        .box-header > .fa,
+        .box-header > .glyphicon,
+        .box-header > .ion,
+        .box-header .box-title {
+            display: inline-block;
+            font-size: 18px;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .box-header > .fa,
+        .box-header > .glyphicon,
+        .box-header > .ion {
+            margin-right: 5px;
+        }
+
+        .box-header > .box-tools {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        }
+
+        .box-header > .box-tools [data-toggle="tooltip"] {
+            position: relative;
+        }
+
+        .box-header > .box-tools.pull-right .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+        .btn-box-tool {
+            padding: 5px;
+            font-size: 12px;
+            background: transparent;
+            color: #97a0b3;
+        }
+
+        .open .btn-box-tool,
+        .btn-box-tool:hover {
+            color: #606c84;
+        }
+
+        .btn-box-tool.btn:active {
+            box-shadow: none;
+        }
+
+        .box-body {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            padding: 10px;
+        }
+
+        .no-header .box-body {
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+        }
+
+        .box-body > .table {
+            margin-bottom: 0;
+        }
+
+        .box-body .fc {
+            margin-top: 5px;
+        }
+
+        .box-body .full-width-chart {
+            margin: -19px;
+        }
+
+        .box-body.no-padding .full-width-chart {
+            margin: -9px;
+        }
+
+        .box-body .box-pane {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 3px;
+        }
+
+        .box-body .box-pane-right {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 0;
+        }
+
+        .box-footer {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top: 1px solid #f4f4f4;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+
+        .content {
+            margin-left: 0.5cm;
+            margin-right: auto;
+            min-height: 250px;
+            padding: 15px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
         label {
             font-weight: bold;
         }
@@ -8,67 +561,135 @@
         .pregunta {
             text-align: justify;
         }
+
+        .text-vertical {
+            position: absolute;
+            -webkit-transform: rotate(270deg);
+            -webkit-transform-origin: center bottom auto;
+            top: 50%;
+            /*right: 0;*/
+            left:-20px;
+            font-size: 8pt;
+        }
+
+
     </style>
 
+</head>
+<body>
 
-    <div class="box-body">
-        <div style="position: absolute;width: 100%;height: 30%">
-            <div style="float: left;" >
-                <img src="C:\xampp\htdocs\logiautos\src\ThemeBundle\Resources\public\images\logo-izquierdo-control-interno.png"/>
+<section class="content">
+    <div class="row head">
+        <div class="box-body">
+
+            <div class="col-sm-2">
+
+                <img class="img-responsive"
+                     src="{{ app.request.schemeAndHttpHost }}{{ asset('bundles/theme/images/logo-gonzalez.png') }}"/>
+
             </div>
-            <div style="float: right;" >
-                <img src="C:\xampp\htdocs\logiautos\src\ThemeBundle\Resources\public\images\logo-derecho-control-interno.png"/>
-                <div style="position: absolute;width: 40px;height: 40px;border: 3px solid #0000cc;">
-                    DIA
+            <div class="col-sm-8" style="margin-top: 2%">
+                <div class="pull-left">
+                    González Automóviles S.A.
                 </div>
-                <div style="float: right;position: absolute;width: 40px;height: 40px;border: 3px solid #555;">
-                    MES
-                </div>
-                {#<div style="float: right;width: 40px;height: 20px;border: 3px solid #555;">
-                    AÑO
-                </div>#}
-
-            </div>
-
-
-            <div style="float: left;width: 45%;" >
-                <h2>González Automoviles S.A.</h1>
-            </div>
-            <div style="float: left;padding-left: 100px" >
-                <h4>INSPECCION DEL VEHICULO</h4>
-                <div style="padding-left: 40px">
-                    <h4>CONTROL INTERNO</h4>
+                <br>
+                <div class="titulo-reporte">
+                    INPSECCIÓN DEL VEHICULO <br>
+                    CONTROL INTERNO
                 </div>
             </div>
-            <div >
+            <div class="col-sm-2 pull-right">
+                <img class="img-responsive"
+                     src="{{ app.request.schemeAndHttpHost }}{{ asset('bundles/theme/images/logo-chevrolet.jpg') }}"/>
+                <table class="fecha table-curved">
+                    <thead>
+                    <tr style="font-size: 5pt;">
+                        <th>DIA</th>
+                        <th>MES</th>
+                        <th>AÑO</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr style="height: 30px; width:30px;">
+                        <td>{{ "now"|date("d") }}</td>
+                        <td>{{ "now"|date("m") }}</td>
+                        <td>{{ "now"|date("Y") }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary box-solid">
+                <div class="box-header with-border">
+                    <div class="text-center">ACCESORIOS</div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        {% set total = range(0,preguntasOriginales|length,6) %}
+                        {% for item in total %}
+                            <div class="col-sm-4">
+                                {% for pregunta in preguntasOriginales | slice(item,6) %}
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                {{ pregunta.pregunta }}
+                                                <input type="checkbox" value="{{ pregunta.id }}"
+                                                       name="{{ pregunta.id }}"
+                                                        {% if pregunta.id in preguntasSeleccionadas %}
+                                                            checked
+                                                        {% endif %}
+                                                />
+
+                                            </label>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="text-vertical">ORIGINAL</span>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div style="height: 180px"></div>
+                </div>
             </div>
         </div>
     </div>
 
-    {% for pregunta in preguntasOriginales %}
-        <div class="form-group">
-            <div class="checkbox"> 
-                <label><input type="checkbox" value="{{pregunta.id}}" name="{{pregunta.id}}"
-                              {% if pregunta.id in preguntasSeleccionadas %} 
-                                  checked 
-                              {% endif%} 
-                              />{{ pregunta.pregunta }}
-                </label>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="col-sm-6">
+                        {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
+                        <label>ENTREGO: </label> <span>{{ vehiculo.vin }}</span> <br>
+                        <label>MODELO: </label><span>{{ vehiculo.modelo }}</span><br>
+                        <label>Aclaración de Firma : </label><span></span><br>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <label>V.I.N.: </label><span>{{ vehiculo.vin }}</span><br>
+                        <label>RECIBIO: </label><span></span><br>
+                        <label>Aclaración de Firma : </label><span></span><br>
+                    </div>
+
+                </div>
             </div>
         </div>
-    {% endfor %}   
+    </div>
 
-</div>
 
-<div class="row">
-    {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
-    <label>Apellido y Nombre: </label> <span>{{ vehiculo.cliente }}</span> <br>
-    <label>Dirección: </label><span>{{ cliente.barrio }} - {{ cliente.calle }} {{ cliente.numeroCalle }}</span><br>
-    <label>Teléfono: </label><span> {{ cliente.telefono }}</span><br>
-    <label>E-Mail: </label><span>{{ cliente.mail }}</span><br>
-    <label>Fecha Nacimiento: </label><span>{{ cliente.fechaNacimiento | date('d/m/Y') }}</span><br>
-    <label>Localidad: </label><span>{{ cliente.localidad }}</span> <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('')}}</span>
-</div>
-
-{% endblock %}
+</section>
+</body>
+</html>
