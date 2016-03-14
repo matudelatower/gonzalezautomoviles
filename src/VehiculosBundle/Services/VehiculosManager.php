@@ -38,7 +38,7 @@ class VehiculosManager {
 
         foreach ( $daniosGmOriginal as $item ) {
             if ( false === $vehiculo->getDanioVehiculoGm()->contains( $item ) ) {
-                $item->setVehiculo( null );
+//                $item->setVehiculo( null );
                 $em->remove( $item );
             }
         }
@@ -51,7 +51,7 @@ class VehiculosManager {
                     $danioVehiculo->setTipoEstadoDanioGm( $tipoEstadoDanioGm );
                 }
                 foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
-                    $fotoDanio->upload();
+//                    $fotoDanio->upload();
                     $fotoDanio->setDanioVehiculo( $danioVehiculo );
                 }
             }

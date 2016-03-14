@@ -198,7 +198,7 @@
                                 <div class="elements">
                                     {% for fotoDanio in danioVehiculo.fotoDanio %}
                                         <img class="img-responsive" width="300" height="300"
-                                             src="{{ app.request.basePath ~ '/uploads/fotos_danio/' ~ fotoDanio.vars.data.ruta }}">
+                                             src="{{ app.request.basePath ~ '/uploads/fotos_danio/' ~vehiculo.vin~'/'~ fotoDanio.vars.data.ruta }}">
                                         {{ form_widget(fotoDanio) }}
                                     {% endfor %}
                                 </div>

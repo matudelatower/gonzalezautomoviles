@@ -795,9 +795,11 @@ class VehiculoController extends Controller {
             }
         }
 
-        return $this->render('VehiculosBundle:Vehiculo:editarVehiculoRecibido.html.twig', array(
-                    'edit_form' => $form->createView(),
-        ));
+        return $this->render( 'VehiculosBundle:Vehiculo:editarVehiculoRecibido.html.twig',
+            array(
+                'vehiculo'  => $vehiculo,
+                'edit_form' => $form->createView(),
+            ) );
     }
 
     public function checklistPreEntregaAction(Request $request, $vehiculoId) {
