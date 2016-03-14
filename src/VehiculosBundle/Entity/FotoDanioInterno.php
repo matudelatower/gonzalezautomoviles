@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="fotos_danios_interno")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class FotoDanioInterno {
 
@@ -71,10 +72,15 @@ class FotoDanioInterno {
      */
     private $actualizadoPor;
 
-    public function getAbsolutePath() {
+    private $temp;
+
+
+
+    public function getAbsolutePath()
+    {
         return null === $this->ruta
             ? null
-            : $this->getUploadRootDir() . '/' . $this->ruta;
+            : $this->getUploadRootDir() .$this->danioVehiculoInterno->getVehiculo()->getVin().'/'. $this->ruta;
     }
 
     public function getWebPath() {
@@ -108,6 +114,14 @@ class FotoDanioInterno {
     public function setFoto(UploadedFile $foto = null)
     {
         $this->foto = $foto;
+        // check if we have an old image path
+        if (is_file($this->getAbsolutePath())) {
+            // store the old name to delete after the update
+            $this->temp = $this->getAbsolutePath();
+            $this->ruta = null;
+        } else {
+            $this->ruta = 'initial';
+        }
     }
 
     /**
@@ -120,6 +134,23 @@ class FotoDanioInterno {
         return $this->foto;
     }
 
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFoto()) {
+            $this->ruta = $this->getFoto()->getClientOriginalName();
+        }
+    }
+
+    /**
+     * Called after entity persistence
+     *
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
     public function upload()
     {
         // the file property can be empty if the field is not required
@@ -127,21 +158,45 @@ class FotoDanioInterno {
             return;
         }
 
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+
+
         // use the original file name here but you should
         // sanitize it at least to avoid any security issues
 
         // move takes the target directory and then the
         // target filename to move to
         $this->getFoto()->move(
-            $this->getUploadRootDir(),
+            $this->getUploadRootDir().$this->danioVehiculoInterno->getVehiculo()->getVin().'/',
             $this->getFoto()->getClientOriginalName()
         );
 
-        // set the path property to the filename where you've saved the file
-        $this->ruta = $this->getFoto()->getClientOriginalName();
-
         // clean up the file property as you won't need it anymore
-        $this->foto = null;
+        $this->setFoto(null);
+    }
+
+    /**
+     * @ORM\PreRemove()
+     */
+    public function storeFilenameForRemove()
+    {
+        $this->temp = $this->getAbsolutePath();
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if (isset($this->temp)) {
+            unlink($this->temp);
+        }
     }
 
     /**

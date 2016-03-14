@@ -51,7 +51,7 @@ class DanioVehiculoInterno {
 
     /**
      *
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\FotoDanioInterno", mappedBy="danioVehiculoInterno", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\FotoDanioInterno", mappedBy="danioVehiculoInterno", cascade={"persist", "remove"})
      */
     private $fotoDanioInterno;
 

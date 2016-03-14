@@ -190,7 +190,7 @@ class Vehiculo {
     private $danioVehiculoGm;
 
     /**
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoInterno", mappedBy="vehiculo", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoInterno", mappedBy="vehiculo", cascade={"persist", "remove"})
      *
      */
     private $danioVehiculoInterno;

@@ -127,20 +127,39 @@ class VehiculosManager {
         $vehiculo->addEstadoVehiculo($estadoVehiculo);
     }
 
-    public function modificarDanioInterno($vehiculo) {
-        if ($vehiculo->getDanioVehiculoInterno()->count() > 0) {
+	public function modificarDanioInterno( $vehiculo, $daniosInternosOriginal ) {
+		$em = $this->em;
 
-            foreach ($vehiculo->getDanioVehiculoInterno() as $danioVehiculo) {
-                $danioVehiculo->setVehiculo($vehiculo);
 
-                foreach ($danioVehiculo->getFotoDanioInterno() as $fotoDanio) {
-                    $fotoDanio->upload();
-                    $fotoDanio->setDanioVehiculoInterno($danioVehiculo);
-                }
-            }
-        }
+		if ( $vehiculo->getDanioVehiculoInterno()->count() > 0 ) {
 
-        return $vehiculo;
-    }
+			foreach ( $vehiculo->getDanioVehiculoInterno() as $danioVehiculo ) {
+				$danioVehiculo->setVehiculo( $vehiculo );
+
+				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
+//					$fotoDanio->upload();
+					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
+				}
+			}
+		}
+
+		foreach ( $daniosInternosOriginal as $item ) {
+			if ( false === $vehiculo->getDanioVehiculoInterno()->contains( $item ) ) {
+//				$item->setVehiculo( null );
+				$em->remove( $item );
+
+				foreach ( $item->getFotoDanioInterno() as $fotoDanio ) {
+					$fotoDanio->setDanioVehiculoInterno( null );
+//					$fotoDanio->removeUpload();
+					$em->remove( $fotoDanio );
+				}
+			}
+		}
+
+		$em->persist( $vehiculo );
+		$em->flush();
+
+		return $vehiculo;
+	}
 
 }

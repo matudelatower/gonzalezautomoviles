@@ -2,6 +2,7 @@
 
 namespace VehiculosBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Entity\DanioVehiculoInterno;
 use VehiculosBundle\Form\CheckListPreEntregaType;
@@ -15,15 +16,21 @@ class DanioVehiculoInternoController extends Controller {
 
 		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
 
+		$daniosInternos = new ArrayCollection();
+
+		// Create an ArrayCollection of the current Tag objects in the database
+		foreach ($vehiculo->getDanioVehiculoInterno() as $danioInterno) {
+			$daniosInternos->add($danioInterno);
+		}
+
 		$formDaniosInternos = $this->createForm( new CheckListPreEntregaType(), $vehiculo );
+
 
 		if ( $request->getMethod() == 'POST' ) {
 			$formDaniosInternos->handleRequest( $request );
 			if ( $formDaniosInternos->isValid() ) {
 				$vehiculosManager = $this->get( 'manager.vehiculos' );
-				$vehiculo         = $vehiculosManager->modificarDanioInterno( $vehiculo );
-				$em->persist( $vehiculo );
-				$em->flush();
+				$vehiculo         = $vehiculosManager->modificarDanioInterno( $vehiculo , $daniosInternos);
 
 				$this->get( 'session' )->getFlashBag()->add(
 					'success',
@@ -34,7 +41,7 @@ class DanioVehiculoInternoController extends Controller {
 
 		return $this->render( 'VehiculosBundle:DanioVehiculoInterno:editarDanioVehiculoInterno.html.twig',
 			array(
-				'vehiculoId'       => $vehiculoId,
+				'vehiculo'       => $vehiculo,
 				'formDanioInterno' => $formDaniosInternos->createView(),
 			) );
 	}

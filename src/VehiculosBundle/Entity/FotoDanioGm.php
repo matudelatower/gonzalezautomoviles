@@ -107,6 +107,17 @@ class FotoDanioGm {
 		$this->foto = null;
 	}
 
+	/**
+	 * @ORM\PostRemove()
+	 */
+	public function removeUpload()
+	{
+		$file = $this->getAbsolutePath();
+		if ($file) {
+			unlink($file);
+		}
+	}
+
 
 	/**
 	 * @var datetime $creado
