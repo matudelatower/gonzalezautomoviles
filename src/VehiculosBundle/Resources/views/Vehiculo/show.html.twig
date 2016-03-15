@@ -148,6 +148,10 @@
                                 <th>Km ingreso</th>
                                 <td>{{ entity.kmIngreso }}</td>
                             </tr>
+                            <tr>
+                                <th>Cupon de garantia</th>
+                                <td>{{ entity.cuponGarantia }}</td>
+                            </tr>
 
                             <tr>
                                 <th>Observación</th>
@@ -330,7 +334,7 @@
                                             </tr>
                                             {% if danio.fotoDanio %}
                                                 <tr>
-                                                    <th><a class="pull-right badge bg-blue btn-carousel" data-toggle="modal"
+                                                    <th><a class="pull-right badge bg-blue btn-carousel no-print" data-toggle="modal"
                                                            data-target="#modalCarousel"
                                                            data-url="{{ path('get_fotos_danios_gm_ajax', { 'danioId': danio.id }) }}"
                                                            title="Ver fotos">Ver fotos</a>
@@ -373,7 +377,7 @@
                                             </tr>
                                             {% if danio.fotoDanioInterno %}
                                                 <tr>
-                                                    <th><a class="pull-right badge bg-blue btn-carousel" data-toggle="modal"
+                                                    <th><a class="pull-right badge bg-blue btn-carousel no-print" data-toggle="modal"
                                                            data-target="#modalCarousel"
                                                            data-url="{{ path('get_fotos_danios_interno_ajax', { 'danioId': danio.id }) }}"
                                                            title="Ver fotos">Ver fotos</a>
@@ -409,7 +413,7 @@
                                     </td>
                                 </tr>  
                             {%endif%}  
-                            {% if controlInternoCabecera is not null and controlInternoCabecera.firmado==true %}
+                            {% if controlInternoCabecera is not null %}
                                 <tr>
                                     <td>
                                         <a href="{{ path('pdf_check_control_interno', {'vehiculoId':entity.id}) }}" target="_blank" class="btn btn-block btn-default">

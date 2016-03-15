@@ -73,7 +73,7 @@
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
                                                         title="Editar" class="fa fa-edit"></i></a>
-                                            <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
+                                            <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-warning{% else %}btn-default{% endif %}"
                                                href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
                                                title="Checklist control interno"><i class="fa fa-check-square"></i></a>
                                             <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
