@@ -21,4 +21,15 @@ class AgendaEntregaRepository extends EntityRepository {
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getEntregasDelDia( $usuario ) {
+		$qb = $this->createQueryBuilder( 'ae' );
+		$qb->where( 'ae.fecha = :fecha' )
+			->andWhere('ae.creadoPor = :usuario')
+		   ->setParameter( 'fecha', date("Y-m-d") )
+		   ->setParameter( 'usuario', $usuario )
+		;
+
+		return $qb->getQuery()->getResult();
+	}
 }

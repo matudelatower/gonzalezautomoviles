@@ -12,3 +12,10 @@ services:
             container: '@service_container'
         tags:
             - { name: manager.reportes, alias: manager.reportes }
+
+    manager.notificaciones:
+            class: VehiculosBundle\Services\NotificacionesManager
+            arguments:
+                container: '@service_container'
+            tags:
+                - { name: manager.notificaciones, alias: manager.notificaciones }

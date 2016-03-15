@@ -16,3 +16,8 @@ services:
             tags:
                 - { name: manager.permisos, alias: manager.permisos }
 
+    logiautos_user.login:
+        class: UsuariosBundle\EventListener\LoginListener
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_subscriber }
