@@ -211,7 +211,7 @@ class ReporteController extends Controller {
     public function pdfReporteVehiculosEnStockAction(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType());
+        $form = $this->createForm(new VehiculosEnStockFilterType($em));
 
         $entities = array();
 
