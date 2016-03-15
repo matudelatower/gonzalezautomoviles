@@ -60,9 +60,5 @@ class LoginListener implements EventSubscriberInterface {
 
 		$session->set( 'cantidadNotificaciones', $cantidadNotificaciones );
 		$session->set( 'entregas', $cantidadNotificaciones );
-
-
-//		$point = $this->container->get('process_points');
-//		$point->ProcessPoints(1 , $this->container);
 	}
 }

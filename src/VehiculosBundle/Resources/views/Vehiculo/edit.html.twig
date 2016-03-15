@@ -224,10 +224,9 @@
                            href="#"><i class="fa fa-plus"></i> Agregar</a>
                     </div>
                 </div>
-                <div class="hidden">
-                    {{ form_row(edit_form.danioVehiculoGm) }}
-                </div>
-                {{ form_end(edit_form) }}
+                
+                {{ form_widget(edit_form._token) }}
+                {{ form_widget(edit_form.submit) }}
 
                 <a class="btn btn-default" href="{{ path('vehiculos') }}">
                     Volver
