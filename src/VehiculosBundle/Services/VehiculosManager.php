@@ -135,7 +135,6 @@ class VehiculosManager {
 				$danioVehiculo->setVehiculo( $vehiculo );
 
 				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
-//					$fotoDanio->upload();
 					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
 				}
 			}
