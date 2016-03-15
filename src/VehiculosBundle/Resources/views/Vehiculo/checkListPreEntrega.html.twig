@@ -108,7 +108,7 @@
     <div class="row">
         <div class="col-md-12">
             <form method="post" id="form-checklist"
-                  action="{{ path('checklist_preentrega', {'vehiculoId':vehiculoId }) }}" {{ form_enctype(formDanioInterno) }}>
+                  action="{{ path('checklist_preentrega', {'vehiculoId':vehiculo.id }) }}" {{ form_enctype(formDanioInterno) }}>
                 {% for categoria in categorias %}
                     <div class="col-md-6">
                         <div class="box box-primary">
@@ -117,7 +117,7 @@
                             </div>
                             <div class="box-body">
 
-                                {{ render(controller('CuestionariosBundle:Cuestionario:getCamposPorCategoriaEdit', { 'id':categoria.id, 'vehiculoId':vehiculoId } )) }}
+                                {{ render(controller('CuestionariosBundle:Cuestionario:getCamposPorCategoriaEdit', { 'id':categoria.id, 'vehiculoId':vehiculo.id } )) }}
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                                                 <div class="elements">
                                                     {% for fotoDanio in danioVehiculo.fotoDanioInterno %}
                                                         <img class="img-responsive" width="300" height="300"
-                                                             src="{{ app.request.basePath ~ '/uploads/fotos_danio_interno/' ~ fotoDanio.vars.data.ruta }}">
+                                                             src="{{ app.request.basePath ~ '/uploads/fotos_danio_interno/' ~vehiculo.vin~'/'~ fotoDanio.vars.data.ruta }}">
                                                         {{ form_widget(fotoDanio) }}
                                                     {% endfor %}
                                                 </div>

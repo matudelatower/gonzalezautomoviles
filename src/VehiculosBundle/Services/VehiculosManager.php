@@ -66,11 +66,11 @@ class VehiculosManager {
         return true;
     }
 
-    public function crearCheckList($vehiculo, $checkList) {
+    public function crearCheckList($vehiculo, $checkList, $daniosInternoOriginal = array()) {
 
         $em = $this->em;
 
-        $vehiculo = $this->modificarDanioInterno($vehiculo);
+        $vehiculo = $this->modificarDanioInterno($vehiculo, $daniosInternoOriginal);
 
         $resultadoCabecera = new CuestionarioResultadoCabecera();
         $resultadoCabecera->setVehiculo($vehiculo);
@@ -143,12 +143,10 @@ class VehiculosManager {
 
 		foreach ( $daniosInternosOriginal as $item ) {
 			if ( false === $vehiculo->getDanioVehiculoInterno()->contains( $item ) ) {
-//				$item->setVehiculo( null );
 				$em->remove( $item );
 
 				foreach ( $item->getFotoDanioInterno() as $fotoDanio ) {
 					$fotoDanio->setDanioVehiculoInterno( null );
-//					$fotoDanio->removeUpload();
 					$em->remove( $fotoDanio );
 				}
 			}

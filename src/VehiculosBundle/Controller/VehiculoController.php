@@ -820,6 +820,13 @@ class VehiculoController extends Controller {
                 $cuestionario
         );
 
+        $daniosInternos = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($vehiculo->getDanioVehiculoInterno() as $danioInterno) {
+            $daniosInternos->add($danioInterno);
+        }
+
         $formDaniosInternos = $this->createForm(new CheckListPreEntregaType(), $vehiculo);
 
 
@@ -831,10 +838,10 @@ class VehiculoController extends Controller {
             $formDaniosInternos->handleRequest($request);
             if ($formDaniosInternos->isValid()) {
                 $checkList = $request->get('cuestionarios_bundle_check_list_parameter_type');
-//				$data             = $formDaniosInternos->getData();
+
                 $vehiculosManager = $this->get('manager.vehiculos');
 
-                if ($vehiculosManager->crearCheckList($vehiculo, $checkList)) {
+                if ($vehiculosManager->crearCheckList($vehiculo, $checkList, $daniosInternos)) {
 
                     $this->get('session')->getFlashBag()->add(
                             'success', 'Checklist Creado Correctamente'
@@ -847,7 +854,7 @@ class VehiculoController extends Controller {
                         'VehiculosBundle:Vehiculo:checkListPreEntrega.html.twig', array(
                     'categorias' => $categorias,
                     'cuestionario' => $cuestionario,
-                    'vehiculoId' => $vehiculoId,
+                    'vehiculo' => $vehiculo,
                     'formDanioInterno' => $formDaniosInternos->createView(),
                         )
         );
