@@ -26,7 +26,7 @@ class VehiculosManager {
         $this->em = $container->get('doctrine')->getManager();
     }
 
-    public function guardarVehiculo( $vehiculo, $tipoEstadoDanioGm = null, $daniosGmOriginal = null ) {
+    public function guardarVehiculo( $vehiculo, $tipoEstadoDanioGm = null, $daniosGmOriginal = array() ) {
         $em = $this->em;
 
         if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {

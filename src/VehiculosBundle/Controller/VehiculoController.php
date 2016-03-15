@@ -737,6 +737,12 @@ class VehiculoController extends Controller {
         $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
         $ruta = $this->generateUrl('vehiculos_actualizar_remito', array('vehiculoId' => $vehiculoId));
 
+        $daniosGmOriginal = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($vehiculo->getDanioVehiculoGm() as $danioGm) {
+            $daniosGmOriginal->add($danioGm);
+        }
 
         $form = $this->createCreateForm($vehiculo, new EditarVehiculoType(), $ruta, 'Actualizar');
 
@@ -750,7 +756,7 @@ class VehiculoController extends Controller {
                         'registrado'
                 );
 
-                if ($vehiculosManager->guardarVehiculo($vehiculo, $tipoEstadoDanioGm)) {
+                if ($vehiculosManager->guardarVehiculo($vehiculo, $tipoEstadoDanioGm,$daniosGmOriginal)) {
 
                     $this->get('session')->getFlashBag()->add(
                             'success', 'Datos del Vehiculo actualizados correctamente.'
