@@ -15,7 +15,7 @@
                 {% else %}
                     <div class="item">
                     {%endif%}
-                    <img src="{{app.request.basePath ~ '/uploads/fotos_danio_interno/' ~ foto.ruta }}" alt="...">                    
+                    <img src="{{app.request.basePath ~ '/uploads/fotos_danio_interno/' ~foto.danioVehiculo.vehiculo.vin~'/'~ foto.ruta }}" alt="...">
                     {% set i=i+1 %}
                 </div>
             {%endfor%}
