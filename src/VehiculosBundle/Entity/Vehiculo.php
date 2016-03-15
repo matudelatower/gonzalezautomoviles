@@ -212,14 +212,14 @@ class Vehiculo {
     /**
      * @var string
      *
-     * @ORM\Column(name="importe", type="decimal")
+     * @ORM\Column(name="importe", type="decimal", scale=2)
      */
     private $importe;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="impuestos", type="decimal")
+     * @ORM\Column(name="impuestos", type="decimal", scale=2)
      */
     private $impuestos;
 

@@ -53,10 +53,10 @@ class AltaVehiculoType extends AbstractType {
                 )
 //                ->add('colorVehiculo')
                 ->add('motor')
-                ->add('importe', 'text', array(
+                ->add('importe', 'money', array(
                     'attr' => array('class' => 'maskmoney')
                 ))
-                ->add('impuestos', 'text', array(
+                ->add('impuestos', 'money', array(
                     'attr' => array('class' => 'maskmoney')
                 ))
                 ->add('numeroPedido')

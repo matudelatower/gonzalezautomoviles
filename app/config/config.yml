@@ -39,6 +39,7 @@ twig:
     form:
         resources:
             - 'bootstrap_3_layout.html.twig'
+            - 'ThemeBundle:Default:for_div_layout.html.twig'
             - 'UtilBundle:Form:fields.html.twig'
 
 # Assetic Configuration
