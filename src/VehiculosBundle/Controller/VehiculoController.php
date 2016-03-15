@@ -5,6 +5,7 @@ namespace VehiculosBundle\Controller;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use VehiculosBundle\Entity\EstadoVehiculo;
 use VehiculosBundle\Entity\Vehiculo;
 use VehiculosBundle\Entity\Patentamiento;
@@ -20,7 +21,7 @@ use VehiculosBundle\Form\PatentamientoType;
  * Vehiculo controller.
  *
  */
-class VehiculoController extends Controller {
+class VehiculoController extends Controller implements TokenAuthenticatedController{
 
     /**
      * Lists all Vehiculo entities.

@@ -12,7 +12,7 @@ use UsuariosBundle\Form\UsuarioType;
  * Usuario controller.
  *
  */
-class UsuarioController extends Controller
+class UsuarioController extends Controller implements TokenAuthenticatedController
 {
 
     /**
