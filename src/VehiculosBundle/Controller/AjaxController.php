@@ -28,20 +28,27 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
-    public function newMovimientoDepositoAction($vehiculoId) {
-        $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
-        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
-        $entity->setVehiculo($vehiculo);
-        $entity->setFechaIngreso(new \DateTime("now"));
-        $form = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType(), $entity);
+    public function newMovimientoDepositoAction( $vehiculoId ) {
+        $em       = $this->getDoctrine()->getManager();
+        $entity   = new \VehiculosBundle\Entity\MovimientoDeposito();
+        $vehiculo = $em->getRepository( "VehiculosBundle:Vehiculo" )->find( $vehiculoId );
+        $entity->setVehiculo( $vehiculo );
+        $entity->setFechaIngreso( new \DateTime( "now" ) );
+        $movimientoDeposito = $em->getRepository( 'VehiculosBundle:MovimientoDeposito' )->getUltimoMovimientoDepositoPorVehiculo( $vehiculo );
+        if ( $movimientoDeposito[0] ) {
+            $entity->setDepositoDestino( $movimientoDeposito[0]->getDepositoDestino() );
+        }
+        $form = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType(), $entity );
 
         $html = $this->renderView(
-                'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig', array(
-            'form' => $form->createView(),
-            'vehiculo' => $vehiculo,
-                )
+            'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig',
+            array(
+                'form'     => $form->createView(),
+                'vehiculo' => $vehiculo,
+            )
         );
-        return new JsonResponse($html);
+
+        return new JsonResponse( $html );
     }
 
     public function movimientoDepositoCreateAjaxAction(Request $request) {

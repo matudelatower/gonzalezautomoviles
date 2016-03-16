@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * MovimientoDeposito
  *
  * @ORM\Table(name="movimientos_depositos")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\Repository\MovimientoDepositoRepository")
  */
 class MovimientoDeposito {
 
@@ -90,12 +90,6 @@ class MovimientoDeposito {
 	 * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
 	 */
 	private $actualizadoPor;
-
-	/**
-	 * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Deposito")
-	 * @ORM\JoinColumn(name="deposito_origen_id", referencedColumnName="id",nullable=true)
-	 */
-	private $depositoOrigen;
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Deposito")
@@ -320,28 +314,6 @@ class MovimientoDeposito {
 	 */
 	public function getActualizadoPor() {
 		return $this->actualizadoPor;
-	}
-
-	/**
-	 * Set depositoOrigen
-	 *
-	 * @param \VehiculosBundle\Entity\Deposito $depositoOrigen
-	 *
-	 * @return MovimientoDeposito
-	 */
-	public function setDepositoOrigen( \VehiculosBundle\Entity\Deposito $depositoOrigen = null ) {
-		$this->depositoOrigen = $depositoOrigen;
-
-		return $this;
-	}
-
-	/**
-	 * Get depositoOrigen
-	 *
-	 * @return \VehiculosBundle\Entity\Deposito
-	 */
-	public function getDepositoOrigen() {
-		return $this->depositoOrigen;
 	}
 
 	/**
