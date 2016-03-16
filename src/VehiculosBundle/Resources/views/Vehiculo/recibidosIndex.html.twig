@@ -29,16 +29,16 @@
                         <thead>
 
                             <tr>
-                                <th>N°</th>                                
-                                <th>Modelo</th>
-                                <th>Color vehiculo</th>
+                                <th>N°</th>
+                                <th data-width="280">Modelo</th>
+                                <th data-width="5">Color vehiculo</th>
                                 <th>Vin</th>
-                                <th>Dias stock</th>
+                                <th data-width="5">Dias stock</th>
                                 <th>Pagado</th>
                                 <th>Tipo de venta</th>
                                 <th>Estado Pago</th>
                                 <th>Deposito</th>
-                                <th>Actions</th>
+                                <th data-width="100">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,7 +91,7 @@
                                                href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
                                                title="Daños internos"><i class="fa fa-fire-extinguisher"></i></a>
                                                {% if (entity.danio_gm_sin_solucionar!='') %}
-                                                   <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
+                                                   <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
                                                {%endif%}   
                                         </div>
                                     </td>

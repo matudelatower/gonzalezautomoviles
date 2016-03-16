@@ -29,16 +29,16 @@
                         <thead>
 
                             <tr>
-                                <th>Id</th>                                
-                                <th>Modelo</th>
-                                <th>Color vehiculo</th>
+                                <th>Id</th>
+                                <th data-width="280">Modelo</th>
+                                <th data-width="5">Color vehiculo</th>
                                 <th>Vin</th>
-                                <th>Dias stock</th>
+                                <th data-width="5">Dias stock</th>
                                 <th>Estado Pago</th>
                                 <th>Tipo de venta</th>
                                 <th>Deposito</th>
-                                <th>Estado</th>                                
-                                <th>Actions</th>                                
+                                <th>Estado</th>
+                                <th data-width="100">Actions</th>
 
                             </tr>
                         </thead>
@@ -77,10 +77,10 @@
                                                    data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
                                             {% endif %}
-                                            {% if (entity.danio_gm_sin_solucionar!='') %}
-                                                <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
-                                            {%endif%} 
                                         </div>
+                                            {% if (entity.danio_gm_sin_solucionar!='') %}
+                                                <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
+                                            {%endif%}
                                     </td>
                                 </tr>
                             {% endfor %}

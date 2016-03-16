@@ -28,15 +28,15 @@
                     <table class="data-table table table-bordered table-striped" id="tabla-listado">
                         <thead>
                             <tr>
-                                <th>N°</th>                                
-                                <th>Modelo</th>
+                                <th>N°</th>
+                                <th data-width="250">Modelo</th>
                                 <th>Color vehiculo</th>
                                 <th>Vin</th>
                                 <th>Dias stock</th>
                                 <th>Estado Pago</th>
                                 <th>Tipo de venta</th>
                                 <th>Deposito</th>
-                                <th>Actions</th>
+                                <th data-width="100">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,10 +104,11 @@
                                             <a class="btn {% if(entity.danio_interno_sin_solucionar!='') %}btn-danger{% else %}btn-default{% endif %}"
                                                href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
                                                title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
-                                               {% if (entity.danio_gm_sin_solucionar!='') %}
-                                                   <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
-                                               {%endif%} 
+
                                         </div>
+                                        {% if (entity.danio_gm_sin_solucionar!='') %}
+                                            <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
+                                        {%endif%}
                                     </td>
 
                                 </tr>
