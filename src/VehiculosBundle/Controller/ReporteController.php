@@ -637,6 +637,7 @@ class ReporteController extends Controller {
             'vehiculo' => $vehiculo,
             'title' => '',
             'preguntasOriginales' => $preguntas,
+            'controlInternoCabecera' => $controlInternoCabecera,
                 )
         );
         $reportesManager = $this->get('manager.reportes');
