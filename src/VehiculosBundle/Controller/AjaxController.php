@@ -28,27 +28,28 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
-    public function newMovimientoDepositoAction( $vehiculoId ) {
-        $em       = $this->getDoctrine()->getManager();
-        $entity   = new \VehiculosBundle\Entity\MovimientoDeposito();
-        $vehiculo = $em->getRepository( "VehiculosBundle:Vehiculo" )->find( $vehiculoId );
-        $entity->setVehiculo( $vehiculo );
-        $entity->setFechaIngreso( new \DateTime( "now" ) );
-        $movimientoDeposito = $em->getRepository( 'VehiculosBundle:MovimientoDeposito' )->getUltimoMovimientoDepositoPorVehiculo( $vehiculo );
-        if ( $movimientoDeposito[0] ) {
-            $entity->setDepositoDestino( $movimientoDeposito[0]->getDepositoDestino() );
+    public function newMovimientoDepositoAction($vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $entity = new \VehiculosBundle\Entity\MovimientoDeposito();
+        $vehiculo = $em->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $entity->setVehiculo($vehiculo);
+        $entity->setFechaIngreso(new \DateTime("now"));
+        $movimientoDeposito = $em->getRepository('VehiculosBundle:MovimientoDeposito')->getUltimoMovimientoDepositoPorVehiculo($vehiculo);
+        if (count($movimientoDeposito) > 0) {
+            if ($movimientoDeposito[0]) {
+                $entity->setDepositoDestino($movimientoDeposito[0]->getDepositoDestino());
+            }
         }
-        $form = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType(), $entity );
+        $form = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType(), $entity);
 
         $html = $this->renderView(
-            'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig',
-            array(
-                'form'     => $form->createView(),
-                'vehiculo' => $vehiculo,
-            )
+                'VehiculosBundle:Vehiculo:newMovimientoDeposito.html.twig', array(
+            'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
+                )
         );
 
-        return new JsonResponse( $html );
+        return new JsonResponse($html);
     }
 
     public function movimientoDepositoCreateAjaxAction(Request $request) {
@@ -306,31 +307,31 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
-	public function getAnioCodigoVersionPorModeloAction( Request $request ) {
-		$id = $request->get( 'id' );
+    public function getAnioCodigoVersionPorModeloAction(Request $request) {
+        $id = $request->get('id');
 
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-		$modelo        = $em->getRepository( 'VehiculosBundle:NombreModelo' )->find( $id );
-		$codigoModelos = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->findByNombreModelo( $modelo );
+        $modelo = $em->getRepository('VehiculosBundle:NombreModelo')->find($id);
+        $codigoModelos = $em->getRepository('VehiculosBundle:CodigoModelo')->findByNombreModelo($modelo);
 
-		$aAnio    = array();
-		$aCodigo  = array();
-		$aVersion = array();
+        $aAnio = array();
+        $aCodigo = array();
+        $aVersion = array();
 
-		foreach ( $codigoModelos as $codigoModelo ) {
-			$aAnio[$codigoModelo->getAnio()]    = $codigoModelo->getAnio();
-			$aCodigo[$codigoModelo->getCodigo()]  = $codigoModelo->getCodigo();
-			$aVersion[$codigoModelo->getVersion()] = $codigoModelo->getVersion();
-		}
+        foreach ($codigoModelos as $codigoModelo) {
+            $aAnio[$codigoModelo->getAnio()] = $codigoModelo->getAnio();
+            $aCodigo[$codigoModelo->getCodigo()] = $codigoModelo->getCodigo();
+            $aVersion[$codigoModelo->getVersion()] = $codigoModelo->getVersion();
+        }
 
-		$return = array(
-			'anio'    => $aAnio,
-			'codigo'  => $aCodigo,
-			'version' => $aVersion,
-		);
+        $return = array(
+            'anio' => $aAnio,
+            'codigo' => $aCodigo,
+            'version' => $aVersion,
+        );
 
-		return new JsonResponse( $return );
-	}
+        return new JsonResponse($return);
+    }
 
 }
