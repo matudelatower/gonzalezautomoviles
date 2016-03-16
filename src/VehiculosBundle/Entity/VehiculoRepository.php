@@ -425,7 +425,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $db = $this->getEntityManager()->getConnection();
 
 
-        $where=" d.id=" . $filters['deposito']->getId();
+        $where="tipo_estado_vehiculo.slug!='entregado' AND d.id=" . $filters['deposito']->getId();
 
         if ($filters['colorVehiculo']) {
             $where.=" AND v.color_vehiculo_id=" . $filters['colorVehiculo']->getId();
@@ -442,7 +442,12 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,nm.nombre as nombre_modelo,                                        
                                         v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         cv.color as color_vehiculo                                        
-					FROM    vehiculos v
+
+                                        FROM     estados_vehiculos
+					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+					INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+					
                                         INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
                                         LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
                                         LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
