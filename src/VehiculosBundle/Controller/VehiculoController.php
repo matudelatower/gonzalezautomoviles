@@ -901,7 +901,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     $estadoVehiculo->setVehiculo($vehiculo);
                     $vehiculo->addEstadoVehiculo($estadoVehiculo);
                 }
-                return $this->redirectToRoute('vehiculos_entregados_index');
+                
             }
             if (!$nuevo) {
                 $qb = $em->createQueryBuilder();
@@ -930,6 +930,9 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                 }
             }
             $em->flush();
+            if ($tipoTransaccion == 'cierre') {
+                return $this->redirectToRoute('vehiculos_entregados_index');
+            }
             $this->get('session')->getFlashBag()->add(
                     'success', 'Checklist Guardado Correctamente'
             );
