@@ -901,6 +901,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     $estadoVehiculo->setVehiculo($vehiculo);
                     $vehiculo->addEstadoVehiculo($estadoVehiculo);
                 }
+                return $this->redirectToRoute('vehiculos_entregados_index');
             }
             if (!$nuevo) {
                 $qb = $em->createQueryBuilder();
