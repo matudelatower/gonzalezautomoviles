@@ -53,6 +53,9 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaEstadoDesde'] . "' AND '" . $filters['fechaEstadoDesde'] . "'";
             }
         }
+        if ($filters['rango']) {
+            $where.=" AND age.fecha BETWEEN '".$filters['fechaDesde']."' AND '".$filters['fechaHasta']."'";
+        }
 
         if (!$order) {
             $order = " modelo_nombre asc,modelo_anio asc,color_vehiculo asc";

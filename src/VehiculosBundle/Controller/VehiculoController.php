@@ -241,39 +241,55 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      * listado de vehiculos que fueron patentados.
      *
      */
-    public function vehiculosEntregadosIndexAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculoFilterType());
-        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
-        $estados = array($estadoId1);
+    public function vehiculosEntregadosIndexAction( Request $request ) {
+        $em        = $this->getDoctrine()->getManager();
+        $form      = $this->createForm( new VehiculoFilterType() );
+        $estadoId1 = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug( 'entregado' );
+        $estados   = array( $estadoId1 );
 
-        if ($request->isMethod("post")) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+        if ( $request->isMethod( "post" ) ) {
+            $form->handleRequest( $request );
+            if ( $form->isValid() ) {
+                $data  = $form->getData();
+                $order = " fecha_entrega ASC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
+
+                $aFecha = explode( ' - ', $data['rango'] );
+
+                $fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+                $fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+                $data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+                $data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+
+                $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados,
+                    $data,
+                    $order );
             }
         } else {
-            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+            $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados );
         }
-        $cantidadRegistros = count($entities);
+        $cantidadRegistros = count( $entities );
 
-        $paginator = $this->get('knp_paginator');
-        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
-            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        $paginator = $this->get( 'knp_paginator' );
+        if ( $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'] != "" ) {
+            $limit = $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'];
         } else {
             $limit = 10;
         }
         $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
+            $entities,
+            $request->query->get( 'page', 1 )/* page number */,
+            $limit/* limit per page */
         );
 
         return $this->render(
-                        'VehiculosBundle:Vehiculo:entregadosIndex.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-                        )
+            'VehiculosBundle:Vehiculo:entregadosIndex.html.twig',
+            array(
+                'entities'          => $entities,
+                'form'              => $form->createView(),
+                'cantidadRegistros' => $cantidadRegistros,
+                'muestraRangoFecha' => true
+            )
         );
     }
 

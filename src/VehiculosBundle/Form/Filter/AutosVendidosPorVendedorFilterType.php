@@ -22,7 +22,7 @@ class AutosVendidosPorVendedorFilterType extends AbstractType {
 //					'property'      => 'nombreCompleto',
 				        'search_method' => 'getEmpleadoByApellido',
 				        'route_name'    => 'get_empleado_by_apellido'
-			        ) );;
+			        ) );
 	}
 
 	public function configureOptions( OptionsResolver $resolver ) {
