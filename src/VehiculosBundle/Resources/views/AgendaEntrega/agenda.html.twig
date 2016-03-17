@@ -33,10 +33,16 @@
                     title: ' - {{  entrega.vehiculo.vin }} - {{ entrega.vehiculo.cliente }}',
                     start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
                     backgroundColor: "#00a65a", //Success (green)
-            {%if(entrega.vehiculo.estadoVehiculo.last.tipoEstadoVehiculo.slug=='entregado')%}
+                    borderColor: "#00a65a", //Success (green)
+                    {%if(entrega.vehiculo.tipoVentaEspecial.slug == 'plan-de-ahorro')%}
+                    backgroundColor: "#f39c12", // (amarillo)
+                    borderColor: "#f39c12",
+                    {% elseif (entrega.vehiculo.estadoVehiculo.last.tipoEstadoVehiculo.slug=='entregado') %}
                     backgroundColor: "#367fa9", // (blue)
-            {% endif %}
-                                borderColor: "#00a65a" //Success (green)
+                    borderColor: "#367fa9", // (blue)
+
+                    {% endif %}
+
                     },
         {% endfor %}]
                     ;

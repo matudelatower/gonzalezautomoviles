@@ -125,7 +125,7 @@
                 $('.pagination li a').click(function () {
 
                     $('#form_listado').attr('action', this.href);
-            {% for row in form %}
+            {% for row in form if formFilter[row.vars.name] is defined %}
                         $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
             {% endfor %}
 
