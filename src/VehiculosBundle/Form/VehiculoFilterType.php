@@ -61,6 +61,11 @@ class VehiculoFilterType extends AbstractType {
                     ),
                     "attr" => array("onchange" => 'document.form_listado.submit()')
                 ))
+                ->add('estadoVehiculo', 'entity',array(
+                    'class'=> 'VehiculosBundle\Entity\TipoEstadoVehiculo',
+                    'required'=> false,
+
+                ))
         ;
     }
 

@@ -27,50 +27,43 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      * Lists all Vehiculo entities.
      *
      */
-    public function indexAction(Request $request) {
+    public function indexAction( Request $request ) {
 
         $em = $this->getDoctrine()->getManager();
-        $requestUri = $request->getRequestUri();
 
-        $usuario = $this->getUser();
-
-        $permisosManager = $this->get('manager.permisos');
-
-//        TODO controlar cuando se pagina
-//        $permisosManager->checkPermiso($requestUri, $usuario);
-
-        /* permiso usuario  */
-
-
-        $form = $this->createForm(new VehiculoFilterType());
-        if ($request->isMethod("post")) {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false, $data);
+        $form = $this->createForm( new VehiculoFilterType() );
+        if ( $request->isMethod( "post" ) ) {
+            $form->handleRequest( $request );
+            if ( $form->isValid() ) {
+                $data     = $form->getData();
+                $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false, $data );
             }
         } else {
-            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false);
+            $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false );
         }
-        $cantidadRegistros = count($entities);
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
-        $paginator = $this->get('knp_paginator');
-        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
-            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+        $cantidadRegistros      = count( $entities );
+        $formMovimientoDeposito = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType() );
+        $paginator              = $this->get( 'knp_paginator' );
+        if ( $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'] != "" ) {
+            $limit = $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'];
         } else {
             $limit = 10;
         }
         $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
+            $entities,
+            $request->query->get( 'page', 1 )/* page number */,
+            $limit/* limit per page */
         );
 
         return $this->render(
-                        'VehiculosBundle:Vehiculo:index.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-                        )
+            'VehiculosBundle:Vehiculo:index.html.twig',
+            array(
+                'entities'                 => $entities,
+                'form'                     => $form->createView(),
+                'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                'cantidadRegistros'        => $cantidadRegistros,
+                'muestraFiltroEstado'      => true,
+            )
         );
     }
 

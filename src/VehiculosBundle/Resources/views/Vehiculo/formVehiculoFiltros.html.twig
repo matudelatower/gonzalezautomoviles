@@ -42,6 +42,14 @@
                             {{ form_widget(form.cliente) }}
                         </div>
                     </div>
+                    {% if muestraFiltroEstado is defined %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="inputEmail3">Estado</label>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.estadoVehiculo) }}
+                        </div>
+                    </div>
+                    {% endif %}
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-4">
