@@ -873,6 +873,11 @@ class ReporteController extends Controller {
 
             $formData = $form->getData();
 
+            $dias = explode(',',$formData['dias']);
+
+            $formData['diaInicio'] = abs($dias[0]);
+            $formData['diaFin']    = abs($dias[1]);
+
             $entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
         }
 

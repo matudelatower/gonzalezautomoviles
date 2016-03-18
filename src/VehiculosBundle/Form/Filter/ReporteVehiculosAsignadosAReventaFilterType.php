@@ -5,6 +5,8 @@ namespace VehiculosBundle\Form\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
@@ -27,28 +29,49 @@ class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
 						2 => 'NO',
 					)
 				) )
-			->add( 'diaInicio',
-				'integer',
+			->add( 'dias',
+				'text',
 				array(
 					'required' => false,
 					'attr'     => array(
-						'class'     => 'bfh-number',
-						'min'       => '0',
-						'step'      => '1',
-						'data-bind' => 'value:replyNumber'
-					)
-				) )
-			->add( 'diaFin',
-				'integer',
-				array(
-					'required' => false,
-					'attr'     => array(
-						'class'     => 'bfh-number',
-						'min'       => '0',
-						'step'      => '1',
-						'data-bind' => 'value:replyNumber'
+						'class'                   => 'slider',
+						'data-slider-min'         => "-365",
+						'data-slider-max'         => "365",
+						'data-slider-step'        => "5",
+						'data-slider-value'       => "[-100,100]",
+						'data-slider-orientation' => "horizontal",
+						'data-slider-selection'   => "before",
+						'data-slider-tooltip'     => "show",
+						'data-slider-id'          => "blue"
 					)
 				) );
+		$builder->addEventListener( FormEvents::SUBMIT,
+			function ( FormEvent $event ) {
+				$data = $event->getData();
+				$form = $event->getForm();
+
+				// check if the Product object is "new"
+				// If no data is passed to the form, the data is "null".
+				// This should be considered a new "Product"
+				if ( $data['dias'] ) {
+					$form->add( 'dias',
+						'text',
+						array(
+							'required' => false,
+							'attr'     => array(
+								'class'                   => 'slider',
+								'data-slider-min'         => "-365",
+								'data-slider-max'         => "365",
+								'data-slider-step'        => "5",
+								'data-slider-value'       => "[" . $data['dias'] . "]",
+								'data-slider-orientation' => "horizontal",
+								'data-slider-selection'   => "before",
+								'data-slider-tooltip'     => "show",
+								'data-slider-id'          => "blue"
+							)
+						) );
+				}
+			} );
 	}
 
 	public function configureOptions( OptionsResolver $resolver ) {
