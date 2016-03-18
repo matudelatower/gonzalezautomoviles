@@ -137,7 +137,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 		     vehiculos.color_vehiculo_id AS color_vehiculo_id,
 		     vehiculos.pagado AS pagado,
 		     colores_vehiculos.color AS colores_vehiculos_color,
-		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
+		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
 		     facturas.fecha AS facturas_fecha
 		FROM
 		     facturas facturas INNER JOIN vehiculos vehiculos ON facturas.id = vehiculos.factura_id
@@ -163,7 +163,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
         $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
         $query = "SELECT v.*,
-		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
+		     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
                      colores_vehiculos.color,a.fecha as fecha_entrega,a.hora as hora_entrega,a.hora,a.descripcion as descripcion_entrega,d.nombre as deposito_actual,
                      personas.apellido ||', '||personas.nombre as cliente,
                      (select personas.apellido||', '||personas.nombre
@@ -232,7 +232,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT   distinct(v.*),
-                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,nm.nombre as nombre_modelo,
+                                        nm.nombre||'|'||cm.anio||'|'||cm.version as modelo,nm.nombre as nombre_modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,remitos.fecha as remito_fecha,
                                         remitos.numero as remito_numero,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         cv.color as color_vehiculo,
@@ -275,7 +275,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT   distinct(v.*),
-                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,
+                                        nm.nombre||'|'||cm.anio||'|'||cm.version as modelo,
                                         tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,
                                         cv.color as color_vehiculo
 					FROM     vehiculos v
@@ -445,7 +445,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT   distinct(v.*),
-                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,nm.nombre as nombre_modelo,                                        
+                                        nm.nombre||'|'||cm.anio||'|'||cm.version as modelo,nm.nombre as nombre_modelo,                                        
                                         v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
                                         cv.color as color_vehiculo                                        
 
@@ -500,7 +500,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         SELECT
              vehiculos.*,
              current_date-vehiculos.fecha_emision_documento::date as dias_de_recibido,
-             nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.codigo||'|'||codigos_modelo.version as modelo,
+             nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
              colores_vehiculos.color AS color_vehiculo,
              personas.nombre AS personas_nombre,
              personas.apellido AS personas_apellido,
@@ -556,7 +556,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT   distinct(v.*),
-                                        nm.nombre||'|'||cm.anio||'|'||cm.codigo||'|'||cm.version as modelo,nm.nombre as nombre_modelo,
+                                        nm.nombre||'|'||cm.anio||'|'||cm.version as modelo,nm.nombre as nombre_modelo,
                                         tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,
                                         tv.nombre as tipo_venta_especial,cv.color as color_vehiculo,epat.slug as estado_patentamiento,
                                         pat.dominio,cli.reventa, personas.apellido ||', '||personas.nombre as cliente,ainicio.nombre as agente_patentamiento,
