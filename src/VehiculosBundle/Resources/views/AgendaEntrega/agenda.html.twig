@@ -18,6 +18,13 @@
                     <!-- THE CALENDAR -->
                     <div id="calendar"></div>
                 </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <ul class="chart-legend clearfix">
+                        <li><i class="fa fa-circle text-green"></i>Veh&iacute;culos Convencionales por entregar</li>
+                        <li><i class="fa fa-circle text-yellow"></i>Veh&iacute;culos Plan de Ahorro por entregar</li>
+                        <li><i class="fa fa-circle text-blue"></i>Veh&iacute;culos Entregados antes de la fecha programada</li>
+                    </ul>   
+                </div>
             </div><!-- /. box -->
         </div>
     </div>
@@ -28,22 +35,21 @@
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/lang-all.js') }}"></script>
     <script>
 
-        entregas = [        {% for entrega in entregas %}
-                {
-                    title: ' - {{  entrega.vehiculo.vin }} - {{ entrega.vehiculo.cliente }}',
-                    start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
-                    backgroundColor: "#00a65a", //Success (green)
-                    borderColor: "#00a65a", //Success (green)
-                    {%if(entrega.vehiculo.tipoVentaEspecial.slug == 'plan-de-ahorro')%}
-                    backgroundColor: "#f39c12", // (amarillo)
-                    borderColor: "#f39c12",
-                    {% elseif (entrega.vehiculo.estadoVehiculo.last.tipoEstadoVehiculo.slug=='entregado') %}
-                    backgroundColor: "#367fa9", // (blue)
-                    borderColor: "#367fa9", // (blue)
+        entregas = [{% for entrega in entregas %}
+            {
+                title: ' - {{  entrega.vehiculo.vin }} - {{ entrega.vehiculo.cliente }}',
+                start: new Date({{ entrega.fecha| date('Y, m-1, d') }}, {{ entrega.hora| date('H, i') }}),
+                backgroundColor: "#00a65a", //Success (green)
+                borderColor: "#00a65a", //Success (green)
+        {%if(entrega.vehiculo.tipoVentaEspecial.slug == 'plan-de-ahorro')%}
+                                backgroundColor: "#f39c12", // (amarillo)
+                                        borderColor: "#f39c12",                    {% elseif (entrega.vehiculo.estadoVehiculo.last.tipoEstadoVehiculo.slug=='entregado') %}
+                                                            backgroundColor: "#367fa9", // (blue)
+                                                            borderColor: "#367fa9", // (blue)
 
-                    {% endif %}
+        {% endif %}
 
-                    },
+                            },
         {% endfor %}]
                     ;
 
@@ -72,8 +78,8 @@
                 events:
                         entregas,
             });
-    </script>
+        </script>
 
-    
-    
-{% endblock %}
+
+
+        {% endblock %}

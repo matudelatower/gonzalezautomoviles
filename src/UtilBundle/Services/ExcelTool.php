@@ -225,10 +225,10 @@ class ExcelTool {
         $i = 2;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             $modelo = "";
+             $contador = 1;
             foreach ($resultSet as $entity) {
 
-                if ($modelo != $entity['nombre_modelo']) {
-                    $contador = 1;
+                if ($modelo != $entity['nombre_modelo']) {                   
                     $modelo = $entity['nombre_modelo'];
                     $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo']);
                     $i ++;
