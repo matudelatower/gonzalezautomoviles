@@ -66,9 +66,8 @@ class VehiculoFilterType extends AbstractType {
                     'required'=> false,
 
                 ))
-                ->add( 'rango',
-                    'text',
-                    array(
+                ->add( 'rango','text', array(
+                    'required' => false,
                     'attr' => array( 'class' => 'daterange' )
                 ) )
         ;

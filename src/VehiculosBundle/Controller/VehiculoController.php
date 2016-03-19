@@ -21,49 +21,46 @@ use VehiculosBundle\Form\PatentamientoType;
  * Vehiculo controller.
  *
  */
-class VehiculoController extends Controller implements TokenAuthenticatedController{
+class VehiculoController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all Vehiculo entities.
      *
      */
-    public function indexAction( Request $request ) {
+    public function indexAction(Request $request) {
 
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm( new VehiculoFilterType() );
-        if ( $request->isMethod( "post" ) ) {
-            $form->handleRequest( $request );
-            if ( $form->isValid() ) {
-                $data     = $form->getData();
-                $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false, $data );
+        $form = $this->createForm(new VehiculoFilterType());
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false, $data);
             }
         } else {
-            $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false );
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false);
         }
-        $cantidadRegistros      = count( $entities );
-        $formMovimientoDeposito = $this->createForm( new \VehiculosBundle\Form\MovimientoDepositoType() );
-        $paginator              = $this->get( 'knp_paginator' );
-        if ( $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'] != "" ) {
-            $limit = $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'];
+        $cantidadRegistros = count($entities);
+        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+        $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
         } else {
             $limit = 10;
         }
         $entities = $paginator->paginate(
-            $entities,
-            $request->query->get( 'page', 1 )/* page number */,
-            $limit/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
 
         return $this->render(
-            'VehiculosBundle:Vehiculo:index.html.twig',
-            array(
-                'entities'                 => $entities,
-                'form'                     => $form->createView(),
-                'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
-                'cantidadRegistros'        => $cantidadRegistros,
-                'muestraFiltroEstado'      => true,
-            )
+                        'VehiculosBundle:Vehiculo:index.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
+                    'muestraFiltroEstado' => true,
+                        )
         );
     }
 
@@ -241,55 +238,49 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      * listado de vehiculos que fueron patentados.
      *
      */
-    public function vehiculosEntregadosIndexAction( Request $request ) {
-        $em        = $this->getDoctrine()->getManager();
-        $form      = $this->createForm( new VehiculoFilterType() );
-        $estadoId1 = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug( 'entregado' );
-        $estados   = array( $estadoId1 );
+    public function vehiculosEntregadosIndexAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculoFilterType());
+        $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
+        $estados = array($estadoId1);
+        $order = " fecha_entregado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                if ($data['rango']) {
+                    $aFecha = explode(' - ', $data['rango']);
 
-        if ( $request->isMethod( "post" ) ) {
-            $form->handleRequest( $request );
-            if ( $form->isValid() ) {
-                $data  = $form->getData();
-                $order = " fecha_entrega ASC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
+                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
 
-                $aFecha = explode( ' - ', $data['rango'] );
-
-                $fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
-                $fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
-
-                $data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
-                $data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
-
-                $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados,
-                    $data,
-                    $order );
+                    $data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+                    $data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+                }
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data, $order);
             }
         } else {
-            $entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados );
+            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
         }
-        $cantidadRegistros = count( $entities );
+        $cantidadRegistros = count($entities);
 
-        $paginator = $this->get( 'knp_paginator' );
-        if ( $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'] != "" ) {
-            $limit = $request->request->get( 'vehiculosbundle_vehiculo_filter' )['registrosPaginador'];
+        $paginator = $this->get('knp_paginator');
+        if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
+            $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
         } else {
             $limit = 10;
         }
         $entities = $paginator->paginate(
-            $entities,
-            $request->query->get( 'page', 1 )/* page number */,
-            $limit/* limit per page */
+                $entities, $request->query->get('page', 1)/* page number */, $limit/* limit per page */
         );
 
         return $this->render(
-            'VehiculosBundle:Vehiculo:entregadosIndex.html.twig',
-            array(
-                'entities'          => $entities,
-                'form'              => $form->createView(),
-                'cantidadRegistros' => $cantidadRegistros,
-                'muestraRangoFecha' => true
-            )
+                        'VehiculosBundle:Vehiculo:entregadosIndex.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
+                    'muestraRangoFecha' => true
+                        )
         );
     }
 
@@ -766,7 +757,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                         'registrado'
                 );
 
-                if ($vehiculosManager->guardarVehiculo($vehiculo, $tipoEstadoDanioGm,$daniosGmOriginal)) {
+                if ($vehiculosManager->guardarVehiculo($vehiculo, $tipoEstadoDanioGm, $daniosGmOriginal)) {
 
                     $this->get('session')->getFlashBag()->add(
                             'success', 'Datos del Vehiculo actualizados correctamente.'
@@ -811,11 +802,10 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             }
         }
 
-        return $this->render( 'VehiculosBundle:Vehiculo:editarVehiculoRecibido.html.twig',
-            array(
-                'vehiculo'  => $vehiculo,
-                'edit_form' => $form->createView(),
-            ) );
+        return $this->render('VehiculosBundle:Vehiculo:editarVehiculoRecibido.html.twig', array(
+                    'vehiculo' => $vehiculo,
+                    'edit_form' => $form->createView(),
+        ));
     }
 
     public function checklistPreEntregaAction(Request $request, $vehiculoId) {
@@ -910,7 +900,6 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     $estadoVehiculo->setVehiculo($vehiculo);
                     $vehiculo->addEstadoVehiculo($estadoVehiculo);
                 }
-                
             }
             if (!$nuevo) {
                 $qb = $em->createQueryBuilder();

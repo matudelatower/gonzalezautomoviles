@@ -54,7 +54,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             }
         }
         if ($filters['rango']) {
-            $where.=" AND age.fecha BETWEEN '".$filters['fechaDesde']."' AND '".$filters['fechaHasta']."'";
+            $where.=" AND estados_vehiculos.creado BETWEEN '".$filters['fechaDesde']."' AND '".$filters['fechaHasta']."'";
         }
 
         if (!$order) {
@@ -69,7 +69,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega,age.hora as hora_entrega,encuesta.id as encuesta_alerta_temprana,
                                         (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar,
                                         (select id from danios_vehiculo_gm where vehiculo_id=v.id and tipo_estado_danio_gm_id!=3 limit 1) as danio_gm_sin_solucionar,
-                                        cli.reventa
+                                        cli.reventa,estados_vehiculos.creado as fecha_entregado
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
