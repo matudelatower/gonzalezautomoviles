@@ -8,7 +8,9 @@
 
     <div>
         <label>Vendedor: </label> <span>{{ vendedor }}</span> <br>
+        {%if(fechaDesde is not null)%}
         <label>Fecha: </label><span>{{ fechaDesde |date('d/m/Y') }} al {{ fechaHasta |date('d/m/Y') }}</span>
+        {%endif%}
     </div>
     <br>
 
