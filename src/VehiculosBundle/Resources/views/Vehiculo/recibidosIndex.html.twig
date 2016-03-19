@@ -28,17 +28,16 @@
                     <table class="data-table table table-bordered table-striped" id="tabla-listado">
                         <thead>
 
-                            <tr>
-                                <th>N°</th>
-                                <th data-width="280">Modelo</th>
-                                <th data-width="5">Color vehiculo</th>
-                                <th>Vin</th>
-                                <th data-width="5">Dias stock</th>
-                                <th>Pagado</th>
-                                <th>Tipo de venta</th>
-                                <th>Estado Pago</th>
-                                <th>Deposito</th>
-                                <th data-width="100">Actions</th>
+                            <tr>                                
+                                <th data-width="3%">Id</th>
+                                <th data-width="20%">Modelo</th>
+                                <th data-width="8%">Color vehiculo</th>
+                                <th data-width="5%">Vin</th>
+                                <th data-width="3%">Dias stock</th>
+                                <th data-width="3%">Estado Pago</th>
+                                <th data-width="8%">Tipo de venta</th>
+                                <th data-width="5%">Deposito</th>
+                                <th data-width="10%">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,7 +61,6 @@
                                         {%endif%}
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
-                                    <td>{{ entity.vehiculo_estado | default ("") }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td>
                                         <div class="btn-group">
