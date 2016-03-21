@@ -445,9 +445,9 @@ class ReporteController extends Controller {
             }
         }
         if ($data['conCupon'] == 'SI') {
-            $title = 'Reporte de Vehiculos que tienen Cupon de Garantia';
+            $title = 'Reporte de Vehículos que tienen Cupon de Garantia';
         } else {
-            $title = 'Reporte de Vehiculos NO tienen Cupon de Garantia';
+            $title = 'Reporte de Vehículos que NO tienen Cupon de Garantia';
         }
 
         $html = $this->renderView(

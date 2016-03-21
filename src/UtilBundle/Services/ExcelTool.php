@@ -154,7 +154,7 @@ class ExcelTool {
         $phpExcelObject->setActiveSheetIndex(0);
 
         $phpExcelObject->getActiveSheet()
-                ->setCellValue('A1', 'Id')
+                ->setCellValue('A1', 'N')
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
@@ -164,14 +164,16 @@ class ExcelTool {
 
 
         $i = 2;
+        $contador = 1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             foreach ($resultSet as $entity) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $entity['id']);
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['colores_vehiculos_color']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
-                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['facturas_fecha']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, date("d-m-Y", strtotime($entity['facturas_fecha'])));
                 $i ++;
+                $contador++;
             }
         }
 
@@ -225,10 +227,10 @@ class ExcelTool {
         $i = 2;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             $modelo = "";
-             $contador = 1;
+            $contador = 1;
             foreach ($resultSet as $entity) {
 
-                if ($modelo != $entity['nombre_modelo']) {                   
+                if ($modelo != $entity['nombre_modelo']) {
                     $modelo = $entity['nombre_modelo'];
                     $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo']);
                     $i ++;
@@ -286,7 +288,7 @@ class ExcelTool {
         $phpExcelObject->getProperties()->setCreator($this->createby);
         $phpExcelObject->setActiveSheetIndex(0);
         $phpExcelObject->getActiveSheet()
-                ->setCellValue('A1', 'Id')
+                ->setCellValue('A1', 'N')
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
@@ -299,9 +301,10 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getStyle('A1:I1')->getBorders()->applyFromArray($this->head);
 
         $i = 2;
+        $contador=1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             foreach ($resultSet as $entity) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $entity['id']);
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
@@ -312,6 +315,7 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, date("d-m-Y", strtotime($entity['fecha_entrega'])) . " " . $entity['hora_entrega']);
 
                 $i ++;
+                $contador++;
             }
         }
 
@@ -353,7 +357,7 @@ class ExcelTool {
         $phpExcelObject->setActiveSheetIndex(0);
 
         $phpExcelObject->getActiveSheet()
-                ->setCellValue('A1', 'Id')
+                ->setCellValue('A1', 'N')
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
@@ -363,14 +367,16 @@ class ExcelTool {
 
 
         $i = 2;
+        $contador=1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             foreach ($resultSet as $entity) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $entity['id']);
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
                 $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['cupon_garantia']);
                 $i ++;
+                $contador++;
             }
         }
 
@@ -560,7 +566,6 @@ class ExcelTool {
         return $response;
     }
 
-
     /**
      *
      * Arma la hoja para el listado de vehiculos asignados a un reventa
@@ -579,20 +584,20 @@ class ExcelTool {
         $phpExcelObject->setActiveSheetIndex(0);
 
         $phpExcelObject->getActiveSheet()
-                       ->setCellValue('A1', 'N°')
-                       ->setCellValue('B1', 'Modelo')
-                       ->setCellValue('C1', 'Color vehiculo')
-                       ->setCellValue('D1', 'Vin')
-                       ->setCellValue('E1', 'Facturado')
-                       ->setCellValue('F1', 'Estado Patentamiento')
-                       ->setCellValue('G1', 'Dias de recibido')
+                ->setCellValue('A1', 'N°')
+                ->setCellValue('B1', 'Modelo')
+                ->setCellValue('C1', 'Color vehiculo')
+                ->setCellValue('D1', 'Vin')
+                ->setCellValue('E1', 'Facturado')
+                ->setCellValue('F1', 'Estado Patentamiento')
+                ->setCellValue('G1', 'Dias de recibido')
         ;
 
         $phpExcelObject->getActiveSheet()->getStyle('A1:G1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
-        $contador=1;
+        $contador = 1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
 
             foreach ($resultSet as $entity) {
@@ -601,8 +606,8 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
-                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['factura_id']?'SI':'NO');
-                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['estado_patentamiento']? $entity['estado_patentamiento']:'');
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['factura_id'] ? 'SI' : 'NO');
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['estado_patentamiento'] ? $entity['estado_patentamiento'] : '');
                 $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['dias_de_recibido']);
                 $i ++;
                 $contador++;

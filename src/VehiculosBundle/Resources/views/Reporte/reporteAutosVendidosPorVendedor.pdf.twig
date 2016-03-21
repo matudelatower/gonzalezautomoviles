@@ -1,6 +1,9 @@
 {% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
 {% block body %}
     <style>
+        table{
+            width: 100%;
+        }
         label{
             font-weight: bold;
         }
@@ -18,7 +21,7 @@
     <table class="data-table table table-bordered table-striped">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>&numero;</th>
             <th>Modelo</th>
             <th>Color vehículo</th>
             <th>Vin</th>
@@ -28,11 +31,11 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td>{{ entity.id }}</td>
+                <td>{{ loop.index }}</td>
                 <td>{{ entity.modelo }}</td>
                 <td>{{ entity.colores_vehiculos_color }}</td>
                 <td>{{ entity.vin }}</td>
-                <td>{{ entity.facturas_fecha }}</td>
+                <td>{{ entity.facturas_fecha|date('d-m-Y') }}</td>
 
             </tr>
         {% endfor %}

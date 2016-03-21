@@ -13,9 +13,9 @@
             <thead>
 
                 <tr>
-                    <th>Id</th>
+                    <th>&numero;</th>
                     <th>Modelo</th>
-                    <th>Color vehiculo</th>
+                    <th>Color veh&iacute;culo</th>
                     <th>Vin</th>
                         {%if(tipo=='SI')%}
                         <th>Cupon</th>
@@ -25,7 +25,7 @@
             <tbody>
                 {% for entity in entities %}
                     <tr>
-                        <td>{{ entity.id }}</td>
+                        <td>{{ loop.index }}</td>
                         <td>{{ entity.modelo }}</td>
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>

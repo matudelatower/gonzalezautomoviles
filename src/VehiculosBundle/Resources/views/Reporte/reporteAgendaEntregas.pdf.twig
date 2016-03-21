@@ -18,7 +18,7 @@
         <table class="data-table table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>&numero;</th>
                     <th>Vehiculo</th>
                     <th>Color</th>
                     <th>Vin</th>
@@ -32,7 +32,7 @@
             <tbody>
                 {% for entity in entities %}
                     <tr>
-                        <td>{{ entity.id }}</td>                                
+                        <td>{{ loop.index }}</td>                                
                         <td>{{ entity.modelo }}</td>
                         <td>{{ entity.color }}</td>
                         <td>{{ entity.vin }}</td>

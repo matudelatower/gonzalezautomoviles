@@ -141,24 +141,24 @@
                         <thead>
 
                         <tr>
-                            <th>N°</th>
-                            <th>Modelo</th>
-                            <th>Color vehiculo</th>
-                            <th>Vin</th>
-                            <th>Dias en stock</th>
-                            <th>Deposito</th>
-                            <th>Estado pago</th>
+                            <th data-width="3%">Id</th>
+                            <th data-width="25%">Modelo</th>
+                            <th data-width="10%">Color vehiculo</th>
+                            <th data-width="5%">Vin</th>
+                            <th data-width="10%">Dias en stock</th>
+                            <th data-width="10%">Deposito</th>
+                            <th data-width="5%">Estado pago</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         {% for entity in entities %}
                             <tr>
-                                <td>{{ loop.index }}</td>
+                                <td>{{ entity.id }}</td>
                                 <td>{{ entity.modelo }}</td>
                                 <td>{{ entity.color_vehiculo }}</td>
                                 <td>{{ entity.vin }}</td>
-                                <td>{{ entity.dias_en_stock }}</td>
+                                <td align="center">{{ entity.dias_en_stock }}</td>
                                 <td>{{ entity.deposito_actual | default ("") }}</td>
                                 <td align="center">
                                     {% if entity.pagado %}
