@@ -37,30 +37,27 @@ class AddAnioCodigoVersionFieldSubscriber implements EventSubscriberInterface {
 
 	private function addFieldsForm( $form, $nombreModelo, $anio, $codigo, $version ) {
 
-//		$form->add( $this->factory->createNamed() );
-
 		$em       = $this->em;
 		$aAnios   = array();
 		$aCodigos = array();
 		$aVersion = array();
+		if ( $nombreModelo ) {
 
-		if ( $anio ) {
 			$anios = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getAnios();
 			foreach ( $anios as $item ) {
 				$aAnios[ $item['anio'] ] = $item['anio'];
 			}
-		}
-		if ( $codigo ) {
+
 			$codigos = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getCodigos();
 			foreach ( $codigos as $item ) {
 				$aCodigos[ $item['codigo'] ] = $item['codigo'];
 			}
-		}
-		if ( $version ) {
+
 			$versions = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getVersiones();
 			foreach ( $versions as $item ) {
 				$aVersion[ $item['version'] ] = $item['version'];
 			}
+
 		}
 		$form->add( $this->factory->createNamed( 'anio',
 			'choice',
