@@ -28,8 +28,8 @@
             <td>{{ entities.autosRecibidos }}</td>
             <td>{{ entities.autosRecibidosConDanos }}</td>
             <td>{{ entities.autosRecibidosSinDanos }}</td>
-            <td>{{ entities.autosRecibidosConDanos * 100 / entities.autosRecibidos }} %</td>
-            <td>{{ entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos }} %</td>
+            <td>{{ (entities.autosRecibidosConDanos * 100 / entities.autosRecibidos)|round(2)}} %</td>
+            <td>{{ (entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos)|round(2) }} %</td>
 
         </tr>
         </tbody>

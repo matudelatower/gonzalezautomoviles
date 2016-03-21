@@ -500,26 +500,26 @@ WHERE " . $where .
 
 
         $query = "
-SELECT
-vehiculos.*,
- current_date-vehiculos.fecha_emision_documento::date as dias_de_recibido,
- nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
- colores_vehiculos.color AS color_vehiculo,
- personas.nombre AS personas_nombre,
- personas.apellido AS personas_apellido,
- estados_patentamiento.estado AS estado_patentamiento
-FROM
-colores_vehiculos colores_vehiculos INNER JOIN vehiculos vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
-INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
-LEFT OUTER JOIN clientes clientes ON vehiculos.cliente_id = clientes.id
-LEFT OUTER JOIN patentamientos patentamientos ON vehiculos.patentamiento_id = patentamientos.id
-LEFT OUTER JOIN estados_patentamiento estados_patentamiento ON patentamientos.estado_patentamiento_id = estados_patentamiento.id
-LEFT OUTER JOIN persona_tipos persona_tipos ON clientes.id = persona_tipos.cliente_id
-LEFT OUTER JOIN personas personas ON persona_tipos.persona_id = personas.id
-INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
-WHERE
-$where
-";
+                    SELECT
+                    vehiculos.*,
+                     current_date-vehiculos.fecha_emision_documento::date as dias_de_recibido,
+                     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
+                     colores_vehiculos.color AS color_vehiculo,
+                     personas.nombre AS personas_nombre,
+                     personas.apellido AS personas_apellido,
+                     estados_patentamiento.estado AS estado_patentamiento
+                    FROM
+                    colores_vehiculos colores_vehiculos INNER JOIN vehiculos vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
+                    INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
+                    LEFT OUTER JOIN clientes clientes ON vehiculos.cliente_id = clientes.id
+                    LEFT OUTER JOIN patentamientos patentamientos ON vehiculos.patentamiento_id = patentamientos.id
+                    LEFT OUTER JOIN estados_patentamiento estados_patentamiento ON patentamientos.estado_patentamiento_id = estados_patentamiento.id
+                    LEFT OUTER JOIN persona_tipos persona_tipos ON clientes.id = persona_tipos.cliente_id
+                    LEFT OUTER JOIN personas personas ON persona_tipos.persona_id = personas.id
+                    INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
+                    WHERE
+                    $where
+                    ";
 
         $stmt = $db->prepare($query);
         $stmt->execute();
@@ -579,7 +579,7 @@ $where
                         LEFT JOIN persona_tipos ON cli.id = persona_tipos.cliente_id
                         LEFT JOIN personas ON persona_tipos.persona_id = personas.id
                         WHERE " . $where .
-                                        " ORDER BY modelo, color_vehiculo asc";
+                " ORDER BY modelo, color_vehiculo asc";
 
         $stmt = $db->prepare($query);
         $stmt->execute();

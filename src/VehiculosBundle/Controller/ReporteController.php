@@ -561,7 +561,7 @@ class ReporteController extends Controller {
             $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
         }
 
-        $title = 'Reporte de Autos Recibidos Con Daños';
+        $title = 'Reporte de Vehículos Recibidos Con Daños';
 
         $html = $this->renderView(
                 'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
@@ -635,7 +635,7 @@ class ReporteController extends Controller {
             $preguntasSeleccionadas[] = $respuesta->getCheckControlInternoPregunta()->getId();
         }
 
-        $title = 'Inspeccion del vehiculo Control Interno';
+        $title = 'Inspeccion del vehículo Control Interno';
 
         $html = $this->renderView(
                 'VehiculosBundle:Reporte:checkControlInterno.pdf.twig', array(
@@ -742,7 +742,7 @@ class ReporteController extends Controller {
             }
         }
 
-        $title = 'Reporte de Vehiculos por Deposito';
+        $title = 'Reporte de Vehículos por Deposito';
 
         $html = $this->renderView(
                 'VehiculosBundle:Reporte:reporteVehiculosPorDeposito.pdf.twig', array(
@@ -807,7 +807,7 @@ class ReporteController extends Controller {
             $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
         }
 
-        $title = 'Reporte de Autos  Con Daños Internos';
+        $title = 'Reporte de Vehículos  Con Daños Internos';
 
         $html = $this->renderView(
                 'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
@@ -911,16 +911,21 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
 
             $formData = $form->getData();
+            $dias = explode(',', $formData['dias']);
+
+            $formData['diaInicio'] = abs($dias[0]);
+            $formData['diaFin'] = abs($dias[1]);
 
             $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
         }
 
-        $title = 'Reporte de Autos Asignados a Reventa';
+        $title = 'Reporte de Vehículos Asignados a Reventa';
 
         $html = $this->renderView(
                 'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.pdf.twig', array(
             'entities' => $entities,
             'title' => $title,
+             'reventa'=>$formData['reventa']       
                 )
         );
 
@@ -945,6 +950,10 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
 
             $formData = $form->getData();
+            $dias = explode(',', $formData['dias']);
+
+            $formData['diaInicio'] = abs($dias[0]);
+            $formData['diaFin'] = abs($dias[1]);
 
             $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
         }

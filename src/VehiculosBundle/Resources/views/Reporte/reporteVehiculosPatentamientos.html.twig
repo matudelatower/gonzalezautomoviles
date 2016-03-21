@@ -131,18 +131,18 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>N°</th>
-                                <th>Cliente</th>
-                                <th>Modelo</th>
-                                <th>Vin</th>
-                                <th>Tipo Venta Especial</th>
-                                <th>Dominio</th>
+                                <th data-width="5%">Id</th>
+                                <th data-width="15%">Cliente</th>
+                                <th data-width="20%">Modelo</th>
+                                <th data-width="8%">Vin</th>
+                                <th data-width="15%">Tipo Venta Especial</th>
+                                <th data-width="10%">Dominio</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for entity in entities %}                                
                                 <tr>
-                                    <td>{{ loop.index }}</td>
+                                    <td>{{ entity.id }}</td>
                                     <td>{{ entity.cliente }}</td>
                                     <td>{{ entity.modelo }}</td>
                                     <td>{{ entity.vin }}</td>

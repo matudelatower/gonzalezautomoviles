@@ -522,16 +522,16 @@ class ExcelTool {
                 ->setCellValue('E1', 'Tipo de venta especial')
                 ->setCellValue('F1', 'Deposito');
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:E1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:F1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
+        $contador = 1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             $modelo = "";
             foreach ($resultSet as $entity) {
 
-                if ($modelo != $entity['nombre_modelo']) {
-                    $contador = 1;
+                if ($modelo != $entity['nombre_modelo']) {                    
                     $modelo = $entity['nombre_modelo'];
                     $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo']);
                     $i ++;
@@ -547,7 +547,7 @@ class ExcelTool {
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:E' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:F' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');

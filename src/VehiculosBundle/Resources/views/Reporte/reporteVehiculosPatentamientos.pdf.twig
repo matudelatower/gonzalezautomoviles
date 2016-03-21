@@ -39,7 +39,7 @@
                         <td>{{ entity.modelo }}</td>
                         <td>{{ entity.vin }}</td>
                         <td>{{ entity.agente_patentamiento }}</td>
-                        <td>{{entity.fecha_inicio is null ? "" : entity.fecha_inicio}}</td>
+                        <td>{{entity.fecha_inicio is null ? "" : entity.fecha_inicio|date("d-m-Y")}}</td>
                         <td>{{ entity.dominio }}</td>
                         <td>{{ entity.fecha_patentamiento is null ? "" :entity.fecha_patentamiento|date("d-m-Y") }}</td>
                         <td>{{ entity.registro }}</td>
