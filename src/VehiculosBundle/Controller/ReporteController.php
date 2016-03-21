@@ -879,13 +879,14 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
 
             $formData = $form->getData();
+            if ($formData['reventa']) {
+                $dias = explode(',', $formData['dias']);
 
-            $dias = explode(',', $formData['dias']);
+                $formData['diaInicio'] = abs($dias[0]);
+                $formData['diaFin'] = abs($dias[1]);
 
-            $formData['diaInicio'] = abs($dias[0]);
-            $formData['diaFin'] = abs($dias[1]);
-
-            $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
+                $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
+            }
         }
 
         $paginator = $this->get('knp_paginator');
@@ -911,12 +912,14 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
 
             $formData = $form->getData();
-            $dias = explode(',', $formData['dias']);
+            if ($formData['reventa']) {
+                $dias = explode(',', $formData['dias']);
 
-            $formData['diaInicio'] = abs($dias[0]);
-            $formData['diaFin'] = abs($dias[1]);
+                $formData['diaInicio'] = abs($dias[0]);
+                $formData['diaFin'] = abs($dias[1]);
 
-            $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
+                $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
+            }
         }
 
         $title = 'Reporte de Vehículos Asignados a Reventa';
@@ -925,7 +928,7 @@ class ReporteController extends Controller {
                 'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.pdf.twig', array(
             'entities' => $entities,
             'title' => $title,
-             'reventa'=>$formData['reventa']       
+            'reventa' => $formData['reventa']
                 )
         );
 
@@ -950,12 +953,14 @@ class ReporteController extends Controller {
             $form->handleRequest($request);
 
             $formData = $form->getData();
-            $dias = explode(',', $formData['dias']);
+            if ($formData['reventa']) {
+                $dias = explode(',', $formData['dias']);
 
-            $formData['diaInicio'] = abs($dias[0]);
-            $formData['diaFin'] = abs($dias[1]);
+                $formData['diaInicio'] = abs($dias[0]);
+                $formData['diaFin'] = abs($dias[1]);
 
-            $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
+                $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
+            }
         }
 
         $filename = "reporte_vehiculos_asignados_a_reventa.xls";
