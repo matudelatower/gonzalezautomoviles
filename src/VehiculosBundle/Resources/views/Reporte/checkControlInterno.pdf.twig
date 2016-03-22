@@ -673,14 +673,15 @@
                 <div class="box-body">
                     <div class="col-sm-6">
                         {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
-                        <label>ENTREGO: </label> <span>{{ controlInternoCabecera.creadoPor}}</span> <br>
+                        {% set empleado = controlInternoCabecera.creadoPor.personaTipo.first.persona | default(controlInternoCabecera.creadoPor)%}
+                        <label>ENTREGO: </label> <span>{{ empleado }}</span> <br>
                         <label>MODELO: </label><span>{{ vehiculo.modelo }}</span><br>
                         <label>Aclaración de Firma : </label><span></span><br>
 
                     </div>
                     <div class="col-sm-6">
                         <label>V.I.N.: </label><span>{{ vehiculo.vin }}</span><br>
-                        <label>RECIBIO: </label><span></span><br>
+                        <label>RECIBIO: </label><span>{{cliente}}</span><br>
                         <label>Aclaración de Firma : </label><span></span><br>
                     </div>
 
