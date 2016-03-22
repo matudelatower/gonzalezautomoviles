@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use UbicacionBundle\Entity\Localidad;
+use UbicacionBundle\Entity\Provincia;
 
 
 class AddDepartamentoFieldSubscriber implements EventSubscriberInterface {
@@ -33,7 +34,7 @@ class AddDepartamentoFieldSubscriber implements EventSubscriberInterface {
 		);
 	}
 
-	private function addDepartamentoForm( $form, $departamento, $localidad ) {
+	private function addDepartamentoForm( $form, $departamento, $provincia ) {
 
 		$form->add( $this->factory->createNamed( 'departamento',
 			'entity',
@@ -46,16 +47,16 @@ class AddDepartamentoFieldSubscriber implements EventSubscriberInterface {
 				'attr'            => array(
 					'class' => 'select_departamento select2',
 				),
-				'query_builder'   => function ( EntityRepository $repository ) use ( $localidad ) {
+				'query_builder'   => function ( EntityRepository $repository ) use ( $provincia ) {
 					$qb = $repository->createQueryBuilder( 'dep' );
-					if ( is_numeric( $localidad ) ) {
-						$qb->join( 'dep.localidad', 'localidad' )
-						   ->where( 'localidad.id = :loc' )
-						   ->setParameter( 'loc', $localidad );
-					} elseif ( $localidad instanceof Localidad ) {
-						$qb->join( 'dep.localidad', 'localidad' )
-						   ->where( 'localidad = :loc' )
-						   ->setParameter( 'loc', $localidad );
+					if ( is_numeric( $provincia ) ) {
+						$qb->join( 'dep.provincia', 'provincia' )
+						   ->where( 'provincia.id = :loc' )
+						   ->setParameter( 'loc', $provincia );
+					} elseif ( $provincia instanceof Provincia ) {
+						$qb->join( 'dep.provincia', 'provincia' )
+						   ->where( 'provincia = :loc' )
+						   ->setParameter( 'loc', $provincia );
 					}
 
 
@@ -81,7 +82,7 @@ class AddDepartamentoFieldSubscriber implements EventSubscriberInterface {
 		$pais         = ( $provincia ) ? $provincia->getPais() : null;
 
 
-		$this->addDepartamentoForm( $form, $departamento, $localidad );
+		$this->addDepartamentoForm( $form, $departamento, $provincia );
 	}
 
 	public function preSubmit( FormEvent $event ) {
@@ -92,8 +93,8 @@ class AddDepartamentoFieldSubscriber implements EventSubscriberInterface {
 			return;
 		}
 		$departamento = array_key_exists( 'departamento', $data ) ? $data['departamento'] : null;
-		$localidad    = array_key_exists( 'localidad', $data ) ? $data['localidad'] : null;
-		$this->addDepartamentoForm( $form, $departamento, $localidad );
+		$provincia    = array_key_exists( 'provincia', $data ) ? $data['provincia'] : null;
+		$this->addDepartamentoForm( $form, $departamento, $provincia );
 	}
 
 

@@ -190,7 +190,7 @@ class ClienteController extends Controller {
 		$personaTipo = $em->getRepository( 'PersonasBundle:PersonaTipo' )->findOneByCliente( $entity );
 
 		if ( ! $entity ) {
-			throw $this->createNotFoundException( 'Unable to find Cliente entity.' );
+			throw $this->createNotFoundException( 'No se encuentra el cliente' );
 		}
 
 		$editForm   = $this->createEditForm( $personaTipo );
@@ -215,7 +215,7 @@ class ClienteController extends Controller {
 		$form = $this->createForm( new PersonaClienteType(),
 			$entity,
 			array(
-				'action' => $this->generateUrl( 'clientes_update', array( 'id' => $entity->getId() ) ),
+				'action' => $this->generateUrl( 'clientes_update', array( 'id' => $entity->getCliente()->getId() ) ),
 				'method' => 'PUT',
 				'attr'   => array( 'class' => 'box-body' )
 			) );
@@ -239,14 +239,16 @@ class ClienteController extends Controller {
 	public function updateAction( Request $request, $id ) {
 		$em = $this->getDoctrine()->getManager();
 
-		$entity = $em->getRepository( 'PersonasBundle:PersonaTipo' )->find( $id );
+		$entity = $em->getRepository( 'ClientesBundle:Cliente' )->find( $id );
 
-		if ( ! $entity ) {
+		$personaTipo = $em->getRepository( 'PersonasBundle:PersonaTipo' )->findOneByCliente( $entity );
+
+		if ( ! $personaTipo ) {
 			throw $this->createNotFoundException( 'Unable to find Cliente entity.' );
 		}
 
-		$deleteForm = $this->createDeleteForm( $id );
-		$editForm   = $this->createEditForm( $entity );
+//		$deleteForm = $this->createDeleteForm( $id );
+		$editForm   = $this->createEditForm( $personaTipo );
 		$editForm->handleRequest( $request );
 
 		if ( $editForm->isValid() ) {
@@ -268,7 +270,7 @@ class ClienteController extends Controller {
 			array(
 				'entity'      => $entity,
 				'edit_form'   => $editForm->createView(),
-				'delete_form' => $deleteForm->createView(),
+//				'delete_form' => $deleteForm->createView(),
 			) );
 	}
 
