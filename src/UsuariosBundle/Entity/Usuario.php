@@ -16,189 +16,221 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity(repositoryClass="UsuarioRepository")
  * @ORM\Table(name="fos_user")
+ * @ORM\AttributeOverrides({
+ * @ORM\AttributeOverride(name="enabled",
+ *          column=@ORM\Column(
+ *              name     = "enabled",
+ *              type     = "boolean",
+ *              nullable= true
+ *          )
+ *      )
+ * })
  */
-class Usuario extends BaseUser
-{
+class Usuario extends BaseUser {
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type="integer")
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	protected $id;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // your own logic
-    }
+	public function __construct() {
+		parent::__construct();
+		// your own logic
+	}
 
-    /**
-     * @var datetime $creado
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="creado", type="datetime")
-     */
-    private $creado;
+	/**
+	 * @var datetime $creado
+	 *
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(name="creado", type="datetime")
+	 */
+	private $creado;
 
-    /**
-     * @var datetime $actualizado
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="actualizado",type="datetime")
-     */
-    private $actualizado;
+	/**
+	 * @var datetime $actualizado
+	 *
+	 * @Gedmo\Timestampable(on="update")
+	 * @ORM\Column(name="actualizado",type="datetime")
+	 */
+	private $actualizado;
 
-    /**
-     * @var integer $creadoPor
-     *
-     * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
-     */
-    private $creadoPor;
+	/**
+	 * @var integer $creadoPor
+	 *
+	 * @Gedmo\Blameable(on="create")
+	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+	 * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
+	 */
+	private $creadoPor;
 
-    /**
-     * @var integer $actualizadoPor
-     *
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-     * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
-     */
-    private $actualizadoPor;
+	/**
+	 * @var integer $actualizadoPor
+	 *
+	 * @Gedmo\Blameable(on="update")
+	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+	 * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
+	 */
+	private $actualizadoPor;
 
-    /**
-     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\UsuarioGrupo", mappedBy="usuario",cascade={"persist"})
-     */
-    private $grupos;
+	/**
+	 * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\UsuarioGrupo", mappedBy="usuario",cascade={"persist"})
+	 */
+	private $grupos;
 
-    /**
-     * Set creado
-     *
-     * @param \DateTime $creado
-     *
-     * @return Usuario
-     */
-    public function setCreado($creado)
-    {
-        $this->creado = $creado;
+	/**
+	 * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="usuario",cascade={"persist"})
+	 */
+	private $personaTipo;
 
-        return $this;
-    }
+	/**
+	 * Set creado
+	 *
+	 * @param \DateTime $creado
+	 *
+	 * @return Usuario
+	 */
+	public function setCreado( $creado ) {
+		$this->creado = $creado;
 
-    /**
-     * Get creado
-     *
-     * @return \DateTime
-     */
-    public function getCreado()
-    {
-        return $this->creado;
-    }
+		return $this;
+	}
 
-    /**
-     * Set actualizado
-     *
-     * @param \DateTime $actualizado
-     *
-     * @return Usuario
-     */
-    public function setActualizado($actualizado)
-    {
-        $this->actualizado = $actualizado;
+	/**
+	 * Get creado
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreado() {
+		return $this->creado;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set actualizado
+	 *
+	 * @param \DateTime $actualizado
+	 *
+	 * @return Usuario
+	 */
+	public function setActualizado( $actualizado ) {
+		$this->actualizado = $actualizado;
 
-    /**
-     * Get actualizado
-     *
-     * @return \DateTime
-     */
-    public function getActualizado()
-    {
-        return $this->actualizado;
-    }
+		return $this;
+	}
 
-    /**
-     * Set creadoPor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $creadoPor
-     *
-     * @return Usuario
-     */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
-        $this->creadoPor = $creadoPor;
+	/**
+	 * Get actualizado
+	 *
+	 * @return \DateTime
+	 */
+	public function getActualizado() {
+		return $this->actualizado;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set creadoPor
+	 *
+	 * @param \UsuariosBundle\Entity\Usuario $creadoPor
+	 *
+	 * @return Usuario
+	 */
+	public function setCreadoPor( \UsuariosBundle\Entity\Usuario $creadoPor = null ) {
+		$this->creadoPor = $creadoPor;
 
-    /**
-     * Get creadoPor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getCreadoPor()
-    {
-        return $this->creadoPor;
-    }
+		return $this;
+	}
 
-    /**
-     * Set actualizadoPor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-     *
-     * @return Usuario
-     */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
-        $this->actualizadoPor = $actualizadoPor;
+	/**
+	 * Get creadoPor
+	 *
+	 * @return \UsuariosBundle\Entity\Usuario
+	 */
+	public function getCreadoPor() {
+		return $this->creadoPor;
+	}
 
-        return $this;
-    }
+	/**
+	 * Set actualizadoPor
+	 *
+	 * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
+	 *
+	 * @return Usuario
+	 */
+	public function setActualizadoPor( \UsuariosBundle\Entity\Usuario $actualizadoPor = null ) {
+		$this->actualizadoPor = $actualizadoPor;
 
-    /**
-     * Get actualizadoPor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getActualizadoPor()
-    {
-        return $this->actualizadoPor;
-    }
+		return $this;
+	}
 
-    /**
-     * Add grupo
-     *
-     * @param \UsuariosBundle\Entity\UsuarioGrupo $grupo
-     *
-     * @return Usuario
-     */
-    public function addGrupo(\UsuariosBundle\Entity\UsuarioGrupo $grupo)
-    {
-        $this->grupos[] = $grupo;
+	/**
+	 * Get actualizadoPor
+	 *
+	 * @return \UsuariosBundle\Entity\Usuario
+	 */
+	public function getActualizadoPor() {
+		return $this->actualizadoPor;
+	}
 
-        return $this;
-    }
+	/**
+	 * Add grupo
+	 *
+	 * @param \UsuariosBundle\Entity\UsuarioGrupo $grupo
+	 *
+	 * @return Usuario
+	 */
+	public function addGrupo( \UsuariosBundle\Entity\UsuarioGrupo $grupo ) {
+		$this->grupos[] = $grupo;
 
-    /**
-     * Remove grupo
-     *
-     * @param \UsuariosBundle\Entity\UsuarioGrupo $grupo
-     */
-    public function removeGrupo(\UsuariosBundle\Entity\UsuarioGrupo $grupo)
-    {
-        $this->grupos->removeElement($grupo);
-    }
+		return $this;
+	}
 
-    /**
-     * Get grupos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGrupos()
-    {
-        return $this->grupos;
-    }
+	/**
+	 * Remove grupo
+	 *
+	 * @param \UsuariosBundle\Entity\UsuarioGrupo $grupo
+	 */
+	public function removeGrupo( \UsuariosBundle\Entity\UsuarioGrupo $grupo ) {
+		$this->grupos->removeElement( $grupo );
+	}
+
+	/**
+	 * Get grupos
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getGrupos() {
+		return $this->grupos;
+	}
+
+	/**
+	 * Add personaTipo
+	 *
+	 * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+	 *
+	 * @return Usuario
+	 */
+	public function addPersonaTipo( \PersonasBundle\Entity\PersonaTipo $personaTipo ) {
+		$this->personaTipo[] = $personaTipo;
+
+		return $this;
+	}
+
+	/**
+	 * Remove personaTipo
+	 *
+	 * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+	 */
+	public function removePersonaTipo( \PersonasBundle\Entity\PersonaTipo $personaTipo ) {
+		$this->personaTipo->removeElement( $personaTipo );
+	}
+
+	/**
+	 * Get personaTipo
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getPersonaTipo() {
+		return $this->personaTipo;
+	}
 }

@@ -5,6 +5,7 @@ namespace PersonasBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use UsuariosBundle\Form\UsuarioType;
 
 class PersonaEmpleadoType extends AbstractType {
 	/**
@@ -15,6 +16,7 @@ class PersonaEmpleadoType extends AbstractType {
 		$builder
 			->add('persona', new PersonaType())
 			->add('empleado', new EmpleadoType())
+			->add('usuario', new UsuarioType())
 		;
 
 	}

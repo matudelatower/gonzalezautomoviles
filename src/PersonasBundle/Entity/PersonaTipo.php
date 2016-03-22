@@ -83,7 +83,7 @@ class PersonaTipo
     private $sucursal;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario", inversedBy="personaTipo", cascade={"persist"})
      * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id", nullable=true)
      */
     private $usuario;

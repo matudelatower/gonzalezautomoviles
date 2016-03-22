@@ -305,6 +305,17 @@
                     </div>
 
                 {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('info') %}
+                    <div class="alert alert-info alert-dismissable">
+                        <button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+                        <h4>
+                            <i class="icon fa fa-info"></i>
+                            Info!
+                        </h4>
+                        {{ flashMessage }}
+                    </div>
+
+                {% endfor %}
 
                 {% block content %}
                 {% endblock content %}
@@ -314,7 +325,7 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>Version</b> Demo
+                <b>Version:</b> {{ version }}
             </div>
             <strong>Copyright &copy; {{ "now"|date('Y') }}.</strong> Todos los
             derechos reservados.

@@ -51,19 +51,35 @@ class EmpleadoController extends Controller {
 
 		$entity = new PersonaTipo();
 
+		$form                 = $this->createCreateForm( $entity );
+		$muestraAlertPassword = false;
 
-		$form = $this->createCreateForm( $entity );
+		$password = $entity->getUsuario() ? $entity->getUsuario()->getPassword() : null;
+
 		$form->handleRequest( $request );
-
-		$categoriasOriginales = new ArrayCollection();
-		foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $categoria ) {
-			$categoriasOriginales->add( $categoria );
-		}
 
 		if ( $form->isValid() ) {
 
 			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
 				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
+			}
+
+
+			if ( ! empty( $form->get( 'usuario' )->get( 'plain_password' )->getData() ) ) {
+				$entity->getUsuario()->setPlainPassword( $form->get( 'usuario' )->get( 'plain_password' )->getData() );
+			} else {
+				if ( ! $password ) {
+					$password             = $this->get( 'manager.usuarios' )->randomPassword();
+					$muestraAlertPassword = true;
+				}
+				$entity->getUsuario()->setPassword( $password );
+			}
+
+
+			if ( $entity->getUsuario()->getGrupos() ) {
+				foreach ( $entity->getUsuario()->getGrupos() as $grupo ) {
+					$grupo->setUsuario( $entity->getUsuario() );
+				}
 			}
 
 			$em = $this->getDoctrine()->getManager();
@@ -74,6 +90,13 @@ class EmpleadoController extends Controller {
 				'success',
 				'Empleado creado correctamente.'
 			);
+
+			if ( $muestraAlertPassword ) {
+				$this->get( 'session' )->getFlashBag()->add(
+					'info',
+					'El nuevo password generado automaticamente es: ' . $password
+				);
+			}
 
 			return $this->redirect( $this->generateUrl( 'empleados_show', array( 'id' => $entity->getId() ) ) );
 		}
@@ -260,6 +283,9 @@ class EmpleadoController extends Controller {
 			throw $this->createNotFoundException( 'Unable to find Empleado entity.' );
 		}
 
+		$muestraAlertPassword = false;
+		$password             = $entity->getUsuario() ? $entity->getUsuario()->getPassword() : null;
+
 		$deleteForm = $this->createDeleteForm( $id );
 		$editForm   = $this->createEditForm( $entity );
 		$editForm->handleRequest( $request );
@@ -270,12 +296,35 @@ class EmpleadoController extends Controller {
 				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
 			}
 
+			if ( ! empty( $editForm->get( 'usuario' )->get( 'plain_password' )->getData() ) ) {
+				$entity->getUsuario()->setPlainPassword( $editForm->get( 'usuario' )->get( 'plain_password' )->getData() );
+			} else {
+				if ( ! $password ) {
+					$password             = $this->get( 'manager.usuarios' )->randomPassword();
+					$muestraAlertPassword = true;
+
+				}
+				$entity->getUsuario()->setPassword( $password );
+			}
+
+			if ( $entity->getUsuario()->getGrupos() ) {
+				foreach ( $entity->getUsuario()->getGrupos() as $grupo ) {
+					$grupo->setUsuario( $entity->getUsuario() );
+				}
+			}
+
 			$em->flush();
 
 			$this->get( 'session' )->getFlashBag()->add(
 				'success',
 				'Empleado actualizado correctamente.'
 			);
+			if ( $muestraAlertPassword ) {
+				$this->get( 'session' )->getFlashBag()->add(
+					'info',
+					'El nuevo password generado automaticamente es: ' . $password
+				);
+			}
 
 			return $this->redirect( $this->generateUrl( 'empleados_edit',
 				array( 'id' => $entity->getEmpleado()->getId() ) ) );

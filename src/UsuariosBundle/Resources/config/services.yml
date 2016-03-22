@@ -16,6 +16,14 @@ services:
             tags:
                 - { name: manager.permisos, alias: manager.permisos }
 
+    manager.usuarios:
+            class: UsuariosBundle\Services\UsuariosManager
+            arguments:
+                em: '@doctrine.orm.entity_manager'
+                router: '@router'
+            tags:
+                - { name: manager.usuarios, alias: manager.usuarios }
+
     logiautos_user.login:
         class: UsuariosBundle\EventListener\LoginListener
         arguments: ['@service_container']

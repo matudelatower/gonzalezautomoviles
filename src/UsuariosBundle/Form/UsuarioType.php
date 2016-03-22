@@ -32,12 +32,16 @@ class UsuarioType extends AbstractType
                 )
             )
             ->add(
-                'plain_password',
-                'password',
+                'plain_password', 'repeated',
                 array(
-                    'label' => 'form.password',
-                    'translation_domain' => 'FOSUserBundle',
+                    'type' => 'password',
+                    'invalid_message' => 'Las Contraseñas no coinciden',
+                    'required' => false,
+                    'translation_domain'=>'FOSUserBundle',
+                    'first_options'  => array('label' => 'Nueva Contraseña'),
+                    'second_options' => array('label' => 'Confirmar nueva Contraseña')
                 )
+
             )
             ->add(
                 'enabled',
@@ -45,6 +49,7 @@ class UsuarioType extends AbstractType
                 array(
                     'label' => 'Activo',
                     'value' => false,
+                    'required'=>false,
                 )
             )
             ->add(
