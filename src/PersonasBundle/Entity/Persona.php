@@ -4,12 +4,14 @@ namespace PersonasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Persona
  *
  * @ORM\Table(name="personas")
  * @ORM\Entity(repositoryClass="PersonasBundle\Entity\PersonaRepository")
+ * @UniqueEntity("numeroDocumento")
  */
 class Persona
 {
@@ -46,7 +48,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=255)
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
      */
     private $telefono;
 
@@ -60,7 +62,7 @@ class Persona
     /**
      * @var string
      *
-     * @ORM\Column(name="mail", type="string", length=255)
+     * @ORM\Column(name="mail", type="string", length=255, nullable=true)
      */
     private $mail;
 
@@ -74,21 +76,21 @@ class Persona
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_nacimiento", type="datetime")
+     * @ORM\Column(name="fecha_nacimiento", type="datetime", nullable=true)
      */
     private $fechaNacimiento;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="calle", type="string", length=255)
+     * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
     private $calle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="numero_calle", type="string", length=255)
+     * @ORM\Column(name="numero_calle", type="string", length=255, nullable=true)
      */
     private $numeroCalle;
 
@@ -148,7 +150,7 @@ class Persona
 
     /**
      * @ORM\ManyToOne(targetEntity="UbicacionBundle\Entity\Localidad")
-     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id", nullable=true)
      */
     private $localidad;
 
