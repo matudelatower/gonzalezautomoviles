@@ -284,7 +284,13 @@ class EmpleadoController extends Controller {
 		}
 
 		$muestraAlertPassword = false;
-		$password             = $entity->getUsuario() ? $entity->getUsuario()->getPassword() : null;
+		$factory = $this->get('security.encoder_factory');
+
+		$usuario = $entity->getUsuario();
+
+		$encoder = $factory->getEncoder($usuario);
+		$password             = $usuario ? $usuario->getPassword() : null;
+
 
 		$deleteForm = $this->createDeleteForm( $id );
 		$editForm   = $this->createEditForm( $entity );
@@ -297,19 +303,23 @@ class EmpleadoController extends Controller {
 			}
 
 			if ( ! empty( $editForm->get( 'usuario' )->get( 'plain_password' )->getData() ) ) {
-				$entity->getUsuario()->setPlainPassword( $editForm->get( 'usuario' )->get( 'plain_password' )->getData() );
+
+				$password = $encoder->encodePassword($editForm->get( 'usuario' )->get( 'plain_password' )->getData(), $usuario->getSalt());
+
+				$usuario->setPassword( $password );
 			} else {
 				if ( ! $password ) {
 					$password             = $this->get( 'manager.usuarios' )->randomPassword();
+					$password = $encoder->encodePassword($password, $usuario->getSalt());
 					$muestraAlertPassword = true;
 
 				}
-				$entity->getUsuario()->setPassword( $password );
+				$usuario->setPassword( $password );
 			}
 
-			if ( $entity->getUsuario()->getGrupos() ) {
-				foreach ( $entity->getUsuario()->getGrupos() as $grupo ) {
-					$grupo->setUsuario( $entity->getUsuario() );
+			if ( $usuario->getGrupos() ) {
+				foreach ( $usuario->getGrupos() as $grupo ) {
+					$grupo->setUsuario( $usuario );
 				}
 			}
 
