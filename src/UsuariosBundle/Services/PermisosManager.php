@@ -70,12 +70,12 @@ class PermisosManager {
 		if ( ! is_array( $needle ) ) {
 			$needle = array( $needle );
 		}
-		$return = true;
 		foreach ( $needle as $query ) {
 			if ( strpos( $haystack, $query, $offset ) !== false ) {
 				$return= false;
 			} // stop on first true result
 		}
+		$return = true;
 
 		return $return;
 	}
