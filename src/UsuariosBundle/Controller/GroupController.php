@@ -6,76 +6,128 @@ use FOS\UserBundle\Event\GetResponseGroupEvent;
 use FOS\UserBundle\Event\FilterGroupResponseEvent;
 use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GroupEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\GroupController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
-class GroupController extends BaseController
-{
-    /**
-     * Edit one group, show the edit form
-     */
-    public function editAction(Request $request, $groupName)
-    {
-        $group = $this->findGroupBy('name', $groupName);
+class GroupController extends BaseController {
 
-        /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
-        $dispatcher = $this->get('event_dispatcher');
+	/**
+	 * Show the new form
+	 */
+	public function newAction( Request $request ) {
+		/** @var $groupManager \FOS\UserBundle\Model\GroupManagerInterface */
+		$groupManager = $this->get( 'fos_user.group_manager' );
+		/** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+		$formFactory = $this->get( 'fos_user.group.form.factory' );
+		/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+		$dispatcher = $this->get( 'event_dispatcher' );
 
-        $event = new GetResponseGroupEvent($group, $request);
-        $dispatcher->dispatch(FOSUserEvents::GROUP_EDIT_INITIALIZE, $event);
+		$group = $groupManager->createGroup( '' );
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
+		$dispatcher->dispatch( FOSUserEvents::GROUP_CREATE_INITIALIZE, new GroupEvent( $group, $request ) );
 
-        /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
-        $formFactory = $this->get('fos_user.group.form.factory');
+		$form = $formFactory->createForm();
+		$form->setData( $group );
 
-        $form = $formFactory->createForm();
-        $form->setData($group);
+		$form->handleRequest( $request );
 
-        $form->handleRequest($request);
+		if ( $form->isValid() ) {
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            foreach ($group->getPermisoAplicacion() as $permisoAplicacion) {
-                $permisoAplicacion->setGrupo($group);
-            }
+			foreach ( $group->getPermisoAplicacion() as $permisoAplicacion ) {
+				$permisoAplicacion->setGrupo( $group );
+			}
+			foreach ( $group->getPermisoEspecialGrupo() as $permisoEspecial ) {
+				$permisoEspecial->setGrupo( $group );
+			}
+
+			$event = new FormEvent( $form, $request );
+			$dispatcher->dispatch( FOSUserEvents::GROUP_CREATE_SUCCESS, $event );
+
+			$groupManager->updateGroup( $group );
+
+			if ( null === $response = $event->getResponse() ) {
+				$url      = $this->generateUrl( 'fos_user_group_show', array( 'groupName' => $group->getName() ) );
+				$response = new RedirectResponse( $url );
+			}
+
+			$dispatcher->dispatch( FOSUserEvents::GROUP_CREATE_COMPLETED,
+				new FilterGroupResponseEvent( $group, $request, $response ) );
+
+			return $response;
+		}
+
+		return $this->render( 'FOSUserBundle:Group:new.html.twig',
+			array(
+				'form' => $form->createview(),
+			) );
+	}
+
+	/**
+	 * Edit one group, show the edit form
+	 */
+	public function editAction( Request $request, $groupName ) {
+		$group = $this->findGroupBy( 'name', $groupName );
+
+		/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+		$dispatcher = $this->get( 'event_dispatcher' );
+
+		$event = new GetResponseGroupEvent( $group, $request );
+		$dispatcher->dispatch( FOSUserEvents::GROUP_EDIT_INITIALIZE, $event );
+
+		if ( null !== $event->getResponse() ) {
+			return $event->getResponse();
+		}
+
+		/** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
+		$formFactory = $this->get( 'fos_user.group.form.factory' );
+
+		$form = $formFactory->createForm();
+		$form->setData( $group );
+
+		$form->handleRequest( $request );
+
+		if ( $form->isValid() ) {
+			foreach ( $group->getPermisoAplicacion() as $permisoAplicacion ) {
+				$permisoAplicacion->setGrupo( $group );
+			}
+			foreach ( $group->getPermisoEspecialGrupo() as $permisoEspecial ) {
+				$permisoEspecial->setGrupo( $group );
+			}
 
 
-            /** @var $groupManager \FOS\UserBundle\Model\GroupManagerInterface */
-            $groupManager = $this->get('fos_user.group_manager');
+			/** @var $groupManager \FOS\UserBundle\Model\GroupManagerInterface */
+			$groupManager = $this->get( 'fos_user.group_manager' );
 
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(FOSUserEvents::GROUP_EDIT_SUCCESS, $event);
+			$event = new FormEvent( $form, $request );
+			$dispatcher->dispatch( FOSUserEvents::GROUP_EDIT_SUCCESS, $event );
 
-            $groupManager->updateGroup($group);
+			$groupManager->updateGroup( $group );
 
-            if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('fos_user_group_show', array('groupName' => $group->getName()));
-                $response = new RedirectResponse($url);
-            }
+			if ( null === $response = $event->getResponse() ) {
+				$url      = $this->generateUrl( 'fos_user_group_show', array( 'groupName' => $group->getName() ) );
+				$response = new RedirectResponse( $url );
+			}
 
-            $dispatcher->dispatch(
-                FOSUserEvents::GROUP_EDIT_COMPLETED,
-                new FilterGroupResponseEvent($group, $request, $response)
-            );
+			$dispatcher->dispatch(
+				FOSUserEvents::GROUP_EDIT_COMPLETED,
+				new FilterGroupResponseEvent( $group, $request, $response )
+			);
 
-            return $response;
-        }
+			return $response;
+		}
 
-        return $this->render(
-            'FOSUserBundle:Group:edit.html.twig',
-            array(
-                'form' => $form->createview(),
-                'group_name' => $group->getName(),
-            )
-        );
-    }
+		return $this->render(
+			'FOSUserBundle:Group:edit.html.twig',
+			array(
+				'form'       => $form->createview(),
+				'group_name' => $group->getName(),
+			)
+		);
+	}
 
-    public function editarPermisosAction(Request $request)
-    {
+	public function editarPermisosAction( Request $request ) {
 
-    }
+	}
 }

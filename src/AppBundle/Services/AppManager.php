@@ -10,8 +10,13 @@ namespace AppBundle\Services;
 
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\Router;
 
 class AppManager {
+
+	/**
+	 * @var $router Router
+	 */
 	private $router;
 
 	public function __construct( $router ) {
@@ -67,5 +72,44 @@ class AppManager {
 		}
 
 		return $availableApiRoutes;
+	}
+
+	public function getControllers() {
+
+		$router = $this->router;
+
+		$collection = $router->getRouteCollection();
+		$allRoutes  = $collection->all();
+
+		$routes = array();
+
+		$return = array();
+
+		/** @var $params \Symfony\Component\Routing\Route */
+		foreach ( $allRoutes as $route => $params ) {
+			$defaults = $params->getDefaults();
+
+			if ( isset( $defaults['_controller'] ) ) {
+				if ( strpos( $route, "api_" ) !== 0 && strpos( $route, "_" ) !== 0 ) {
+					$controllerAction = explode( ':', $defaults['_controller'] );
+					$controller       = $controllerAction[0];
+					$action = $controllerAction[2];
+
+					$return[$controller][]=$action;
+
+//					if ( ! isset( $routes[ $controller ] ) ) {
+//						$routes[ $controller ] = array();
+//					}
+//
+//					$routes[ $controller ][] = $route;
+				}
+			}
+		}
+
+		return $return;
+//		$thisRoutes = isset( $routes[ get_class( $this ) ] ) ?
+//			$routes[ get_class( $this ) ] : null;
+
+//		return $thisRoutes;
 	}
 }

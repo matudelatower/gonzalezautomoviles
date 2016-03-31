@@ -1,0 +1,30 @@
+permiso_especial:
+    path:     /
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:index" }
+
+permiso_especial_show:
+    path:     /{id}/show
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:show" }
+
+permiso_especial_new:
+    path:     /new
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:new" }
+
+permiso_especial_create:
+    path:     /create
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:create" }
+    methods:  POST
+
+permiso_especial_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:edit" }
+
+permiso_especial_update:
+    path:     /{id}/update
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:update" }
+    methods:  [POST, PUT]
+
+permiso_especial_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "UsuariosBundle:PermisoEspecial:delete" }
+    methods:  [POST, DELETE]

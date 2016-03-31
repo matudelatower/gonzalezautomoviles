@@ -10,12 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use ClientesBundle\Entity\Cliente;
 use ClientesBundle\Form\ClienteType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * Cliente controller.
  *
  */
-class ClienteController extends Controller {
+class ClienteController extends Controller implements TokenAuthenticatedController {
 
 	/**
 	 * Lists all Cliente entities.

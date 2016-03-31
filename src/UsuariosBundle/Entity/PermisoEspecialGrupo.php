@@ -1,48 +1,42 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: matias
- * Date: 7/10/15
- * Time: 12:14 PM
- */
 
 namespace UsuariosBundle\Entity;
 
-use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-
 /**
+ * PermisoEspecialGrupo
+ *
+ * @ORM\Table(name="permisos_especial_grupo")
  * @ORM\Entity
- * @ORM\Table(name="fos_group")
  */
-class Grupo extends BaseGroup
-{
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+class PermisoEspecialGrupo {
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
+	/** @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Grupo",inversedBy="permisoEspecialGrupo",cascade={"persist"})
+	 * @ORM\JoinColumn(name="grupo_id", referencedColumnName="id")
+	 */
+	private $grupo;
 
-    /**
-     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoAplicacion", mappedBy="grupo",cascade={"persist"})
-     */
-    private $permisoAplicacion;
+	/** @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\PermisoEspecial",inversedBy="permisoEspecialGrupo",cascade={"persist"})
+	 * @ORM\JoinColumn(name="permiso_especial_id", referencedColumnName="id")
+	 */
+	private $permisoEspecial;
 
-    /**
-     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoEspecialGrupo", mappedBy="grupo",cascade={"persist"})
-     */
-    private $permisoEspecialGrupo;
-
-    /**
-     * @var datetime $creado
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="creado", type="datetime")
-     */
+	/**
+	 * @var datetime $creado
+	 *
+	 * @Gedmo\Timestampable(on="create")
+	 * @ORM\Column(name="creado", type="datetime")
+	 */
     private $creado;
 
     /**
@@ -71,19 +65,22 @@ class Grupo extends BaseGroup
      */
     private $actualizadoPor;
 
-    public function __toString()
-    {
-        return $this->name;
-    }
 
-    
+	/**
+	 * Get id
+	 *
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
+	}
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
      *
-     * @return Grupo
+     * @return PermisoEspecialGrupo
      */
     public function setCreado($creado)
     {
@@ -107,7 +104,7 @@ class Grupo extends BaseGroup
      *
      * @param \DateTime $actualizado
      *
-     * @return Grupo
+     * @return PermisoEspecialGrupo
      */
     public function setActualizado($actualizado)
     {
@@ -127,37 +124,51 @@ class Grupo extends BaseGroup
     }
 
     /**
-     * Add permisoAplicacion
+     * Set grupo
      *
-     * @param \UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion
+     * @param \UsuariosBundle\Entity\Grupo $grupo
      *
-     * @return Grupo
+     * @return PermisoEspecialGrupo
      */
-    public function addPermisoAplicacion(\UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion)
+    public function setGrupo(\UsuariosBundle\Entity\Grupo $grupo = null)
     {
-        $this->permisoAplicacion[] = $permisoAplicacion;
+        $this->grupo = $grupo;
 
         return $this;
     }
 
     /**
-     * Remove permisoAplicacion
+     * Get grupo
      *
-     * @param \UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion
+     * @return \UsuariosBundle\Entity\Grupo
      */
-    public function removePermisoAplicacion(\UsuariosBundle\Entity\PermisoAplicacion $permisoAplicacion)
+    public function getGrupo()
     {
-        $this->permisoAplicacion->removeElement($permisoAplicacion);
+        return $this->grupo;
     }
 
     /**
-     * Get permisoAplicacion
+     * Set permisoEspecial
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param \UsuariosBundle\Entity\PermisoEspecial $permisoEspecial
+     *
+     * @return PermisoEspecialGrupo
      */
-    public function getPermisoAplicacion()
+    public function setPermisoEspecial(\UsuariosBundle\Entity\PermisoEspecial $permisoEspecial = null)
     {
-        return $this->permisoAplicacion;
+        $this->permisoEspecial = $permisoEspecial;
+
+        return $this;
+    }
+
+    /**
+     * Get permisoEspecial
+     *
+     * @return \UsuariosBundle\Entity\PermisoEspecial
+     */
+    public function getPermisoEspecial()
+    {
+        return $this->permisoEspecial;
     }
 
     /**
@@ -165,7 +176,7 @@ class Grupo extends BaseGroup
      *
      * @param \UsuariosBundle\Entity\Usuario $creadoPor
      *
-     * @return Grupo
+     * @return PermisoEspecialGrupo
      */
     public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -189,7 +200,7 @@ class Grupo extends BaseGroup
      *
      * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
      *
-     * @return Grupo
+     * @return PermisoEspecialGrupo
      */
     public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -206,39 +217,5 @@ class Grupo extends BaseGroup
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
-    }
-
-    /**
-     * Add permisoEspecialGrupo
-     *
-     * @param \UsuariosBundle\Entity\PermisoEspecialGrupo $permisoEspecialGrupo
-     *
-     * @return Grupo
-     */
-    public function addPermisoEspecialGrupo(\UsuariosBundle\Entity\PermisoEspecialGrupo $permisoEspecialGrupo)
-    {
-        $this->permisoEspecialGrupo[] = $permisoEspecialGrupo;
-
-        return $this;
-    }
-
-    /**
-     * Remove permisoEspecialGrupo
-     *
-     * @param \UsuariosBundle\Entity\PermisoEspecialGrupo $permisoEspecialGrupo
-     */
-    public function removePermisoEspecialGrupo(\UsuariosBundle\Entity\PermisoEspecialGrupo $permisoEspecialGrupo)
-    {
-        $this->permisoEspecialGrupo->removeElement($permisoEspecialGrupo);
-    }
-
-    /**
-     * Get permisoEspecialGrupo
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPermisoEspecialGrupo()
-    {
-        return $this->permisoEspecialGrupo;
     }
 }

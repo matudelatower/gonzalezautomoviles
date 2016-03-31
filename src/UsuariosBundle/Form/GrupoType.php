@@ -32,7 +32,19 @@ class GrupoType extends AbstractType
                     'allow_delete' => true,
                     'by_reference' => true,
                 )
-            );
+            )
+            ->add(
+                'permisoEspecialGrupo',
+                'bootstrapcollection',
+                array(
+                    'type' => new PermisoEspecialGrupoType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => true,
+                )
+            )
+
+        ;
 
 
     }

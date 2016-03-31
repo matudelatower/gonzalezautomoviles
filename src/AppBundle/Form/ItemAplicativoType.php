@@ -23,6 +23,7 @@ class ItemAplicativoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $rutas = $this->appManager->getARoutes();
+        $controllers = $this->appManager->getControllers();
 
         $builder
             ->add('nombre')

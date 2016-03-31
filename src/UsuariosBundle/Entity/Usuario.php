@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="UsuarioRepository")
+ * @ORM\Entity(repositoryClass="UsuariosBundle\Entity\Repository\UsuarioRepository")
  * @ORM\Table(name="fos_user")
  * @ORM\AttributeOverrides({
  * @ORM\AttributeOverride(name="enabled",

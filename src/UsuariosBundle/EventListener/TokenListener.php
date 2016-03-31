@@ -36,7 +36,8 @@ class TokenListener {
 //			$requestUri =$event->getRequest()->get('_route');
 			$requestUri = $event->getRequest()->getRequestUri();
 			$usuario    = $this->securityContext->getToken()->getUser();
-			$permisosManager->checkPermiso( $requestUri, $usuario );
+//			$permisosManager->checkPermiso( $requestUri, $usuario );
+			$permisosManager->checkPermiso( get_class( $controller[0] ), $controller[1], $usuario );
 
 		}
 	}
