@@ -6,12 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Entity\AgendaEntrega;
 use VehiculosBundle\Form\AgendaEntregaType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * AgendaEntrega controller.
  *
  */
-class AgendaEntregaController extends Controller {
+class AgendaEntregaController extends Controller implements TokenAuthenticatedController{
 
     /**
      * Lists all AgendaEntrega entities.

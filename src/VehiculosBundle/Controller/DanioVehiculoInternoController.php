@@ -8,8 +8,9 @@ use VehiculosBundle\Entity\DanioVehiculoInterno;
 use VehiculosBundle\Form\CheckListPreEntregaType;
 use VehiculosBundle\Form\DanioVehiculoInternoType;
 use Symfony\Component\HttpFoundation\Request;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
-class DanioVehiculoInternoController extends Controller {
+class DanioVehiculoInternoController extends Controller implements TokenAuthenticatedController{
 	public function editarDanioInternoAction( Request $request, $vehiculoId ) {
 
 		$em = $this->getDoctrine()->getManager();

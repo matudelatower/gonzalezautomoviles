@@ -231,7 +231,7 @@
                                              class="img-circle" alt="User Image">
 
                                         <p>
-                                            {{ nombreUsuario }} - {% if is_granted('ROLE_ADMIN') %}Administrador {% else %} {{app.user.grupos.first.grupo}} {% endif %}
+                                            {{ nombreUsuario }} - {% if is_granted('ROLE_ADMIN') %}Administrador {% elseif(app.user.grupos.first.grupo is defined) %} {{app.user.grupos.first.grupo}} {% endif %}
                                             <small>Miembro desde {{app.user.creado | date('Y')}}</small>
                                         </p>
                                     </li>

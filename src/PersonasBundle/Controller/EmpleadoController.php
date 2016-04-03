@@ -11,6 +11,7 @@ use PersonasBundle\Form\BuscadorPersonaType;
 use PersonasBundle\Form\PersonaEmpleadoType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 use PersonasBundle\Entity\Empleado;
 use PersonasBundle\Form\EmpleadoType;
@@ -19,7 +20,7 @@ use PersonasBundle\Form\EmpleadoType;
  * Empleado controller.
  *
  */
-class EmpleadoController extends Controller {
+class EmpleadoController extends Controller implements TokenAuthenticatedController{
 
 	/**
 	 * Lists all Empleado entities.
