@@ -3,7 +3,20 @@
 {% block content_title %}
     Formulario de Edicion
 {% endblock %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#{{ edit_form.usuario.email.vars.id }}').attr("readonly","readonly");
+            $('#{{ edit_form.persona.mail.vars.id }}').keyup(function () {
+                $('#{{ edit_form.usuario.email.vars.id }}').val($('#{{ edit_form.persona.mail.vars.id }}').val());
+            });
+            $('#{{ edit_form.persona.mail.vars.id }}').change(function () {
+                $('#{{ edit_form.usuario.email.vars.id }}').val($('#{{ edit_form.persona.mail.vars.id }}').val());
+            });
+        });
+    </script>
+{% endblock %}
 {% block content -%}
 <div class="row">
     <div class="col-md-12">
