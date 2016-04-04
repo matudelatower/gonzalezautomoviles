@@ -28,12 +28,12 @@ class Grupo extends BaseGroup
 
 
     /**
-     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoAplicacion", mappedBy="grupo",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoAplicacion", mappedBy="grupo",cascade={"persist","remove"})
      */
     private $permisoAplicacion;
 
     /**
-     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoEspecialGrupo", mappedBy="grupo",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="UsuariosBundle\Entity\PermisoEspecialGrupo", mappedBy="grupo",cascade={"persist","remove"})
      */
     private $permisoEspecialGrupo;
 

@@ -2,6 +2,7 @@
 
 namespace UsuariosBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Event\GetResponseGroupEvent;
 use FOS\UserBundle\Event\FilterGroupResponseEvent;
 use FOS\UserBundle\FOSUserEvents;
@@ -83,15 +84,49 @@ class GroupController extends BaseController {
 		/** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
 		$formFactory = $this->get( 'fos_user.group.form.factory' );
 
+		$permisoEspecialOriginales = new ArrayCollection();
+
+		// Crear un ArrayCollection de $permisoEspecialGrupo
+		foreach ( $group->getPermisoEspecialGrupo() as $permisoEspecialGrupo ) {
+			$permisoEspecialOriginales->add( $permisoEspecialGrupo );
+		}
+
+		$permisoAplicacionOriginales = new ArrayCollection();
+
+		// Crear un ArrayCollection de $permisoAplicacion
+		foreach ( $group->getPermisoAplicacion() as $permisoAplicacion ) {
+			$permisoAplicacionOriginales->add( $permisoAplicacion );
+		}
+
 		$form = $formFactory->createForm();
 		$form->setData( $group );
 
 		$form->handleRequest( $request );
-
+		$em = $this->getDoctrine()->getManager();
 		if ( $form->isValid() ) {
+
+			//elimina los permisoAplicacion
+			foreach ( $permisoAplicacionOriginales as $permisoAplicacion ) {
+				if ( false === $group->getPermisoAplicacion()->contains( $permisoAplicacion ) ) {
+
+					$permisoAplicacion->setGrupo( null );
+					$em->remove( $permisoAplicacion );
+				}
+			}
+
 			foreach ( $group->getPermisoAplicacion() as $permisoAplicacion ) {
 				$permisoAplicacion->setGrupo( $group );
 			}
+
+			//elimina los permisos especiales grupos
+			foreach ( $permisoEspecialOriginales as $permisoEspecialGrupo ) {
+				if ( false === $group->getPermisoEspecialGrupo()->contains( $permisoEspecialGrupo ) ) {
+
+					$permisoEspecialGrupo->setGrupo( null );
+					$em->remove( $permisoEspecialGrupo );
+				}
+			}
+
 			foreach ( $group->getPermisoEspecialGrupo() as $permisoEspecial ) {
 				$permisoEspecial->setGrupo( $group );
 			}
@@ -127,7 +162,4 @@ class GroupController extends BaseController {
 		);
 	}
 
-	public function editarPermisosAction( Request $request ) {
-
-	}
 }
