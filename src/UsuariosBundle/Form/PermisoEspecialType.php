@@ -5,6 +5,8 @@ namespace UsuariosBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class PermisoEspecialType extends AbstractType {
 
@@ -40,6 +42,24 @@ class PermisoEspecialType extends AbstractType {
 					'choices' => $choices,
 					'attr'    => array( 'class' => 'select2' )
 				) );
+
+		// ...
+		$builder->addEventListener( FormEvents::PRE_SET_DATA,
+			function ( FormEvent $event ) use ( $choices ) {
+				$data = $event->getData();
+				$form = $event->getForm();
+
+				if ( null !== $data->getId() ) {
+					$selected = $data->getController() . ':' . $data->getAction();
+					$form->add( 'controller',
+						'choice',
+						array(
+							'data'    => $selected,
+							'choices' => $choices,
+							'attr'    => array( 'class' => 'select2' )
+						) );
+				}
+			} );
 
 	}
 

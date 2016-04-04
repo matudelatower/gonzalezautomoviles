@@ -1,28 +1,27 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
 {% block content_title %}
-    Formulario de Edicion
+    Formulario de Edición
 {% endblock %}
 
 {% block content -%}
-<div class="row">
-    <div class="col-md-12">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">PermisoEspecial</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Permiso Especial</h3>
+                </div>
+
+                {{ form(edit_form) }}
+
+                <div class="box-footer">
+                    <a class="btn btn-default" href="{{ path('permiso_especial') }}">
+                        Volver
+                    </a>
+
+                </div>
             </div>
-
-    {{ form(edit_form) }}
-
-        <div class="box-footer">
-<a class="btn btn-default" href="{{ path('permiso_especial') }}">
-    Volver
-</a>
-
-</div>
-</div>
-</div>
-</div>
-    {{ form(delete_form) }}
+        </div>
+    </div>
 
 {% endblock %}

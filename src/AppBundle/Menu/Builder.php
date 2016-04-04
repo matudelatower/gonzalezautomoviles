@@ -193,13 +193,6 @@ class Builder extends ContainerAware {
 				);
 			$menu['Usuarios']
 				->addChild(
-					'Permisos',
-					array(
-						'route' => 'permiso_aplicacion',
-					)
-				);
-			$menu['Usuarios']
-				->addChild(
 					'Permisos Especiales',
 					array(
 						'route' => 'permiso_especial',
