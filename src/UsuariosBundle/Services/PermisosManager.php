@@ -72,34 +72,32 @@ class PermisosManager {
 			'UsuariosBundle:UsuarioGrupo'
 		)->findByUsuario( $usuario );
 
-		$grupo       = null;
-		$permisosApp = array();
+		$grupos                = array();
+		$permisosApp           = array();
 		$permisosEspecialesApp = array();
-		$return = true;
+		$return                = true;
 
 		foreach ( $usuarioGrupos as $usuarioGrupo ) {
-			$grupo = $usuarioGrupo->getGrupo();
+			$grupos[] = $usuarioGrupo->getGrupo();
 		}
 
-		if ( $grupo ) {
-//			$permisosApp = $grupo->getPermisoAplicacion();
-			$permisosEspecialesApp = $grupo->getPermisoEspecialGrupo();
+		foreach ( $grupos as $grupo ) {
+
+			$permisosApp[] = $grupo->getPermisoEspecialGrupo();
 		}
 
-		foreach ( $permisosEspecialesApp as $permisoEspecialApp ) {
+		$strController = $pos = strrpos( $controller, "\\" );
+		$strController = $pos === false ? $controller : substr( $controller, $pos + 1 );
 
-			$strController = $pos = strrpos( $controller, "\\" );
-			$strController = $pos === false ? $controller : substr( $controller, $pos + 1 );;
+		foreach ( $permisosApp as $key => $item ) {
+			foreach ( $item as $permisoEspecialApp ) {
 
-
-//			$pos           = strrpos( $strController, ":" );
-//			$strController = substr( $strController, 0, $pos );
-
-			if ( $strController . ':' . $action === $permisoEspecialApp->getPermisoEspecial()->getController() . ":" . $permisoEspecialApp->getPermisoEspecial()->getAction() ) {
-				$return = true;
-				break;
-			} else {
-				$return = false;
+				if ( $strController . ":" . $action === $permisoEspecialApp->getPermisoEspecial()->getController() . ":" . $permisoEspecialApp->getPermisoEspecial()->getAction() ) {
+					$return = true;
+					break 2;
+				} else {
+					$return = false;
+				}
 			}
 
 

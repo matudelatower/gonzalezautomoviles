@@ -2,6 +2,7 @@
 
 namespace UsuariosBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -169,14 +170,12 @@ class UsuarioController extends Controller implements TokenAuthenticatedControll
 		}
 
 		$editForm   = $this->createEditForm( $entity );
-		$deleteForm = $this->createDeleteForm( $id );
 
 		return $this->render(
 			'UsuariosBundle:Usuario:edit.html.twig',
 			array(
 				'entity'      => $entity,
 				'edit_form'   => $editForm->createView(),
-				'delete_form' => $deleteForm->createView(),
 			)
 		);
 	}
@@ -226,7 +225,13 @@ class UsuarioController extends Controller implements TokenAuthenticatedControll
 			throw $this->createNotFoundException( 'No se encuentra el usuario.' );
 		}
 
-//        $deleteForm = $this->createDeleteForm($id);
+		$gruposOriginales = new ArrayCollection();
+
+		// Crear un ArrayCollection de $permisoAplicacion
+		foreach ( $entity->getGrupos() as $grupos ) {
+			$gruposOriginales->add( $grupos );
+		}
+
 		$editForm = $this->createEditForm( $entity );
 		$editForm->handleRequest( $request );
 
@@ -241,6 +246,14 @@ class UsuarioController extends Controller implements TokenAuthenticatedControll
 
 				}
 				$entity->setPassword( $password );
+			}
+
+			foreach ( $gruposOriginales as $gruposOriginale ) {
+				if ( false === $entity->getGrupos()->contains( $gruposOriginale ) ) {
+
+					$gruposOriginale->setUsuario( null );
+					$em->remove( $gruposOriginale );
+				}
 			}
 
 			foreach ( $entity->getGrupos() as $grupo ) {

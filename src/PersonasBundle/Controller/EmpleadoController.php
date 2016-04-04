@@ -233,8 +233,6 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 
 		$editForm = $this->createEditForm( $personaTipo );
 
-//		$deleteForm = $this->createDeleteForm( $id );
-
 		return $this->render( 'PersonasBundle:Empleado:edit.html.twig',
 			array(
 				'entity'    => $entity,
@@ -292,8 +290,14 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 		$encoder = $factory->getEncoder($usuario);
 		$password             = $usuario ? $usuario->getPassword() : null;
 
+		$gruposOriginales = new ArrayCollection();
 
-		$deleteForm = $this->createDeleteForm( $id );
+		// Crear un ArrayCollection de $permisoAplicacion
+		foreach ( $usuario->getGrupos() as $grupos ) {
+			$gruposOriginales->add( $grupos );
+		}
+
+
 		$editForm   = $this->createEditForm( $entity );
 		$editForm->handleRequest( $request );
 
@@ -318,6 +322,13 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 				$usuario->setPassword( $password );
 			}
 
+			foreach ( $gruposOriginales as $gruposOriginale ) {
+				if ( false === $usuario->getGrupos()->contains( $gruposOriginale ) ) {
+
+					$gruposOriginale->setUsuario( null );
+					$em->remove( $gruposOriginale );
+				}
+			}
 			if ( $usuario->getGrupos() ) {
 				foreach ( $usuario->getGrupos() as $grupo ) {
 					$grupo->setUsuario( $usuario );
