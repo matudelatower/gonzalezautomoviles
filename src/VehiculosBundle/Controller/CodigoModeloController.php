@@ -7,12 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\CodigoModelo;
 use VehiculosBundle\Form\CodigoModeloType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * CodigoModelo controller.
  *
  */
-class CodigoModeloController extends Controller {
+class CodigoModeloController extends Controller  implements TokenAuthenticatedController {
 
 	/**
 	 * Lists all CodigoModelo entities.

@@ -7,13 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\Deposito;
 use VehiculosBundle\Form\DepositoType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * Deposito controller.
  *
  */
-class DepositoController extends Controller
-{
+class DepositoController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all Deposito entities.

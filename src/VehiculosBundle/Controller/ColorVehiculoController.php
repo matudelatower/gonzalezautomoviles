@@ -7,13 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\ColorVehiculo;
 use VehiculosBundle\Form\ColorVehiculoType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * ColorVehiculo controller.
  *
  */
-class ColorVehiculoController extends Controller
-{
+class ColorVehiculoController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all ColorVehiculo entities.

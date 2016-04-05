@@ -4,15 +4,17 @@ namespace VehiculosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * NombreModelo
  *
  * @ORM\Table(name="nombres_modelo")
  * @ORM\Entity
+ * @UniqueEntity("nombre")
  */
-class NombreModelo
-{
+class NombreModelo {
+
     /**
      * @var integer
      *
@@ -79,8 +81,7 @@ class NombreModelo
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -91,8 +92,7 @@ class NombreModelo
      *
      * @return NombreModelo
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -103,8 +103,7 @@ class NombreModelo
      *
      * @return string
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -115,8 +114,7 @@ class NombreModelo
      *
      * @return NombreModelo
      */
-    public function setActivo($activo)
-    {
+    public function setActivo($activo) {
         $this->activo = $activo;
 
         return $this;
@@ -127,8 +125,7 @@ class NombreModelo
      *
      * @return boolean
      */
-    public function getActivo()
-    {
+    public function getActivo() {
         return $this->activo;
     }
 
@@ -139,8 +136,7 @@ class NombreModelo
      *
      * @return NombreModelo
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -151,8 +147,7 @@ class NombreModelo
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -163,8 +158,7 @@ class NombreModelo
      *
      * @return NombreModelo
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -175,8 +169,7 @@ class NombreModelo
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -187,8 +180,7 @@ class NombreModelo
      *
      * @return NombreModelo
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -199,8 +191,7 @@ class NombreModelo
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -211,8 +202,7 @@ class NombreModelo
      *
      * @return NombreModelo
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -223,8 +213,8 @@ class NombreModelo
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
+
 }

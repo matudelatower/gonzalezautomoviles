@@ -7,13 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\CheckControlInternoPregunta;
 use VehiculosBundle\Form\CheckControlInternoPreguntaType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * CheckControlInternoPregunta controller.
  *
  */
-class CheckControlInternoPreguntaController extends Controller
-{
+class CheckControlInternoPreguntaController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all CheckControlInternoPregunta entities.

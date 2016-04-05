@@ -13,8 +13,9 @@ use VehiculosBundle\Form\Filter\ReporteAgendaEntregasFilterType;
 use VehiculosBundle\Form\Filter\ReportePatentamientosFilterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
-class ReporteController extends Controller {
+class ReporteController extends Controller implements TokenAuthenticatedController {
 
     public function indexReporteAutosVendidosPorVendedorAction(Request $request) {
 

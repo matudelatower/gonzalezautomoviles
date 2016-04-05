@@ -7,13 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\NombreModelo;
 use VehiculosBundle\Form\NombreModeloType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * NombreModelo controller.
  *
  */
-class NombreModeloController extends Controller
-{
+class NombreModeloController extends Controller implements TokenAuthenticatedController {
+
 
     /**
      * Lists all NombreModelo entities.

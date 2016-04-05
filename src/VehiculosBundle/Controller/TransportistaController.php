@@ -7,13 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\Transportista;
 use VehiculosBundle\Form\TransportistaType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 
 /**
  * Transportista controller.
  *
  */
-class TransportistaController extends Controller
-{
+class TransportistaController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all Transportista entities.

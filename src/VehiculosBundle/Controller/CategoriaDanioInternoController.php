@@ -7,13 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\CategoriaDanioInterno;
 use VehiculosBundle\Form\CategoriaDanioInternoType;
+use UsuariosBundle\Controller\TokenAuthenticatedController;
+
 
 /**
  * CategoriaDanioInterno controller.
  *
  */
-class CategoriaDanioInternoController extends Controller
-{
+class CategoriaDanioInternoController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all CategoriaDanioInterno entities.

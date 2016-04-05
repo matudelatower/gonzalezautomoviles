@@ -4,12 +4,14 @@ namespace UsuariosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * PermisoEspecial
  *
  * @ORM\Table(name="permisos_especiales")
  * @ORM\Entity(repositoryClass="UsuariosBundle\Entity\Repository\PermisoEspecialRepository")
+ * @UniqueEntity("descripcion")
  */
 class PermisoEspecial
 {

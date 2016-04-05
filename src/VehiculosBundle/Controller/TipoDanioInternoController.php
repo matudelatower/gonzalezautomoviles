@@ -7,13 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\TipoDanioInterno;
 use VehiculosBundle\Form\TipoDanioInternoType;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 /**
  * TipoDanioInterno controller.
  *
  */
-class TipoDanioInternoController extends Controller
-{
+class TipoDanioInternoController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all TipoDanioInterno entities.
