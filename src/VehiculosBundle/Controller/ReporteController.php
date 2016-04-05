@@ -118,13 +118,15 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
             $formData = $form->getData();
 
             $vendedor = $formData['vendedor'];
+            if ($formData['rango']) {
+                $aFecha = explode(' - ', $formData['rango']);
 
-            $aFecha = explode(' - ', $formData['rango']);
-
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-
-            $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
+                $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
+            } else {
+                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor);
+            }
         }
         $filename = "reporte_autos_vendidos_por_vendedor.xls";
 
@@ -134,10 +136,6 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
         $exportExcel->setTitle('Autos Vendidos por Vendedor');
         $exportExcel->setDescripcion('Listado de Autos Vendidos por Vendedor');
 
-
-        $managerEncuestas = $this->get('manager.reportes');
-
-        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
 
         $response = $exportExcel->buildSheetgetReporteAutosVendidosPorVendedor($entities);
