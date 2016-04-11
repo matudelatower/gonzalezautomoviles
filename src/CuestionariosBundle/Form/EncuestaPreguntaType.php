@@ -17,13 +17,9 @@ class EncuestaPreguntaType extends AbstractType
         $builder
             ->add('pregunta')
             ->add('estado')
-            ->add('orden')
-            ->add('creado')
-            ->add('actualizado')
+            ->add('orden')           
             ->add('encuestaTipoPregunta')
-            ->add('encuesta')
-            ->add('creadoPor')
-            ->add('actualizadoPor')
+            ->add('encuesta')            
         ;
     }
     

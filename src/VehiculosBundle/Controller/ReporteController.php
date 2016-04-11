@@ -879,11 +879,15 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
             $formData = $form->getData();
             if ($formData['reventa']) {
-                $dias = explode(',', $formData['dias']);
+                if ($formData['dias']) {
+                    $dias = explode(',', $formData['dias']);
 
-                $formData['diaInicio'] = abs($dias[0]);
-                $formData['diaFin'] = abs($dias[1]);
-
+                    $formData['diaInicio'] = abs($dias[0]);
+                    $formData['diaFin'] = abs($dias[1]);
+                } else {
+                    $formData['diaInicio'] = false;
+                    $formData['diaFin'] = false;
+                }
                 $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
             }
         }
@@ -912,10 +916,16 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
             $formData = $form->getData();
             if ($formData['reventa']) {
-                $dias = explode(',', $formData['dias']);
 
-                $formData['diaInicio'] = abs($dias[0]);
-                $formData['diaFin'] = abs($dias[1]);
+                if ($formData['dias']) {
+                    $dias = explode(',', $formData['dias']);
+
+                    $formData['diaInicio'] = abs($dias[0]);
+                    $formData['diaFin'] = abs($dias[1]);
+                } else {
+                    $formData['diaInicio'] = false;
+                    $formData['diaFin'] = false;
+                }
 
                 $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
             }
@@ -953,10 +963,15 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
             $formData = $form->getData();
             if ($formData['reventa']) {
-                $dias = explode(',', $formData['dias']);
+                 if ($formData['dias']) {
+                    $dias = explode(',', $formData['dias']);
 
-                $formData['diaInicio'] = abs($dias[0]);
-                $formData['diaFin'] = abs($dias[1]);
+                    $formData['diaInicio'] = abs($dias[0]);
+                    $formData['diaFin'] = abs($dias[1]);
+                } else {
+                    $formData['diaInicio'] = false;
+                    $formData['diaFin'] = false;
+                }
 
                 $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
             }

@@ -479,7 +479,7 @@ WHERE " . $where .
 
         $where = '1=1';
 
-        if ($filters['facturado']) {
+        if ($filters['facturado']==1) {
             $where .= " AND vehiculos.factura_id IS NOT NULL";
         } else if ($filters['facturado'] == 2) {
             $where .= " AND vehiculos.factura_id IS NULL";
