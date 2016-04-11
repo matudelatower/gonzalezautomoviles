@@ -4,7 +4,7 @@ namespace CuestionariosBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use CuestionariosBundle\Entity\EncuestaPregunta;
 use CuestionariosBundle\Form\EncuestaPreguntaType;
 
@@ -12,8 +12,7 @@ use CuestionariosBundle\Form\EncuestaPreguntaType;
  * EncuestaPregunta controller.
  *
  */
-class EncuestaPreguntaController extends Controller
-{
+class EncuestaPreguntaController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all EncuestaPregunta entities.
