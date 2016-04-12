@@ -7,13 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use VehiculosBundle\Entity\AgenteInicioPatente;
 use VehiculosBundle\Form\AgenteInicioPatenteType;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 /**
  * AgenteInicioPatente controller.
  *
  */
-class AgenteInicioPatenteController extends Controller
-{
+class AgenteInicioPatenteController extends Controller implements TokenAuthenticatedController{
 
     /**
      * Lists all AgenteInicioPatente entities.

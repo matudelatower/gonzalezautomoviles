@@ -16,10 +16,6 @@ class AgenteInicioPatenteType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('creado')
-            ->add('actualizado')
-            ->add('creadoPor')
-            ->add('actualizadoPor')
         ;
     }
     

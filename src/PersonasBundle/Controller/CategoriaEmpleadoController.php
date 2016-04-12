@@ -4,7 +4,7 @@ namespace PersonasBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use PersonasBundle\Entity\CategoriaEmpleado;
 use PersonasBundle\Form\CategoriaEmpleadoType;
 
@@ -12,8 +12,7 @@ use PersonasBundle\Form\CategoriaEmpleadoType;
  * CategoriaEmpleado controller.
  *
  */
-class CategoriaEmpleadoController extends Controller
-{
+class CategoriaEmpleadoController extends Controller implements TokenAuthenticatedController{
 
     /**
      * Lists all CategoriaEmpleado entities.
