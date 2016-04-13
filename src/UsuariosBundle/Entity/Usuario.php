@@ -85,6 +85,28 @@ class Usuario extends BaseUser {
 	private $personaTipo;
 
 	/**
+	 *
+	 * Devuelve true si tiene el permiso especial asignado o false si no lo tiene
+	 *
+	 * @param $slugPermisoEspecial es el slug del permiso especial
+	 *
+	 * @return bool
+	 */
+	public function tienePermisoEspecial( $slugPermisoEspecial ) {
+		foreach ( $this->getGrupos() as $usuarioGrupo ) {
+			$grupo = $usuarioGrupo->getGrupo();
+			foreach ( $grupo->getPermisoEspecialGrupo() as $permisoEspecialGrupo ) {
+				if ( $permisoEspecialGrupo->getPermisoEspecial()->getSlug() == $slugPermisoEspecial ) {
+					return true;
+				}
+			}
+
+		}
+
+		return false;
+	}
+
+	/**
 	 * Set creado
 	 *
 	 * @param \DateTime $creado

@@ -41,7 +41,8 @@ class PermisoEspecialType extends AbstractType {
 				array(
 					'choices' => $choices,
 					'attr'    => array( 'class' => 'select2' )
-				) );
+				) )
+			->add( 'slug' );
 
 		// ...
 		$builder->addEventListener( FormEvents::PRE_SET_DATA,

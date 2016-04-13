@@ -85,6 +85,13 @@ class PermisoEspecial
      */
     private $actualizadoPor;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    private $slug;
+
     public function __toString()
     {
         return $this->descripcion;
@@ -307,5 +314,29 @@ class PermisoEspecial
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return PermisoEspecial
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

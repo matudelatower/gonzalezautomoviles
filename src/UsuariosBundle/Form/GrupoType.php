@@ -10,19 +10,7 @@ class GrupoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'roles',
-            'choice',
-            array(
-                'choices' => array(
-                    'ROLE_ADMIN' => 'Administrador',
-                    'ROLE_ADMINISTRACION' => 'Administracion',
-                    'ROLE_VENTA' => 'Venta',
-                    'ROLE_GERENCIA' => 'Gerencia',
-                ),
-                'multiple' => true,
-            )
-        )
+        $builder
             ->add(
                 'permisoAplicacion',
                 'bootstrapcollection',

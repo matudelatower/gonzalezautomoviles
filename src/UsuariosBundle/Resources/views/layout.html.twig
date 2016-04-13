@@ -57,7 +57,7 @@
 
         <form action="{{ path("fos_user_security_check") }}" method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" required name="_username"
+                <input type="text" class="form-control" required name="_username" autocomplete="off"
                        placeholder="{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
