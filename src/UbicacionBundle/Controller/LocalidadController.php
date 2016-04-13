@@ -4,7 +4,7 @@ namespace UbicacionBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use UbicacionBundle\Entity\Localidad;
 use UbicacionBundle\Form\LocalidadType;
 
@@ -12,8 +12,8 @@ use UbicacionBundle\Form\LocalidadType;
  * Localidad controller.
  *
  */
-class LocalidadController extends Controller
-{
+class LocalidadController extends Controller implements TokenAuthenticatedController {
+
 
     /**
      * Lists all Localidad entities.

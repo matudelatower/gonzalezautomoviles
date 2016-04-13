@@ -4,7 +4,7 @@ namespace UbicacionBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use UbicacionBundle\Entity\Departamento;
 use UbicacionBundle\Form\DepartamentoType;
 
@@ -12,8 +12,8 @@ use UbicacionBundle\Form\DepartamentoType;
  * Departamento controller.
  *
  */
-class DepartamentoController extends Controller
-{
+class DepartamentoController extends Controller implements TokenAuthenticatedController {
+
 
     /**
      * Lists all Departamento entities.

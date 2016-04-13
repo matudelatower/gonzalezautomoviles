@@ -4,7 +4,7 @@ namespace UbicacionBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use UbicacionBundle\Entity\Provincia;
 use UbicacionBundle\Form\ProvinciaType;
 
@@ -12,9 +12,7 @@ use UbicacionBundle\Form\ProvinciaType;
  * Provincia controller.
  *
  */
-class ProvinciaController extends Controller
-{
-
+class ProvinciaController extends Controller implements TokenAuthenticatedController {
     /**
      * Lists all Provincia entities.
      *

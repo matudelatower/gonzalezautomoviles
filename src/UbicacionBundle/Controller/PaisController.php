@@ -4,7 +4,7 @@ namespace UbicacionBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use UsuariosBundle\Controller\TokenAuthenticatedController;
 use UbicacionBundle\Entity\Pais;
 use UbicacionBundle\Form\PaisType;
 
@@ -12,8 +12,7 @@ use UbicacionBundle\Form\PaisType;
  * Pais controller.
  *
  */
-class PaisController extends Controller
-{
+class PaisController extends Controller implements TokenAuthenticatedController {
 
     /**
      * Lists all Pais entities.
