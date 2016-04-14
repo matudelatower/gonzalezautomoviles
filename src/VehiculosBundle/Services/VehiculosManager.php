@@ -142,6 +142,7 @@ class VehiculosManager {
 
 		foreach ( $daniosInternosOriginal as $item ) {
 			if ( false === $vehiculo->getDanioVehiculoInterno()->contains( $item ) ) {
+                            //controlar aca si tiene o no permiso para eliminar danios internos
 				$em->remove( $item );
 
 				foreach ( $item->getFotoDanioInterno() as $fotoDanio ) {

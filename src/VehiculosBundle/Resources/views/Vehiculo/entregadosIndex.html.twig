@@ -48,37 +48,46 @@
                                     <td>{{ entity.vin }}</td>
                                     <td align="center">
                                         {% if entity.venta_especial_slug == 'convencional' %}
-                                            {%if entity.pagado %}
+                                            {% if entity.pagado %}
                                                 Gonzalez
-                                            {%else%}
-                                                <a class="btn btn-pagado" data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Registrar pago">Gpat</a>
-                                            {%endif%}
-                                        {%endif%}
+                                            {% else %}
+                                                {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
+                                                    <a
+                                                        class="btn btn-pagado"
+                                                        data-toggle="modal"
+                                                        data-target="#modalGeneric"
+                                                        data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                        title="Registrar pago">Gpat</a>
+                                                {% else %}
+                                                    Gpat
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                        title="Ver resumen" class="fa fa-eye"></i></a>
-
-                                            <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
-                                               href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                               title="Patente"><i class="fa icon-patente"></i></a>
-                                            {% if (entity.encuesta_alerta_temprana=='') %}
+                                                    title="Ver resumen" class="fa fa-eye"></i></a>
+                                                {% if app.user.tienePermisoEspecial('registrar_patente') %}   
+                                                <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
+                                                   href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                                   title="Patente"><i class="fa icon-patente"></i></a>
+                                                {% endif %}
+                                                {% if (entity.encuesta_alerta_temprana=='') %}
                                                 <a class="btn {% if(entity.dominio=='2asd') %}btn-success{% else %}btn-default{% endif %}"
                                                    href="{{ path('crear_alerta_temprana', { 'vehiculoId': entity.id }) }}"
                                                    title="Alerta temprana"><i class="fa fa-commenting-o"></i></a>
-                                            {% endif %}
-                                            <a class="btn {% if(entity.cupon_garantia!='') %}btn-success{% else %}btn-default{% endif %} btn-cupon-garantia"
-                                               data-toggle="modal"
-                                               data-target="#modalGeneric"
-                                               data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
-                                               title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
-                                               {% if (entity.danio_gm_sin_solucionar!='') %}
+                                                {% endif %}
+                                                {% if app.user.tienePermisoEspecial('registrar_cupon') %}  
+                                                <a class="btn {% if(entity.cupon_garantia!='') %}btn-success{% else %}btn-default{% endif %} btn-cupon-garantia"
+                                                   data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
+                                                {% endif %}
+                                                {% if (entity.danio_gm_sin_solucionar!='') %}
                                                 <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
                                             {%endif%} 
                                         </div>

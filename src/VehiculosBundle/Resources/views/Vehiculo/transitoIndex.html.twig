@@ -49,15 +49,21 @@
                                     <td>{{ entity.dias_en_stock }}</td>
                                     <td align="center">
                                         {% if entity.venta_especial_slug == 'convencional' %}
-                                            {%if entity.pagado %}
+                                            {% if entity.pagado %}
                                                 Gonzalez
-                                            {%else%}
-                                                <a class="btn btn-pagado" data-toggle="modal"
+                                            {% else %}
+                                                {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
+                                                <a
+                                                   class="btn btn-pagado"
+                                                   data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Registrar pago">Gpat</a>
-                                            {%endif%}
-                                        {%endif%}
+                                                    {% else %}
+                                                        Gpat
+                                                    {% endif %}
+                                            {% endif %}
+                                        {% endif %}
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>
@@ -72,7 +78,7 @@
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_actualizar_remito', { 'vehiculoId': entity.id }) }}"
                                                title="Actualizar remito"><i class="fa fa-file-text"></i></a>
-                                                {% if entity.venta_especial_slug == 'convencional' %}
+                                                {% if entity.venta_especial_slug == 'convencional' and app.user.tienePermisoEspecial('asignar_vehiculo') %}
                                                 <a class="btn {% if(entity.cliente_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
                                                    data-toggle="modal"
                                                    data-target="#modalGeneric"

@@ -5,7 +5,7 @@
 {% block content -%}
     <!-- Modal -->
     <div id="modalGeneric" class="modal fade" role="dialog">
-       <div class="modal-dialog">
+        <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content" id="cuerpoGeneric">
 
@@ -22,7 +22,7 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Listado Vehiculos Pendientes Por Entregar - {{cantidadRegistros}} vehiculos encontrados</h3>
-                    
+
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -39,7 +39,7 @@
                                 <th data-width="3%">Deposito</th>
                                 <th data-width="5%">Fecha entrega</th>
                                 <th data-width="15%">Actions</th>
-                              
+
                             </tr>
                         </thead>
                         <tbody>
@@ -55,10 +55,16 @@
                                             {% if entity.pagado %}
                                                 Gonzalez
                                             {% else %}
-                                                <a class="btn btn-pagado" data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Registrar pago">Gpat</a>
+                                                {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
+                                                    <a
+                                                        class="btn btn-pagado"
+                                                        data-toggle="modal"
+                                                        data-target="#modalGeneric"
+                                                        data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                        title="Registrar pago">Gpat</a>
+                                                {% else %}
+                                                    Gpat
+                                                {% endif %}
                                             {% endif %}
                                         {% endif %}
                                     </td>
@@ -69,17 +75,20 @@
                                         <div class="btn-group">
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
-                                                        title="Ver resumen" class="fa fa-eye"></i></a>
+                                                    title="Ver resumen" class="fa fa-eye"></i></a>
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                        title="Editar" class="fa fa-edit"></i></a>
-                                            <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-warning{% else %}btn-default{% endif %}"
-                                               href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
-                                               title="Checklist control interno"><i class="fa fa-check-square"></i></a>
-                                            <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
-                                               href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
-                                               title="Patente"><i class="fa icon-patente"></i></a>
-
+                                                    title="Editar" class="fa fa-edit"></i></a>
+                                                {% if app.user.tienePermisoEspecial('realizar_check_control_interno') %}
+                                                <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-warning{% else %}btn-default{% endif %}"
+                                                   href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
+                                                   title="Checklist control interno"><i class="fa fa-check-square"></i></a>
+                                                {% endif %}
+                                                {% if app.user.tienePermisoEspecial('registrar_patente') %}    
+                                                <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
+                                                   href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                                   title="Patente"><i class="fa icon-patente"></i></a>
+                                                {% endif %}
                                             <a class="btn btn-default btn-deposito" data-toggle="modal"
                                                data-target="#modalGeneric"
                                                data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
@@ -89,26 +98,29 @@
                                                  data-toggle="modal" data-target="#modalGeneric"
                                                  data-url="{{ path('new_agenda_entrega_ajax', { 'vehiculoId': entity.id }) }}"
                                                  title="Agendar entrega"><i class="fa fa-calendar"></i></a>#}
-                                            <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
+                                            {% if app.user.tienePermisoEspecial('agendar_entrega') %}
+                                                <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
 
-                                               href="{{ path('agenda_entrega_new', { 'vehiculoId': entity.id }) }}"
-                                               title="Agendar entrega"><i class="fa fa-calendar"></i></a>
-
+                                                   href="{{ path('agenda_entrega_new', { 'vehiculoId': entity.id }) }}"
+                                                   title="Agendar entrega"><i class="fa fa-calendar"></i></a>
+                                                {% endif %}
 
                                             <a class="btn {% if(entity.danio_interno_sin_solucionar!='') %}btn-danger{% else %}btn-default{% endif %}"
                                                href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
                                                title="editar daño interno"><i class="fa fa-fire-extinguisher"></i></a>
 
-                                            <a class="btn {% if(entity.cupon_garantia!='') %}btn-success{% else %}btn-default{% endif %} btn-cupon-garantia"
-                                               data-toggle="modal"
-                                               data-target="#modalGeneric"
-                                               data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
-                                               title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
-                                            {% if (entity.danio_gm_sin_solucionar!='') %}
-                                                   <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
-                                               {%endif%} 
+                                            {% if app.user.tienePermisoEspecial('registrar_cupon') %}   
+                                                <a class="btn {% if(entity.cupon_garantia!='') %}btn-success{% else %}btn-default{% endif %} btn-cupon-garantia"
+                                                   data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_cupon_garantia_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Cupón de garantia"><i class="fa fa-bookmark"></i></a>
+                                                {% endif %}
+                                                {% if (entity.danio_gm_sin_solucionar!='') %}
+                                                <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
+                                            {%endif%} 
                                         </div>
-                                               
+
                                     </td>
 
                                 </tr>
@@ -132,9 +144,9 @@
 {% block javascripts %}
     {{ parent() }}
     {% include "VehiculosBundle:Vehiculo:index.js.twig" %}
-    
+
     <script src="{{ asset('bundles/theme/js/moment.min.js') }}"></script>
-<script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
-<script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/lang-all.js') }}"></script>
+    <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/lang-all.js') }}"></script>
 
 {% endblock %}

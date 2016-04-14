@@ -9,7 +9,7 @@ use UbicacionBundle\Entity\Pais;
 use UbicacionBundle\Form\PaisType;
 
 /**
- * Pais controller.
+ * Pais controller.s
  *
  */
 class PaisController extends Controller implements TokenAuthenticatedController {
