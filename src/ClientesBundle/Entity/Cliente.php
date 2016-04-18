@@ -4,14 +4,15 @@ namespace ClientesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Cliente
  *
  * @ORM\Table(name="clientes")
  * @ORM\Entity(repositoryClass="ClientesBundle\Entity\Repository\ClienteRepository")
  */
-class Cliente
-{
+class Cliente {
+
     /**
      * @var integer
      *
@@ -27,7 +28,7 @@ class Cliente
      * @ORM\Column(name="foraneo", type="boolean", nullable=true)
      */
     private $foraneo;
-    
+
     /**
      * @var boolean
      *
@@ -36,7 +37,7 @@ class Cliente
     private $reventa;
 
     /**
-     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
      *
      */
     private $personaTipo;
@@ -76,20 +77,11 @@ class Cliente
     private $actualizadoPor;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -100,8 +92,7 @@ class Cliente
      *
      * @return Cliente
      */
-    public function setForaneo($foraneo)
-    {
+    public function setForaneo($foraneo) {
         $this->foraneo = $foraneo;
 
         return $this;
@@ -112,143 +103,8 @@ class Cliente
      *
      * @return boolean
      */
-    public function getForaneo()
-    {
+    public function getForaneo() {
         return $this->foraneo;
-    }
-
-    /**
-     * Set creado
-     *
-     * @param \DateTime $creado
-     *
-     * @return Cliente
-     */
-    public function setCreado($creado)
-    {
-        $this->creado = $creado;
-
-        return $this;
-    }
-
-    /**
-     * Get creado
-     *
-     * @return \DateTime
-     */
-    public function getCreado()
-    {
-        return $this->creado;
-    }
-
-    /**
-     * Set actualizado
-     *
-     * @param \DateTime $actualizado
-     *
-     * @return Cliente
-     */
-    public function setActualizado($actualizado)
-    {
-        $this->actualizado = $actualizado;
-
-        return $this;
-    }
-
-    /**
-     * Get actualizado
-     *
-     * @return \DateTime
-     */
-    public function getActualizado()
-    {
-        return $this->actualizado;
-    }
-
-    /**
-     * Add personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     *
-     * @return Cliente
-     */
-    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo[] = $personaTipo;
-
-        return $this;
-    }
-
-    /**
-     * Remove personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     */
-    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo->removeElement($personaTipo);
-    }
-
-    /**
-     * Get personaTipo
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPersonaTipo()
-    {
-        return $this->personaTipo;
-    }
-
-    /**
-     * Set creadoPor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $creadoPor
-     *
-     * @return Cliente
-     */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
-        $this->creadoPor = $creadoPor;
-
-        return $this;
-    }
-
-    /**
-     * Get creadoPor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getCreadoPor()
-    {
-        return $this->creadoPor;
-    }
-
-    /**
-     * Set actualizadoPor
-     *
-     * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-     *
-     * @return Cliente
-     */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
-        $this->actualizadoPor = $actualizadoPor;
-
-        return $this;
-    }
-
-    /**
-     * Get actualizadoPor
-     *
-     * @return \UsuariosBundle\Entity\Usuario
-     */
-    public function getActualizadoPor()
-    {
-        return $this->actualizadoPor;
-    }
-    
-    public function __toString() {
-        return $this->personaTipo->first()->getPersona()->__toString();
     }
 
     /**
@@ -258,8 +114,7 @@ class Cliente
      *
      * @return Cliente
      */
-    public function setReventa($reventa)
-    {
+    public function setReventa($reventa) {
         $this->reventa = $reventa;
 
         return $this;
@@ -270,8 +125,122 @@ class Cliente
      *
      * @return boolean
      */
-    public function getReventa()
-    {
+    public function getReventa() {
         return $this->reventa;
     }
+
+    /**
+     * Set creado
+     *
+     * @param \DateTime $creado
+     *
+     * @return Cliente
+     */
+    public function setCreado($creado) {
+        $this->creado = $creado;
+
+        return $this;
+    }
+
+    /**
+     * Get creado
+     *
+     * @return \DateTime
+     */
+    public function getCreado() {
+        return $this->creado;
+    }
+
+    /**
+     * Set actualizado
+     *
+     * @param \DateTime $actualizado
+     *
+     * @return Cliente
+     */
+    public function setActualizado($actualizado) {
+        $this->actualizado = $actualizado;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizado
+     *
+     * @return \DateTime
+     */
+    public function getActualizado() {
+        return $this->actualizado;
+    }
+
+    /**
+     * Set personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     *
+     * @return Cliente
+     */
+    public function setPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo = null) {
+        $this->personaTipo = $personaTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get personaTipo
+     *
+     * @return \PersonasBundle\Entity\PersonaTipo
+     */
+    public function getPersonaTipo() {
+        return $this->personaTipo;
+    }
+
+    /**
+     * Set creadoPor
+     *
+     * @param \UsuariosBundle\Entity\Usuario $creadoPor
+     *
+     * @return Cliente
+     */
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
+        $this->creadoPor = $creadoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get creadoPor
+     *
+     * @return \UsuariosBundle\Entity\Usuario
+     */
+    public function getCreadoPor() {
+        return $this->creadoPor;
+    }
+
+    /**
+     * Set actualizadoPor
+     *
+     * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
+     *
+     * @return Cliente
+     */
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
+        $this->actualizadoPor = $actualizadoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizadoPor
+     *
+     * @return \UsuariosBundle\Entity\Usuario
+     */
+    public function getActualizadoPor() {
+        return $this->actualizadoPor;
+    }
+
+    public function __toString() {
+        return $this->personaTipo->getPersona()->__toString();
+    }
+
 }

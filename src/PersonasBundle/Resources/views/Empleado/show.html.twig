@@ -14,19 +14,80 @@
                 <div class="box-body">
                     <table class="record_properties">
                         <tbody>
-                        <tr>
-                            <th>Id</th>
-                            <td>{{ entity.id }}</td>
-                        </tr>
-                        <tr>
-                            <th>Categoría</th>
-                            <td>
-                                {% for categoria in entity.empleadoCategoria %}
-                                    <span>{{ categoria.categoriaEmpleado }}</span>
-                                    <br>
-                                {% endfor %}
-                            </td>
-                        </tr>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ entity.id }}</td>
+                            </tr
+                            <tr>
+                                <th>Nombre</th>
+                                <td>{{ entity.personaTipo.persona.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Apellido</th>
+                                <td>{{ entity.personaTipo.persona.apellido }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numerodocumento</th>
+                                <td>{{ entity.personaTipo.persona.numeroDocumento }}</td>
+                            </tr>
+                            <tr>
+                                <th>Telefono</th>
+                                <td>{{ entity.personaTipo.persona.telefono }}</td>
+                            </tr>
+                            <tr>
+                                <th>Celular</th>
+                                <td>{{ entity.personaTipo.persona.celular }}</td>
+                            </tr>
+                            <tr>
+                                <th>Mail</th>
+                                <td>{{ entity.personaTipo.persona.mail }}</td>
+                            </tr>
+                            <tr>
+                                <th>Web</th>
+                                <td>{{ entity.personaTipo.persona.web }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fechanacimiento</th>
+                                <td>{{ entity.personaTipo.persona.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Calle</th>
+                                <td>{{ entity.personaTipo.persona.calle }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numerocalle</th>
+                                <td>{{ entity.personaTipo.persona.numeroCalle }}</td>
+                            </tr>
+                            <tr>
+                                <th>Barrio</th>
+                                <td>{{ entity.personaTipo.persona.barrio }}</td>
+                            </tr>
+                            <tr>
+                                <th>Localidad</th>
+                                <td>{{ entity.personaTipo.persona.localidad }}</td>
+                            </tr>
+                            <tr>
+                                <th>Categoría</th>
+                                <td>
+                                    {% for categoria in entity.empleadoCategoria %}
+                                        <span>{{ categoria.categoriaEmpleado }}</span>
+                                        <br>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Usuario</th>
+                                <td>{{ entity.personaTipo.usuario }}</td>
+                            </tr>
+                            <tr>
+                                <th>Creado</th>
+                                <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Actualizado</th>
+                                <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

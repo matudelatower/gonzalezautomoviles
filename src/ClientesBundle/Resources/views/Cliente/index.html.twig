@@ -30,7 +30,7 @@
                                     <td>
                                         <a href="{{ path('clientes_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
                                     </td>
-                                    <td>{{ entity.personaTipo.first.persona }}</td>
+                                    <td>{{ entity.personaTipo.persona }}</td>
                                     <td>
                                         {% if entity.foraneo %}
                                             <span class="badge bg-green">SI</span>

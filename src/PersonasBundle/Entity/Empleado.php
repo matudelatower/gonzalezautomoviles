@@ -23,7 +23,7 @@ class Empleado
 
     
     /**
-     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="empleado", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="empleado", cascade={"persist"})
      *
      */
     private $personaTipo;
@@ -69,12 +69,12 @@ class Empleado
     private $actualizadoPor;
     
 
+    
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadoCategoria = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -137,33 +137,23 @@ class Empleado
     }
 
     /**
-     * Add personaTipo
+     * Set personaTipo
      *
      * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
      *
      * @return Empleado
      */
-    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
+    public function setPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo = null)
     {
-        $this->personaTipo[] = $personaTipo;
+        $this->personaTipo = $personaTipo;
 
         return $this;
     }
 
     /**
-     * Remove personaTipo
-     *
-     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
-     */
-    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo)
-    {
-        $this->personaTipo->removeElement($personaTipo);
-    }
-
-    /**
      * Get personaTipo
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \PersonasBundle\Entity\PersonaTipo
      */
     public function getPersonaTipo()
     {
@@ -177,7 +167,7 @@ class Empleado
      *
      * @return Empleado
      */
-    public function addEmpleadoCategorion(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
     {
         $this->empleadoCategoria[] = $empleadoCategorium;
 
@@ -189,7 +179,7 @@ class Empleado
      *
      * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
      */
-    public function removeEmpleadoCategorion(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
+    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
     {
         $this->empleadoCategoria->removeElement($empleadoCategorium);
     }
@@ -251,32 +241,8 @@ class Empleado
     {
         return $this->actualizadoPor;
     }
-
-    /**
-     * Add empleadoCategorium
-     *
-     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
-     *
-     * @return Empleado
-     */
-    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
-    {
-        $this->empleadoCategoria[] = $empleadoCategorium;
-
-        return $this;
-    }
-
-    /**
-     * Remove empleadoCategorium
-     *
-     * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
-     */
-    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
-    {
-        $this->empleadoCategoria->removeElement($empleadoCategorium);
-    }
     
     public function __toString() {
-        return $this->personaTipo->first()->getPersona()->__toString();
+        return $this->personaTipo->getPersona()->__toString();
     }
 }
