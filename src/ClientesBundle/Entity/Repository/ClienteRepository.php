@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: matias
@@ -8,36 +9,57 @@
 
 namespace ClientesBundle\Entity\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
 use PDO;
 
 class ClienteRepository extends EntityRepository {
-	public function getClienteByDni( $dni ) {
-		$qb = $this->createQueryBuilder( 'c' );
-		$qb
-			->join( 'c.personaTipo', 'pt' )
-			->join( 'pt.persona', 'pers' )
-			->where( "pers.numeroDocumento like upper(:numeroDocumento)" );
 
-		$qb->setParameter( 'numeroDocumento', '%' . $dni . '%' );
+    public function getClienteByDni($dni) {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+                ->join('c.personaTipo', 'pt')
+                ->join('pt.persona', 'pers')
+                ->where("pers.numeroDocumento like upper(:numeroDocumento)");
 
-		return $qb->getQuery()->getResult();
+        $qb->setParameter('numeroDocumento', '%' . $dni . '%');
 
+        return $qb->getQuery()->getResult();
+    }
 
-	}
+    public function getClienteReventaByDni($dni) {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+                ->join('c.personaTipo', 'pt')
+                ->join('pt.persona', 'pers')
+                ->where("pers.numeroDocumento like upper(:numeroDocumento)")
+                ->andWhere('c.reventa = :reventa');
 
-	public function getClienteReventaByDni( $dni ) {
-		$qb = $this->createQueryBuilder( 'c' );
-		$qb
-			->join( 'c.personaTipo', 'pt' )
-			->join( 'pt.persona', 'pers' )
-			->where( "pers.numeroDocumento like upper(:numeroDocumento)" )
-		->andWhere('c.reventa = :reventa');
+        $qb->setParameter('numeroDocumento', '%' . $dni . '%');
+        $qb->setParameter('reventa', 'TRUE');
 
-		$qb->setParameter( 'numeroDocumento', '%' . $dni . '%' );
-		$qb->setParameter( 'reventa', 'TRUE' );
+        return $qb->getQuery()->getResult();
+    }
 
-		return $qb->getQuery()->getResult();
-	}
+    public function getClientesFilter($filter = null) {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+                ->join('c.personaTipo', 'pt')
+                ->join('pt.persona', 'pers');
+
+        if ($filter['numeroDocumento']) {
+            $qb->where("pers.numeroDocumento = :numeroDocumento");
+            $qb->setParameter('numeroDocumento',  $filter['numeroDocumento'] );
+        }
+        if ($filter['apellido']) {
+            $qb->where("pers.apellido like :apellido");
+            $qb->setParameter('apellido', '%' . $filter['apellido'] . '%');
+        }
+
+        if ($filter['reventa']) {
+            $qb->andWhere('c.reventa = :reventa');
+            $qb->setParameter('reventa', $filter['reventa']);
+        }
+        return $qb->getQuery()->getResult();
+    }
+
 }

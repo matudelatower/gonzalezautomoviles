@@ -1,6 +1,6 @@
-    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
-    {% block content -%}
+{% block content -%}
 
 
     <div class="row">
@@ -8,68 +8,57 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Listado de Codigos de Modelos</h3>
-
-                    <div class="box-tools">
-                        <div class="input-group" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control input-sm pull-right"
-                                   placeholder="Buscar">
-
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover">
-
-                        <tr>
+                <div class="box-body">
+                    <table class="data-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
                                 <th>Id</th>
                                 <th>Anio</th>
                                 <th>Codigo</th>
                                 <th>Version</th>
                                 <th>Activo</th>
-                            <th>Acciones</th>
-                        </tr>
-
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
                         {% for entity in entities %}
-                        <tr>
-                                    <td>
-                                        <a href="{{ path('codigo_modelo_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
-                                    </td>
-                                    <td>{{ entity.anio }}</td>
-                                    <td>{{ entity.codigo }}</td>
-                                    <td>{{ entity.version }}</td>
-                                    <td>
-                                        {% if entity.activo %}
-                                            <span class="badge bg-green">SI</span>
-                                        {% else %}
-                                            <span class="badge bg-red">NO</span>
-                                        {% endif %}
+                            <tr>
+                                <td>
+                                    <a href="{{ path('codigo_modelo_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
+                                </td>
+                                <td>{{ entity.anio }}</td>
+                                <td>{{ entity.codigo }}</td>
+                                <td>{{ entity.version }}</td>
+                                <td>
+                                    {% if entity.activo %}
+                                        <span class="badge bg-green">SI</span>
+                                    {% else %}
+                                        <span class="badge bg-red">NO</span>
+                                    {% endif %}
 
-                                    </td>
-                                    <td>
+                                </td>
+                                <td>
 
-                        <a class="btn btn-default" href="{{ path('codigo_modelo_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-default" href="{{ path('codigo_modelo_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
 
-                        <a class="btn btn-default" href="{{ path('codigo_modelo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-default" href="{{ path('codigo_modelo_edit', { 'id': entity.id }) }}"><i class="fa fa-edit"></i></a>
 
-                                    </td>
-                        </tr>
+                                </td>
+                            </tr>
                         {% endfor %}
 
                     </table>
                 </div>
                 <div class="box-footer">
-                    
-                        <a class="btn btn-primary" href="{{ path('codigo_modelo_new') }}">
-                            Nuevo
-                        </a>
 
-                                    </div>
+                    <a class="btn btn-primary" href="{{ path('codigo_modelo_new') }}">
+                        Nuevo
+                    </a>
+
+                </div>
             </div>
         </div>
     </div>
     {{ knp_pagination_render(entities) }}
-    {% endblock %}
+{% endblock %}
