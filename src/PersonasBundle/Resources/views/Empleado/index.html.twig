@@ -28,7 +28,7 @@
                                     <td>
                                         <a href="{{ path('empleados_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
                                     </td>
-                                    <td>{{ entity.personaTipo.persona }}</td>
+                                    <td>{{ entity.personaTipo.first.persona }}</td>
                                     <td>
                                         {% for categoria in entity.empleadoCategoria %}
                                             <span>{{ categoria.categoriaEmpleado }}</span>

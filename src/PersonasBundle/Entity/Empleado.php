@@ -23,7 +23,7 @@ class Empleado
 
     
     /**
-     * @ORM\OneToOne(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="empleado", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="empleado", cascade={"persist"})
      *
      */
     private $personaTipo;

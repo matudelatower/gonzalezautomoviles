@@ -59,7 +59,11 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 
 		$form->handleRequest( $request );
 
-		if ( $form->isValid() ) {
+		$userManager = $this->get('fos_user.user_manager');
+
+		$existeUsuario = $userManager->findUserByUsername($entity->getUsuario()->getUsername());
+
+		if ( $form->isValid() && !$existeUsuario ) {
 
 			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
 				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
@@ -100,6 +104,13 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 			}
 
 			return $this->redirect( $this->generateUrl( 'empleados_show', array( 'id' => $entity->getId() ) ) );
+		}
+
+		if ($existeUsuario){
+			$this->get( 'session' )->getFlashBag()->add(
+				'warning',
+				'El nombre de usuario ya existe'
+			);
 		}
 
 		return $this->render( 'PersonasBundle:Empleado:new.html.twig',
@@ -299,9 +310,11 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 
 
 		$editForm   = $this->createEditForm( $entity );
-		$editForm->handleRequest( $request );
+		$userManager = $this->get('fos_user.user_manager');
 
-		if ( $editForm->isValid() ) {
+		$existeUsuario = $userManager->findUserByUsername($entity->getUsuario()->getUsername());
+
+		if ( $editForm->isValid() && !$existeUsuario ) {
 
 			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
 				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
@@ -352,11 +365,17 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 				array( 'id' => $entity->getEmpleado()->getId() ) ) );
 		}
 
+		if ($existeUsuario){
+			$this->get( 'session' )->getFlashBag()->add(
+				'warning',
+				'El nombre de usuario ya existe'
+			);
+		}
+
 		return $this->render( 'PersonasBundle:Empleado:edit.html.twig',
 			array(
 				'entity'      => $entity,
 				'edit_form'   => $editForm->createView(),
-				'delete_form' => $deleteForm->createView(),
 			) );
 	}
 

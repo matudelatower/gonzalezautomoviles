@@ -37,7 +37,7 @@ class Cliente {
     private $reventa;
 
     /**
-     * @ORM\OneToOne(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
      *
      */
     private $personaTipo;
