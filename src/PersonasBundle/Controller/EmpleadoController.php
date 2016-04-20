@@ -310,11 +310,11 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 
 
 		$editForm   = $this->createEditForm( $entity );
-		$userManager = $this->get('fos_user.user_manager');
+//		$userManager = $this->get('fos_user.user_manager');
+//
+//		$existeUsuario = $userManager->findUserByUsername($entity->getUsuario()->getUsername());
 
-		$existeUsuario = $userManager->findUserByUsername($entity->getUsuario()->getUsername());
-
-		if ( $editForm->isValid() && !$existeUsuario ) {
+		if ( $editForm->isValid()) {
 
 			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
 				$empleadoCategoria->setEmpleado( $entity->getEmpleado() );
@@ -365,12 +365,12 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 				array( 'id' => $entity->getEmpleado()->getId() ) ) );
 		}
 
-		if ($existeUsuario){
-			$this->get( 'session' )->getFlashBag()->add(
-				'warning',
-				'El nombre de usuario ya existe'
-			);
-		}
+//		if ($existeUsuario){
+//			$this->get( 'session' )->getFlashBag()->add(
+//				'warning',
+//				'El nombre de usuario ya existe'
+//			);
+//		}
 
 		return $this->render( 'PersonasBundle:Empleado:edit.html.twig',
 			array(
