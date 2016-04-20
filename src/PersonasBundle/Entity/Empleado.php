@@ -4,14 +4,15 @@ namespace PersonasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Empleado
  *
  * @ORM\Table(name="empleados")
  * @ORM\Entity(repositoryClass="PersonasBundle\Entity\EmpleadoRepository")
  */
-class Empleado
-{
+class Empleado {
+
     /**
      * @var integer
      *
@@ -21,13 +22,12 @@ class Empleado
      */
     private $id;
 
-    
     /**
      * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="empleado", cascade={"persist"})
      *
      */
     private $personaTipo;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\EmpleadoCategoria", mappedBy="empleado", cascade={"persist"})
      *
@@ -67,14 +67,12 @@ class Empleado
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
-    
 
-    
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
+        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
         $this->empleadoCategoria = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -83,8 +81,7 @@ class Empleado
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -95,8 +92,7 @@ class Empleado
      *
      * @return Empleado
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -107,8 +103,7 @@ class Empleado
      *
      * @return \DateTime
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -119,8 +114,7 @@ class Empleado
      *
      * @return Empleado
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -131,32 +125,38 @@ class Empleado
      *
      * @return \DateTime
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
     /**
-     * Set personaTipo
+     * Add personaTipo
      *
      * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
      *
      * @return Empleado
      */
-    public function setPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo = null)
-    {
-        $this->personaTipo = $personaTipo;
+    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo) {
+        $this->personaTipo[] = $personaTipo;
 
         return $this;
     }
 
     /**
+     * Remove personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     */
+    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo) {
+        $this->personaTipo->removeElement($personaTipo);
+    }
+
+    /**
      * Get personaTipo
      *
-     * @return \PersonasBundle\Entity\PersonaTipo
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPersonaTipo()
-    {
+    public function getPersonaTipo() {
         return $this->personaTipo;
     }
 
@@ -167,8 +167,7 @@ class Empleado
      *
      * @return Empleado
      */
-    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
-    {
+    public function addEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium) {
         $this->empleadoCategoria[] = $empleadoCategorium;
 
         return $this;
@@ -179,8 +178,7 @@ class Empleado
      *
      * @param \PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium
      */
-    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium)
-    {
+    public function removeEmpleadoCategorium(\PersonasBundle\Entity\EmpleadoCategoria $empleadoCategorium) {
         $this->empleadoCategoria->removeElement($empleadoCategorium);
     }
 
@@ -189,8 +187,7 @@ class Empleado
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEmpleadoCategoria()
-    {
+    public function getEmpleadoCategoria() {
         return $this->empleadoCategoria;
     }
 
@@ -201,8 +198,7 @@ class Empleado
      *
      * @return Empleado
      */
-    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -213,8 +209,7 @@ class Empleado
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -225,8 +220,7 @@ class Empleado
      *
      * @return Empleado
      */
-    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -237,12 +231,12 @@ class Empleado
      *
      * @return \UsuariosBundle\Entity\Usuario
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
-    
+
     public function __toString() {
-        return $this->personaTipo->getPersona()->__toString();
+        return $this->personaTipo->first()->getPersona()->__toString();
     }
+
 }

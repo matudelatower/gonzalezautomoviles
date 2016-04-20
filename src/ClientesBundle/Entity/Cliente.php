@@ -77,6 +77,13 @@ class Cliente {
     private $actualizadoPor;
 
     /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->personaTipo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -174,22 +181,31 @@ class Cliente {
     }
 
     /**
-     * Set personaTipo
+     * Add personaTipo
      *
      * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
      *
      * @return Cliente
      */
-    public function setPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo = null) {
-        $this->personaTipo = $personaTipo;
+    public function addPersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo) {
+        $this->personaTipo[] = $personaTipo;
 
         return $this;
     }
 
     /**
+     * Remove personaTipo
+     *
+     * @param \PersonasBundle\Entity\PersonaTipo $personaTipo
+     */
+    public function removePersonaTipo(\PersonasBundle\Entity\PersonaTipo $personaTipo) {
+        $this->personaTipo->removeElement($personaTipo);
+    }
+
+    /**
      * Get personaTipo
      *
-     * @return \PersonasBundle\Entity\PersonaTipo
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPersonaTipo() {
         return $this->personaTipo;
@@ -240,7 +256,7 @@ class Cliente {
     }
 
     public function __toString() {
-        return $this->personaTipo->getPersona()->__toString();
+        return $this->personaTipo->first()->getPersona()->__toString();
     }
 
 }
