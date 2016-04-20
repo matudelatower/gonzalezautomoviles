@@ -20,51 +20,51 @@
                             </tr
                             <tr>
                                 <th>Nombre</th>
-                                <td>{{ entity.personaTipo.persona.nombre }}</td>
+                                <td>{{ entity.personaTipo.first().persona.nombre }}</td>
                             </tr>
                             <tr>
                                 <th>Apellido</th>
-                                <td>{{ entity.personaTipo.persona.apellido }}</td>
+                                <td>{{ entity.personaTipo.first().persona.apellido }}</td>
                             </tr>
                             <tr>
                                 <th>Numerodocumento</th>
-                                <td>{{ entity.personaTipo.persona.numeroDocumento }}</td>
+                                <td>{{ entity.personaTipo.first().persona.numeroDocumento }}</td>
                             </tr>
                             <tr>
                                 <th>Telefono</th>
-                                <td>{{ entity.personaTipo.persona.telefono }}</td>
+                                <td>{{ entity.personaTipo.first().persona.telefono }}</td>
                             </tr>
                             <tr>
                                 <th>Celular</th>
-                                <td>{{ entity.personaTipo.persona.celular }}</td>
+                                <td>{{ entity.personaTipo.first().persona.celular }}</td>
                             </tr>
                             <tr>
                                 <th>Mail</th>
-                                <td>{{ entity.personaTipo.persona.mail }}</td>
+                                <td>{{ entity.personaTipo.first().persona.mail }}</td>
                             </tr>
                             <tr>
                                 <th>Web</th>
-                                <td>{{ entity.personaTipo.persona.web }}</td>
+                                <td>{{ entity.personaTipo.first().persona.web }}</td>
                             </tr>
                             <tr>
                                 <th>Fechanacimiento</th>
-                                <td>{{ entity.personaTipo.persona.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ entity.personaTipo.first().persona.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
                             </tr>
                             <tr>
                                 <th>Calle</th>
-                                <td>{{ entity.personaTipo.persona.calle }}</td>
+                                <td>{{ entity.personaTipo.first().persona.calle }}</td>
                             </tr>
                             <tr>
                                 <th>Numerocalle</th>
-                                <td>{{ entity.personaTipo.persona.numeroCalle }}</td>
+                                <td>{{ entity.personaTipo.first().persona.numeroCalle }}</td>
                             </tr>
                             <tr>
                                 <th>Barrio</th>
-                                <td>{{ entity.personaTipo.persona.barrio }}</td>
+                                <td>{{ entity.personaTipo.first().persona.barrio }}</td>
                             </tr>
                             <tr>
                                 <th>Localidad</th>
-                                <td>{{ entity.personaTipo.persona.localidad }}</td>
+                                <td>{{ entity.personaTipo.first().persona.localidad }}</td>
                             </tr>
                             <tr>
                                 <th>Categoría</th>
@@ -77,7 +77,7 @@
                             </tr>
                             <tr>
                                 <th>Usuario</th>
-                                <td>{{ entity.personaTipo.usuario }}</td>
+                                <td>{{ entity.personaTipo.first().usuario }}</td>
                             </tr>
                             <tr>
                                 <th>Creado</th>
