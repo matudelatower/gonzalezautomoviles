@@ -314,6 +314,8 @@ class EmpleadoController extends Controller implements TokenAuthenticatedControl
 //
 //		$existeUsuario = $userManager->findUserByUsername($entity->getUsuario()->getUsername());
 
+		$editForm->handleRequest($request);
+
 		if ( $editForm->isValid()) {
 
 			foreach ( $entity->getEmpleado()->getEmpleadoCategoria() as $empleadoCategoria ) {
