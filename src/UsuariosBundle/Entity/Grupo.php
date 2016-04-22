@@ -8,6 +8,7 @@
 
 namespace UsuariosBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -157,7 +158,16 @@ class Grupo extends BaseGroup
      */
     public function getPermisoAplicacion()
     {
-        return $this->permisoAplicacion;
+
+        $collection = $this->permisoAplicacion;
+        $iterator = $collection->getIterator();
+        $iterator->uasort(function ($a, $b) {
+            return ($a->getItemAplicativo()->__toString() < $b->getItemAplicativo()->__toString()) ? -1 : 1;
+        });
+        $collection = new ArrayCollection(iterator_to_array($iterator));
+        return $collection;
+
+//        return $this->permisoAplicacion;
     }
 
     /**
