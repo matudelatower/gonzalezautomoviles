@@ -62,8 +62,8 @@
                                     <td>{{ entity.id }}</td>
                                     <td>{{ entity.descripcion }}</td>
                                     <td>{{ entity.codigo }}</td>
-                                    <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                    <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                    <td>{% if entity.creado %}{{ entity.creado|date('d/m/Y H:i:s') }}{% endif %}</td>
+                                    <td>{% if entity.actualizado %}{{ entity.actualizado|date('d/m/Y H:i:s') }}{% endif %}</td>
                                     <td>
                                                                                 <a class="btn btn-default" href="{{ path('departamento_edit', { 'id': entity.id }) }}"><i class="fa fa-fw fa-edit"></i></a>
                                     </td>

@@ -31,8 +31,8 @@
                         <tr>
                             <td>{{ group.id }}</td>
                             <td>{{ group.getName() }}</td>
-                            <td>{% if group.creado %}{{ group.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                            <td>{% if group.actualizado %}{{ group.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td>{% if group.creado %}{{ group.creado|date('d/m/Y H:i:s') }}{% endif %}</td>
+                            <td>{% if group.actualizado %}{{ group.actualizado|date('d/m/Y H:i:s') }}{% endif %}</td>
                             <td>
 
                                 <a class="btn btn-default"
