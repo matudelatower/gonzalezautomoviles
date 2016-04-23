@@ -49,6 +49,13 @@ class Vehiculo {
     /**
      * @var string
      *
+     * @ORM\Column(name="codigo_inmobilizador", type="string", length=255, nullable=true)
+     */
+    private $codigoInmobilizador;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="codigo_llave", type="string", length=255, nullable=true)
      */
     private $codigoLlave;
@@ -1234,5 +1241,29 @@ class Vehiculo {
     public function getFechaPagoGm()
     {
         return $this->fechaPagoGm;
+    }
+
+    /**
+     * Set codigoInmobilizador
+     *
+     * @param string $codigoInmobilizador
+     *
+     * @return Vehiculo
+     */
+    public function setCodigoInmobilizador($codigoInmobilizador)
+    {
+        $this->codigoInmobilizador = $codigoInmobilizador;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoInmobilizador
+     *
+     * @return string
+     */
+    public function getCodigoInmobilizador()
+    {
+        return $this->codigoInmobilizador;
     }
 }

@@ -59,7 +59,10 @@ class EditarVehiculoType extends AbstractType {
                     'attr' => array('class' => 'maskmoney')
                 ))
                 ->add('numeroPedido')
-                ->add('tipoVentaEspecial')
+                ->add('tipoVentaEspecial', 'entity', array(
+                     'class' => 'VehiculosBundle:TipoVentaEspecial',
+                    'label'=>'Tipo venta'
+                ))
                 ->add('numeroGrupo', 'text', array(
                     'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
                     'attr' => array('class' => 'hidden tipo-venta-especial-field')
@@ -88,6 +91,7 @@ class EditarVehiculoType extends AbstractType {
                 ->add('remito', new RemitoType())
                 ->add('tieneLlaves')
                 ->add('tieneManual')
+                ->add('codigoInmobilizador')
                 ->add('codigoLlave', 'text', array(
                     'attr' => array(
                         'required' => 'true'

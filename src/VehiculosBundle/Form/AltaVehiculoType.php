@@ -60,7 +60,11 @@ class AltaVehiculoType extends AbstractType {
                     'attr' => array('class' => 'maskmoney')
                 ))
                 ->add('numeroPedido')
-                ->add('tipoVentaEspecial')
+//                ->add('tipoVentaEspecial')
+                ->add('tipoVentaEspecial', 'entity', array(
+                     'class' => 'VehiculosBundle:TipoVentaEspecial',
+                    'label'=>'Tipo venta'
+                ))
                 ->add('numeroGrupo', 'text', array(
                     'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
                     'attr' => array('class' => 'hidden tipo-venta-especial-field')
