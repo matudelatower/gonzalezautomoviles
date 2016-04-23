@@ -85,7 +85,7 @@ class CodigoModelo {
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\NombreModelo")
-	 * @ORM\JoinColumn(name="nombre_modelo_id", referencedColumnName="id",nullable=true)
+	 * @ORM\JoinColumn(name="nombre_modelo_id", referencedColumnName="id",nullable=false)
 	 */
 	private $nombreModelo;
 
