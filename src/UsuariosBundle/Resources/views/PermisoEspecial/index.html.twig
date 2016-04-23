@@ -38,8 +38,8 @@
                                     <td>{{ entity.descripcion }}</td>
                                     <td>{{ entity.controller }}</td>
                                     <td>{{ entity.action }}</td>
-                                    <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                    <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                    <td>{% if entity.creado %}{{ entity.creado|date('d/m/Y H:i:s') }}{% endif %}</td>
+                                    <td>{% if entity.actualizado %}{{ entity.actualizado|date('d/m/Y H:i:s') }}{% endif %}</td>
                                     <td>
 
                                         <a class="btn btn-default"

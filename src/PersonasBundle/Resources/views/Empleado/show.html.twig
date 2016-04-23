@@ -48,7 +48,7 @@
                             </tr>
                             <tr>
                                 <th>Fechanacimiento</th>
-                                <td>{{ entity.personaTipo.first().persona.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ entity.personaTipo.first().persona.fechaNacimiento|date('d/m/Y H:i:s') }}</td>
                             </tr>
                             <tr>
                                 <th>Calle</th>
@@ -81,11 +81,11 @@
                             </tr>
                             <tr>
                                 <th>Creado</th>
-                                <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ entity.creado|date('d/m/Y H:i:s') }}</td>
                             </tr>
                             <tr>
                                 <th>Actualizado</th>
-                                <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
+                                <td>{{ entity.actualizado|date('d/m/Y H:i:s') }}</td>
                             </tr>
 
                         </tbody>

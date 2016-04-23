@@ -34,10 +34,10 @@
                                         <td>
                                             <a href="{{ path('check_control_interno_resultado_cabecera_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
                                         </td>
-                                        <td>{% if entity.fecha %}{{ entity.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                        <td>{% if entity.fecha %}{{ entity.fecha|date('d/m/Y H:i:s') }}{% endif %}</td>
                                         <td>{{ entity.observacion }}</td>
-                                        <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                        <td>{% if entity.creado %}{{ entity.creado|date('d/m/Y H:i:s') }}{% endif %}</td>
+                                        <td>{% if entity.actualizado %}{{ entity.actualizado|date('d/m/Y H:i:s') }}{% endif %}</td>
                                         <td>
 
                         <a class="btn btn-default" href="{{ path('check_control_interno_resultado_cabecera_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
