@@ -38,8 +38,8 @@
                 <td><a href="{{ path('tipo_compra_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.descripcion }}</td>
-                <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.creado %}{{ entity.creado|date('d/m/Y H:i:s') }}{% endif %}</td>
+                <td>{% if entity.actualizado %}{{ entity.actualizado|date('d/m/Y H:i:s') }}{% endif %}</td>
                 <td>
                 <ul>
                     <li>

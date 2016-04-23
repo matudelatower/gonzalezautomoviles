@@ -34,8 +34,8 @@
                                             <a href="{{ path('encuesta_opcion_respuesta_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
                                         </td>
                                         <td>{{ entity.textoOpcion }}</td>
-                                        <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                        <td>{% if entity.creado %}{{ entity.creado|date('d/m/Y H:i:s') }}{% endif %}</td>
+                                        <td>{% if entity.actualizado %}{{ entity.actualizado|date('d/m/Y H:i:s') }}{% endif %}</td>
                                         <td>
 
                         <a class="btn btn-default" href="{{ path('encuesta_opcion_respuesta_show', { 'id': entity.id }) }}"><i class="fa fa-eye"></i></a>
