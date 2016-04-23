@@ -39,6 +39,14 @@
             $('#{{ form.vin.vars.id }}').keyup(function () {
                 $('#{{ form.chasis.vars.id }}').val($('#{{ form.vin.vars.id }}').val());
             });
+            window.onload = function (e) {
+                if ({{ entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false') }}) {
+                    $('.tipo-venta-especial-field').removeClass('hidden');
+                    $('.tipo-venta-especial-field').attr('required', 'required');
+                } else {
+                    $('.tipo-venta-especial-field').removeAttr('required');
+                }
+            }
         });
     </script>
 {% endblock %}
