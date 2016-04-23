@@ -12,292 +12,294 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\Repository\CodigoModeloRepository")
  */
 class CodigoModelo {
-	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
 
-	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="anio", type="integer")
-	 */
-	private $anio;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="codigo", type="string", length=255)
-	 */
-	private $codigo;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="anio", type="integer")
+     */
+    private $anio;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="version", type="string", length=255)
-	 */
-	private $version;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="codigo", type="string", length=255)
+     */
+    private $codigo;
 
-	/**
-	 * @var $activo
-	 *
-	 * @ORM\Column(name="activo", type="boolean", nullable=true)
-	 */
-	private $activo = true;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="version", type="string", length=255)
+     */
+    private $version;
 
-	/**
-	 * @var datetime $creado
-	 *
-	 * @Gedmo\Timestampable(on="create")
-	 * @ORM\Column(name="creado", type="datetime")
-	 */
-	private $creado;
+    /**
+     * @var $activo
+     *
+     * @ORM\Column(name="activo", type="boolean", nullable=true)
+     */
+    private $activo = true;
 
-	/**
-	 * @var datetime $actualizado
-	 *
-	 * @Gedmo\Timestampable(on="update")
-	 * @ORM\Column(name="actualizado",type="datetime")
-	 */
-	private $actualizado;
+    /**
+     * @var datetime $creado
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="creado", type="datetime")
+     */
+    private $creado;
 
-	/**
-	 * @var integer $creadoPor
-	 *
-	 * @Gedmo\Blameable(on="create")
-	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-	 * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
-	 */
-	private $creadoPor;
+    /**
+     * @var datetime $actualizado
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="actualizado",type="datetime")
+     */
+    private $actualizado;
 
-	/**
-	 * @var integer $actualizadoPor
-	 *
-	 * @Gedmo\Blameable(on="update")
-	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-	 * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
-	 */
-	private $actualizadoPor;
+    /**
+     * @var integer $creadoPor
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
+     */
+    private $creadoPor;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\NombreModelo")
-	 * @ORM\JoinColumn(name="nombre_modelo_id", referencedColumnName="id",nullable=false)
-	 */
-	private $nombreModelo;
+    /**
+     * @var integer $actualizadoPor
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
+     */
+    private $actualizadoPor;
 
-	public function __toString() {
-		return $this->getNombreModelo()->getNombre() . " | " . $this->codigo . " | " . $this->version;
-	}
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\NombreModelo")
+     * @ORM\OrderBy({"nombre" = "ASC"})
+     * @ORM\JoinColumn(name="nombre_modelo_id", referencedColumnName="id",nullable=false)
+     */
+    private $nombreModelo;
 
+    public function __toString() {
+        return $this->getNombreModelo()->getNombre() . " | " . $this->anio . " | " . $this->codigo . " | " . $this->version;
+    }
 
-	/**
-	 * Get id
-	 *
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId() {
+        return $this->id;
+    }
 
-	/**
-	 * Set anio
-	 *
-	 * @param integer $anio
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setAnio( $anio ) {
-		$this->anio = $anio;
+    /**
+     * Set anio
+     *
+     * @param integer $anio
+     *
+     * @return CodigoModelo
+     */
+    public function setAnio($anio) {
+        $this->anio = $anio;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get anio
-	 *
-	 * @return integer
-	 */
-	public function getAnio() {
-		return $this->anio;
-	}
+    /**
+     * Get anio
+     *
+     * @return integer
+     */
+    public function getAnio() {
+        return $this->anio;
+    }
 
-	/**
-	 * Set codigo
-	 *
-	 * @param string $codigo
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setCodigo( $codigo ) {
-		$this->codigo = $codigo;
+    /**
+     * Set codigo
+     *
+     * @param string $codigo
+     *
+     * @return CodigoModelo
+     */
+    public function setCodigo($codigo) {
+        $this->codigo = $codigo;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get codigo
-	 *
-	 * @return string
-	 */
-	public function getCodigo() {
-		return $this->codigo;
-	}
+    /**
+     * Get codigo
+     *
+     * @return string
+     */
+    public function getCodigo() {
+        return $this->codigo;
+    }
 
-	/**
-	 * Set version
-	 *
-	 * @param string $version
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setVersion( $version ) {
-		$this->version = $version;
+    /**
+     * Set version
+     *
+     * @param string $version
+     *
+     * @return CodigoModelo
+     */
+    public function setVersion($version) {
+        $this->version = $version;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get version
-	 *
-	 * @return string
-	 */
-	public function getVersion() {
-		return $this->version;
-	}
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    public function getVersion() {
+        return $this->version;
+    }
 
-	/**
-	 * Set activo
-	 *
-	 * @param boolean $activo
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setActivo( $activo ) {
-		$this->activo = $activo;
+    /**
+     * Set activo
+     *
+     * @param boolean $activo
+     *
+     * @return CodigoModelo
+     */
+    public function setActivo($activo) {
+        $this->activo = $activo;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get activo
-	 *
-	 * @return boolean
-	 */
-	public function getActivo() {
-		return $this->activo;
-	}
+    /**
+     * Get activo
+     *
+     * @return boolean
+     */
+    public function getActivo() {
+        return $this->activo;
+    }
 
-	/**
-	 * Set creado
-	 *
-	 * @param \DateTime $creado
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setCreado( $creado ) {
-		$this->creado = $creado;
+    /**
+     * Set creado
+     *
+     * @param \DateTime $creado
+     *
+     * @return CodigoModelo
+     */
+    public function setCreado($creado) {
+        $this->creado = $creado;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get creado
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreado() {
-		return $this->creado;
-	}
+    /**
+     * Get creado
+     *
+     * @return \DateTime
+     */
+    public function getCreado() {
+        return $this->creado;
+    }
 
-	/**
-	 * Set actualizado
-	 *
-	 * @param \DateTime $actualizado
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setActualizado( $actualizado ) {
-		$this->actualizado = $actualizado;
+    /**
+     * Set actualizado
+     *
+     * @param \DateTime $actualizado
+     *
+     * @return CodigoModelo
+     */
+    public function setActualizado($actualizado) {
+        $this->actualizado = $actualizado;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get actualizado
-	 *
-	 * @return \DateTime
-	 */
-	public function getActualizado() {
-		return $this->actualizado;
-	}
+    /**
+     * Get actualizado
+     *
+     * @return \DateTime
+     */
+    public function getActualizado() {
+        return $this->actualizado;
+    }
 
-	/**
-	 * Set creadoPor
-	 *
-	 * @param \UsuariosBundle\Entity\Usuario $creadoPor
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setCreadoPor( \UsuariosBundle\Entity\Usuario $creadoPor = null ) {
-		$this->creadoPor = $creadoPor;
+    /**
+     * Set creadoPor
+     *
+     * @param \UsuariosBundle\Entity\Usuario $creadoPor
+     *
+     * @return CodigoModelo
+     */
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
+        $this->creadoPor = $creadoPor;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get creadoPor
-	 *
-	 * @return \UsuariosBundle\Entity\Usuario
-	 */
-	public function getCreadoPor() {
-		return $this->creadoPor;
-	}
+    /**
+     * Get creadoPor
+     *
+     * @return \UsuariosBundle\Entity\Usuario
+     */
+    public function getCreadoPor() {
+        return $this->creadoPor;
+    }
 
-	/**
-	 * Set actualizadoPor
-	 *
-	 * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setActualizadoPor( \UsuariosBundle\Entity\Usuario $actualizadoPor = null ) {
-		$this->actualizadoPor = $actualizadoPor;
+    /**
+     * Set actualizadoPor
+     *
+     * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
+     *
+     * @return CodigoModelo
+     */
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
+        $this->actualizadoPor = $actualizadoPor;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get actualizadoPor
-	 *
-	 * @return \UsuariosBundle\Entity\Usuario
-	 */
-	public function getActualizadoPor() {
-		return $this->actualizadoPor;
-	}
+    /**
+     * Get actualizadoPor
+     *
+     * @return \UsuariosBundle\Entity\Usuario
+     */
+    public function getActualizadoPor() {
+        return $this->actualizadoPor;
+    }
 
-	/**
-	 * Set nombreModelo
-	 *
-	 * @param \VehiculosBundle\Entity\NombreModelo $nombreModelo
-	 *
-	 * @return CodigoModelo
-	 */
-	public function setNombreModelo( \VehiculosBundle\Entity\NombreModelo $nombreModelo = null ) {
-		$this->nombreModelo = $nombreModelo;
+    /**
+     * Set nombreModelo
+     *
+     * @param \VehiculosBundle\Entity\NombreModelo $nombreModelo
+     *
+     * @return CodigoModelo
+     */
+    public function setNombreModelo(\VehiculosBundle\Entity\NombreModelo $nombreModelo = null) {
+        $this->nombreModelo = $nombreModelo;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get nombreModelo
-	 *
-	 * @return \VehiculosBundle\Entity\NombreModelo
-	 */
-	public function getNombreModelo() {
-		return $this->nombreModelo;
-	}
+    /**
+     * Get nombreModelo
+     *
+     * @return \VehiculosBundle\Entity\NombreModelo
+     */
+    public function getNombreModelo() {
+        return $this->nombreModelo;
+    }
+
 }
