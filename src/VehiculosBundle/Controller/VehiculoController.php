@@ -793,7 +793,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
 
                 $vehiculosManager = $this->get('manager.vehiculos');
 
-                if ($vehiculosManager->guardarVehiculo($vehiculo, null, $daniosGmOriginal)) {
+                if ($vehiculosManager->guardarVehiculo($vehiculo, null, $daniosGmOriginal, $operacion = "editar")) {
 
                     $this->get('session')->getFlashBag()->add(
                             'success', 'Datos del Vehiculo actualizados correctamente.'
