@@ -40,7 +40,7 @@
                         <td>{{ entity.cliente }}</td>
                         <td>{{ entity.vendedor }}</td>
                         <td>{{ entity.descripcion_entrega }}</td>
-                        <td style="font-weight: bold">{{ entity.fecha_entrega|date('d-m-Y') ~' '~entity.hora_entrega }}</td>
+                        <td style="font-weight: bold">{{ entity.fecha_entrega|date('d/m/Y') ~' '~entity.hora_entrega }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

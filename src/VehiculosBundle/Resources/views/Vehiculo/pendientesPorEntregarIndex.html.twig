@@ -70,7 +70,7 @@
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
-                                    <td>{{ entity.fecha_entrega is null ? "" :entity.fecha_entrega|date('d-m-Y')~' '~entity.hora_entrega }}</td>
+                                    <td>{{ entity.fecha_entrega is null ? "" :entity.fecha_entrega|date('d/m/Y')~' '~entity.hora_entrega }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a class="btn btn-default"

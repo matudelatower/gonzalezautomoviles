@@ -86,7 +86,7 @@
                             </tr>
                             <tr>
                                 <th>Fecha pago</th>
-                                <td>{{ entity.fechaPagoGm is null ? "" :entity.fechaPagoGm|date('d-m-Y') }}</td>
+                                <td>{{ entity.fechaPagoGm is null ? "" :entity.fechaPagoGm|date('d/m/Y') }}</td>
                             </tr>
                             <tr>
                                 <th>Numero pedido</th>
@@ -185,11 +185,11 @@
                             </tr>
                             <tr>
                                 <th>Fecha remito</th>
-                                <td>{{ entity.remito.fecha|date('d-m-Y') }}</td>
+                                <td>{{ entity.remito.fecha|date('d/m/Y') }}</td>
                             </tr>  
                             <tr>
                                 <th>Fecha recibido</th>
-                                <td>{{ entity.remito.fechaRecibido is null ? "" :entity.remito.fechaRecibido|date('d-m-Y') }}</td>
+                                <td>{{ entity.remito.fechaRecibido is null ? "" :entity.remito.fechaRecibido|date('d/m/Y') }}</td>
                             </tr> 
                             <tr>
                                 <th>Usuario Receptor</th>
@@ -256,7 +256,7 @@
                                 </tr>   
                                 <tr>
                                     <th>Fecha</th>
-                                    <td>{{ entity.factura.fecha is not defined ? "" :entity.factura.fecha|date('d-m-Y') }}</td>
+                                    <td>{{ entity.factura.fecha is not defined ? "" :entity.factura.fecha|date('d/m/Y') }}</td>
                                 </tr> 
                                 <tr>
                                     <th>Vendedor</th>
@@ -292,7 +292,7 @@
                                 </tr> 
                                 <tr>
                                     <th>Fecha</th>
-                                    <td>{{ entity.Patentamiento.fecha is not defined ? "" :entity.Patentamiento.fecha|date('d-m-Y') }}</td>
+                                    <td>{{ entity.Patentamiento.fecha is not defined ? "" :entity.Patentamiento.fechaPatentamiento|date('d/m/Y') }}</td>
                                 </tr> 
                                 <tr>
                                     <th>Registro</th>
