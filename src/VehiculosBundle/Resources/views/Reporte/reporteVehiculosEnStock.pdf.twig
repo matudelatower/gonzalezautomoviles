@@ -2,11 +2,18 @@
 
 {% block body %}
     <style>
-        table{
+        table {
             width: 100%;
+            page-break-inside: auto
         }
-        td{
+
+        td {
             text-align: center;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
         }
 
     </style>

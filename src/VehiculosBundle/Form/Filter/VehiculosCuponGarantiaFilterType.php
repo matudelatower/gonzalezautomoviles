@@ -15,9 +15,9 @@ class VehiculosCuponGarantiaFilterType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                  ->add('conCupon', 'choice', array(
-                    'empty_value' => 'NO',
                     'choices' => array(
                         'SI' => 'SI',
+                        'NO' => 'NO'
                     ),
                     'expanded' => true,
                     'multiple' => false,
