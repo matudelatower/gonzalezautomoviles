@@ -26,40 +26,43 @@ class VehiculosManager {
         $this->em = $container->get('doctrine')->getManager();
     }
 
-    public function guardarVehiculo( $vehiculo, $tipoEstadoDanioGm = null, $daniosGmOriginal = array() ) {
+    public function guardarVehiculo($vehiculo, $tipoEstadoDanioGm = null, $daniosGmOriginal = array(), $operacion = null) {
         $em = $this->em;
 
-        if ( ! $vehiculo->getRemito()->getUsuarioReceptor() ) {
-            $vehiculo->getRemito()->setUsuarioReceptor( $this->container->get( 'security.token_storage' )->getToken()->getUser() );
+        if (!$vehiculo->getRemito()->getUsuarioReceptor()) {
+            $vehiculo->getRemito()->setUsuarioReceptor($this->container->get('security.token_storage')->getToken()->getUser());
         }
-        if ( ! $vehiculo->getRemito()->getFechaRecibido() ) {
-            $vehiculo->getRemito()->setFechaRecibido( new \DateTime( 'now' ) );
+        if (!$vehiculo->getRemito()->getFechaRecibido()) {
+            $vehiculo->getRemito()->setFechaRecibido(new \DateTime('now'));
         }
 
-        foreach ( $daniosGmOriginal as $item ) {
-            if ( false === $vehiculo->getDanioVehiculoGm()->contains( $item ) ) {
-                $em->remove( $item );
+        foreach ($daniosGmOriginal as $item) {
+            if (false === $vehiculo->getDanioVehiculoGm()->contains($item)) {
+                $em->remove($item);
             }
         }
 
-        if ( $vehiculo->getDanioVehiculoGm()->count() > 0 ) {
+        if ($vehiculo->getDanioVehiculoGm()->count() > 0) {
 
-            foreach ( $vehiculo->getDanioVehiculoGm() as $danioVehiculo ) {
-                $danioVehiculo->setVehiculo( $vehiculo );
-                if ( $tipoEstadoDanioGm ) {
-                    $danioVehiculo->setTipoEstadoDanioGm( $tipoEstadoDanioGm );
+            foreach ($vehiculo->getDanioVehiculoGm() as $danioVehiculo) {
+                $danioVehiculo->setVehiculo($vehiculo);
+                if ($tipoEstadoDanioGm) {
+                    $danioVehiculo->setTipoEstadoDanioGm($tipoEstadoDanioGm);
                 }
-                foreach ( $danioVehiculo->getFotoDanio() as $fotoDanio ) {
-                    $fotoDanio->setDanioVehiculo( $danioVehiculo );
+                foreach ($danioVehiculo->getFotoDanio() as $fotoDanio) {
+                    $fotoDanio->setDanioVehiculo($danioVehiculo);
                 }
             }
         }
-        $tipoEstadoVehiculo = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug(
-            'recibido'
-        );
+        if ($operacion != 'editar') {
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                    'recibido'
+            );
 
 
-        $this->setEstadoActualVehiculo( $vehiculo, $tipoEstadoVehiculo );
+            $this->setEstadoActualVehiculo($vehiculo, $tipoEstadoVehiculo);
+        }
+
 
         $em->flush();
 
@@ -90,7 +93,7 @@ class VehiculosManager {
             $em->persist($preguntaResultadoRespuesta);
         }
         $tipoVentaEspecialSlug = $vehiculo->getTipoVentaEspecial()->getSlug();
-        if ($tipoVentaEspecialSlug == 'plan-de-ahorro'  || $tipoVentaEspecialSlug == 'venta-especial') {
+        if ($tipoVentaEspecialSlug == 'plan-de-ahorro' || $tipoVentaEspecialSlug == 'venta-especial') {
             $slug = 'pendiente-por-entregar';
         } else {
             $slug = 'stock';
@@ -125,37 +128,37 @@ class VehiculosManager {
         $vehiculo->addEstadoVehiculo($estadoVehiculo);
     }
 
-	public function modificarDanioInterno( $vehiculo, $daniosInternosOriginal ) {
-		$em = $this->em;
+    public function modificarDanioInterno($vehiculo, $daniosInternosOriginal) {
+        $em = $this->em;
 
 
-		if ( $vehiculo->getDanioVehiculoInterno()->count() > 0 ) {
+        if ($vehiculo->getDanioVehiculoInterno()->count() > 0) {
 
-			foreach ( $vehiculo->getDanioVehiculoInterno() as $danioVehiculo ) {
-				$danioVehiculo->setVehiculo( $vehiculo );
+            foreach ($vehiculo->getDanioVehiculoInterno() as $danioVehiculo) {
+                $danioVehiculo->setVehiculo($vehiculo);
 
-				foreach ( $danioVehiculo->getFotoDanioInterno() as $fotoDanio ) {
-					$fotoDanio->setDanioVehiculoInterno( $danioVehiculo );
-				}
-			}
-		}
+                foreach ($danioVehiculo->getFotoDanioInterno() as $fotoDanio) {
+                    $fotoDanio->setDanioVehiculoInterno($danioVehiculo);
+                }
+            }
+        }
 
-		foreach ( $daniosInternosOriginal as $item ) {
-			if ( false === $vehiculo->getDanioVehiculoInterno()->contains( $item ) ) {
-                            //controlar aca si tiene o no permiso para eliminar danios internos
-				$em->remove( $item );
+        foreach ($daniosInternosOriginal as $item) {
+            if (false === $vehiculo->getDanioVehiculoInterno()->contains($item)) {
+                //controlar aca si tiene o no permiso para eliminar danios internos
+                $em->remove($item);
 
-				foreach ( $item->getFotoDanioInterno() as $fotoDanio ) {
-					$fotoDanio->setDanioVehiculoInterno( null );
-					$em->remove( $fotoDanio );
-				}
-			}
-		}
+                foreach ($item->getFotoDanioInterno() as $fotoDanio) {
+                    $fotoDanio->setDanioVehiculoInterno(null);
+                    $em->remove($fotoDanio);
+                }
+            }
+        }
 
-		$em->persist( $vehiculo );
-		$em->flush();
+        $em->persist($vehiculo);
+        $em->flush();
 
-		return $vehiculo;
-	}
+        return $vehiculo;
+    }
 
 }
