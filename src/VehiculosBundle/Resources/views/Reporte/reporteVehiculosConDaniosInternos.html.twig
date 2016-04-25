@@ -18,23 +18,21 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            $('#btn-exportar-excel').click(function () {
-                $('#filter-form').attr('target', '_blank');
+        $('#btn-exportar-excel').click(function () {
+        $('#filter-form').attr('target', '_blank');
                 $('#filter-form').attr('action', '{{ path('exportar_excel_reporte_vehiculos_con_danios_internos') }}');
                 $('#filter-form').submit();
                 $('#filter-form').removeAttr('target');
                 $('#filter-form').removeAttr('action');
-
-            });
-            $('#btn-exportar-pdf').click(function () {
-                $('#filter-form').attr('target', '_blank');
+        });
+                $('#btn-exportar-pdf').click(function () {
+        $('#filter-form').attr('target', '_blank');
                 $('#filter-form').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_con_danios_internos') }}');
                 $('#filter-form').submit();
                 $('#filter-form').removeAttr('target');
                 $('#filter-form').removeAttr('action');
-            });
         });
-    </script>
+        });    </script>
 {% endblock %}
 {% block content -%}
 
@@ -65,27 +63,27 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-4">
                                 <button class="btn btn-primary btn-label-left" type="submit" id="btn-filtro-buscar">
-                                <span>
-                                    <i class="fa fa-filter"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa fa-filter"></i>
+                                    </span>
                                     Buscar
                                 </button>
                                 <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
                                         title="exportar excel">
-                                <span>
-                                    <i class="fa fa-file-excel-o"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa fa-file-excel-o"></i>
+                                    </span>
                                 </button>
                                 <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
                                         title="exportar PDF">
-                                <span>
-                                    <i class="fa fa-file-pdf-o"></i>
-                                </span>
+                                    <span>
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </span>
                                 </button>
                                 <button class="btn btn-default" type="reset">
-                                <span>
-                                    <i></i>
-                                </span>
+                                    <span>
+                                        <i></i>
+                                    </span>
                                     Limpiar
                                 </button>
 
@@ -199,24 +197,26 @@
             </div>
         </div>
         <div class="row">
-            {% set porcentajeSinDanio=(entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos)| round(2) %}
+            {% set porcentajeConDanio = (entities.autosRecibidosConDanos * 100 / entities.autosRecibidos) | round(2) %}
+
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-red"><i class="fa fa-car"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Porcentaje Vehículos con daños</span>
-                        <span class="info-box-number">{{ porcentajeSinDanio }}
+                        <span class="info-box-number">{{ porcentajeConDanio }}
                             <small>%</small></span>
                     </div>
                 </div>
             </div>
-            {% set porcentajeConDanio = (entities.autosRecibidosConDanos * 100 / entities.autosRecibidos) | round(2) %}
+            {% set porcentajeSinDanio=(entities.autosRecibidosSinDanos * 100 / entities.autosRecibidos)| round(2) %}
+
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="info-box">
                     <span class="info-box-icon bg-green"><i class="fa fa-car"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Porcentaje Vehículos con daños</span>
-                        <span class="info-box-number">{{ porcentajeConDanio }}
+                        <span class="info-box-text">Porcentaje Vehículos sin daños</span>
+                        <span class="info-box-number">{{ porcentajeSinDanio }}
                             <small>%</small></span>
                     </div>
                 </div>
@@ -226,86 +226,82 @@
         <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/chartjs/Chart.min.js') }}"></script>
 
         <script>
-            //-------------
-            //- PIE CHART -
-            //-------------
-            // Get context with jQuery - using jQuery's .get() method.
-            var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-            var pieChartCanvasPercent = $("#pieChartPercent").get(0).getContext("2d");
-            var pieChart = new Chart(pieChartCanvas);
-            var pieChartPercent = new Chart(pieChartCanvasPercent);
-            var PieData = [
+                //-------------
+                //- PIE CHART -
+                //-------------
+                // Get context with jQuery - using jQuery's .get() method.
+                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                var pieChartCanvasPercent = $("#pieChartPercent").get(0).getContext("2d");
+                var pieChart = new Chart(pieChartCanvas);
+                var pieChartPercent = new Chart(pieChartCanvasPercent);
+                var PieData = [
                 {
-                    value: {{ entities.autosRecibidosConDanos }},
-                    color: "#F7464A",
-                    highlight: "#FF5A5E",
-                    label: "Recibidos Con Daños"
+                value:{{ entities.autosRecibidosConDanos }},
+                        color: "#F7464A",
+                        highlight: "#FF5A5E",
+                        label: "Recibidos Con Daños"
                 },
                 {
-                    value: {{ entities.autosRecibidosSinDanos }},
-                    color: "#00a65a",
-                    highlight: "#00a65a",
-                    label: "Recibidos Sin Daños"
+                value:{{ entities.autosRecibidosSinDanos }},
+                        color: "#00a65a",
+                        highlight: "#00a65a",
+                        label: "Recibidos Sin Daños"
                 }
 
-            ];
-            var PieDataPercent = [
+                ];
+                var PieDataPercent = [
                 {
-                    value: {{ porcentajeConDanio }},
-                    color: "#F7464A",
-                    highlight: "#FF5A5E",
-                    label: "Recibidos Con Daños"
+                value:{{ porcentajeConDanio }},
+                        color: "#F7464A",
+                        highlight: "#FF5A5E",
+                        label: "Recibidos Con Daños"
                 },
                 {
-                    value: {{ porcentajeSinDanio }},
-                    color: "#00a65a",
-                    highlight: "#00a65a",
-                    label: "Recibidos Sin Daños"
+                value:{{ porcentajeSinDanio }},
+                        color: "#00a65a",
+                        highlight: "#00a65a",
+                        label: "Recibidos Sin Daños"
                 }
 
-            ];
-            var pieOptions = {
+                ];
+                var pieOptions = {
                 //Boolean - Whether we should show a stroke on each segment
                 segmentShowStroke: true,
-                //String - The colour of each segment stroke
-                segmentStrokeColor: "#fff",
-                //Number - The width of each segment stroke
-                segmentStrokeWidth: 2,
-                //Number - The percentage of the chart that we cut out of the middle
-                percentageInnerCutout: 50, // This is 0 for Pie charts
-                //Number - Amount of animation steps
-                animationSteps: 100,
-                //String - Animation easing effect
-                animationEasing: "easeOutBounce",
-                //Boolean - Whether we animate the rotation of the Doughnut
-                animateRotate: true,
-                //Boolean - Whether we animate scaling the Doughnut from the centre
-                animateScale: false,
-                //Boolean - whether to make the chart responsive to window resizing
-                responsive: true,
-                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-                maintainAspectRatio: true,
-                //String - A legend template
-                legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){ %><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){ %><%=segments[i].label%><%}%></li><% }%></ul>"
-            };
-            //Create pie or douhnut chart
-            // You can switch between pie and douhnut using the method below.
-            var chartC = pieChart.Doughnut(PieData, pieOptions);
-            pieOptions = {
+                        //String - The colour of each segment stroke
+                        segmentStrokeColor: "#fff",
+                        //Number - The width of each segment stroke
+                        segmentStrokeWidth: 2,
+                        //Number - The percentage of the chart that we cut out of the middle
+                        percentageInnerCutout: 50, // This is 0 for Pie charts
+                        //Number - Amount of animation steps
+                        animationSteps: 100,
+                        //String - Animation easing effect
+                        animationEasing: "easeOutBounce",
+                        //Boolean - Whether we animate the rotation of the Doughnut
+                        animateRotate: true,
+                        //Boolean - Whether we animate scaling the Doughnut from the centre
+                        animateScale: false,
+                        //Boolean - whether to make the chart responsive to window resizing
+                        responsive: true,
+                        // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                        maintainAspectRatio: true,
+                        //String - A legend template
+                        legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){ %><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){ %><%=segments[i].label%><%}%></li><% }%></ul>"
+                };
+                //Create pie or douhnut chart
+                // You can switch between pie and douhnut using the method below.
+                var chartC = pieChart.Doughnut(PieData, pieOptions);
+                pieOptions = {
                 tooltipTemplate: "<%if (label){  %><%=label%>: <% }%><%= value %>%",
-            }
-            var chartP = pieChartPercent.Doughnut(PieDataPercent, pieOptions);
+                }
+        var chartP = pieChartPercent.Doughnut(PieDataPercent, pieOptions);
+                var helpers = Chart.helpers
 
-            var helpers = Chart.helpers
-
-            var legendHolder = document.createElement('div');
-            legendHolder.innerHTML = chartC.generateLegend();
-
-            chartC.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
-
-            legendHolder.innerHTML = chartP.generateLegend();
-
-            chartP.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+                var legendHolder = document.createElement('div');
+                legendHolder.innerHTML = chartC.generateLegend();
+                chartC.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+                legendHolder.innerHTML = chartP.generateLegend();
+                chartP.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
 
         </script>
     {% else %}

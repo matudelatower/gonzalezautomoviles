@@ -25,7 +25,9 @@ class AltaVehiculoType extends AbstractType {
                         'class' => 'datepicker',
                     ),
                 ))
-                ->add('vin')
+                ->add('vin', 'text', array(
+                    'attr' => array('class' => 'maskVin')
+                ))
                 ->add('chasis', 'text', array(
                     'attr' => array('readonly' => 'readonly')
                 ))
