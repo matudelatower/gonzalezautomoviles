@@ -204,7 +204,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
     public function getVehiculosEnStock($filters = null) {
 
-        $where = "tipo_estado_vehiculo.slug in ('transito', 'recibido', 'stock') and (v.cliente_id is null or clientes.reventa = false)";
+        $where = "tev.slug in ('transito', 'recibido', 'stock') and (v.cliente_id is null or clientes.reventa = false)";
         $db = $this->getEntityManager()->getConnection();
 
         if ($filters['colorVehiculo']) {
@@ -236,29 +236,29 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
 
         $query = "SELECT distinct(v.*),
- nm.nombre||'|'||cm.anio||'|'||cm.version as modelo, nm.nombre as nombre_modelo,
- tipo_estado_vehiculo.estado as vehiculo_estado, tipo_estado_vehiculo.slug as vehiculo_estado_slug, remitos.fecha as remito_fecha,
- remitos.numero as remito_numero, v.numero_pedido, tv.nombre as tipo_venta_especial, tv.slug as venta_especial_slug, d.nombre as deposito_actual,
- cv.color as color_vehiculo,
- pat.dominio, current_date-fecha_emision_documento::date as dias_en_stock, age.fecha as fecha_entrega
-FROM estados_vehiculos
-INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id = eevv.lastId
-INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
-INNER JOIN tipo_estado_vehiculo ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
-INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
-LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
-LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
-LEFT JOIN remitos ON v.remito_id = remitos.id
-LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id = tv.id
+                    nm.nombre||'|'||cm.anio||'|'||cm.version as modelo, nm.nombre as nombre_modelo,
+                    tev.estado as vehiculo_estado, tev.slug as vehiculo_estado_slug, remitos.fecha as remito_fecha,
+                    remitos.numero as remito_numero, v.numero_pedido, tv.nombre as tipo_venta_especial, tv.slug as venta_especial_slug, d.nombre as deposito_actual,
+                    cv.color as color_vehiculo,
+                    pat.dominio, current_date-fecha_emision_documento::date as dias_en_stock, age.fecha as fecha_entrega
+                   FROM estados_vehiculos
+                   INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id = eevv.lastId
+                   INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+                   INNER JOIN tipo_estado_vehiculo tev ON estados_vehiculos.tipo_estado_vehiculo_id = tev.id
+                   INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
+                   LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
+                   LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
+                   LEFT JOIN remitos ON v.remito_id = remitos.id
+                   LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id = tv.id
 
-LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id = mmdd.vehiculo_id
-LEFT JOIN movimientos_depositos md ON mmdd.lastIdMd = md.id
-LEFT JOIN depositos d ON md.deposito_destino_id = d.id
-LEFT JOIN patentamientos pat ON v.patentamiento_id = pat.id
-LEFT JOIN agenda_entregas age ON v.id = age.vehiculo_id
-LEFT JOIN clientes ON v.cliente_id = clientes.id
-WHERE " . $where .
-                " ORDER BY modelo, color_vehiculo asc";
+                   LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id = mmdd.vehiculo_id
+                   LEFT JOIN movimientos_depositos md ON mmdd.lastIdMd = md.id
+                   LEFT JOIN depositos d ON md.deposito_destino_id = d.id
+                   LEFT JOIN patentamientos pat ON v.patentamiento_id = pat.id
+                   LEFT JOIN agenda_entregas age ON v.id = age.vehiculo_id
+                   LEFT JOIN clientes ON v.cliente_id = clientes.id
+                   WHERE " . $where .
+                                   " ORDER BY modelo, color_vehiculo asc";
 
         $stmt = $db->prepare($query);
         $stmt->execute();

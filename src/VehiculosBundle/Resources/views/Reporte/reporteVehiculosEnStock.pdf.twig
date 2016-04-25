@@ -26,7 +26,8 @@
                     <th>Modelo</th>
                     <th>Color vehiculo</th>
                     <th>Vin</th>
-                    <th>Dias en stock</th>
+                    <th>Estado</th>
+                    <th>Dias en stock</th>                     
                     <th>Deposito</th>
                     <th>Estado pago</th>
                 </tr>
@@ -47,7 +48,8 @@
                         <td style="text-align: left">{{ entity.modelo }}</td>
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
-                        <td>{{ entity.dias_en_stock }}</td>
+                        <td>{{ entity.vehiculo_estado }}</td>
+                        <td>{{ entity.dias_en_stock }}</td>                        
                         <td>{{ entity.deposito_actual | default ("") }}</td>
                         <td align="center">
                             {% if entity.pagado %}
