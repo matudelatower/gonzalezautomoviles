@@ -8,6 +8,7 @@
     <script>
         $(document).ready(function () {
             $(".maskdocumento").inputmask({mask: "**[*][*]-*****[*][*]-*-**", greedy: false});
+            $(".maskVin").inputmask({mask: "*****************", greedy: false});
             $(".maskmoney").inputmask('decimal', {rightAlign: false});
             $('#{{ form.tipoVentaEspecial.vars.id }}').change(function () {
                 console.log($(this).val());

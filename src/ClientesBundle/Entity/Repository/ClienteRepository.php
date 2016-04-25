@@ -47,11 +47,11 @@ class ClienteRepository extends EntityRepository {
                 ->join('pt.persona', 'pers');
 
         if ($filter['numeroDocumento']) {
-            $qb->where("pers.numeroDocumento = :numeroDocumento");
+            $qb->andWhere("pers.numeroDocumento = :numeroDocumento");
             $qb->setParameter('numeroDocumento',  $filter['numeroDocumento'] );
         }
         if ($filter['apellido']) {
-            $qb->where("pers.apellido like :apellido");
+            $qb->andWhere("pers.apellido like :apellido");
             $qb->setParameter('apellido', '%' . $filter['apellido'] . '%');
         }
 

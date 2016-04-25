@@ -56,15 +56,15 @@
                                                 Gonzalez
                                             {% else %}
                                                 {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
-                                                <a
-                                                   class="btn btn-pagado"
-                                                   data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Registrar pago">Gpat</a>
-                                                    {% else %}
-                                                        Gpat
-                                                    {% endif %}
+                                                    <a
+                                                        class="btn btn-pagado"
+                                                        data-toggle="modal"
+                                                        data-target="#modalGeneric"
+                                                        data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                        title="Registrar pago">Gpat</a>
+                                                {% else %}
+                                                    Gpat
+                                                {% endif %}
                                             {% endif %}
                                         {% endif %}
                                     </td>
@@ -75,18 +75,18 @@
                                         <div class="btn-group">
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}" title="Ver resumen"><i
-                                                        class="fa fa-eye"></i></a>
+                                                    class="fa fa-eye"></i></a>
 
                                             {% if entity.vehiculo_estado_slug != 'transito' %}
                                                 <a class="btn btn-default btn-deposito" data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
-                                            {% endif %}
+                                                {% endif %}
                                         </div>
-                                            {% if (entity.danio_gm_sin_solucionar!='') %}
-                                                <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
-                                            {%endif%}
+                                        {% if (entity.danio_gm_sin_solucionar!='') %}
+                                            <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
+                                        {%endif%}
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -94,11 +94,17 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <div class="col-xs-2">
-                        <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
-                            Alta
-                        </a>
-                    </div>
+                    {% if app.user.tienePermisoEspecial('nuevo-vehiculo') %}
+                        <div class="col-xs-2">
+                            <a class="btn btn-primary" href="{{ path('vehiculos_alta') }}">
+                                Alta
+                            </a>
+                        </div>
+                    {%else%}
+                        <div class="col-xs-2">
+                            &nbsp;
+                        </div>
+                    {%endif%}
                     <label  class="control-label col-xs-1 col-xs-offset-7"> Registros:</label>
                     <div class="col-xs-2">
                         {{ form_widget(form.registrosPaginador) }}
