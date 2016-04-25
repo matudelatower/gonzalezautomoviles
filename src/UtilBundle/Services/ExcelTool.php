@@ -217,11 +217,12 @@ class ExcelTool {
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
-                ->setCellValue('E1', 'Dias En Stock')
-                ->setCellValue('F1', 'Deposito')
-                ->setCellValue('G1', 'Estado pago');
+                ->setCellValue('E1', 'Estado')
+                ->setCellValue('F1', 'Dias En Stock')
+                ->setCellValue('G1', 'Deposito')
+                ->setCellValue('H1', 'Estado pago');
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:G1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:H1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
@@ -239,19 +240,20 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
-                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['dias_en_stock']);
-                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['deposito_actual']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['vehiculo_estado']);
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['dias_en_stock']);
+                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['deposito_actual']);
                 if ($entity['pagado']) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'Gonzalez');
+                    $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, 'Gonzalez');
                 } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, 'Gpat');
+                    $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, 'Gpat');
                 }
                 $i ++;
                 $contador++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:G' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:H' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
@@ -261,6 +263,7 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setAutoSize('true');
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 
@@ -301,7 +304,7 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getStyle('A1:I1')->getBorders()->applyFromArray($this->head);
 
         $i = 2;
-        $contador=1;
+        $contador = 1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             foreach ($resultSet as $entity) {
                 $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
@@ -367,7 +370,7 @@ class ExcelTool {
 
 
         $i = 2;
-        $contador=1;
+        $contador = 1;
         if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             foreach ($resultSet as $entity) {
                 $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
@@ -531,7 +534,7 @@ class ExcelTool {
             $modelo = "";
             foreach ($resultSet as $entity) {
 
-                if ($modelo != $entity['nombre_modelo']) {                    
+                if ($modelo != $entity['nombre_modelo']) {
                     $modelo = $entity['nombre_modelo'];
                     $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo']);
                     $i ++;
