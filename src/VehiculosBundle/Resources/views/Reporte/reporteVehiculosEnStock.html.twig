@@ -36,13 +36,13 @@
                     url: '{{ path('get_codigo_anio_version_por_modelo') }}',
                     success: function (data) {
 
-                        $.each(data.anio, function(i, value) {
+                        $.each(data.anio, function (i, value) {
                             $('.anio').append($('<option>').text(value).attr('value', value));
                         });
-                        $.each(data.codigo, function(i, value) {
+                        $.each(data.codigo, function (i, value) {
                             $('.codigo').append($('<option>').text(value).attr('value', value));
                         });
-                        $.each(data.version, function(i, value) {
+                        $.each(data.version, function (i, value) {
                             $('.version').append($('<option>').text(value).attr('value', value));
                         });
                     },
@@ -112,9 +112,9 @@
                                     </span>
                                 </button>
                                 <button class="btn btn-default" type="reset">
-                                <span>
-                                    <i></i>
-                                </span>
+                                    <span>
+                                        <i></i>
+                                    </span>
                                     Limpiar
                                 </button>
 
@@ -140,35 +140,37 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                        <tr>
-                            <th data-width="3%">Id</th>
-                            <th data-width="25%">Modelo</th>
-                            <th data-width="10%">Color vehiculo</th>
-                            <th data-width="5%">Vin</th>
-                            <th data-width="10%">Dias en stock</th>
-                            <th data-width="10%">Deposito</th>
-                            <th data-width="5%">Estado pago</th>
-                        </tr>
+                            <tr>
+                                <th data-width="3%">Id</th>
+                                <th data-width="20%">Modelo</th>
+                                <th data-width="10%">Color vehiculo</th>
+                                <th data-width="5%">Vin</th>
+                                <th data-width="5%">Estado</th>
+                                <th data-width="10%">Dias en stock</th>                            
+                                <th data-width="10%">Deposito</th>
+                                <th data-width="5%">Estado pago</th>
+                            </tr>
                         </thead>
                         <tbody>
 
-                        {% for entity in entities %}
-                            <tr>
-                                <td>{{ entity.id }}</td>
-                                <td>{{ entity.modelo }}</td>
-                                <td>{{ entity.color_vehiculo }}</td>
-                                <td>{{ entity.vin }}</td>
-                                <td align="center">{{ entity.dias_en_stock }}</td>
-                                <td>{{ entity.deposito_actual | default ("") }}</td>
-                                <td align="center">
-                                    {% if entity.pagado %}
-                                        Gonzalez
-                                    {% else %}
-                                        Gpat
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
+                            {% for entity in entities %}
+                                <tr>
+                                    <td>{{ entity.id }}</td>
+                                    <td>{{ entity.modelo }}</td>
+                                    <td>{{ entity.color_vehiculo }}</td>
+                                    <td>{{ entity.vin }}</td>
+                                    <td>{{ entity.vehiculo_estado }}</td>
+                                    <td align="center">{{ entity.dias_en_stock }}</td>                                
+                                    <td>{{ entity.deposito_actual | default ("") }}</td>
+                                    <td align="center">
+                                        {% if entity.pagado %}
+                                            Gonzalez
+                                        {% else %}
+                                            Gpat
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

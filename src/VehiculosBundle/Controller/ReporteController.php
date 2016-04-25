@@ -240,7 +240,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
         );
 
         return new Response(
-                $reportesManager->imprimir($html), 200, array(
+                $reportesManager->imprimir($html,"H"), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
