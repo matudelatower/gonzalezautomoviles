@@ -129,6 +129,14 @@
                                 <td>{{ entity.numeroSolicitud }}</td>
                             </tr>
                             <tr>
+                                <th>Cliente</th>
+                                <td>
+                                    {%if(entity.cliente is not null)%}
+                                        {{entity.cliente.personaTipo.first().persona.apellido~ ', '~entity.cliente.personaTipo.first().persona.nombre}}
+                                    {%endif%}
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Codigo llave</th>
                                 <td>{{ entity.codigoLlave }}</td>
                             </tr>
