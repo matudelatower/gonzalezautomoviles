@@ -12,6 +12,27 @@
             });
         });
 
+        $('.modelo').change(function () {
+        var id = $(this).val();
+        $('.anio').empty();
+        $('.anio').append($('<option>').text('Seleccionar').attr('value', ''));
+
+        $.ajax({
+        data: {id: id},
+        type: 'get',
+        url: '{{ path('get_codigo_anio_version_por_modelo') }}',
+        success: function (data) {
+
+        $.each(data.anio, function (i, value) {
+        $('.anio').append($('<option>').text(value).attr('value', value));
+        });
+        $.each(data.codigo, function (i, value) {
+        $('.codigo').append($('<option>').text(value).attr('value', value));
+        });
+        },
+        });
+        });
+
     })
 
     $(document).on('submit', '#form', function (ev) {

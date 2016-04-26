@@ -5,14 +5,22 @@ namespace VehiculosBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use VehiculosBundle\Form\EventListener\AddAnioCodigoVersionFieldSubscriber;
 
 class VehiculoFilterType extends AbstractType {
+
+    private $em;
+    public function __construct($em) {
+        $this->em = $em;
+    }
 
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $factory                         = $builder->getFormFactory();
+        $builder->addEventSubscriber(new AddAnioCodigoVersionFieldSubscriber($factory,$this->em));
         $builder
                 ->add('vin', 'text', array(
                     'required' => false,
@@ -26,6 +34,7 @@ class VehiculoFilterType extends AbstractType {
                     'class' => 'VehiculosBundle:NombreModelo',
                     'choice_label' => 'nombre',
                     'required' => false,
+                    'attr'=>array('class'=>'modelo'),
                 ))
                 ->add('tipoVentaEspecial', 'entity', array(
                     'class' => 'VehiculosBundle:TipoVentaEspecial',
