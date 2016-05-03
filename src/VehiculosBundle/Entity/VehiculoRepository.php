@@ -42,6 +42,9 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['modelo']) {
             $where.=" AND nm.id=" . $filters['modelo']->getId();
         }
+        if ($filters['anio']) {
+            $where.=" AND cm.anio=" . $filters['anio'];
+        }
         if ($filters['cliente']) {
             $where.=" AND v.cliente_id=" . $filters['cliente']->getId();
         }

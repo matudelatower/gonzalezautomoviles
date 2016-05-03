@@ -31,7 +31,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
 
         $em = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(new VehiculoFilterType());
+        $form = $this->createForm(new VehiculoFilterType($em));
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -72,7 +72,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         $em = $this->getDoctrine()->getManager();
 
         $estado = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findBySlug('transito');
-        $form = $this->createForm(new VehiculoFilterType());
+        $form = $this->createForm(new VehiculoFilterType($em));
 
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
@@ -114,7 +114,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         $em = $this->getDoctrine()->getManager();
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido');
         $estados = array($estadoId1);
-        $form = $this->createForm(new VehiculoFilterType());
+        $form = $this->createForm(new VehiculoFilterType($em));
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -152,7 +152,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      */
     public function vehiculosStockIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculoFilterType());
+        $form = $this->createForm(new VehiculoFilterType($em));
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('stock');
         $estados = array($estadoId1);
 
@@ -196,7 +196,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      */
     public function vehiculosPendientesPorEntregarIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculoFilterType());
+        $form = $this->createForm(new VehiculoFilterType($em));
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('pendiente-por-entregar');
         $estados = array($estadoId1);
 
@@ -240,7 +240,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      */
     public function vehiculosEntregadosIndexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculoFilterType());
+        $form = $this->createForm(new VehiculoFilterType($em));
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
         $estados = array($estadoId1);
         $order = " fecha_entregado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";

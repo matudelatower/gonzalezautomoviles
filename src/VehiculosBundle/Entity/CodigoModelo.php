@@ -4,12 +4,14 @@ namespace VehiculosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * CodigoModelo
  *
  * @ORM\Table(name="codigos_modelo")
  * @ORM\Entity(repositoryClass="VehiculosBundle\Entity\Repository\CodigoModeloRepository")
+ * @UniqueEntity({"anio","version","codigo"})
  */
 class CodigoModelo {
 
