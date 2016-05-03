@@ -1,10 +1,17 @@
 {% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
 {% block body %}
     <style>
-        table{
+        table {
             width: 100%;
+            page-break-inside: auto;
         }
-        label{
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        label {
             font-weight: bold;
         }
     </style>

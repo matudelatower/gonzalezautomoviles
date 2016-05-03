@@ -93,6 +93,7 @@ class EditarVehiculoType extends AbstractType {
                 ->add('tieneManual')
                 ->add('codigoInmobilizador')
                 ->add('codigoLlave', 'text', array(
+                    'label'=>'Codigo tarjeta infocard',
                     'attr' => array(
                         'required' => 'true'
             )))

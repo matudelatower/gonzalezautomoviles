@@ -55,6 +55,7 @@ class Builder extends ContainerAware {
 			}
 		}
 
+		ksort($aplicativo);
 		foreach ( $aplicativo as $key => $value ) {
 			$menu->addChild(
 				$key,
