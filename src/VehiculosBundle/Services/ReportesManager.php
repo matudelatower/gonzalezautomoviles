@@ -116,7 +116,7 @@ class ReportesManager {
      */
 
     public function imprimir($html, $orientation = "V", $margin = null, $pageSize = 'A4') {
-        $orientation = ($orientation == 'V') ? 'portrait' : 'Landscape';
+        $orientation = ($orientation == 'V') ? 'Portrait' : 'Landscape';
 
         if ($margin == null) {
             $margin = array(
