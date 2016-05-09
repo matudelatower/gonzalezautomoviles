@@ -43,12 +43,32 @@
                                 <td>{{ entity.personaTipo.first().persona.apellido }}</td>
                             </tr>
                             <tr>
-                                <th>Numerodocumento</th>
+                                <th>Tipo documento</th>
+                                <td>{{ entity.personaTipo.first().persona.tipoDocumento }}</td>
+                            </tr>
+                            <tr>
+                                <th>Numero documento</th>
                                 <td>{{ entity.personaTipo.first().persona.numeroDocumento }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estado IVA</th>
+                                <td>{{ entity.estadoIva }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estado civil</th>
+                                <td>{{ entity.personaTipo.first().persona.estadoCivil }}</td>
+                            </tr>
+                             <tr>
+                                <th>Ocupacion</th>
+                                <td>{{ entity.ocupacion }}</td>
                             </tr>
                             <tr>
                                 <th>Telefono</th>
                                 <td>{{ entity.personaTipo.first().persona.telefono }}</td>
+                            </tr>
+                            <tr>
+                                <th>Telefono laboral</th>
+                                <td>{{ entity.personaTipo.first().persona.telefonoLaboral }}</td>
                             </tr>
                             <tr>
                                 <th>Celular</th>
@@ -63,7 +83,7 @@
                                 <td>{{ entity.personaTipo.first().persona.web }}</td>
                             </tr>
                             <tr>
-                                <th>Fechanacimiento</th>
+                                <th>Fecha nacimiento</th>
                                 <td>{{ entity.personaTipo.first().persona.fechaNacimiento|date('d/m/Y') }}</td>
                             </tr>
                             <tr>
@@ -71,7 +91,7 @@
                                 <td>{{ entity.personaTipo.first().persona.calle }}</td>
                             </tr>
                             <tr>
-                                <th>Numerocalle</th>
+                                <th>Numero calle</th>
                                 <td>{{ entity.personaTipo.first().persona.numeroCalle }}</td>
                             </tr>
                             <tr>

@@ -199,10 +199,7 @@ class AjaxController extends Controller {
         return new JsonResponse($html);
     }
 
-    /*
-     * Registra que se asigna a un cliente un vehiculo
-     */
-
+ 
     public function cuponGarantiaUpdateAjaxAction(Request $request, $vehiculoId) {
         $em = $this->getDoctrine()->getManager();
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
@@ -210,6 +207,39 @@ class AjaxController extends Controller {
 //        $cliente = $this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
 
         $form = $this->createForm(new \VehiculosBundle\Form\CuponGarantiaVehiculoType(), $vehiculo);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->persist($vehiculo);
+            $em->flush();
+            return new JsonResponse(true);
+        } else {
+            return new JsonResponse(false);
+        }
+    }
+    
+    /*
+     * Crea un modal para guardar observaciones de un vehiculo
+     */
+
+    public function editObservacionAjaxAction($vehiculoId) {
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+
+        $form = $this->createForm(new \VehiculosBundle\Form\ObservacionVehiculoType(), $vehiculo);
+
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:editObservacionVehiculo.html.twig', array(
+            'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
+                )
+        );
+        return new JsonResponse($html);
+    }
+
+    public function observacionUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $form = $this->createForm(new \VehiculosBundle\Form\ObservacionVehiculoType(), $vehiculo);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

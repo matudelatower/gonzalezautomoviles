@@ -65,3 +65,11 @@ sesion_factura_update_ajax:
 get_codigo_anio_version_por_modelo:
     path: /get_codigo_anio_version_por_modelo
     defaults: { _controller: "VehiculosBundle:Ajax:getAnioCodigoVersionPorModelo" }
+
+edit_observacion_ajax:
+    path:     /edit_observacion_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:editObservacionAjax" }
+
+observacion_update_ajax:
+    path:     /observacion_update_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:observacionUpdateAjax" }       

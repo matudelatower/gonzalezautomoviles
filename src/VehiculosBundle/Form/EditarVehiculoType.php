@@ -60,8 +60,8 @@ class EditarVehiculoType extends AbstractType {
                 ))
                 ->add('numeroPedido')
                 ->add('tipoVentaEspecial', 'entity', array(
-                     'class' => 'VehiculosBundle:TipoVentaEspecial',
-                    'label'=>'Tipo venta'
+                    'class' => 'VehiculosBundle:TipoVentaEspecial',
+                    'label' => 'Tipo venta'
                 ))
                 ->add('numeroGrupo', 'text', array(
                     'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
@@ -89,11 +89,14 @@ class EditarVehiculoType extends AbstractType {
                     'attr' => array('class' => 'hidden tipo-venta-especial-field cliente')
                 ))
                 ->add('remito', new RemitoType())
-                ->add('tieneLlaves')
+                ->add('tieneLlaves', 'checkbox', array(
+                    'label' => 'Tarjeta infocard',                    
+                        'required' => false
+                    )
+                )
                 ->add('tieneManual')
                 ->add('codigoInmobilizador')
                 ->add('codigoLlave', 'text', array(
-                    'label'=>'Codigo tarjeta infocard',
                     'attr' => array(
                         'required' => 'true'
             )))
