@@ -37,10 +37,23 @@ class Cliente {
     private $reventa;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ocupacion", type="string", length=255, nullable=true)
+     */
+    private $ocupacion;
+
+    /**
      * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="cliente", cascade={"persist"})
      *
      */
     private $personaTipo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ClientesBundle\Entity\EstadoIva")
+     * @ORM\JoinColumn(name="estado_iva_id", referencedColumnName="id")
+     */
+    private $estadoIva;
 
     /**
      * @var datetime $creado
@@ -259,4 +272,53 @@ class Cliente {
         return $this->personaTipo->first()->getPersona()->__toString();
     }
 
+    
+
+    /**
+     * Set ocupacion
+     *
+     * @param string $ocupacion
+     *
+     * @return Cliente
+     */
+    public function setOcupacion($ocupacion)
+    {
+        $this->ocupacion = $ocupacion;
+
+        return $this;
+    }
+
+    /**
+     * Get ocupacion
+     *
+     * @return string
+     */
+    public function getOcupacion()
+    {
+        return $this->ocupacion;
+    }
+
+    /**
+     * Set estadoIva
+     *
+     * @param \ClientesBundle\Entity\EstadoIva $estadoIva
+     *
+     * @return Cliente
+     */
+    public function setEstadoIva(\ClientesBundle\Entity\EstadoIva $estadoIva = null)
+    {
+        $this->estadoIva = $estadoIva;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoIva
+     *
+     * @return \ClientesBundle\Entity\EstadoIva
+     */
+    public function getEstadoIva()
+    {
+        return $this->estadoIva;
+    }
 }

@@ -25,6 +25,17 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="modalGeneric" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="cuerpoGeneric">
+
+            </div>
+
+        </div>
+    </div>
+
     <div class="row">        
         <div class="col-md-6">
             <div class="box box-primary">
@@ -93,7 +104,7 @@
                                 <td>{{ entity.numeroPedido }}</td>
                             </tr>
                             <tr>
-                                <th>Tiene llaves</th>
+                                <th>Tarjeta infocard</th>
                                 <td>
                                     {%if(entity.tieneLlaves)%}
                                         SI
@@ -137,7 +148,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Codigo tarjeta infocard</th>
+                                <th>Codigo llave</th>
                                 <td>{{ entity.codigoLlave }}</td>
                             </tr>
                             <tr>
@@ -161,10 +172,6 @@
                                 <td>{{ entity.cuponGarantia }}</td>
                             </tr>
 
-                            <tr>
-                                <th>Observación</th>
-                                <td>{{ entity.observacion }}</td>
-                            </tr>
                             <tr>
                                 <th>Creado</th>
                                 <td>{{ entity.creado|date('d/m/Y H:i:s') }}</td>
@@ -402,6 +409,30 @@
                 </div>
             </div>
         {% endif %}
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Observaciones</h3>
+                </div>
+                <div class="box-body">
+
+                    <table class="record_properties">
+                        <tbody>
+                            <tr>
+                                <td>{{ entity.observacion }}</td>
+                            </tr>    
+                            <tr>
+                                <td><a class="btn btn-default btn-observacion" data-toggle="modal"
+                                       data-target="#modalGeneric"
+                                       data-url="{{ path('edit_observacion_ajax', { 'vehiculoId': entity.id }) }}"
+                                       title="Editar Observaciones"><i class="fa fa-file-text"></i>Editar Observaciones</a></td>
+                            </tr>     
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
         <div class="col-md-6 no-print">
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -446,9 +477,6 @@
                     <i class="fa fa-print"></i>
                     Imprimir Resumen
                 </a>
-                {#<a href="{{ path('resumen_vehiculo_pdf', {'vehiculoId':entity.id}) }}" target="_blank" class="btn btn-primary">
-                    Imprimir Resumen
-                </a>#}
 
             </div>
         </div>
@@ -471,9 +499,38 @@
                     },
                 });
             });
+            $('.btn-observacion').click(function () {
+                url = $(this).data('url');
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    success: function (data) {
+                        $('#cuerpoGeneric').html(data);
+                    },
+                });
+            });
 
 
         });
 
+        $(document).on('submit', '#formAjax', function (ev) {
+            ev.preventDefault();
+            datos = $(this).serializeArray();
+            url = $("#url").val();
+            $.ajax({
+                type: 'post',
+                url: url,
+                data: datos,
+                success: function (data) {
+                    $('#modalGeneric').modal('toggle');
+                    modalAlert('La operación se realizó con exito');
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $('#modalGeneric').modal('toggle');
+                    modalAlert('La operación no se realizo');
+                }
+            });
+        });
     </script>
 {% endblock %}
