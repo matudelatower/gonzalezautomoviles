@@ -55,9 +55,17 @@ class Persona
     /**
      * @var string
      *
+     * @ORM\Column(name="telefono_laboral", type="string", length=255, nullable=true)
+     */
+    private $telefonoLaboral;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="celular", type="string", length=255, nullable=true)
      */
     private $celular;
+    
 
     /**
      * @var string
@@ -141,6 +149,12 @@ class Persona
      * @ORM\JoinColumn(name="tipo_documento_id", referencedColumnName="id")
      */
     private $tipoDocumento;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="PersonasBundle\Entity\EstadoCivil")
+     * @ORM\JoinColumn(name="estado_civil_id", referencedColumnName="id")
+     */
+    private $estadoCivil;
 
     /**
      * @ORM\OneToMany(targetEntity="PersonasBundle\Entity\PersonaTipo", mappedBy="persona", cascade={"persist"})
@@ -615,5 +629,54 @@ class Persona
     public function getLocalidad()
     {
         return $this->localidad;
+    }
+
+    /**
+     * Set telefonoLaboral
+     *
+     * @param string $telefonoLaboral
+     *
+     * @return Persona
+     */
+    public function setTelefonoLaboral($telefonoLaboral)
+    {
+        $this->telefonoLaboral = $telefonoLaboral;
+
+        return $this;
+    }
+
+    /**
+     * Get telefonoLaboral
+     *
+     * @return string
+     */
+    public function getTelefonoLaboral()
+    {
+        return $this->telefonoLaboral;
+    }
+
+    
+    /**
+     * Set estadoCivil
+     *
+     * @param \PersonasBundle\Entity\EstadoCivil $estadoCivil
+     *
+     * @return Persona
+     */
+    public function setEstadoCivil(\PersonasBundle\Entity\EstadoCivil $estadoCivil = null)
+    {
+        $this->estadoCivil = $estadoCivil;
+
+        return $this;
+    }
+
+    /**
+     * Get estadoCivil
+     *
+     * @return \PersonasBundle\Entity\EstadoCivil
+     */
+    public function getEstadoCivil()
+    {
+        return $this->estadoCivil;
     }
 }
