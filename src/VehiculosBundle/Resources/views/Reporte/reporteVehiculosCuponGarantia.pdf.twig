@@ -1,10 +1,18 @@
 {% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
 {% block stylesheets %}
     <style>
+        body {
+            font-size: 10pt !important;
+        }
         table {
             width: 100%;
-            page-break-inside: auto;
+            page-break-inside: auto
         }
+
+        td {
+            text-align: center;
+        }
+
         tr {
             page-break-inside: avoid;
             page-break-after: auto

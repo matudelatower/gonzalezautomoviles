@@ -65,6 +65,7 @@ class AddAnioCodigoVersionFieldSubscriber implements EventSubscriberInterface {
 			array(
 				'auto_initialize' => false,
 				'required'        => false,
+                                'label'           =>'Año',
 				'attr'            => array( 'class' => 'anio' ),
 				'choices'         => $aAnios,
 			) ) );
