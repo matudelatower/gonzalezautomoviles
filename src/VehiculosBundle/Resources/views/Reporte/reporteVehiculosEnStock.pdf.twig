@@ -30,9 +30,13 @@
                     <th>Color vehiculo</th>
                     <th>Vin</th>
                     <th>Estado</th>
-                    <th>Dias en stock</th>                     
+                    <th>Tipo venta</th>
+                    <th>Fecha fact</th>
+                    <th>Dias en stock</th> 
+                    <th>Patent</th>
                     <th>Deposito</th>
                     <th>Estado pago</th>
+                    <th>Observaciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,7 +56,16 @@
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
                         <td>{{ entity.vehiculo_estado }}</td>
-                        <td>{{ entity.dias_en_stock }}</td>                        
+                        <td>{{ entity.tipo_venta_especial }}</td>
+                        <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
+                        <td>{{ entity.dias_en_stock }}</td>   
+                        <td>
+                           {% if entity.estado_patentamiento_slug=="patentado" %}
+                                SI
+                            {% else %}
+                                NO
+                            {% endif %}
+                        </td>
                         <td>{{ entity.deposito_actual | default ("") }}</td>
                         <td align="center">
                             {% if entity.pagado %}
@@ -61,6 +74,7 @@
                                 Gpat
                             {% endif %}
                         </td>
+                        <td>{{ entity.observacion }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

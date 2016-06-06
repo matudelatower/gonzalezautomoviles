@@ -91,6 +91,10 @@
                                 <th>Usuario</th>
                                 <td>{{ entity.personaTipo.first().usuario }}</td>
                             </tr>
+                             <tr>
+                                <th>Observacion</th>
+                                <td>{{ entity.personaTipo.first().persona.observacion }}</td>
+                            </tr>
                             <tr>
                                 <th>Creado</th>
                                 <td>{{ entity.creado|date('d/m/Y H:i:s') }}</td>
