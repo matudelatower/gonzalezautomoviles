@@ -103,6 +103,34 @@ class AjaxController extends Controller {
     }
 
     /*
+     * Crea un modal para anular el pago de un vehiculo a GM
+     */
+
+    public function newDeletePagoAGmAjaxAction($vehiculoId) {
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:deletePagoAGm.html.twig', array(
+            'vehiculo' => $vehiculo,
+                )
+        );
+        return new JsonResponse($html);
+    }
+
+    /*
+     * Elimina el pago a gm de nu vehiculo. cambia estado pagado a false
+     */
+
+    public function pagoAGmDeleteAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $vehiculo->setPagado(false);
+        $vehiculo->setFechaPagoGm(null);
+        $em->persist($vehiculo);
+        $em->flush();
+        return new JsonResponse(true);
+    }
+
+    /*
      * Crea un modal para asignar el vehiculo a un cliente que puede ser o no un reventa
      */
 
@@ -199,7 +227,6 @@ class AjaxController extends Controller {
         return new JsonResponse($html);
     }
 
- 
     public function cuponGarantiaUpdateAjaxAction(Request $request, $vehiculoId) {
         $em = $this->getDoctrine()->getManager();
         $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
@@ -217,7 +244,7 @@ class AjaxController extends Controller {
             return new JsonResponse(false);
         }
     }
-    
+
     /*
      * Crea un modal para guardar observaciones de un vehiculo
      */

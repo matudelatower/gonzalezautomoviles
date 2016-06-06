@@ -76,7 +76,14 @@
                                 <th>Motor</th>
                                 <td>{{ entity.motor }}</td>
                             </tr>
-
+                            <tr>
+                                <th>Factura GM</th>
+                                <td>{{ entity.documento }}</td>
+                            </tr>
+                            <tr>
+                                <th>Fecha factura GM</th>
+                                <td>{{ entity.fechaEmisionDocumento|date("d-m-Y") }}</td>
+                            </tr>                            
                             <tr>
                                 <th>Importe</th>
                                 <td>{{ entity.importe }}</td>

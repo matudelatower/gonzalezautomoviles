@@ -28,7 +28,6 @@
                 <div class="box-body">
                     <table class="data-table table table-bordered table-striped" id="tabla-listado">
                         <thead>
-
                             <tr>                                                              
                                 <th data-width="3%">Id</th>
                                 <th data-width="20%">Modelo</th>
@@ -49,7 +48,16 @@
                                     <td align="center">
                                         {% if entity.venta_especial_slug == 'convencional' %}
                                             {% if entity.pagado %}
-                                                Gonzalez
+                                                {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
+                                                    <a
+                                                        class="btn btn-delete-pago"
+                                                        data-toggle="modal"
+                                                        data-target="#modalGeneric"
+                                                        data-url="{{ path('new_delete_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                        title="Registrar pago">Gonzalez</a>
+                                                {% else %}
+                                                    Gonzalez
+                                                {% endif %}
                                             {% else %}
                                                 {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
                                                     <a

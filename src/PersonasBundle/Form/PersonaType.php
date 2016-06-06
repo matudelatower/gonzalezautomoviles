@@ -42,12 +42,15 @@ class PersonaType extends AbstractType {
 			
 			->add( 'calle' )
 			->add( 'numeroCalle' )
-			->add( 'barrio' );
+			->add( 'barrio' )
+                        ;
 
 		$builder->addEventSubscriber(new AddPaisFieldSubscriber($factory));
 		$builder->addEventSubscriber(new AddProvinciaFieldSubscriber($factory));
 		$builder->addEventSubscriber(new AddDepartamentoFieldSubscriber($factory));
 		$builder->addEventSubscriber(new AddLocalidadFieldSubscriber($factory));
+                $builder->add( 'observacion' );
+                
 	}
 
 	/**

@@ -32,7 +32,15 @@ new_registro_pago_a_gm_ajax:
 
 pago_a_gm_update_ajax:
     path:     /pago_a_gm_update_ajax/{vehiculoId}
-    defaults: { _controller: "VehiculosBundle:Ajax:pagoAGmUpdateAjax" }    
+    defaults: { _controller: "VehiculosBundle:Ajax:pagoAGmUpdateAjax" } 
+    
+pago_a_gm_delete_ajax:
+    path:     /pago_a_gm_delete_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:pagoAGmDeleteAjax" } 
+    
+new_delete_pago_a_gm_ajax:
+    path:     /new_delete_pago_a_gm_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:newDeletePagoAGmAjax" }
     
 new_asignacion_vehiculo_ajax:
     path:     /new_asignacion_vehiculo_ajax/{vehiculoId}
