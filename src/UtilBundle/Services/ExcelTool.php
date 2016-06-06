@@ -218,9 +218,13 @@ class ExcelTool {
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
                 ->setCellValue('E1', 'Estado')
-                ->setCellValue('F1', 'Dias En Stock')
-                ->setCellValue('G1', 'Deposito')
-                ->setCellValue('H1', 'Estado pago');
+                ->setCellValue('F1', 'Tipo Venta')
+                ->setCellValue('G1', 'Fecha Fact')
+                ->setCellValue('H1', 'Dias En Stock')
+                ->setCellValue('I1', 'Patentado')
+                ->setCellValue('J1', 'Deposito')
+                ->setCellValue('K1', 'Estado pago')
+                ->setCellValue('L1', 'Observacion');
 
         $phpExcelObject->getActiveSheet()->getStyle('A1:H1')->getBorders()->applyFromArray($this->head);
 
@@ -241,19 +245,28 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
                 $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['vehiculo_estado']);
-                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['dias_en_stock']);
-                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['deposito_actual']);
-                if ($entity['pagado']) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, 'Gonzalez');
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['tipo_venta_especial']);
+                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, date('d-m-Y', strtotime($entity['fecha_emision_documento'])));
+                $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['dias_en_stock']);
+                if ($entity['estado_patentamiento_slug'] == "patentado") {
+                    $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, 'SI');
                 } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, 'Gpat');
+                    $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, 'NO');
                 }
+                $phpExcelObject->getActiveSheet()->setCellValue('J' . $i, $entity['deposito_actual']);
+                if ($entity['pagado']) {
+                    $phpExcelObject->getActiveSheet()->setCellValue('K' . $i, 'Gonzalez');
+                } else {
+                    $phpExcelObject->getActiveSheet()->setCellValue('K' . $i, 'Gpat');
+                }
+                $phpExcelObject->getActiveSheet()->setCellValue('L' . $i, $entity['observacion']);
+
                 $i ++;
                 $contador++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:H' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:L' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
@@ -264,7 +277,10 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setAutoSize('true');
-
+        $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('K')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('L')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 
         $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
@@ -594,9 +610,10 @@ class ExcelTool {
                 ->setCellValue('E1', 'Facturado')
                 ->setCellValue('F1', 'Estado Patentamiento')
                 ->setCellValue('G1', 'Dias de recibido')
+                ->setCellValue('H1', 'Observacion')
         ;
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:G1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:H1')->getBorders()->applyFromArray($this->head);
 
 
         $i = 2;
@@ -612,12 +629,14 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['factura_id'] ? 'SI' : 'NO');
                 $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['estado_patentamiento'] ? $entity['estado_patentamiento'] : '');
                 $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['dias_de_recibido']);
+                $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['observacion']);
+
                 $i ++;
                 $contador++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:G' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:H' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
@@ -627,6 +646,7 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setAutoSize('true');
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 

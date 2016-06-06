@@ -160,6 +160,11 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+//                if ($data['rango'] != "") {
+//                    $aFecha = explode(' - ', $data['rango']);
+//                    $data['fechaDesde'] = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+//                    $data['fechaHasta'] = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+//                }
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }
@@ -240,7 +245,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
         );
 
         return new Response(
-                $reportesManager->imprimir($html,"H"), 200, array(
+                $reportesManager->imprimir($html, "H"), 200, array(
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
@@ -963,7 +968,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
             $formData = $form->getData();
             if ($formData['reventa']) {
-                 if ($formData['dias']) {
+                if ($formData['dias']) {
                     $dias = explode(',', $formData['dias']);
 
                     $formData['diaInicio'] = abs($dias[0]);

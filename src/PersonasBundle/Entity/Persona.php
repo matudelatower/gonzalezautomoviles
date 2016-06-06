@@ -108,6 +108,13 @@ class Persona
      * @ORM\Column(name="barrio", type="string", length=255, nullable=true)
      */
     private $barrio;
+    
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="observacion", type="text", nullable=true)
+     */
+    private $observacion;
 
 
     /**
@@ -678,5 +685,29 @@ class Persona
     public function getEstadoCivil()
     {
         return $this->estadoCivil;
+    }
+
+    /**
+     * Set observacion
+     *
+     * @param string $observacion
+     *
+     * @return Persona
+     */
+    public function setObservacion($observacion)
+    {
+        $this->observacion = $observacion;
+
+        return $this;
+    }
+
+    /**
+     * Get observacion
+     *
+     * @return string
+     */
+    public function getObservacion()
+    {
+        return $this->observacion;
     }
 }

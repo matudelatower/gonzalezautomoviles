@@ -77,6 +77,7 @@
                             {{ form_row(form.anio) }}
                             {{ form_row(form.codigo) }}
                             {{ form_row(form.version) }}
+                            {{ form_row(form.rango) }}
 
                         </div>
 
@@ -86,6 +87,7 @@
                             {{ form_row(form.deposito) }}
                             {{ form_row(form.diaInicio) }}
                             {{ form_row(form.diaFin) }}
+                            {{ form_row(form.patentado) }}
 
                         </div>
 
@@ -145,10 +147,14 @@
                                 <th data-width="20%">Modelo</th>
                                 <th data-width="10%">Color vehiculo</th>
                                 <th data-width="5%">Vin</th>
-                                <th data-width="5%">Estado</th>
-                                <th data-width="10%">Dias en stock</th>                            
+                                <th data-width="3%">Estado</th>
+                                <th data-width="5%">Tipo Venta</th>
+                                <th data-width="5%">Fecha Fact</th>
+                                <th data-width="5%">Dias en stock</th>                            
+                                <th data-width="3%">Patent</th>
                                 <th data-width="10%">Deposito</th>
-                                <th data-width="5%">Estado pago</th>
+                                <th data-width="3%">Estado pago</th>
+                                <th data-width="5%">Observaciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -160,7 +166,16 @@
                                     <td>{{ entity.color_vehiculo }}</td>
                                     <td>{{ entity.vin }}</td>
                                     <td>{{ entity.vehiculo_estado }}</td>
-                                    <td align="center">{{ entity.dias_en_stock }}</td>                                
+                                    <td>{{ entity.tipo_venta_especial }}</td>
+                                    <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
+                                    <td align="center">{{ entity.dias_en_stock }}</td>
+                                    <td>
+                                        {% if entity.estado_patentamiento_slug=="patentado" %}
+                                            SI
+                                        {% else %}
+                                            NO
+                                        {% endif %}
+                                    </td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
                                     <td align="center">
                                         {% if entity.pagado %}
@@ -169,6 +184,7 @@
                                             Gpat
                                         {% endif %}
                                     </td>
+                                    <td>{{ entity.observacion }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
