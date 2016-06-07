@@ -229,6 +229,13 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['version']) {
             $where .= " AND cm.version = '" . $filters['version'] . "'";
         }
+        if ($filters['patentado']) {
+            if ($filters['patentado'] == 'si') {
+                $where .= " AND pat.dominio is not null ";
+            } else {
+                $where .= " AND pat.dominio is null ";
+            }
+        }
 
         if ($filters['diaInicio']) {
             $where.=" AND (current_date-fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
@@ -241,7 +248,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             $aFecha = explode(' - ', $filters['rango']);
             $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
             $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-            $where.=" AND v.fecha_emision_documento between '".$fechaDesde->format("Y-m-d")."' and '".$fechaHasta->format("Y-m-d")."' ";
+            $where.=" AND v.fecha_emision_documento between '" . $fechaDesde->format("Y-m-d") . "' and '" . $fechaHasta->format("Y-m-d") . "' ";
         }
 
         $query = "SELECT distinct(v.*),
