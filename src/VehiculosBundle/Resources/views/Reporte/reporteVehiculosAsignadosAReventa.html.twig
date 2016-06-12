@@ -49,17 +49,16 @@
                             <div class="col-sm-4">
                                 {{ form_widget(form.reventa) }}
                             </div>
-
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-2 control-label">Facturado</label>
                             <div class="col-sm-4">
                                 {{ form_widget(form.facturado) }}
                             </div>
+
+                        </div>
+                        <div class="form-group">                            
                             <label class="col-sm-2 control-label">Dias de Recibido</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-10">
                                 {{ form_widget(form.dias) }}
-                                {#<input type="text" value="" class="slider form-control" data-slider-min="-365" data-slider-max="365" data-slider-step="5" data-slider-value="[-100,100]" data-slider-orientation="horizontal" data-slider-selection="before" data-slider-tooltip="show" data-slider-id="blue">#}
                             </div>
                         </div>
 
@@ -103,7 +102,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listado Vehiculos asignados a Reventa</h3>
+                    <h3 class="box-title">Listado Vehiculos asignados a Reventa - {{cantidadRegistros}} vehiculos encontrados</h3>
 
 
                 </div>
