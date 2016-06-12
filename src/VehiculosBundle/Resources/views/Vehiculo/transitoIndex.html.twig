@@ -30,13 +30,14 @@
                         <thead>
                             <tr>
                                 <th data-width="3%">Id</th>
-                                <th data-width="22%">Modelo</th>
+                                <th data-width="20%">Modelo</th>
                                 <th data-width="8%">Color vehiculo</th>
                                 <th data-width="5%">Vin</th>
                                 <th data-width="3%">Dias stock</th>
                                 <th data-width="5%">Estado Pago</th>
-                                <th data-width="13%">Tipo de venta</th>
-                                <th data-width="10%">Actions</th>
+                                <th data-width="8%">Tipo de venta</th>
+                                <th data-width="8%">Fecha remito</th>
+                                <th data-width="8%">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,6 +76,7 @@
                                         {% endif %}
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
+                                    <td>{{ entity.remito_fecha|date("d-m-Y") }}</td>
                                     <td>
                                         <div class="btn-group">
 

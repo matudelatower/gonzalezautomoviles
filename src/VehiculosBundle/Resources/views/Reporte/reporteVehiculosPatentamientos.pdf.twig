@@ -38,6 +38,7 @@
                     <th>Cliente</th>
                     <th>Modelo</th>
                     <th>Vin</th>
+                     <th>Tipo venta</th>
                     <th>Agente inicio Pat.</th>
                     <th>Fecha inicio</th>                    
                     <th>Dominio</th>
@@ -54,6 +55,7 @@
                         <td>{{ entity.cliente }}</td>
                         <td>{{ entity.modelo }}</td>
                         <td>{{ entity.vin }}</td>
+                        <td>{{ entity.tipo_venta_especial }}</td>
                         <td>{{ entity.agente_patentamiento }}</td>
                         <td>{{entity.fecha_inicio is null ? "" : entity.fecha_inicio|date("d/m/Y")}}</td>
                         <td>{{ entity.dominio }}</td>

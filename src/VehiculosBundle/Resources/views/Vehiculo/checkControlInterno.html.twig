@@ -16,11 +16,11 @@
                 <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Control Interno</h3>                            
+                            <h3 class="box-title">Control Interno</h3><br>                            
                             {% if cabecera %}
                                 {#{#                                <div class="form-group">#}
-                                <div class="checkbox"> 
-                                    <label><input type="checkbox" value="" name="firmado" id="firmado"
+                                <div class="checkbox-inline"> 
+                                    <label class="input-lg"><input type="checkbox" value="" name="firmado" id="firmado"
                                                   {%if(tipoTransaccion=='cierre')%} checked {% endif %}         />firmado
                                     </label>
                                 </div>
@@ -36,8 +36,8 @@
                         <div class="box-body">
                             {% for pregunta in preguntasOriginales %}
                                 <div class="form-group">
-                                    <div class="checkbox"> 
-                                        <label><input type="checkbox" value="{{pregunta.id}}" name="{{pregunta.id}}"
+                                    <div class="checkbox-inline"> 
+                                        <label class="input-lg"><input type="checkbox" value="{{pregunta.id}}" name="{{pregunta.id}}"
                                                       {% if pregunta.id in preguntasSeleccionadas %} 
                                                           checked 
                                                       {% endif%} 

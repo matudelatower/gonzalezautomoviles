@@ -42,6 +42,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
                 $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor);
             }
         }
+        $cantidadRegistros = count($entities);
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
@@ -50,7 +51,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -168,7 +170,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }
-
+        $cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -176,7 +178,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosEnStock.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -279,7 +282,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
             $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
         }
-
+        $cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -287,7 +290,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteAgendaEntregas.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -420,7 +424,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
             }
         }
-
+        $cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -428,7 +432,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -679,7 +684,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
             }
         }
-
+        $cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -687,7 +692,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosPorDeposito.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -896,7 +902,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
                 $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
             }
         }
-
+$cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -904,7 +910,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+            'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -1017,6 +1024,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPatentamientos($data);
         }
+        $cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -1024,7 +1032,8 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosPatentamientos.html.twig', array(
                     'entities' => $entities,
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 

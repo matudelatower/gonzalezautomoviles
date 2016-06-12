@@ -58,7 +58,6 @@
 //            tipo de venta
             $('#{{ edit_form.tipoVentaEspecial.vars.id }}').change(function () {
 
-
                 var id = $(this).val()
 
                 checkTipoVenta(id);
@@ -78,26 +77,31 @@
                     data: {id: id},
                     success: function (data) {
                         if (data.muestra_plan_ahorro == true) {
-                            $('.tipo-venta-especial-field').removeClass('hidden');
-                            $('.tipo-venta-especial-field').add('required', 'required');
-        {# if (data.slug == 'plan-de-ahorro-propio') {
-             $('.cliente').addClass('hidden');
-             $('.cliente').removeAttr('required');
-             $('.cliente').val('');
-         }#}
-                                                } else {
+                            $('.plan-field').removeClass('hidden');
+                            $('.plan-field').attr('required', 'required');
+                            $('.cliente').removeClass('hidden');
+                            $('.cliente').attr('required', 'required');
+                        } else {
+                            $('.plan-field').addClass('hidden');
+                            $('.plan-field').removeAttr('required');
+                            $('.plan-field').val('');
+                            if (data.slug == 'venta-especial') {
+                                $('.cliente').removeClass('hidden');
+                                $('.cliente').attr('required', 'required');
+                            }else{
+                                $('.cliente').addClass('hidden');
+                                $('.cliente').removeAttr('required');
+                                $('.cliente').val('');
+                            }
+                        }
+                         }
+                     });
+                 }
 
-                                                    $('.tipo-venta-especial-field').addClass('hidden');
-                                                    $('.tipo-venta-especial-field').removeAttr('required');
-                                                }
-                                            }
-                                        });
-                                    }
-
-                                    $('#{{ edit_form.vin.vars.id }}').keyup(function () {
-                                        $('#{{ edit_form.chasis.vars.id }}').val($('#{{ edit_form.vin.vars.id }}').val());
-                                    });
-                                });
+                 $('#{{ edit_form.vin.vars.id }}').keyup(function () {
+                     $('#{{ edit_form.chasis.vars.id }}').val($('#{{ edit_form.vin.vars.id }}').val());
+                 });
+             });
     </script>
 {% endblock javascripts %}
 
@@ -161,6 +165,7 @@
                     <h3>Remito</h3>
                     {{ form_row(edit_form.remito.fecha) }}
                     {{ form_row(edit_form.remito.numero) }}
+                    {{ form_row(edit_form.remito.fechaRecibido) }}
                 </div>
                 {{ form_row(edit_form.tieneLlaves) }}
                 {{ form_row(edit_form.tieneManual) }}

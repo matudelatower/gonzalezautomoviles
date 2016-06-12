@@ -30,13 +30,14 @@
 
                             <tr>                                
                                 <th data-width="3%">Id</th>
-                                <th data-width="20%">Modelo</th>
-                                <th data-width="8%">Color vehiculo</th>
+                                <th data-width="18%">Modelo</th>
+                                <th data-width="7%">Color vehiculo</th>
                                 <th data-width="5%">Vin</th>
                                 <th data-width="3%">Dias stock</th>
-                                <th data-width="3%">Estado Pago</th>
-                                <th data-width="8%">Tipo de venta</th>
+                                <th data-width="3%">Estado pago</th>
+                                <th data-width="7%">Tipo de venta</th>
                                 <th data-width="5%">Deposito</th>
+                                <th data-width="5%">Fecha recibido</th>
                                 <th data-width="10%">Actions</th>
                             </tr>
                         </thead>
@@ -77,6 +78,7 @@
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
+                                    <td>{{ entity.fecha_recibido | date ("d-m-Y") }}</td>
                                     <td>
                                         <div class="btn-group">
 

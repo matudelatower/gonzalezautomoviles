@@ -78,12 +78,22 @@
                     data: {id: id},
                     success: function (data) {
                         if (data.muestra_plan_ahorro == true) {
-                            $('.tipo-venta-especial-field').removeClass('hidden');
-                            $('.tipo-venta-especial-field').add('required', 'required');
+                            $('.plan-field').removeClass('hidden');
+                            $('.plan-field').attr('required', 'required');
+                            $('.cliente').removeClass('hidden');
+                            $('.cliente').attr('required', 'required');
                         } else {
-
-                            $('.tipo-venta-especial-field').addClass('hidden');
-                            $('.tipo-venta-especial-field').removeAttr('required');
+                            $('.plan-field').addClass('hidden');
+                            $('.plan-field').removeAttr('required');
+                            $('.plan-field').val('');
+                            if (data.slug == 'venta-especial') {
+                                $('.cliente').removeClass('hidden');
+                                $('.cliente').attr('required', 'required');
+                            }else{
+                                $('.cliente').addClass('hidden');
+                                $('.cliente').removeAttr('required');
+                                $('.cliente').val('');
+                            }
                         }
                     }
                 });
@@ -156,6 +166,7 @@
                     <h3>Remito</h3>
                     {{ form_row(edit_form.remito.fecha) }}
                     {{ form_row(edit_form.remito.numero) }}
+                    {{ form_row(edit_form.remito.fechaRecibido) }}
                 </div>
                 {{ form_row(edit_form.tieneLlaves) }}
                 {{ form_row(edit_form.tieneManual) }}
