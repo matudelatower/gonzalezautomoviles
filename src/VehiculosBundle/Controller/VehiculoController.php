@@ -60,6 +60,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraFiltroEstado' => true,
+                    'muestraFiltroPlanAhorro'=>true,        
                         )
         );
     }
@@ -78,6 +79,15 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+                if ($data['rango']) {
+                    $aFecha = explode(' - ', $data['rango']);
+
+                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+                    $data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+                    $data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+                }
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estado, $data);
             }
         } else {
@@ -102,6 +112,8 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
+                    'muestraRangoFecha' => true,
+                    'labelRangoFecha' => 'Fecha remito',
                         )
         );
     }
@@ -119,6 +131,15 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+                if ($data['rango']) {
+                    $aFecha = explode(' - ', $data['rango']);
+
+                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+                    $data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+                    $data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+                }
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
             }
         } else {
@@ -142,6 +163,8 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
+                    'muestraRangoFecha' => true,
+                    'labelRangoFecha' => 'Fecha recibido',
                         )
         );
     }
@@ -160,6 +183,15 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
+                if ($data['rango']) {
+                    $aFecha = explode(' - ', $data['rango']);
+
+                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+                    $data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+                    $data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+                }
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
             }
         } else {
@@ -186,6 +218,8 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'form' => $form->createView(),
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
+                    'muestraRangoFecha' => true,
+                    'labelRangoFecha' => 'Fecha pre-entrega',
                         )
         );
     }
@@ -243,7 +277,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         $form = $this->createForm(new VehiculoFilterType($em));
         $estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
         $estados = array($estadoId1);
-        $order = " fecha_entregado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
+        $order = " fecha_estado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
         if ($request->isMethod("post")) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -279,7 +313,8 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'entities' => $entities,
                     'form' => $form->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
-                    'muestraRangoFecha' => true
+                    'muestraRangoFecha' => true,
+                    'labelRangoFecha' => 'Fecha entregado',
                         )
         );
     }

@@ -13,7 +13,7 @@
             $('#{{ form.tipoVentaEspecial.vars.id }}').change(function () {
                 console.log($(this).val());
 
-                var id = $(this).val()
+                var id = $(this).val();
 
                 $.ajax({
                     url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
@@ -21,17 +21,22 @@
                     data: {id: id},
                     success: function (data) {
                         if (data.muestra_plan_ahorro == true) {
-                            $('.tipo-venta-especial-field').removeClass('hidden');
-                            $('.tipo-venta-especial-field').attr('required', 'required');
-                            {#if (data.slug == 'plan-de-ahorro-propio') {
+                            $('.plan-field').removeClass('hidden');
+                            $('.plan-field').attr('required', 'required');
+                            $('.cliente').removeClass('hidden');
+                            $('.cliente').attr('required', 'required');
+                        } else {
+                            $('.plan-field').addClass('hidden');
+                            $('.plan-field').removeAttr('required');
+                            $('.plan-field').val('');
+                            if (data.slug == 'venta-especial') {
+                                $('.cliente').removeClass('hidden');
+                                $('.cliente').attr('required', 'required');
+                            }else{
                                 $('.cliente').addClass('hidden');
                                 $('.cliente').removeAttr('required');
                                 $('.cliente').val('');
-                            }#}
-                        } else {
-                            $('.tipo-venta-especial-field').addClass('hidden');
-                            $('.tipo-venta-especial-field').removeAttr('required');
-                            $('.tipo-venta-especial-field').val('');
+                            }
                         }
                     }
                 });

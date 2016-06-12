@@ -31,7 +31,7 @@ class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
                     'attr' => array(
                         'class' => 'slider',
                         'data-slider-min' => "0",
-                        'data-slider-max' => "1095",
+                        'data-slider-max' => "1200",
                         'data-slider-step' => "1",
                         'data-slider-value' => "[0,0]",
                         'data-slider-orientation' => "horizontal",
@@ -53,7 +53,7 @@ class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
                     'attr' => array(
                         'class' => 'slider',
                         'data-slider-min' => "0",
-                        'data-slider-max' => "365",
+                        'data-slider-max' => "1200",
                         'data-slider-step' => "1",
                         'data-slider-value' => "[" . $data['dias'] . "]",
                         'data-slider-orientation' => "horizontal",

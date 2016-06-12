@@ -36,7 +36,8 @@ class EditarVehiculoType extends AbstractType {
                     ),
                     'query_builder' => function ( EntityRepository $er ) {
                 return $er->createQueryBuilder('cm')
-                        ->where('cm.activo = true');
+                        ->where('cm.activo = true')
+                        ->orderBy('cm.nombreModelo', 'ASC');
             },
                         )
                 )
@@ -47,7 +48,8 @@ class EditarVehiculoType extends AbstractType {
                     ),
                     'query_builder' => function ( EntityRepository $er ) {
                 return $er->createQueryBuilder('cm')
-                        ->where('cm.activo = true');
+                        ->where('cm.activo = true')
+                        ->orderBy('cm.color', 'ASC');
             },
                         )
                 )
@@ -61,19 +63,24 @@ class EditarVehiculoType extends AbstractType {
                 ->add('numeroPedido')
                 ->add('tipoVentaEspecial', 'entity', array(
                     'class' => 'VehiculosBundle:TipoVentaEspecial',
-                    'label' => 'Tipo venta'
+                    'label' => 'Tipo venta',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                                ->orderBy('u.nombre', 'ASC');
+                    },
+                    'choice_label' => 'nombre',
                 ))
                 ->add('numeroGrupo', 'text', array(
-                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
-                    'attr' => array('class' => 'hidden tipo-venta-especial-field')
+                    'label_attr' => array('class' => 'hidden plan-field'),
+                    'attr' => array('class' => 'hidden plan-field')
                 ))
                 ->add('numeroOrden', 'text', array(
-                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
-                    'attr' => array('class' => 'hidden tipo-venta-especial-field')
+                    'label_attr' => array('class' => 'hidden plan-field'),
+                    'attr' => array('class' => 'hidden plan-field')
                 ))
                 ->add('numeroSolicitud', 'text', array(
-                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field'),
-                    'attr' => array('class' => 'hidden tipo-venta-especial-field')
+                    'label_attr' => array('class' => 'hidden plan-field'),
+                    'attr' => array('class' => 'hidden plan-field')
                 ))
                 ->add('cliente', 'jqueryautocomplete', array(
                     'class' => 'ClientesBundle:Cliente',
@@ -85,14 +92,14 @@ class EditarVehiculoType extends AbstractType {
 //					'class'         => 'PersonaBundle:Persona',
 //					'property'      => 'nombreCompleto',
 //					'search_method' => 'getEmpadronadoresPorSector',
-                    'label_attr' => array('class' => 'hidden tipo-venta-especial-field cliente'),
-                    'attr' => array('class' => 'hidden tipo-venta-especial-field cliente')
+                    'label_attr' => array('class' => 'hidden cliente'),
+                    'attr' => array('class' => 'hidden cliente')
                 ))
-                ->add('remito', new RemitoType())
+                ->add('remito', new RemitoEditType())
                 ->add('tieneLlaves', 'checkbox', array(
-                    'label' => 'Tarjeta infocard',                    
-                        'required' => false
-                    )
+                    'label' => 'Tarjeta infocard',
+                    'required' => false
+                        )
                 )
                 ->add('tieneManual')
                 ->add('codigoInmobilizador')

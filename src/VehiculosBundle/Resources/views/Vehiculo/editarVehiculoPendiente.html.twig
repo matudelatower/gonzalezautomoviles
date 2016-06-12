@@ -19,13 +19,22 @@
                         data: {id: id},
                         success: function (data) {
                         if (data.muestra_plan_ahorro == true) {
-                        $('.tipo-venta-especial-field').removeClass('hidden');
-                                $('.tipo-venta-especial-field').attr('required', 'required');
+                            $('.plan-field').removeClass('hidden');
+                            $('.plan-field').attr('required', 'required');
+                            $('.cliente').removeClass('hidden');
+                            $('.cliente').attr('required', 'required');
                         } else {
-
-                        $('.tipo-venta-especial-field').addClass('hidden');
-                                $('.tipo-venta-especial-field').removeAttr('required');
-                                $('.tipo-venta-especial-field').val('');
+                            $('.plan-field').addClass('hidden');
+                            $('.plan-field').removeAttr('required');
+                            $('.plan-field').val('');
+                            if (data.slug == 'venta-especial') {
+                                $('.cliente').removeClass('hidden');
+                                $('.cliente').attr('required', 'required');
+                            }else{
+                                $('.cliente').addClass('hidden');
+                                $('.cliente').removeAttr('required');
+                                $('.cliente').val('');
+                            }
                         }
                         }
                 });
@@ -36,10 +45,16 @@
         });
                 window.onload = function (e) {
                 if ({{entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false')}}){
-                $('.tipo-venta-especial-field').removeClass('hidden');
-                        $('.tipo-venta-especial-field').attr('required', 'required');
+                        $('.plan-field').removeClass('hidden');
+                        $('.plan-field').attr('required', 'required');
+                        $('.cliente-field').removeClass('hidden');
+                        $('.cliente-field').attr('required', 'required');
                 } else{
-                $('.tipo-venta-especial-field').removeAttr('required');
+                        $('.plan-field').removeAttr('required');
+                         if ('{{entity.tipoVentaEspecial.slug}}'=='venta-especial') {
+                                $('.cliente').removeClass('hidden');
+                                $('.cliente').attr('required', 'required');
+                        }
                 }
                 }
 

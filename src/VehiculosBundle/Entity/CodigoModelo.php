@@ -88,7 +88,6 @@ class CodigoModelo {
 
     /**
      * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\NombreModelo")
-     * @ORM\OrderBy({"nombre" = "ASC"})
      * @ORM\JoinColumn(name="nombre_modelo_id", referencedColumnName="id",nullable=false)
      */
     private $nombreModelo;

@@ -32,9 +32,6 @@ class VehiculosManager {
         if (!$vehiculo->getRemito()->getUsuarioReceptor()) {
             $vehiculo->getRemito()->setUsuarioReceptor($this->container->get('security.token_storage')->getToken()->getUser());
         }
-        if (!$vehiculo->getRemito()->getFechaRecibido()) {
-            $vehiculo->getRemito()->setFechaRecibido(new \DateTime('now'));
-        }
 
         foreach ($daniosGmOriginal as $item) {
             if (false === $vehiculo->getDanioVehiculoGm()->contains($item)) {
