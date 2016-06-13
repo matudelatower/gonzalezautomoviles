@@ -4,8 +4,12 @@
         <meta charset="UTF-8">
         <title>{{ title }}</title>
         <style>
+            @font-face {
+                font-family: SourceSansPro;
+                src: url({{ asset('bundles/theme/css/font/Source_Sans_Pro/SourceSansPro-Regular.ttf',null, true) }});
+            }
             body {
-                font-family: Helvetica;
+                font-family: SourceSansPro;
                 font-size: 14pt;
             }
             table {
