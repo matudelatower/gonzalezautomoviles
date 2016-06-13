@@ -8,6 +8,10 @@
         .pregunta {
             text-align: justify;
         }
+
+        #datos-clientes {
+            font-size: 8pt;
+        }
     </style>
 
     <div class="box-body">
@@ -27,7 +31,7 @@
 
     </div>
 
-    <div class="row">
+    <div class="row" id="datos-clientes">
         {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
         <label>Apellido y Nombre: </label> <span>{{ vehiculo.cliente }}</span> <br>
         <label>Dirección: </label><span>{{ cliente.barrio }} - {{ cliente.calle }} {{ cliente.numeroCalle }}</span><br>
@@ -35,15 +39,16 @@
         <label>Celular: </label><span> {{ cliente.celular }}</span><br>
         <label>E-Mail: </label><span>{{ cliente.mail }}</span><br>
         <label>Fecha Nacimiento: </label><span>{{ cliente.fechaNacimiento | date('d/m/Y') }}</span><br>
-        <label>Localidad: </label><span>{{ cliente.localidad }}</span> <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('')}}</span>
+        <label>Localidad: </label><span>{{ cliente.localidad }}</span>
+        <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('') }}</span>
+        <label>VIN: </label> <span>{{ vehiculo.vin }}</span> <br>
+        <label>Fecha Encuesta: </label> <span>{{ encuestaResultadoCabecera.creado | date('d/m/Y') }}</span> <br>
     </div>
     <div class="row">
-        <label>VIN: </label> <span>{{ vehiculo.vin }}</span> <br>
-        <label>Fecha Encuesta: </label> <span>{{ encuestaResultadoCabecera.creado | date('d/m/Y')}}</span> <br>
         <br>
         <br>
         <label>Firma: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label><br><br>
-        <label>Aclaraci&oacute;n: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label>
-        </div>
+        <label>Aclaración: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label>
+    </div>
 
 {% endblock %}
