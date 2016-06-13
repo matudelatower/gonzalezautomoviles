@@ -7,52 +7,50 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
-            $(".maskdocumento").inputmask({mask: "**[*][*]-*****[*][*]-*-**", greedy: false});
-            $(".maskVin").inputmask({mask: "*****************", greedy: false});
-            $(".maskmoney").inputmask('decimal', {rightAlign: false});
-            $('#{{ form.tipoVentaEspecial.vars.id }}').change(function () {
-                console.log($(this).val());
-
+        $(".maskdocumento").inputmask({mask: "**[*][*]-*****[*][*]-*-**", greedy: false});
+                $(".maskVin").inputmask({mask: "*****************", greedy: false});
+                $(".maskmoney").inputmask('decimal', {rightAlign: false});
+                $('#{{ form.tipoVentaEspecial.vars.id }}').change(function () {
+        console.log($(this).val());
                 var id = $(this).val();
-
                 $.ajax({
-                    url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
-                    method: "GET",
-                    data: {id: id},
-                    success: function (data) {
+                url: "{{ path('get_muestra_campos_plan_de_ahorro') }}",
+                        method: "GET",
+                        data: {id: id},
+                        success: function (data) {
                         if (data.muestra_plan_ahorro == true) {
-                            $('.plan-field').removeClass('hidden');
-                            $('.plan-field').attr('required', 'required');
-                            $('.cliente').removeClass('hidden');
-                            $('.cliente').attr('required', 'required');
-                        } else {
-                            $('.plan-field').addClass('hidden');
-                            $('.plan-field').removeAttr('required');
-                            $('.plan-field').val('');
-                            if (data.slug == 'venta-especial') {
+                        $('.plan-field').removeClass('hidden');
+                                $('.plan-field').attr('required', 'required');
                                 $('.cliente').removeClass('hidden');
                                 $('.cliente').attr('required', 'required');
-                            }else{
-                                $('.cliente').addClass('hidden');
+                        } else {
+                        $('.plan-field').addClass('hidden');
+                                $('.plan-field').removeAttr('required');
+                                $('.plan-field').val('');
+                                if (data.slug == 'venta-especial') {
+                        $('.cliente').removeClass('hidden');
+                                $('.cliente').attr('required', 'required');
+                        } else{
+                        $('.cliente').addClass('hidden');
                                 $('.cliente').removeAttr('required');
                                 $('.cliente').val('');
-                            }
                         }
-                    }
+                        }
+                        }
                 });
-
-            })
-            $('#{{ form.vin.vars.id }}').keyup(function () {
-                $('#{{ form.chasis.vars.id }}').val($('#{{ form.vin.vars.id }}').val());
-            });
-            window.onload = function (e) {
+        })
+                $('#{{ form.vin.vars.id }}').keyup(function () {
+        $('#{{ form.chasis.vars.id }}').val($('#{{ form.vin.vars.id }}').val());
+        });
+                window.onload = function (e) {
                 if ({{ entity.tipoVentaEspecial.muestraPlanDeAhorro|default('false') }}) {
-                    $('.tipo-venta-especial-field').removeClass('hidden');
-                    $('.tipo-venta-especial-field').attr('required', 'required');
+                $('.plan-field').removeClass('hidden');
+                        $('.plan-field').attr('required', 'required');
                 } else {
-                    $('.tipo-venta-especial-field').removeAttr('required');
+                $('.plan-field').removeAttr('required');
+                        $('.cliente').removeAttr('required');
                 }
-            }
+                }
         });
     </script>
 {% endblock %}
