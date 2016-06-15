@@ -221,7 +221,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
     public function getVehiculosEnStock($filters = null) {
 
         $where = "tev.slug in ('transito', 'recibido', 'stock') and (v.cliente_id is null or clientes.reventa = false)";
-        $where.=" AND tv.slug in ('convencional','plan-de-ahorro-propio') ";
+        $where.=" AND tv.slug in ('convencional','plan-de-ahorro-propio','venta-especial-propia') ";
         $db = $this->getEntityManager()->getConnection();
 
         if ($filters['colorVehiculo']) {
