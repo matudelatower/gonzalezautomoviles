@@ -93,7 +93,7 @@ class VehiculosEnStockFilterType extends AbstractType {
 					'required'      => false,
 					'query_builder' => function ( EntityRepository $er ) {
 
-						$slugArray = array( 'venta-especial-propia', 'venta-especial-propia', 'convencional' );
+						$slugArray = array( 'venta-especial-propia', 'convencional', 'plan-de-ahorro-propio' );
 
 						return $er->createQueryBuilder( 'tv' )
 						          ->where( 'tv.slug in (:slugs)' )
