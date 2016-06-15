@@ -242,6 +242,9 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         if ($filters['version']) {
             $where .= " AND cm.version = '" . $filters['version'] . "'";
         }
+        if ($filters['tipoVenta']) {
+            $where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVenta']->getId();
+        }
         if ($filters['patentado']) {
             if ($filters['patentado'] == 'si') {
                 $where .= " AND pat.dominio is not null ";
