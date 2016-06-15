@@ -70,6 +70,11 @@ class VehiculosEnStockFilterType extends AbstractType {
                     'label' =>'Fecha de facturacion',
                     'attr' => array('class' => 'daterange')
                 ))
+	            ->add('tipoVenta', 'entity', array(
+	                'class' => 'VehiculosBundle:TipoVentaEspecial',
+	                'choice_label' => 'nombre',
+	                'required' => false,
+	            ))
         ;
     }
 

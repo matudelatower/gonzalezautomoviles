@@ -71,55 +71,59 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <form id="filter-form" name="filter-form" role="form" method="post">
-                        <div class="col-md-6">
+                        <div class="box-body">
+                            <div class="col-md-6">
 
-                            {{ form_row(form.modelo) }}
-                            {{ form_row(form.anio) }}
-                            {{ form_row(form.codigo) }}
-                            {{ form_row(form.version) }}
-                            {{ form_row(form.rango) }}
+                                {{ form_row(form.modelo) }}
+                                {{ form_row(form.anio) }}
+                                {{ form_row(form.codigo) }}
+                                {{ form_row(form.version) }}
+                                {{ form_row(form.rango) }}
+                                {{ form_row(form.tipoVenta) }}
 
+                            </div>
+
+                            <div class="col-md-6">
+
+                                {{ form_row(form.colorVehiculo) }}
+                                {{ form_row(form.deposito) }}
+                                {{ form_row(form.diaInicio) }}
+                                {{ form_row(form.diaFin) }}
+                                {{ form_row(form.patentado) }}
+
+                            </div>
                         </div>
 
-                        <div class="col-md-6">
 
-                            {{ form_row(form.colorVehiculo) }}
-                            {{ form_row(form.deposito) }}
-                            {{ form_row(form.diaInicio) }}
-                            {{ form_row(form.diaFin) }}
-                            {{ form_row(form.patentado) }}
-
-                        </div>
-
-
-
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-4">
-                                <button class="btn btn-primary btn-label-left" type="submit" id="btn-filtro-buscar">
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-4">
+                                    <button class="btn btn-primary btn-label-left" type="submit" id="btn-filtro-buscar">
                                     <span>
                                         <i class="fa fa-filter"></i>
                                     </span>
-                                    Buscar
-                                </button>
-                                <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
-                                        title="exportar excel">
+                                        Buscar
+                                    </button>
+                                    <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
+                                            title="exportar excel">
                                     <span>
                                         <i class="fa fa-file-excel-o"></i>
                                     </span>
-                                </button>
-                                <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
-                                        title="exportar PDF">
+                                    </button>
+                                    <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
+                                            title="exportar PDF">
                                     <span>
                                         <i class="fa fa-file-pdf-o"></i>
                                     </span>
-                                </button>
-                                <button class="btn btn-default" type="reset">
+                                    </button>
+                                    <button class="btn btn-default" type="reset">
                                     <span>
                                         <i></i>
                                     </span>
-                                    Limpiar
-                                </button>
+                                        Limpiar
+                                    </button>
 
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -133,7 +137,8 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Listado Vehiculos En Stock - {{cantidadRegistros}} vehiculos encontrados</h3>
+                    <h3 class="box-title">Listado Vehiculos En Stock - {{ cantidadRegistros }} vehiculos
+                        encontrados</h3>
 
 
                 </div>
@@ -142,51 +147,51 @@
                     <table class="data-table table table-bordered table-striped">
                         <thead>
 
-                            <tr>
-                                <th data-width="3%">Id</th>
-                                <th data-width="20%">Modelo</th>
-                                <th data-width="10%">Color vehiculo</th>
-                                <th data-width="5%">Vin</th>
-                                <th data-width="3%">Estado</th>
-                                <th data-width="5%">Tipo Venta</th>
-                                <th data-width="5%">Fecha Fact</th>
-                                <th data-width="5%">Dias en stock</th>                            
-                                <th data-width="3%">Patent</th>
-                                <th data-width="10%">Deposito</th>
-                                <th data-width="3%">Estado pago</th>
-                                <th data-width="5%">Observaciones</th>
-                            </tr>
+                        <tr>
+                            <th data-width="3%">Id</th>
+                            <th data-width="20%">Modelo</th>
+                            <th data-width="10%">Color vehiculo</th>
+                            <th data-width="5%">Vin</th>
+                            <th data-width="3%">Estado</th>
+                            <th data-width="5%">Tipo Venta</th>
+                            <th data-width="5%">Fecha Fact</th>
+                            <th data-width="5%">Dias en stock</th>
+                            <th data-width="3%">Patent</th>
+                            <th data-width="10%">Deposito</th>
+                            <th data-width="3%">Estado pago</th>
+                            <th data-width="5%">Observaciones</th>
+                        </tr>
                         </thead>
                         <tbody>
 
-                            {% for entity in entities %}
-                                <tr>
-                                    <td>{{ entity.id }}</td>
-                                    <td>{{ entity.modelo }}</td>
-                                    <td>{{ entity.color_vehiculo }}</td>
-                                    <td>{{ entity.vin }}</td>
-                                    <td>{{ entity.vehiculo_estado }}</td>
-                                    <td>{{ entity.tipo_venta_especial }}</td>
-                                    <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
-                                    <td align="center">{{ entity.dias_en_stock }}</td>
-                                    <td>
-                                        {% if entity.estado_patentamiento_slug=="patentado" %}
-                                            SI
-                                        {% else %}
-                                            NO
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ entity.deposito_actual | default ("") }}</td>
-                                    <td align="center">
-                                        {% if entity.pagado %}
-                                            Gonzalez
-                                        {% else %}
-                                            Gpat
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ entity.observacion }}</td>
-                                </tr>
-                            {% endfor %}
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td>{{ entity.modelo }}</td>
+                                <td>{{ entity.color_vehiculo }}</td>
+                                <td>{{ entity.vin }}</td>
+                                <td>{{ entity.vehiculo_estado }}</td>
+                                <td>{{ entity.tipo_venta_especial }}</td>
+                                <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
+                                <td align="center">{{ entity.dias_en_stock }}</td>
+                                <td>
+                                    {% if entity.estado_patentamiento_slug=="patentado" %}
+                                        SI
+                                    {% else %}
+                                        NO
+                                    {% endif %}
+                                </td>
+                                <td>{{ entity.deposito_actual | default ("") }}</td>
+                                <td align="center">
+                                    {% if entity.pagado %}
+                                        Gonzalez
+                                    {% else %}
+                                        Gpat
+                                    {% endif %}
+                                </td>
+                                <td>{{ entity.observacion }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
