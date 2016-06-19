@@ -116,8 +116,13 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
     public function getVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta) {
         $db = $this->getEntityManager()->getConnection();
-        $vendedorId = $vendedor->getId();
+        if($vendedor){
+            $vendedorId = $vendedor->getId();
         $where = " vehiculos.vendedor_id =$vendedorId";
+        }else{
+             $where = " 0=0 ";
+        }
+        
 
         if ($fechaDesde and $fechaHasta) {
             $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
@@ -182,10 +187,11 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $db = $this->getEntityManager()->getConnection();
         $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
         $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        $orderBy=" fecha_entrega asc,hora_entrega asc,modelo asc,color asc ";
         $query = "SELECT v.*,
                          nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
                          colores_vehiculos.color, a.fecha as fecha_entrega, a.hora as hora_entrega, a.hora, a.descripcion as descripcion_entrega, d.nombre as deposito_actual,
-                         personas.apellido ||', '||personas.nombre as cliente,
+                         personas.apellido ||', '||personas.nombre as cliente,tv.nombre as tipo_venta_especial,personas.telefono,personas.celular,
                          (select personas.apellido||', '||personas.nombre
                         from empleados
                         LEFT JOIN persona_tipos ON empleados.id = persona_tipos.empleado_id
@@ -197,7 +203,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                         INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id = eevv.lastId
                         INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
                         INNER JOIN tipo_estado_vehiculo ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
-
+                        
                         INNER JOIN agenda_entregas a ON a.vehiculo_id = v.id
                         INNER JOIN colores_vehiculos colores_vehiculos ON v.color_vehiculo_id = colores_vehiculos.id
                         INNER JOIN codigos_modelo codigos_modelo ON v.codigo_modelo_id = codigos_modelo.id
@@ -208,9 +214,11 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                         LEFT JOIN clientes ON v.cliente_id = clientes.id
                         LEFT JOIN persona_tipos ON clientes.id = persona_tipos.cliente_id
                         LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id = tv.id
                         WHERE
                         tipo_estado_vehiculo.slug <> 'entregado' AND
-                        a.fecha BETWEEN '$fechaDesde' and '$fechaHasta'";
+                        a.fecha BETWEEN '$fechaDesde' and '$fechaHasta' 
+                        ORDER BY $orderBy ";
 
         $stmt = $db->prepare($query);
         $stmt->execute();

@@ -92,7 +92,7 @@
                                                    title="Patente"><i class="fa icon-patente"></i></a>
                                                 {% endif %}        
 
-                                            {% if app.user.tienePermisoEspecial('facturar_vehiculo') %}                                                   
+                                            {% if app.user.tienePermisoEspecial('facturar_vehiculo') and entity.venta_especial_slug != 'plan-de-ahorro-propio'%}                                                   
                                                 <a class="btn btn-default"
                                                    href="{{ path('vehiculos_new_factura', { 'vehiculoId': entity.id }) }}"
                                                    title="Facturar"><i class="fa fa-usd"></i></a>
@@ -103,7 +103,7 @@
                                                    data-url="{{ path('new_sesion_factura_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Sesión de factura"><i class="fa  fa-files-o"></i></a>
                                                 {% endif %}
-                                                {% if entity.venta_especial_slug == 'convencional' and  app.user.tienePermisoEspecial('asignar_vehiculo')%}
+                                                {% if (entity.venta_especial_slug == 'convencional' or entity.venta_especial_slug == 'venta-especial-propia') and app.user.tienePermisoEspecial('asignar_vehiculo') %}
                                                 <a class="btn {% if(entity.cliente_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
                                                    data-toggle="modal"
                                                    data-target="#modalGeneric"
