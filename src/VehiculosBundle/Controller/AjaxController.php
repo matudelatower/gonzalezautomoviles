@@ -192,16 +192,22 @@ class AjaxController extends Controller {
         $prueba = $request->request->get('vehiculosbundle_sesion_factura');
         $cliente = $this->getDoctrine()->getManager()->getRepository("ClientesBundle:Cliente")->find($prueba['cliente']);
         $vehiculo->setCliente($cliente);
+        $estadoSlug = $vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo()->getSlug();
+        /* si esta en stock significa que en un plan de ahoro propio y tiene que pasar a listado pendiente
+          por entregar, de lo contrario es una venta especial y ya esta en estado pendiente por entregar
+          por lo tanto no se cambia el estado solo se le asigna el cliente */
+        if ($estadoSlug == 'stock') {
+            //una vez que se realiza la sesion de factura el vehiculo pasa a estado pendiente por entregar
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                    'pendiente-por-entregar'
+            );
 
-        //una vez que se realiza la sesion de factura el vehiculo pasa a estado pendiente por entregar
-        $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                'pendiente-por-entregar'
-        );
+            $estadoVehiculo = new EstadoVehiculo();
+            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+            $estadoVehiculo->setVehiculo($vehiculo);
+            $vehiculo->addEstadoVehiculo($estadoVehiculo);
+        }
 
-        $estadoVehiculo = new EstadoVehiculo();
-        $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-        $estadoVehiculo->setVehiculo($vehiculo);
-        $vehiculo->addEstadoVehiculo($estadoVehiculo);
 
         $em->persist($vehiculo);
         $em->flush();
