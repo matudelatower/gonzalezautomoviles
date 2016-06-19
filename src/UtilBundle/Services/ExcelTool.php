@@ -311,13 +311,16 @@ class ExcelTool {
                 ->setCellValue('B1', 'Modelo')
                 ->setCellValue('C1', 'Color Vehiculo')
                 ->setCellValue('D1', 'VIN')
-                ->setCellValue('E1', 'Deposito')
-                ->setCellValue('F1', 'Cliente')
-                ->setCellValue('G1', 'Vendedor')
-                ->setCellValue('H1', 'Descripcion')
-                ->setCellValue('I1', 'Fecha y hora');
+                ->setCellValue('E1', 'Tipo venta')
+                ->setCellValue('F1', 'Deposito')
+                ->setCellValue('G1', 'Cliente')
+                ->setCellValue('H1', 'Telefono')
+                ->setCellValue('I1', 'Celular')
+                ->setCellValue('J1', 'Vendedor')
+                ->setCellValue('K1', 'Descripcion')
+                ->setCellValue('L1', 'Fecha y hora');
 
-        $phpExcelObject->getActiveSheet()->getStyle('A1:I1')->getBorders()->applyFromArray($this->head);
+        $phpExcelObject->getActiveSheet()->getStyle('A1:L1')->getBorders()->applyFromArray($this->head);
 
         $i = 2;
         $contador = 1;
@@ -327,18 +330,21 @@ class ExcelTool {
                 $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
                 $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color']);
                 $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
-                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['deposito_actual']);
-                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['cliente']);
-                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['vendedor']);
-                $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['descripcion_entrega']);
-                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, date("d-m-Y", strtotime($entity['fecha_entrega'])) . " " . $entity['hora_entrega']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['tipo_venta_especial']);
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $entity['deposito_actual']);
+                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['cliente']);
+                $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, $entity['telefono']);
+                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, $entity['celular']);
+                $phpExcelObject->getActiveSheet()->setCellValue('J' . $i, $entity['vendedor']);
+                $phpExcelObject->getActiveSheet()->setCellValue('K' . $i, $entity['descripcion_entrega']);
+                $phpExcelObject->getActiveSheet()->setCellValue('L' . $i, date("d-m-Y", strtotime($entity['fecha_entrega'])) . " " . $entity['hora_entrega']);
 
                 $i ++;
                 $contador++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->getStyle('A2:I' . $i)->getBorders()->applyFromArray($this->body);
+        $phpExcelObject->getActiveSheet()->getStyle('A2:L' . $i)->getBorders()->applyFromArray($this->body);
 
         /** autosize */
         $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
@@ -350,6 +356,9 @@ class ExcelTool {
         $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setAutoSize('true');
         $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('K')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('L')->setAutoSize('true');
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
 

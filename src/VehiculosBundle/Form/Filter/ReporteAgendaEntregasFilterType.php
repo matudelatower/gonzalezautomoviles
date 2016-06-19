@@ -12,7 +12,8 @@ class ReporteAgendaEntregasFilterType extends AbstractType {
 		$builder->add( 'rango',
 			'text',
 			array(
-				'attr' => array( 'class' => 'daterange' )
+				'attr' => array( 'class' => 'daterange' ),
+                            'required'=>true
 			) );
 //		        ->add( 'vendedor',
 //			        'jqueryautocomplete',
