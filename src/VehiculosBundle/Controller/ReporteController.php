@@ -161,7 +161,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                
+
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }
