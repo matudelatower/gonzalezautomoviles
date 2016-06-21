@@ -6,6 +6,23 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
+
+            {% set formFilter = app.request.request.get('vehiculosbundle_vehiculos_en_stock_filter') %}
+
+            {% if formFilter is not null %}
+            $('.pagination li a').click(function () {
+
+                $('#filter-form').attr('action', this.href);
+                {% for row in form if formFilter[row.vars.name] is defined %}
+                $('#{{ row.vars.id }}').val('{{ formFilter[row.vars.name] }}');
+                {% endfor %}
+
+                $('#filter-form').submit();
+                return false;
+            });
+            {% endif %}
+
+
             $('#btn-exportar-excel').click(function () {
                 $('#filter-form').attr('target', '_blank');
                 $('#filter-form').attr('action', '{{ path('exportar_excel_reporte_vehiculos_en_stock') }}');

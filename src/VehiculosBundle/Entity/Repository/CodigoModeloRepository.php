@@ -13,29 +13,44 @@ use Doctrine\ORM\EntityRepository;
 
 class CodigoModeloRepository extends EntityRepository {
 
-    public function getAnios() {
+    public function getAnios($nombreModelo = null) {
         $qb = $this->createQueryBuilder('cm');
 
         $qb->select('cm.anio')
                 ->distinct();
 
+        if ($nombreModelo){
+            $qb->where('cm.nombreModelo = :nombreModelo')
+                ->setParameter('nombreModelo', $nombreModelo);
+        }
+
         return $qb->getQuery()->getArrayResult();
     }
 
-    public function getCodigos() {
+    public function getCodigos($nombreModelo = null) {
         $qb = $this->createQueryBuilder('cm');
 
         $qb->select('cm.codigo')
                 ->distinct();
 
+        if ($nombreModelo){
+            $qb->where('cm.nombreModelo = :nombreModelo')
+               ->setParameter('nombreModelo', $nombreModelo);
+        }
+
         return $qb->getQuery()->getArrayResult();
     }
 
-    public function getVersiones() {
+    public function getVersiones($nombreModelo = null) {
         $qb = $this->createQueryBuilder('cm');
 
         $qb->select('cm.version')
                 ->distinct();
+
+        if ($nombreModelo){
+            $qb->where('cm.nombreModelo = :nombreModelo')
+               ->setParameter('nombreModelo', $nombreModelo);
+        }
 
         return $qb->getQuery()->getArrayResult();
     }
