@@ -156,17 +156,12 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         $entities = array();
 
-//        $reportesManager = $this->get('manager.reportes');
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-//                if ($data['rango'] != "") {
-//                    $aFecha = explode(' - ', $data['rango']);
-//                    $data['fechaDesde'] = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-//                    $data['fechaHasta'] = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-//                }
+                
                 $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
             }
         }

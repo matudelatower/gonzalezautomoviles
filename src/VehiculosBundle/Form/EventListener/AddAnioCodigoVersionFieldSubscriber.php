@@ -43,17 +43,19 @@ class AddAnioCodigoVersionFieldSubscriber implements EventSubscriberInterface {
 		$aVersion = array();
 		if ( $nombreModelo ) {
 
-			$anios = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getAnios();
+			$modelo = $em->getRepository('VehiculosBundle:NombreModelo')->findOneById($nombreModelo);
+
+			$anios = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getAnios($modelo);
 			foreach ( $anios as $item ) {
 				$aAnios[ $item['anio'] ] = $item['anio'];
 			}
 
-			$codigos = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getCodigos();
+			$codigos = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getCodigos($modelo);
 			foreach ( $codigos as $item ) {
 				$aCodigos[ $item['codigo'] ] = $item['codigo'];
 			}
 
-			$versions = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getVersiones();
+			$versions = $em->getRepository( 'VehiculosBundle:CodigoModelo' )->getVersiones($modelo);
 			foreach ( $versions as $item ) {
 				$aVersion[ $item['version'] ] = $item['version'];
 			}
@@ -101,10 +103,6 @@ class AddAnioCodigoVersionFieldSubscriber implements EventSubscriberInterface {
 
 		$accessor     = PropertyAccess::createPropertyAccessor();
 		$nombreModelo = $accessor->getValue( $data, 'nombreModelo' );
-//		$departamento = ( $localidad ) ? $localidad->getDepartamento() : null;
-//		$provincia    = ( $departamento ) ? $departamento->getProvincia() : null;
-//		$pais         = ( $provincia ) ? $provincia->getPais() : null;
-
 
 		$this->addFieldsForm( $form, $nombreModelo, null, null, null );
 	}
