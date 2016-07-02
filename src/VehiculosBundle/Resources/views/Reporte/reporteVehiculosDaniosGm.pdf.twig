@@ -1,0 +1,66 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-size: 10pt !important;
+        }
+        table {
+            width: 100%;
+            page-break-inside: auto
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+    </style>
+{% endblock stylesheets %}
+{% block body %}
+    <div
+        {%if(estado)%}
+            <label>Estado Daño: </label> <span>{{ estado }}</span> <br>
+        {%endif%}
+        {%if(fecha)%}
+            <label>Fecha: </label><span>{{ fechaDesde |date('d/m/Y') }} al {{ fechaHasta |date('d/m/Y') }}</span>
+        {%endif%}
+    </div>
+    <br>
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
+
+                <tr>
+                    <th>&numero;</th>
+                    <th>Modelo</th>
+                    <th>Color veh&iacute;culo</th>                    
+                    <th>Vin</th>
+                    <th>Deposito</th>
+                    <th>Daños</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ entity.nombre_modelo~" | "~entity.anio_modelo~" | "~entity.version}}</td>
+                        <td>{{ entity.color }}</td>                       
+                        <td>{{ entity.vin }}</td>
+                        <td>{{ entity.deposito }}</td>
+                        <td>
+                            {% for danio in entity.danios %}                        
+                                [{{ danio.tipo_danio }}-
+                                {{ danio.codigo_danio }}-
+                                {{ danio.descripcion }}]
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
