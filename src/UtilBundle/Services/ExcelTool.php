@@ -735,5 +735,146 @@ class ExcelTool {
 
         return $response;
     }
+/*
+ * devuelve los vehiculos con daños de gm
+ */
+    public function buildSheetReporteVehiculosDaniosGm($resultSet) {
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
+        $phpExcelObject->getProperties()->setTitle($this->title);
+        $phpExcelObject->getProperties()->setDescription($this->descripcion);
+        $phpExcelObject->getProperties()->setCreator($this->createby);
+
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        $phpExcelObject->getActiveSheet()
+                ->setCellValue('A1', 'N°')
+                ->setCellValue('B1', 'Modelo')
+                ->setCellValue('C1', 'Color')
+                ->setCellValue('D1', 'VIN')
+                ->setCellValue('E1', 'Deposito')
+                ->setCellValue('F1', 'Danios');
+
+        $phpExcelObject->getActiveSheet()->getStyle('A1:E1')->getBorders()->applyFromArray($this->head);
+
+
+        $i = 2;
+        if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
+            $contador = 1;
+
+            foreach ($resultSet as $entity) {
+                $danios = null;
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
+                $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo'] . " | " . $entity['anio_modelo'] . " | " . $entity['version']);
+                $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color']);
+                $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['deposito']);
+
+                foreach ($entity['danios'] as $danio) {
+                    $danios.=" ["
+                            . $danio['tipo_danio'] . "-"
+                            . $danio['codigo_danio'] . "-"
+                            . $danio['descripcion']
+                            . "] ";
+                }
+
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $danios);
+                $i ++;
+                $contador++;
+            }
+        }
+
+        $phpExcelObject->getActiveSheet()->getStyle('A2:F' . $i)->getBorders()->applyFromArray($this->body);
+
+        /** autosize */
+        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
+
+        $phpExcelObject->getActiveSheet()->setTitle($this->title);
+
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
+// create the response
+        $response = $this->phpexcel->createStreamedResponse($writer);
+
+        return $response;
+    }
+    
+    /*
+ * devuelve los vehiculos con daños internos
+ */
+    public function buildSheetReporteVehiculosDaniosInternos($resultSet) {
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
+        $phpExcelObject->getProperties()->setTitle($this->title);
+        $phpExcelObject->getProperties()->setDescription($this->descripcion);
+        $phpExcelObject->getProperties()->setCreator($this->createby);
+
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        $phpExcelObject->getActiveSheet()
+                ->setCellValue('A1', 'N°')
+                ->setCellValue('B1', 'Modelo')
+                ->setCellValue('C1', 'Color')
+                ->setCellValue('D1', 'VIN')
+                ->setCellValue('E1', 'Deposito')
+                ->setCellValue('F1', 'Danios');
+
+        $phpExcelObject->getActiveSheet()->getStyle('A1:E1')->getBorders()->applyFromArray($this->head);
+
+
+        $i = 2;
+        if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
+            $contador = 1;
+
+            foreach ($resultSet as $entity) {
+                $danios = null;
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
+                $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo'] . " | " . $entity['anio_modelo'] . " | " . $entity['version']);
+                $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color']);
+                $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['deposito']);
+
+                foreach ($entity['danios'] as $danio) {
+                    if($danio['solucionado']=='t'){
+                        $solucionado="Solucionado:SI";
+                    }else{
+                        $solucionado="Solucionado:NO";
+                    }
+                    $danios.=" ["
+                            . $danio['categoria_danio'] . "-"
+                            . $danio['tipo_danio'] . "-"
+                            . $danio['detalle']. "-"
+                            . $solucionado
+                            . "] ";
+                }
+
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $danios);
+                $i ++;
+                $contador++;
+            }
+        }
+
+        $phpExcelObject->getActiveSheet()->getStyle('A2:F' . $i)->getBorders()->applyFromArray($this->body);
+
+        /** autosize */
+        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
+
+        $phpExcelObject->getActiveSheet()->setTitle($this->title);
+
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
+// create the response
+        $response = $this->phpexcel->createStreamedResponse($writer);
+
+        return $response;
+    }
 
 }

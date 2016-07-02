@@ -102,6 +102,12 @@
                                                data-target="#modalGeneric"
                                                data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                title="Mover de deposito"><i class="fa fa-exchange"></i></a>
+                                               {% if app.user.tienePermisoEspecial('agendar_entrega') %}
+                                                <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
+
+                                                   href="{{ path('agenda_entrega_new', { 'vehiculoId': entity.id }) }}"
+                                                   title="Agendar entrega"><i class="fa fa-calendar"></i></a>
+                                                {%endif%}
                                             <a class="btn {% if(entity.danio_interno_sin_solucionar!='') %}btn-danger{% else %}btn-default{% endif %}"
                                                href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
                                                title="Daños internos"><i class="fa fa-fire-extinguisher"></i></a>

@@ -113,3 +113,27 @@ exportar_pdf_reporte_vehiculos_asignados_reventa:
 exportar_excel_reporte_vehiculos_asignados_reventa:
     path:     /exportar_excel_reporte_vehiculos_asignados_reventa
     defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosAsignadosAReventa" }
+
+index_reporte_vehiculos_danios_gm:
+    path: /index_reporte_vehiculos_danios_gm
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosDaniosGm" }
+
+exportar_pdf_reporte_vehiculos_danios_gm:
+    path:     /exportar_pdf_reporte_vehiculos_danios_gm
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosDaniosGm" }
+
+exportar_excel_reporte_vehiculos_danios_gm:
+    path:     /exportar_excel_reporte_vehiculos_danios_gm
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosDaniosGm" }
+    
+index_reporte_vehiculos_danios_internos:
+    path: /index_reporte_vehiculos_danios_internos
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosDaniosInternos" }
+
+exportar_pdf_reporte_vehiculos_danios_internos:
+    path:     /exportar_pdf_reporte_vehiculos_danios_internos
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosDaniosInternos" }
+
+exportar_excel_reporte_vehiculos_danios_internos:
+    path:     /exportar_excel_reporte_vehiculos_danios_internos
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosDaniosInternos" }   
