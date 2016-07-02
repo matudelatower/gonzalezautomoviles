@@ -57,12 +57,12 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
             $where.=" AND estados_vehiculos.tipo_estado_vehiculo_id=" . $filters['estadoVehiculo']->getId();
         }
         if ($filters['numeroGrupo']) {
-            $where.=" AND v.numero_grupo='" . $filters['numeroGrupo']."'";
+            $where.=" AND v.numero_grupo='" . $filters['numeroGrupo'] . "'";
         }
-         if ($filters['numeroOrden']) {
-            $where.=" AND v.numero_orden='" . $filters['numeroOrden']."'";
+        if ($filters['numeroOrden']) {
+            $where.=" AND v.numero_orden='" . $filters['numeroOrden'] . "'";
         }
-        
+
         if ($filters['rango']) {
             if (isset($recibido)) {
                 $where.=" AND r.fecha_recibido BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
@@ -116,13 +116,13 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
     public function getVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta) {
         $db = $this->getEntityManager()->getConnection();
-        if($vendedor){
+        if ($vendedor) {
             $vendedorId = $vendedor->getId();
-        $where = " vehiculos.vendedor_id =$vendedorId";
-        }else{
-             $where = " 0=0 ";
+            $where = " vehiculos.vendedor_id =$vendedorId";
+        } else {
+            $where = " 0=0 ";
         }
-        
+
 
         if ($fechaDesde and $fechaHasta) {
             $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
@@ -187,7 +187,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         $db = $this->getEntityManager()->getConnection();
         $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
         $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
-        $orderBy=" fecha_entrega asc,hora_entrega asc,modelo asc,color asc ";
+        $orderBy = " fecha_entrega asc,hora_entrega asc,modelo asc,color asc ";
         $query = "SELECT v.*,
                          nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
                          colores_vehiculos.color, a.fecha as fecha_entrega, a.hora as hora_entrega, a.hora, a.descripcion as descripcion_entrega, d.nombre as deposito_actual,
@@ -402,21 +402,21 @@ estados_vehiculos.creado BETWEEN '$fechaDesde' AND '$fechaHasta'
 
 
         $query = "SELECT
-count(danios_vehiculo_gm.id) as cantidad
-FROM
-danios_vehiculo_gm danios_vehiculo_gm
-WHERE
-danios_vehiculo_gm.vehiculo_id IN (SELECT
-vehiculos.id AS vehiculos_id
-FROM
-tipo_estado_vehiculo tipo_estado_vehiculo INNER JOIN estados_vehiculos estados_vehiculos ON tipo_estado_vehiculo.id = estados_vehiculos.tipo_estado_vehiculo_id
-INNER JOIN vehiculos vehiculos ON estados_vehiculos.vehiculo_id = vehiculos.id
-WHERE
-tipo_estado_vehiculo.slug = 'recibido'
-AND estados_vehiculos.id in (
-SELECT max(id) from estados_vehiculos estados_vehiculos_sq
-WHERE estados_vehiculos_sq.creado BETWEEN '$fechaDesde' AND '$fechaHasta'
-Group by estados_vehiculos_sq.vehiculo_id
+                    count(danios_vehiculo_gm.id) as cantidad
+                    FROM
+                    danios_vehiculo_gm danios_vehiculo_gm
+                    WHERE
+                    danios_vehiculo_gm.vehiculo_id IN (SELECT
+                    vehiculos.id AS vehiculos_id
+                    FROM
+                    tipo_estado_vehiculo tipo_estado_vehiculo INNER JOIN estados_vehiculos estados_vehiculos ON tipo_estado_vehiculo.id = estados_vehiculos.tipo_estado_vehiculo_id
+                    INNER JOIN vehiculos vehiculos ON estados_vehiculos.vehiculo_id = vehiculos.id
+                    WHERE
+                    tipo_estado_vehiculo.slug = 'recibido'
+                    AND estados_vehiculos.id in (
+                    SELECT max(id) from estados_vehiculos estados_vehiculos_sq
+                    WHERE estados_vehiculos_sq.creado BETWEEN '$fechaDesde' AND '$fechaHasta'
+                    Group by estados_vehiculos_sq.vehiculo_id
 )
 )";
 
@@ -626,6 +626,112 @@ WHERE " . $where .
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    public function getVehiculosDaniosGm($filters = null, $danios = true) {
+
+        $db = $this->getEntityManager()->getConnection();
+        $where = " te.slug<>'solucionado' ";
+
+        if ($filters['rango']) {
+            $aFecha = explode(' - ', $filters['rango']);
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+            $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+            $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+        }
+
+        if ($filters['tipoEstadoDanioGm']) {
+            $where.= " AND te.slug='" . $filters['tipoEstadoDanioGm']->getSlug() . "'";
+        }
+
+        if ($filters['rango']) {
+            $where.=" AND dv.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
+        }
+
+        $query = "select distinct(v.id),v.vin,d.nombre as deposito,cv.color,
+                        nm.nombre as nombre_modelo,cm.anio as anio_modelo,cm.version
+                        from vehiculos v
+                        inner join danios_vehiculo_gm dv on v.id=dv.vehiculo_id
+                        inner join tipos_estado_danio_gm te on dv.tipo_estado_danio_gm_id=te.id
+                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
+                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
+                        LEFT JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
+
+                        LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id = mmdd.vehiculo_id
+                        LEFT JOIN movimientos_depositos md ON mmdd.lastIdMd = md.id
+                        LEFT JOIN depositos d ON md.deposito_destino_id = d.id
+
+                        where  " . $where .
+                " ORDER BY nombre_modelo, color asc";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if ($danios) {
+            for ($i=0;$i<count($result) ;$i++) {
+                 $query = "select td.descripcion as tipo_danio,cd.descripcion as codigo_danio,dv.*,te.descripcion
+                            from danios_vehiculo_gm dv 
+                            inner join tipos_estado_danio_gm te on dv.tipo_estado_danio_gm_id=te.id
+                            INNER JOIN tipos_danio_gm td on dv.tipo_danio_id=td.id
+                            INNER JOIN codigos_danio_gm cd on dv.codigo_danio_id=cd.id
+                            where vehiculo_id=" . $result[$i]['id'];
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $result[$i]['danios'] = $stmt->fetchAll();
+            }
+        }
+        return $result;
+    }
+    
+    public function getVehiculosDaniosInternos($filters = null, $danios = true) {
+
+        $db = $this->getEntityManager()->getConnection();
+        $where = " dv.solucionado=false ";
+
+        if ($filters['rango']) {
+            $aFecha = explode(' - ', $filters['rango']);
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+            $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+            $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59'; 
+            $where.=" AND dv.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
+        }
+
+
+        $query = "select distinct(v.id),v.vin,d.nombre as deposito,cv.color,
+                        nm.nombre as nombre_modelo,cm.anio as anio_modelo,cm.version
+                        from vehiculos v
+                        inner join danios_vehiculos_interno dv on v.id=dv.vehiculo_id
+                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
+                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
+                        LEFT JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
+
+                        LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id = mmdd.vehiculo_id
+                        LEFT JOIN movimientos_depositos md ON mmdd.lastIdMd = md.id
+                        LEFT JOIN depositos d ON md.deposito_destino_id = d.id
+
+                        where  " . $where .
+                " ORDER BY nombre_modelo, color asc";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if ($danios) {
+            for ($i=0;$i<count($result) ;$i++) {
+                 $query = "select dv.id,dv.detalle,td.nombre as tipo_danio,cd.nombre as categoria_danio,dv.solucionado
+                            from danios_vehiculos_interno dv 
+                            INNER JOIN tipos_danios_interno td on dv.tipo_danio_interno_id=td.id
+                            inner join categorias_danios_interno cd on td.categoria_danio_interno_id=cd.id
+                            where vehiculo_id=" . $result[$i]['id'];
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+        $result[$i]['danios'] = $stmt->fetchAll();
+            }
+        }
+        return $result;
     }
 
 }

@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosAsignadosAReventaFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosConDaniosFilterType;
+use VehiculosBundle\Form\Filter\ReporteVehiculosDaniosGmFilterType;
+use VehiculosBundle\Form\Filter\ReporteVehiculosDaniosInternosFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
 use VehiculosBundle\Form\Filter\VehiculosPorDepositoFilterType;
 use VehiculosBundle\Form\Filter\VehiculosCuponGarantiaFilterType;
@@ -897,7 +899,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
                 $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
             }
         }
-$cantidadRegistros = count($entities);
+        $cantidadRegistros = count($entities);
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
                 $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
@@ -906,7 +908,7 @@ $cantidadRegistros = count($entities);
         return $this->render('VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-            'cantidadRegistros' => $cantidadRegistros,
+                    'cantidadRegistros' => $cantidadRegistros,
         ));
     }
 
@@ -1105,6 +1107,248 @@ $cantidadRegistros = count($entities);
         $exportExcel->setDescripcion('Listado de Vehiculos Patentamientos');
 
         $response = $exportExcel->buildSheetReporteVehiculosPatentamientos($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
+    }
+
+    /*
+     * reporte de vehiculos que tengan daños de gm sin solucionar
+     */
+
+    public function indexReporteVehiculosDaniosGmAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+//        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+        $form = $this->createForm(new ReporteVehiculosDaniosGmFilterType($em));
+
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosGm($data);
+            }
+        }
+
+
+        $cantidadRegistros = count($entities);
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosDaniosGm.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
+        ));
+    }
+
+    public function pdfReporteVehiculosDaniosGmAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new ReporteVehiculosDaniosGmFilterType($em));
+
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                if ($data['rango']) {
+                    $aFecha = explode(' - ', $data['rango']);
+                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+                    $fecha = true;
+                } else {
+                    $fecha = false;
+                    $fechaDesde = null;
+                    $fechaHasta = null;
+                }
+                if ($data['tipoEstadoDanioGm']) {
+                    $estado = $data['tipoEstadoDanioGm']->getSlug();
+                } else {
+                    $estado = false;
+                }
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosGm($data);
+            }
+        }
+
+        $title = 'Reporte vehiculos con daños de GM';
+
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteVehiculosDaniosGm.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+            'fechaDesde' => $fechaDesde,
+            'fechaHasta' => $fechaHasta,
+            'fecha' => $fecha,
+            'estado' => $estado,
+                )
+        );
+        $reportesManager = $this->get('manager.reportes');
+        return new Response(
+                $reportesManager->imprimir($html, 'H')
+                , 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+    
+     public function excelReporteVehiculosDaniosGmAction(Request $request) {
+       $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new ReporteVehiculosDaniosGmFilterType($em));
+
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();               
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosGm($data);
+            }
+        }
+
+
+        $filename = "reporte_vehiculos_con_danios_gm.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Vehiculos Con Danios De GM');
+        $exportExcel->setDescripcion('Listado de Vehiculos Con Danios De GM');
+
+        $response = $exportExcel->buildSheetReporteVehiculosDaniosGm($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
+    }
+    
+    /*
+     * reporte de vehiculos que tengan daños de gm sin solucionar
+     */
+
+    public function indexReporteVehiculosDaniosInternosAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+//        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+        $form = $this->createForm(new ReporteVehiculosDaniosInternosFilterType());
+
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosInternos($data);
+            }
+        }
+
+
+        $cantidadRegistros = count($entities);
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosDaniosInternos.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
+        ));
+    }
+
+    public function pdfReporteVehiculosDaniosInternosAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new ReporteVehiculosDaniosInternosFilterType());
+
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                if ($data['rango']) {
+                    $aFecha = explode(' - ', $data['rango']);
+                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+                    $fecha = true;
+                } else {
+                    $fecha = false;
+                    $fechaDesde = null;
+                    $fechaHasta = null;
+                }
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosInternos($data);
+            }
+        }
+
+        $title = 'Reporte vehiculos con daños internos';
+
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteVehiculosDaniosInternos.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+            'fechaDesde' => $fechaDesde,
+            'fechaHasta' => $fechaHasta,
+            'fecha' => $fecha,
+                )
+        );
+        $reportesManager = $this->get('manager.reportes');
+        return new Response(
+                $reportesManager->imprimir($html, 'H')
+                , 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+    
+     public function excelReporteVehiculosDaniosInternosAction(Request $request) {
+       $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new ReporteVehiculosDaniosInternosFilterType());
+
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();               
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosInternos($data);
+            }
+        }
+
+
+        $filename = "reporte_vehiculos_con_danios_internos.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Vehiculos Con Danios Internos');
+        $exportExcel->setDescripcion('Listado de Vehiculos Con Danios Internos');
+
+        $response = $exportExcel->buildSheetReporteVehiculosDaniosInternos($entities);
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');

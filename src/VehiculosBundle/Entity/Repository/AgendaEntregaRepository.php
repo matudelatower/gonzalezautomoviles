@@ -17,7 +17,7 @@ class AgendaEntregaRepository extends EntityRepository {
 	public function getEntregasVigentes() {
 		$qb = $this->createQueryBuilder( 'ae' );
 		$qb->where( 'ae.fecha >= :fecha' )  
-		   ->setParameter( 'fecha', date("Y-m-d") );
+		   ->setParameter( 'fecha', date("Y-m-d", strtotime('-2 month')) );
 
 		return $qb->getQuery()->getResult();
 	}
