@@ -733,5 +733,85 @@ WHERE " . $where .
         }
         return $result;
     }
+    /*
+     * devuelve vehiculos de plan de ahorro para reporte plan de ahorro
+     */
+    public function getVehiculosPlanAhorro($filters = null) {
+
+        $where = "tev.slug in ('transito', 'recibido', 'pendiente-por-entregar')";
+        $where.=" AND tv.slug in ('plan-de-ahorro') ";
+        $db = $this->getEntityManager()->getConnection();
+
+        if ($filters['colorVehiculo']) {
+            $where.=" AND v.color_vehiculo_id = " . $filters['colorVehiculo']->getId();
+        }
+        if ($filters['deposito']) {
+            $where.=" AND d.id = " . $filters['deposito']->getId();
+        }
+        if ($filters['modelo']) {
+            $where.=" AND nm.id = " . $filters['modelo']->getId();
+        }
+        if ($filters['anio']) {
+            $where .= " AND cm.anio = '" . $filters['anio'] . "'";
+        }
+        if ($filters['codigo']) {
+            $where .= " AND cm.codigo = '" . $filters['codigo'] . "'";
+        }
+        if ($filters['version']) {
+            $where .= " AND cm.version = '" . $filters['version'] . "'";
+        }
+        if ($filters['patentado']) {
+            if ($filters['patentado'] == 'si') {
+                $where .= " AND pat.dominio is not null ";
+            } else {
+                $where .= " AND pat.dominio is null ";
+            }
+        }
+
+        if ($filters['diaInicio']) {
+            $where.=" AND (current_date-fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
+        }
+
+        if ($filters['diaFin']) {
+            $where.=" AND (current_date-fecha_emision_documento::date <= " . $filters['diaFin'] . ")";
+        }
+        if ($filters['rango']) {
+            $aFecha = explode(' - ', $filters['rango']);
+            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+            $where.=" AND v.fecha_emision_documento between '" . $fechaDesde->format("Y-m-d") . "' and '" . $fechaHasta->format("Y-m-d") . "' ";
+        }
+
+        $query = "SELECT distinct(v.*),
+                    nm.nombre||'|'||cm.anio||'|'||cm.version as modelo, nm.nombre as nombre_modelo,
+                    tev.estado as vehiculo_estado, tev.slug as vehiculo_estado_slug, remitos.fecha as remito_fecha,
+                    remitos.numero as remito_numero, v.numero_pedido, tv.nombre as tipo_venta_especial, tv.slug as venta_especial_slug, d.nombre as deposito_actual,
+                    cv.color as color_vehiculo,epat.slug as estado_patentamiento_slug,
+                    pat.dominio, current_date-fecha_emision_documento::date as dias_en_stock, age.fecha as fecha_entrega
+                   FROM estados_vehiculos
+                   INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id = eevv.lastId
+                   INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+                   INNER JOIN tipo_estado_vehiculo tev ON estados_vehiculos.tipo_estado_vehiculo_id = tev.id
+                   INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
+                   LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
+                   LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
+                   LEFT JOIN remitos ON v.remito_id = remitos.id
+                   LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id = tv.id
+
+                   LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id = mmdd.vehiculo_id
+                   LEFT JOIN movimientos_depositos md ON mmdd.lastIdMd = md.id
+                   LEFT JOIN depositos d ON md.deposito_destino_id = d.id
+                   LEFT JOIN patentamientos pat ON v.patentamiento_id = pat.id
+                   LEFT JOIN estados_patentamiento epat ON pat.estado_patentamiento_id=epat.id
+                   LEFT JOIN agenda_entregas age ON v.id = age.vehiculo_id
+                   LEFT JOIN clientes ON v.cliente_id = clientes.id
+                   WHERE " . $where .
+                " ORDER BY modelo, color_vehiculo asc, dias_en_stock desc";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 
 }
