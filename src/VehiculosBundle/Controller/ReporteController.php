@@ -9,6 +9,7 @@ use VehiculosBundle\Form\Filter\ReporteVehiculosConDaniosFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosDaniosGmFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosDaniosInternosFilterType;
 use VehiculosBundle\Form\Filter\VehiculosEnStockFilterType;
+use VehiculosBundle\Form\Filter\VehiculosPlanAhorroFilterType;
 use VehiculosBundle\Form\Filter\VehiculosPorDepositoFilterType;
 use VehiculosBundle\Form\Filter\VehiculosCuponGarantiaFilterType;
 use VehiculosBundle\Form\Filter\ReporteAgendaEntregasFilterType;
@@ -1357,5 +1358,110 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 
         return $response;
     }
+    
+    /*
+     * reporte vehiculo plan de ahorro (tránsito, recibidos y pendientes por entregar)
+     */
+    
+     public function indexReporteVehiculosPlanAhorroAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosPlanAhorroFilterType($em));
+
+        $entities = array();
+
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPlanAhorro($data);
+            }
+        }
+        $cantidadRegistros = count($entities);
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
+        );
+
+        return $this->render('VehiculosBundle:Reporte:reporteVehiculosPlanAhorro.html.twig', array(
+                    'entities' => $entities,
+                    'form' => $form->createView(),
+                    'cantidadRegistros' => $cantidadRegistros,
+        ));
+    }
+
+    public function excelReporteVehiculosPlanAhorroAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosPlanAhorroFilterType($em));
+
+        $entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPlanAhorro($data);
+            }
+        }
+        $filename = "reporte_vehiculos_plan_ahorro.xls";
+
+
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Vehiculos Plan de Ahorro');
+        $exportExcel->setDescripcion('Listado de Vehiculos Plan de Ahorro');
+
+
+//        $managerEncuestas = $this->get('manager.reportes');
+//        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
+
+
+        $response = $exportExcel->buildSheetgetReporteVehiculosPlanAhorro($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
+    }
+
+    public function pdfReporteVehiculosPlanAhorroAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new VehiculosPlanAhorroFilterType($em));
+
+        $entities = array();
+
+        $reportesManager = $this->get('manager.reportes');
+
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPlanAhorro($data);
+            }
+        }
+
+        $title = 'Reporte de Vehiculos de Plan de ahorro';
+
+        $html = $this->renderView(
+                'VehiculosBundle:Reporte:reporteVehiculosPlanAhorro.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+                )
+        );
+
+        return new Response(
+                $reportesManager->imprimir($html, "H"), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+
 
 }

@@ -137,3 +137,15 @@ exportar_pdf_reporte_vehiculos_danios_internos:
 exportar_excel_reporte_vehiculos_danios_internos:
     path:     /exportar_excel_reporte_vehiculos_danios_internos
     defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosDaniosInternos" }   
+    
+index_reporte_vehiculos_plan_ahorro:
+    path:     /index_reporte_vehiculos_plan_ahorro
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosPlanAhorro" }
+
+exportar_pdf_reporte_vehiculos_plan_ahorro:
+    path:     /exportar_pdf_repote_vehiculos_plan_ahorro
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosPlanAhorro" }
+
+exportar_excel_reporte_vehiculos_plan_ahorro:
+    path:     /exportar_excel_reporte_vehiculos_plan_ahorro
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPlanAhorro" }       

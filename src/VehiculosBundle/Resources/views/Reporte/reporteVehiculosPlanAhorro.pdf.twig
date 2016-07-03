@@ -30,12 +30,10 @@
                     <th>Color vehiculo</th>
                     <th>Vin</th>
                     <th>Estado</th>
-                    <th>Tipo venta</th>
                     <th>Fecha fact</th>
                     <th>Dias en stock</th> 
                     <th>Patent</th>
                     <th>Deposito</th>
-                    <th>Estado pago</th>
                     <th>Observaciones</th>
                 </tr>
             </thead>
@@ -47,7 +45,7 @@
                         {% set modelo = entity.nombre_modelo%}
                         <tr>
                             <td></td>
-                            <td colspan="11" style="font-weight: bold; text-align: left">{{ entity.nombre_modelo }}</td>
+                            <td colspan="9" style="font-weight: bold; text-align: left">{{ entity.nombre_modelo }}</td>
                         </tr>
                     {%endif%}    
                     <tr>
@@ -56,7 +54,6 @@
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
                         <td>{{ entity.vehiculo_estado }}</td>
-                        <td>{{ entity.tipo_venta_especial }}</td>
                         <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
                         <td>{{ entity.dias_en_stock }}</td>   
                         <td>
@@ -66,14 +63,7 @@
                                 NO
                             {% endif %}
                         </td>
-                        <td>{{ entity.deposito_actual | default ("") }}</td>
-                        <td align="center">
-                            {% if entity.pagado %}
-                                Gonzalez
-                            {% else %}
-                                Gpat
-                            {% endif %}
-                        </td>
+                        <td>{{ entity.deposito_actual | default ("") }}</td>                       
                         <td>{{ entity.observacion }}</td>
                     </tr>
                 {% endfor %}
