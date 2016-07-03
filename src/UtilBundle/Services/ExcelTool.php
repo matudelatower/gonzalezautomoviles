@@ -876,5 +876,91 @@ class ExcelTool {
 
         return $response;
     }
+    
+     /**
+     *
+     * Arma la hoja para el listado de vehiculos plan ahorro
+     *
+     * @param type $resultSet
+     *
+     * @return type
+     */
+    public function buildSheetgetReporteVehiculosPlanAhorro($resultSet) {
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
+        $phpExcelObject->getProperties()->setTitle($this->title);
+        $phpExcelObject->getProperties()->setDescription($this->descripcion);
+        $phpExcelObject->getProperties()->setCreator($this->createby);
+
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        $phpExcelObject->getActiveSheet()
+                ->setCellValue('A1', 'N°')
+                ->setCellValue('B1', 'Modelo')
+                ->setCellValue('C1', 'Color Vehiculo')
+                ->setCellValue('D1', 'VIN')
+                ->setCellValue('E1', 'Estado')
+                ->setCellValue('F1', 'Fecha Fact')
+                ->setCellValue('G1', 'Dias En Stock')
+                ->setCellValue('H1', 'Patentado')
+                ->setCellValue('I1', 'Deposito')
+                ->setCellValue('J1', 'Observacion');
+
+        $phpExcelObject->getActiveSheet()->getStyle('A1:J1')->getBorders()->applyFromArray($this->head);
+
+
+        $i = 2;
+        if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
+            $modelo = "";
+            $contador = 1;
+            foreach ($resultSet as $entity) {
+
+                if ($modelo != $entity['nombre_modelo']) {
+                    $modelo = $entity['nombre_modelo'];
+                    $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['nombre_modelo']);
+                    $i ++;
+                }
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $contador);
+                $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity['modelo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity['color_vehiculo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $entity['vin']);
+                $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $entity['vehiculo_estado']);
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, date('d-m-Y', strtotime($entity['fecha_emision_documento'])));
+                $phpExcelObject->getActiveSheet()->setCellValue('G' . $i, $entity['dias_en_stock']);
+                if ($entity['estado_patentamiento_slug'] == "patentado") {
+                    $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, 'SI');
+                } else {
+                    $phpExcelObject->getActiveSheet()->setCellValue('H' . $i, 'NO');
+                }
+                $phpExcelObject->getActiveSheet()->setCellValue('I' . $i, $entity['deposito_actual']);                
+                $phpExcelObject->getActiveSheet()->setCellValue('J' . $i, $entity['observacion']);
+
+                $i ++;
+                $contador++;
+            }
+        }
+
+        $phpExcelObject->getActiveSheet()->getStyle('A2:J' . $i)->getBorders()->applyFromArray($this->body);
+
+        /** autosize */
+        $phpExcelObject->getActiveSheet()->getColumnDimension('A')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('B')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('C')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('D')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('E')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('F')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('G')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('H')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('I')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->getColumnDimension('J')->setAutoSize('true');
+        $phpExcelObject->getActiveSheet()->setTitle($this->title);
+
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
+// create the response
+        $response = $this->phpexcel->createStreamedResponse($writer);
+
+        return $response;
+    }
+
 
 }

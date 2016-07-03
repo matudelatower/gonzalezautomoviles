@@ -1,0 +1,210 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% block title %}
+    Vehiculos En Stock
+{% endblock title %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            {% set formFilter = app.request.request.get('vehiculosbundle_vehiculos_plan_ahorro_filter') %}
+
+            {% if formFilter is not null %}
+            $('.pagination li a').click(function () {
+
+                $('#filter-form').attr('action', this.href);
+                {% for row in form if formFilter[row.vars.name] is defined %}
+                $('#{{ row.vars.id }}').val('{{ formFilter[row.vars.name] }}');
+                {% endfor %}
+
+                $('#filter-form').submit();
+                return false;
+            });
+            {% endif %}
+
+
+            $('#btn-exportar-excel').click(function () {
+                $('#filter-form').attr('target', '_blank');
+                $('#filter-form').attr('action', '{{ path('exportar_excel_reporte_vehiculos_plan_ahorro') }}');
+                $('#filter-form').submit();
+                $('#filter-form').removeAttr('target');
+                $('#filter-form').removeAttr('action');
+
+            });
+            $('#btn-exportar-pdf').click(function () {
+                $('#filter-form').attr('target', '_blank');
+                $('#filter-form').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_plan_ahorro') }}');
+                $('#filter-form').submit();
+                $('#filter-form').removeAttr('target');
+                $('#filter-form').removeAttr('action');
+            });
+
+            $('.modelo').change(function () {
+                var id = $(this).val();
+                $('.anio').empty();
+                $('.anio').append($('<option>').text('Seleccionar').attr('value', ''));
+                $('.codigo').empty();
+                $('.codigo').append($('<option>').text('Seleccionar').attr('value', ''));
+                $('.version').empty();
+                $('.version').append($('<option>').text('Seleccionar').attr('value', ''));
+                $.ajax({
+                    data: {id: id},
+                    type: 'get',
+                    url: '{{ path('get_codigo_anio_version_por_modelo') }}',
+                    success: function (data) {
+
+                        $.each(data.anio, function (i, value) {
+                            $('.anio').append($('<option>').text(value).attr('value', value));
+                        });
+                        $.each(data.codigo, function (i, value) {
+                            $('.codigo').append($('<option>').text(value).attr('value', value));
+                        });
+                        $.each(data.version, function (i, value) {
+                            $('.version').append($('<option>').text(value).attr('value', value));
+                        });
+                    },
+                });
+            });
+
+        });
+    </script>
+{% endblock %}
+{% block content -%}
+
+    <!-- FILTROS -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Filtros</h3>
+                    <div class="box-tools pull-right">
+                        <button title="" data-toggle="tooltip" data-widget="collapse" class="btn btn-box-tool"
+                                data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button title="" data-toggle="tooltip" data-widget="remove" class="btn btn-box-tool"
+                                data-original-title="Remove"><i class="fa fa-times"></i></button>
+                    </div>
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form id="filter-form" name="filter-form" role="form" method="post">
+                        <div class="box-body">
+                            <div class="col-md-6">
+
+                                {{ form_row(form.modelo) }}
+                                {{ form_row(form.anio) }}
+                                {{ form_row(form.codigo) }}
+                                {{ form_row(form.version) }}
+                                {{ form_row(form.rango) }}
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                {{ form_row(form.colorVehiculo) }}
+                                {{ form_row(form.deposito) }}
+                                {{ form_row(form.diaInicio) }}
+                                {{ form_row(form.diaFin) }}
+                                {{ form_row(form.patentado) }}
+
+                            </div>
+                        </div>
+
+
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-4">
+                                    <button class="btn btn-primary btn-label-left" type="submit" id="btn-filtro-buscar">
+                                    <span>
+                                        <i class="fa fa-filter"></i>
+                                    </span>
+                                        Buscar
+                                    </button>
+                                    <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
+                                            title="exportar excel">
+                                    <span>
+                                        <i class="fa fa-file-excel-o"></i>
+                                    </span>
+                                    </button>
+                                    <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
+                                            title="exportar PDF">
+                                    <span>
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </span>
+                                    </button>
+                                    <button class="btn btn-default" type="reset">
+                                    <span>
+                                        <i></i>
+                                    </span>
+                                        Limpiar
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN FILTROS -->
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Listado Vehiculos Plan de Ahorro - {{ cantidadRegistros }} vehiculos
+                        encontrados</h3>
+
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="data-table table table-bordered table-striped">
+                        <thead>
+
+                        <tr>
+                            <th data-width="3%">Id</th>
+                            <th data-width="20%">Modelo</th>
+                            <th data-width="10%">Color vehiculo</th>
+                            <th data-width="5%">Vin</th>
+                            <th data-width="3%">Estado</th>
+                            <th data-width="5%">Fecha Fact</th>
+                            <th data-width="5%">Dias en stock</th>
+                            <th data-width="3%">Patent</th>
+                            <th data-width="10%">Deposito</th>
+                            <th data-width="5%">Observaciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td>{{ entity.modelo }}</td>
+                                <td>{{ entity.color_vehiculo }}</td>
+                                <td>{{ entity.vin }}</td>
+                                <td>{{ entity.vehiculo_estado }}</td>
+                                <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
+                                <td align="center">{{ entity.dias_en_stock }}</td>
+                                <td>
+                                    {% if entity.estado_patentamiento_slug=="patentado" %}
+                                        SI
+                                    {% else %}
+                                        NO
+                                    {% endif %}
+                                </td>
+                                <td>{{ entity.deposito_actual | default ("") }}</td>                                
+                                <td>{{ entity.observacion }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {{ knp_pagination_render(entities) }}
+{% endblock %}
