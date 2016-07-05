@@ -95,7 +95,12 @@
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
-                                                {% endif %}                                                
+                                                {% endif %}  
+                                                {% if app.user.tienePermisoEspecial('registrar_patente') %}    
+                                                <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
+                                                   href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
+                                                   title="Patente"><i class="fa icon-patente"></i></a>
+                                                {% endif %}
                                         </div>
                                     </td>
                                 </tr>

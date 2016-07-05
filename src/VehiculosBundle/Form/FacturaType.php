@@ -14,7 +14,11 @@ class FacturaType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('tipoFactura')
+                ->add('tipoFactura', 'entity', array(
+                    'class' => 'VehiculosBundle:TipoFactura',
+                    'required'=>true,
+                    )
+                )
                 ->add('numeroFactura', 'text', array(
                     'attr' => array('class' => 'maskNumeroFactura')
                 ))
