@@ -193,10 +193,13 @@
                 </div>
                 <button class="btn btn-primary" id="btn-guardar-checklist" type="submit">Guardar</button>
 
+                {% if checklistPreEntrega is not null %}
                 <a class="btn btn-default" target="_blank"
                    href="{{ path('pdf_checklist_preentrega', {'vehiculoId':vehiculo.id }) }}">
                     <i class="fa fa-print"></i> Imprimir checklist
                 </a>
+                {% endif %}
+                
                 <a class="btn btn-default" href="{{ path('vehiculos_recibidos_index') }}">
                     Volver
                 </a>
