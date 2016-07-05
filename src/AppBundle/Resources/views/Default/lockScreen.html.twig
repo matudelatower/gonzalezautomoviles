@@ -45,6 +45,10 @@
 
     {% endfor %}
     <!-- User name -->
+    <a href="{{ path('pdf_ver_encuesta_alta_temprana', {'vehiculoId':vehiculoId}) }}" target="_blank" class="btn btn-block btn-info">
+                                            <i class="fa fa-commenting-o"></i>
+                                            Ver Encuesta de Alerta Temprana
+                                        </a>
     <div class="lockscreen-name">{{ nombreUsuario }}</div>
 
     <!-- START LOCK SCREEN ITEM -->
@@ -76,7 +80,7 @@
     </div>
     <div class="lockscreen-footer text-center">
         Copyright &copy; {{ "now"|date('Y') }} <b><a href="#" class="text-black"></a></b><br>
-        Todos los derechos reservados
+        Todos los derechos reservados         
     </div>
 </div><!-- /.center -->
 

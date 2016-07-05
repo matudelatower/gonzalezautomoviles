@@ -299,8 +299,10 @@ class EncuestaController extends Controller {
 				 Muchas Gracias por su tiempo.'
 			);
 
-			return $this->redirectToRoute( 'app_bloquear_pantalla' );
-
+			return $this->redirectToRoute( 'app_bloquear_pantalla',
+                                array(
+                                    'vehiculoId'=>$vehiculoId,
+                                ));
 		}
 
 		return $this->render( 'CuestionariosBundle:Encuesta:formAlertaTemprana.html.twig',

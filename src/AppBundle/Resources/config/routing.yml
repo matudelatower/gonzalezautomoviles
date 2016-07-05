@@ -15,7 +15,7 @@ app_pantalla_vacia:
     defaults: { _controller: "AppBundle:Default:pantallaVacia" }
 
 app_bloquear_pantalla:
-    path: /app_bloquear_pantalla
+    path: /{vehiculoId}/app_bloquear_pantalla/
     defaults: { _controller: "AppBundle:Default:bloquearPantalla" }
 
 app_desbloquear_pantalla:
