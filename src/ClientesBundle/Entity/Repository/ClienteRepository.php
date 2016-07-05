@@ -62,4 +62,16 @@ class ClienteRepository extends EntityRepository {
         return $qb->getQuery()->getResult();
     }
 
+    public function getClienteByApellido($apellido) {
+        $qb = $this->createQueryBuilder('c');
+        $qb
+            ->join('c.personaTipo', 'pt')
+            ->join('pt.persona', 'pers')
+            ->where("pers.apellido like upper(:apellido)");
+
+        $qb->setParameter('apellido', '%' . $apellido . '%');
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

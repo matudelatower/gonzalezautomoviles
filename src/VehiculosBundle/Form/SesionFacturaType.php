@@ -8,45 +8,39 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SesionFacturaType extends AbstractType {
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-                
-//               
-                 ->add('cliente', 'jqueryautocomplete', array(
-                    'class' => 'ClientesBundle:Cliente',
-//					'choice_label'      => 'nombreCompleto',
-                    'search_method' => 'getClienteByDni',
-                    'required' => false,
-                    'route_name' => 'get_cliente_by_dni',
-                     'attr'=>array('placeholder'=>'Ingrese DNI o CUIT')
-//					'route_name'    => "buscarPersonaConDominio",
-//					'class'         => 'PersonaBundle:Persona',
-//					'property'      => 'nombreCompleto',
-//					'search_method' => 'getEmpadronadoresPorSector',
-                  
-                ))
+	/**
+	 * @param FormBuilderInterface $builder
+	 * @param array $options
+	 */
+	public function buildForm( FormBuilderInterface $builder, array $options ) {
+		$builder
+//
+			->add( 'cliente',
+				'jqueryautocomplete',
+				array(
+					'class'         => 'ClientesBundle:Cliente',
+					'search_method' => 'getClienteByApellido',
+					'required'      => false,
+					'route_name'    => 'get_cliente_by_apellido',
+					'attr'          => array( 'placeholder' => 'Ingrese Apellido' )
 
-        ;
-    }
+				) );
+	}
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver) {
-        $resolver->setDefaults(array(
-            'data_class' => 'VehiculosBundle\Entity\Vehiculo'
-        ));
-    }
+	/**
+	 * @param OptionsResolver $resolver
+	 */
+	public function configureOptions( OptionsResolver $resolver ) {
+		$resolver->setDefaults( array(
+			'data_class' => 'VehiculosBundle\Entity\Vehiculo'
+		) );
+	}
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'vehiculosbundle_sesion_factura';
-    }
+	/**
+	 * @return string
+	 */
+	public function getName() {
+		return 'vehiculosbundle_sesion_factura';
+	}
 
 }

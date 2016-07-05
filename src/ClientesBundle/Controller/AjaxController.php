@@ -57,4 +57,43 @@ class AjaxController extends Controller {
 		return new JsonResponse( $retorno );
 
 	}
+
+	public function getClienteByApellidoAction( Request $request ) {
+
+		$personaCriteria = trim( $request->get( 'term' ) );
+		$searchMethod    = $request->get( 'search_method' );
+
+		$em = $this->getDoctrine()->getManagerForClass( $request->get( 'class' ) );
+
+		$resultados = $em->getRepository( $request->get( 'class' ) )->$searchMethod( $personaCriteria );
+
+		$retorno = array();
+
+		if ( ! count( $resultados ) ) {
+			$retorno[] = array(
+				'label' => 'No se encontraron coincidencias',
+				'value' => ''
+			);
+		} else {
+
+			foreach ( $resultados as $cliente ) {
+
+				$apellido  = $cliente->getPersonaTipo()->first()->getPersona()->getApellido();
+				$nombre    = $cliente->getPersonaTipo()->first()->getPersona()->getNombre();
+				$nroDocumento    = $cliente->getPersonaTipo()->first()->getPersona()->getNumeroDocumento();
+				$retorno[] = array(
+					'id'    => $cliente->getId(),
+					'label' => sprintf( '%s, %s - %s',
+						$apellido,
+						$nombre,
+						$nroDocumento
+					),
+					'value' => sprintf( '%s, %s - %s', $apellido, $nombre, $nroDocumento )
+				);
+			}
+		}
+
+		return new JsonResponse( $retorno );
+
+	}
 }
