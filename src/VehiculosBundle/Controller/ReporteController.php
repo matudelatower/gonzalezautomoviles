@@ -3,6 +3,7 @@
 namespace VehiculosBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use VehiculosBundle\Form\CheckListPreEntregaType;
 use VehiculosBundle\Form\Filter\AutosVendidosPorVendedorFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosAsignadosAReventaFilterType;
 use VehiculosBundle\Form\Filter\ReporteVehiculosConDaniosFilterType;
@@ -1460,6 +1461,44 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
                 )
+        );
+    }
+
+    public function pdfCheckListPreEntregaAction($vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+
+        
+        $cuestionario = $em->getRepository('CuestionariosBundle:Cuestionario')->find(1);
+
+        $categorias = $em->getRepository('CuestionariosBundle:CuestionarioCategoria')->getCategoriasConCampos(
+            $cuestionario
+        );
+
+        $resultadoCabecera = $em->getRepository('CuestionariosBundle:CuestionarioResultadoCabecera')->findOneByVehiculo($vehiculo);
+
+        $formDaniosInternos = $this->createForm(new CheckListPreEntregaType(), $vehiculo);
+
+        $title = 'Checklist Pre-Entrega';
+
+        $html = $this->renderView(
+            'VehiculosBundle:Reporte:checklistPreEntrega.pdf.twig', array(
+                'categorias' => $categorias,
+                'cuestionario' => $cuestionario,
+                'vehiculo' => $vehiculo,
+                'formDanioInterno' => $formDaniosInternos->createView(),
+                'title' => $title,
+                'resultadoCabecera'=>$resultadoCabecera
+            )
+        );
+        $reportesManager = $this->get('manager.reportes');
+        return new Response(
+            $reportesManager->imprimirCheckControlInterno($html)
+            , 200, array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+            )
         );
     }
 
