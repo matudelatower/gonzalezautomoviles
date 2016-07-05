@@ -17,10 +17,6 @@ class EncuestaOpcionRespuestaType extends AbstractType {
                 ->add('textoOpcion')
                 ->add('encuestaPregunta')
                 ->add('orden')
-                ->add('creado')
-                ->add('actualizado')
-                ->add('creadoPor')
-                ->add('actualizadoPor')
         ;
     }
 

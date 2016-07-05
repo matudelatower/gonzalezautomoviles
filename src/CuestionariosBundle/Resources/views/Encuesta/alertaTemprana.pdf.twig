@@ -12,21 +12,27 @@
         #datos-clientes {
             font-size: 8pt;
         }
+
+        .resaltar {
+            border: 1px dotted;
+        }
     </style>
 
     <div class="box-body">
 
         {% for item in encuestaResultadoRespuesta %}
-            <p>
-                <span class="pregunta">{{ item.encuestaPregunta }}</span> <br>
-            <div>
-                {% for opcion in item.encuestaPregunta.opcionesRespuestas %}
-                    {{ opcion }} <input
-                        type="checkbox" {% if item.encuestaOpcionRespuesta.id == opcion.id %} checked {% endif %}>
-                {% endfor %}
+            <div class="{{ item.encuestaPregunta.cssClass }}">
+                <p>
+                    <span class="pregunta">{{ item.encuestaPregunta }}</span> <br>
+                <div>
+                    {% for opcion in item.encuestaPregunta.opcionesRespuestas %}
+                        {{ opcion }} <input
+                            type="checkbox" {% if item.encuestaOpcionRespuesta.id == opcion.id %} checked {% endif %}>
+                    {% endfor %}
+                </div>
+                <br>
+                </p>
             </div>
-            <br>
-            </p>
         {% endfor %}
 
     </div>

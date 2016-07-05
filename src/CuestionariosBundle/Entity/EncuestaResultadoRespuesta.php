@@ -25,6 +25,7 @@ class EncuestaResultadoRespuesta
     /**
      * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\EncuestaPregunta")
      * @ORM\JoinColumn(name="encuesta_pregunta_id", referencedColumnName="id")
+     * @ORM\OrderBy({"orden" = "ASC"})
      */
     private $encuestaPregunta;
     
