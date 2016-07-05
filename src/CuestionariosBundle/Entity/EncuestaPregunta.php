@@ -96,6 +96,13 @@ class EncuestaPregunta
 	private $opcionesRespuestas;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="css_class", type="text", length=255, nullable=true)
+     */
+    private $cssClass;
+
+    /**
      * Get id
      *
      * @return integer
@@ -364,5 +371,29 @@ class EncuestaPregunta
     public function getOpcionesRespuestas()
     {
         return $this->opcionesRespuestas;
+    }
+
+    /**
+     * Set cssClass
+     *
+     * @param string $cssClass
+     *
+     * @return EncuestaPregunta
+     */
+    public function setCssClass($cssClass)
+    {
+        $this->cssClass = $cssClass;
+
+        return $this;
+    }
+
+    /**
+     * Get cssClass
+     *
+     * @return string
+     */
+    public function getCssClass()
+    {
+        return $this->cssClass;
     }
 }

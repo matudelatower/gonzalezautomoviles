@@ -148,4 +148,8 @@ exportar_pdf_reporte_vehiculos_plan_ahorro:
 
 exportar_excel_reporte_vehiculos_plan_ahorro:
     path:     /exportar_excel_reporte_vehiculos_plan_ahorro
-    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPlanAhorro" }       
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosPlanAhorro" }
+
+pdf_checklist_preentrega:
+    path:     /{vehiculoId}/pdf_checklist_preentrega
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfCheckListPreEntrega" }

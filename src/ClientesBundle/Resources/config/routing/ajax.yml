@@ -1,3 +1,7 @@
 get_cliente_by_dni:
     path:     /get_cliente_by_dni
     defaults: { _controller: "ClientesBundle:Ajax:getClienteByDni" }
+
+get_cliente_by_apellido:
+    path:     /get_cliente_by_apellido
+    defaults: { _controller: "ClientesBundle:Ajax:getClienteByApellido" }

@@ -55,7 +55,7 @@ class AltaVehiculoType extends AbstractType {
             },
                         )
                 )
-//                ->add('colorVehiculo')
+
                 ->add('motor')
                 ->add('importe', 'money', array(
                     'attr' => array('class' => 'maskmoney')
@@ -64,7 +64,7 @@ class AltaVehiculoType extends AbstractType {
                     'attr' => array('class' => 'maskmoney')
                 ))
                 ->add('numeroPedido')
-//                ->add('tipoVentaEspecial')
+
                 ->add('tipoVentaEspecial', 'entity', array(
                     'class' => 'VehiculosBundle:TipoVentaEspecial',
                     'label' => 'Tipo venta',
@@ -87,16 +87,11 @@ class AltaVehiculoType extends AbstractType {
                     'attr' => array('class' => 'hidden plan-field')
                 ))
                 ->add('cliente', 'jqueryautocomplete', array(
-                    'label' => 'Cliente (Por DNI)',
+                    'label' => 'Cliente',
                     'class' => 'ClientesBundle:Cliente',
-//					'property'      => 'nombreCompleto',
-                    'search_method' => 'getClienteByDni',
+                    'search_method' => 'getClienteByApellido',
                     'required' => false,
-                    'route_name' => 'get_cliente_by_dni',
-//					'route_name'    => "buscarPersonaConDominio",
-//					'class'         => 'PersonaBundle:Persona',
-//					'property'      => 'nombreCompleto',
-//					'search_method' => 'getEmpadronadoresPorSector',
+                    'route_name' => 'get_cliente_by_apellido',
                     'label_attr' => array('class' => 'hidden cliente'),
                     'attr' => array('class' => 'hidden cliente')
                 ))
