@@ -25,10 +25,10 @@ class FacturaVehiculoType extends AbstractType {
                 ))
                 ->add('cliente', 'jqueryautocomplete', array(
                     'class' => 'ClientesBundle:Cliente',
-                    'search_method' => 'getClienteByDni',
+                    'search_method' => 'getClienteByApellido',
                     'required' => true,
-                    'route_name' => 'get_cliente_by_dni',
-                    'attr' => array('placeholder' => 'Ingrese DNI o CUIT')
+                    'route_name' => 'get_cliente_by_apellido',
+                    'attr' => array('placeholder' => 'Ingrese Apellido')
         ));
     }
 

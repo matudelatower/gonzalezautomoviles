@@ -20,6 +20,7 @@ class EncuestaPreguntaType extends AbstractType
             ->add('orden')           
             ->add('encuestaTipoPregunta')
             ->add('encuesta')            
+            ->add('cssClass')
         ;
     }
     

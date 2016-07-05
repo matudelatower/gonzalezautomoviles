@@ -16,7 +16,10 @@ class EncuestaResultadoRespuestaRepository extends EntityRepository {
 	public function findByEncuestaResultadoCabeceraOrdenado( $encuestaResultadoCabecera ) {
 		$qb = $this->createQueryBuilder( 'err' );
 
-		$qb->orderBy( 'err.id', 'ASC' );
+		$qb->join('err.encuestaPregunta', 'ec')
+			->where('err.encuestaResultadoCabecera = :encuestaResultadoCabecera')
+			->setParameter('encuestaResultadoCabecera', $encuestaResultadoCabecera)
+			->orderBy('ec.orden', 'ASC');
 
 		return $qb->getQuery()->getResult();
 	}

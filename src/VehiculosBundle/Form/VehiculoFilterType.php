@@ -47,11 +47,11 @@ class VehiculoFilterType extends AbstractType {
                     'required' => false,
                 ))
                 ->add('cliente', 'jqueryautocomplete', array(
-                    'label' => 'Cliente (Por DNI)',
+                    'label' => 'Cliente (Por Apellido)',
                     'class' => 'ClientesBundle:Cliente',
-                    'search_method' => 'getClienteByDni',
+                    'search_method' => 'getClienteByApellido',
                     'required' => false,
-                    'route_name' => 'get_cliente_by_dni',
+                    'route_name' => 'get_cliente_by_apellido',
                 ))
                 ->add('registrosPaginador', 'choice', array(
                     'data' => '10',

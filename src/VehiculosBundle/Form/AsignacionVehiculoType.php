@@ -18,15 +18,10 @@ class AsignacionVehiculoType extends AbstractType {
 //               
                  ->add('cliente', 'jqueryautocomplete', array(
                     'class' => 'ClientesBundle:Cliente',
-//					'choice_label'      => 'nombreCompleto',
-                    'search_method' => 'getClienteByDni',
+                    'search_method' => 'getClienteByApellido',
                     'required' => false,
-                    'route_name' => 'get_cliente_by_dni',
-                     'attr'=>array('placeholder'=>'Ingrese DNI o CUIT')
-//					'route_name'    => "buscarPersonaConDominio",
-//					'class'         => 'PersonaBundle:Persona',
-//					'property'      => 'nombreCompleto',
-//					'search_method' => 'getEmpadronadoresPorSector',
+                    'route_name' => 'get_cliente_by_apellido',
+                     'attr'=>array('placeholder'=>'Ingrese Apellido')
                   
                 ))
 

@@ -468,7 +468,18 @@
                                         </a>
                                     </td>
                                 </tr>  
-                            {%endif%}  
+                            {%endif%}
+                            {% if checklistPreEntrega is not null %}
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-block btn-default" target="_blank" href="{{ path('pdf_checklist_preentrega', {'vehiculoId':entity.id }) }}">
+                                            <i class="fa fa-check-square"></i>
+                                            Ver Checklist Pre-entrega
+                                        </a>
+                                    </td>
+                                </tr>
+                            {%endif%}
+
                         </tbody>
                     </table>
                 </div>

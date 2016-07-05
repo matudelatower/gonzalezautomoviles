@@ -420,6 +420,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($id);
         $encuestaResultadoCabecera = $em->getRepository('CuestionariosBundle:EncuestaResultadoCabecera')->findOneByVehiculo($entity);
         $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($entity);
+        $checklistPreEntrega = $em->getRepository('CuestionariosBundle:CuestionarioResultadoCabecera')->findOneByVehiculo($entity);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Vehiculo entity.');
@@ -432,6 +433,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'entity' => $entity,
                     'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
                     'controlInternoCabecera' => $controlInternoCabecera,
+                    'checklistPreEntrega' => $checklistPreEntrega,
                     'delete_form' => $deleteForm->createView(),
                         )
         );
