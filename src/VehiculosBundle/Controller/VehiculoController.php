@@ -887,12 +887,15 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             }
         }
 
+        $checklistPreEntrega = $em->getRepository('CuestionariosBundle:CuestionarioResultadoCabecera')->findOneByVehiculo($vehiculo);
+
         return $this->render(
                         'VehiculosBundle:Vehiculo:checkListPreEntrega.html.twig', array(
                     'categorias' => $categorias,
                     'cuestionario' => $cuestionario,
                     'vehiculo' => $vehiculo,
                     'formDanioInterno' => $formDaniosInternos->createView(),
+                    'checklistPreEntrega' => $checklistPreEntrega,
                         )
         );
     }
