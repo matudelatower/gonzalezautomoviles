@@ -18,9 +18,11 @@ class DefaultController extends Controller {
 			array() );
 	}
 
-	public function bloquearPantallaAction( Request $request ) {
+	public function bloquearPantallaAction( Request $request ,$vehiculoId) {
 		return $this->render( 'AppBundle:Default:lockScreen.html.twig',
-			array() );
+			array(
+                            'vehiculoId'=>$vehiculoId,
+                        ) );
 	}
 
 	public function desbloquearPantallaAction( Request $request ) {
