@@ -995,7 +995,7 @@ class ExcelTool {
 		$phpExcelObject->setActiveSheetIndex( 0 );
 
 		$phpExcelObject->getActiveSheet()
-		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'A1', '#' )
 		               ->setCellValue( 'B1', 'Modelo' )
 		               ->setCellValue( 'C1', 'Color vehiculo' )
 		               ->setCellValue( 'D1', 'Vin' )
@@ -1024,7 +1024,7 @@ class ExcelTool {
 					}
 				}
 
-				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $contador );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i,
 					$entity['modelo_nombre'] . " | " . $entity['modelo_anio'] . " | " . $entity['modelo_version'] );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['color_vehiculo'] );
@@ -1079,7 +1079,7 @@ class ExcelTool {
 		$phpExcelObject->setActiveSheetIndex( 0 );
 
 		$phpExcelObject->getActiveSheet()
-		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'A1', '#' )
 		               ->setCellValue( 'B1', 'Modelo' )
 		               ->setCellValue( 'C1', 'Color vehiculo' )
 		               ->setCellValue( 'D1', 'Vin' )
@@ -1107,7 +1107,7 @@ class ExcelTool {
 					}
 				}
 
-				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $contador );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i,
 					$entity['modelo_nombre'] . " | " . $entity['modelo_anio'] . " | " . $entity['modelo_version'] );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['color_vehiculo'] );
@@ -1160,7 +1160,7 @@ class ExcelTool {
 		$phpExcelObject->setActiveSheetIndex( 0 );
 
 		$phpExcelObject->getActiveSheet()
-		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'A1', '#' )
 		               ->setCellValue( 'B1', 'Modelo' )
 		               ->setCellValue( 'C1', 'Color vehiculo' )
 		               ->setCellValue( 'D1', 'Vin' )
@@ -1187,7 +1187,7 @@ class ExcelTool {
 					}
 				}
 
-				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $contador );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i,
 					$entity['modelo_nombre'] . " | " . $entity['modelo_anio'] . " | " . $entity['modelo_version'] );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['color_vehiculo'] );
@@ -1239,7 +1239,7 @@ class ExcelTool {
 		$phpExcelObject->setActiveSheetIndex( 0 );
 
 		$phpExcelObject->getActiveSheet()
-		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'A1', '#' )
 		               ->setCellValue( 'B1', 'Modelo' )
 		               ->setCellValue( 'C1', 'Color vehiculo' )
 		               ->setCellValue( 'D1', 'Vin' )
@@ -1268,7 +1268,7 @@ class ExcelTool {
 					}
 				}
 
-				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $contador );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i,
 					$entity['modelo_nombre'] . " | " . $entity['modelo_anio'] . " | " . $entity['modelo_version'] );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['color_vehiculo'] );
@@ -1323,7 +1323,7 @@ class ExcelTool {
 		$phpExcelObject->setActiveSheetIndex( 0 );
 
 		$phpExcelObject->getActiveSheet()
-		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'A1', '#' )
 		               ->setCellValue( 'B1', 'Modelo' )
 		               ->setCellValue( 'C1', 'Color vehiculo' )
 		               ->setCellValue( 'D1', 'Vin' )
@@ -1352,7 +1352,7 @@ class ExcelTool {
 					}
 				}
 
-				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $contador );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i,
 					$entity['modelo_nombre'] . " | " . $entity['modelo_anio'] . " | " . $entity['modelo_version'] );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['color_vehiculo'] );
@@ -1407,7 +1407,7 @@ class ExcelTool {
 		$phpExcelObject->setActiveSheetIndex( 0 );
 
 		$phpExcelObject->getActiveSheet()
-		               ->setCellValue( 'A1', 'Id' )
+		               ->setCellValue( 'A1', '#' )
 		               ->setCellValue( 'B1', 'Modelo' )
 		               ->setCellValue( 'C1', 'Color vehiculo' )
 		               ->setCellValue( 'D1', 'Vin' )
@@ -1436,7 +1436,7 @@ class ExcelTool {
 					}
 				}
 
-				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $entity['id'] );
+				$phpExcelObject->getActiveSheet()->setCellValue( 'A' . $i, $contador );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'B' . $i,
 					$entity['modelo_nombre'] . " | " . $entity['modelo_anio'] . " | " . $entity['modelo_version'] );
 				$phpExcelObject->getActiveSheet()->setCellValue( 'C' . $i, $entity['color_vehiculo'] );
