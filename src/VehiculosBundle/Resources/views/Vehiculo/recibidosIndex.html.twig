@@ -78,7 +78,7 @@
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
-                                    <td>{{ entity.fecha_recibido | date ("d-m-Y") }}</td>
+                                    <td>{{ entity.fecha_recibido | date ("d/m/Y") }}</td>
                                     <td>
                                         <div class="btn-group">
 
@@ -159,7 +159,22 @@
                         return false;
                     });
         {% endif %}
+            $('#btn-exportar-excel').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_recibidos') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+
             });
+            $('#btn-exportar-pdf').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_recibidos') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+            });
+        });
 
     </script>
 {% endblock %}
