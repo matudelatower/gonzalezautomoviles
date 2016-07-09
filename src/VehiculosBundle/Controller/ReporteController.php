@@ -2004,7 +2004,7 @@ class ReporteController extends Controller implements TokenAuthenticatedControll
 		$title = 'Reporte de Vehiculos Recibidos';
 
 		$html = $this->renderView(
-			'VehiculosBundle:Reporte:reporteVehiculosPendientesEntrega.pdf.twig',
+			'VehiculosBundle:Reporte:reporteVehiculosRecibidos.pdf.twig',
 			array(
 				'entities' => $entities,
 				'title'    => $title,

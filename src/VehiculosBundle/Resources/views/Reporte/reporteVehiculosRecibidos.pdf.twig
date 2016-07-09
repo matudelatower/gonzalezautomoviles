@@ -25,7 +25,7 @@
         <table class="data-table table table-bordered table-striped">
             <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Modelo</th>
                 <th>Color vehiculo</th>
                 <th>Vin</th>
@@ -37,9 +37,10 @@
             </tr>
             </thead>
             <tbody>
+            {% set contador = 1 %}
             {% for entity in entities %}
                 <tr>
-                    <td>{{ entity.id }}</td>
+                    <td>{{ contador }}</td>
                     <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_version }}</td>
                     <td>{{ entity.color_vehiculo }}</td>
                     <td>{{ entity.vin }}</td>
@@ -75,6 +76,7 @@
                     <td>{{ entity.deposito_actual | default ("") }}</td>
                     <td>{{ entity.fecha_recibido | date ("d/m/Y") }}</td>
                 </tr>
+                {% set contador = contador +1 %}
             {% endfor %}
             </tbody>
         </table>
