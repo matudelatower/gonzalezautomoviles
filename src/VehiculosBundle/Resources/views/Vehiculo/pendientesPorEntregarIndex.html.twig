@@ -33,10 +33,10 @@
                                 <th data-width="20%">Modelo</th>
                                 <th data-width="5%">Color vehiculo</th>
                                 <th data-width="3%">Vin</th>
-                                <th data-width="3%">Dias stock</th>
+                                <th data-width="3%">Días stock</th>
                                 <th data-width="3%">Estado Pago</th>
                                 <th data-width="5%">Tipo de venta</th>
-                                <th data-width="3%">Deposito</th>
+                                <th data-width="3%">Depósito</th>
                                 <th data-width="5%">Fecha entrega</th>
                                 <th data-width="15%">Actions</th>
 
@@ -159,7 +159,41 @@
 {% block javascripts %}
     {{ parent() }}
     {% include "VehiculosBundle:Vehiculo:index.js.twig" %}
+    <script>
+        $(document).ready(function () {
 
+            {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
+
+            {% if formFilter is not null %}
+            $('.pagination li a').click(function () {
+
+                $('#form_listado').attr('action', this.href);
+                {% for row in form if formFilter[row.vars.name] is defined %}
+                $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
+                {% endfor %}
+
+                $('#form_listado').submit();
+                return false;
+            });
+            {% endif %}
+
+            $('#btn-exportar-excel').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_pendiente_entrega') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+
+            });
+            $('#btn-exportar-pdf').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_pendiente_entrega') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+            });
+        });
+    </script>
     <script src="{{ asset('bundles/theme/js/moment.min.js') }}"></script>
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/lang-all.js') }}"></script>
