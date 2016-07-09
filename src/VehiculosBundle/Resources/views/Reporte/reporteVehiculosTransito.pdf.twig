@@ -1,0 +1,81 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+
+{% block body %}
+    <style>
+        body {
+            font-size: 10pt !important;
+        }
+
+        table {
+            width: 100%;
+            page-break-inside: auto
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+    </style>
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
+
+            <tr>
+                <th>Id</th>
+                <th>Modelo</th>
+                <th>Color vehiculo</th>
+                <th>Vin</th>
+                <th>Dias stock</th>
+                <th>Estado Pago</th>
+                <th>Tipo de venta</th>
+                <th>Fecha remito</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.id }}</td>
+                    <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_version }}</td>
+                    <td>{{ entity.color_vehiculo }}</td>
+                    <td>{{ entity.vin }}</td>
+                    <td>{{ entity.dias_en_stock }}</td>
+                    <td align="center">
+                        {% if entity.venta_especial_slug == 'convencional' %}
+                            {% if entity.pagado %}
+                                {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
+                                    <a
+                                            class="btn btn-delete-pago"
+                                            data-toggle="modal"
+                                            data-target="#modalGeneric"
+                                            data-url="{{ path('new_delete_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                            title="Registrar pago">Gonzalez</a>
+                                {% else %}
+                                    Gonzalez
+                                {% endif %}
+                            {% else %}
+                                {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
+                                    <a
+                                            class="btn btn-pagado"
+                                            data-toggle="modal"
+                                            data-target="#modalGeneric"
+                                            data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                            title="Registrar pago">Gpat</a>
+                                {% else %}
+                                    Gpat
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>{{ entity.tipo_venta_especial }}</td>
+                    <td>{{ entity.remito_fecha|date("d/m/Y") }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

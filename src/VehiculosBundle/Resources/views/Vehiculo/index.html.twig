@@ -145,7 +145,23 @@
                         return false;
                     });
         {% endif %}
+
+            $('#btn-exportar-excel').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+
             });
+            $('#btn-exportar-pdf').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+            });
+        });
 
 
 

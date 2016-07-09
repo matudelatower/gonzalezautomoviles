@@ -18,1489 +18,2110 @@ use VehiculosBundle\Form\Filter\ReportePatentamientosFilterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use UsuariosBundle\Controller\TokenAuthenticatedController;
+use VehiculosBundle\Form\VehiculoFilterType;
 
 class ReporteController extends Controller implements TokenAuthenticatedController {
 
-    public function indexReporteAutosVendidosPorVendedorAction(Request $request) {
+	public function indexReporteAutosVendidosPorVendedorAction( Request $request ) {
 
-        $form = $this->createForm(new AutosVendidosPorVendedorFilterType());
+		$form = $this->createForm( new AutosVendidosPorVendedorFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $vendedor = $formData['vendedor'];
-            if ($formData['rango']) {
-                $aFecha = explode(' - ', $formData['rango']);
+			$vendedor = $formData['vendedor'];
+			if ( $formData['rango'] ) {
+				$aFecha = explode( ' - ', $formData['rango'] );
 
-                $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-                $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
-            } else {
-                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor);
-            }
-        }
-        $cantidadRegistros = count($entities);
+				$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+				$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+				$entities   = $reportesManager->getAutosVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta );
+			} else {
+				$entities = $reportesManager->getAutosVendidosPorVendedor( $vendedor );
+			}
+		}
+		$cantidadRegistros = count( $entities );
 
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
+		$paginator = $this->get( 'knp_paginator' );
+		$entities  = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
 
-        return $this->render('VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+		return $this->render( 'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
 
-    public function pdfReporteAutosVendidosPorVendedorAction(Request $request) {
-        $form = $this->createForm(new AutosVendidosPorVendedorFilterType());
+	public function pdfReporteAutosVendidosPorVendedorAction( Request $request ) {
+		$form = $this->createForm( new AutosVendidosPorVendedorFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $vendedor = $formData['vendedor'];
-            if ($formData['rango']) {
-                $aFecha = explode(' - ', $formData['rango']);
+			$vendedor = $formData['vendedor'];
+			if ( $formData['rango'] ) {
+				$aFecha = explode( ' - ', $formData['rango'] );
 
-                $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-                $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+				$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+				$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
-            } else {
-                $fechaDesde = null;
-                $fechaHasta = null;
-                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor);
-            }
-        }
+				$entities = $reportesManager->getAutosVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta );
+			} else {
+				$fechaDesde = null;
+				$fechaHasta = null;
+				$entities   = $reportesManager->getAutosVendidosPorVendedor( $vendedor );
+			}
+		}
 
-        $title = 'Reporte de Autos Vendidos Por Vendedor';
+		$title = 'Reporte de Autos Vendidos Por Vendedor';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'vendedor' => $vendedor,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteAutosVendidosPorVendedor.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'vendedor'   => $vendedor,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function excelReporteAutosVendidosPorVendedorAction(Request $request) {
+	public function excelReporteAutosVendidosPorVendedorAction( Request $request ) {
 
-        $form = $this->createForm(new AutosVendidosPorVendedorFilterType());
+		$form = $this->createForm( new AutosVendidosPorVendedorFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $vendedor = $formData['vendedor'];
-            if ($formData['rango']) {
-                $aFecha = explode(' - ', $formData['rango']);
+			$vendedor = $formData['vendedor'];
+			if ( $formData['rango'] ) {
+				$aFecha = explode( ' - ', $formData['rango'] );
 
-                $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-                $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
-            } else {
-                $entities = $reportesManager->getAutosVendidosPorVendedor($vendedor);
-            }
-        }
-        $filename = "reporte_autos_vendidos_por_vendedor.xls";
-
-
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Autos Vendidos por Vendedor');
-        $exportExcel->setDescripcion('Listado de Autos Vendidos por Vendedor');
+				$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+				$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+				$entities   = $reportesManager->getAutosVendidosPorVendedor( $vendedor, $fechaDesde, $fechaHasta );
+			} else {
+				$entities = $reportesManager->getAutosVendidosPorVendedor( $vendedor );
+			}
+		}
+		$filename = "reporte_autos_vendidos_por_vendedor.xls";
 
 
-
-        $response = $exportExcel->buildSheetgetReporteAutosVendidosPorVendedor($entities);
-
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-
-        return $response;
-    }
-
-    public function indexReporteVehiculosEnStockAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType($em));
-
-        $entities = array();
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Autos Vendidos por Vendedor' );
+		$exportExcel->setDescripcion( 'Listado de Autos Vendidos por Vendedor' );
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
+		$response = $exportExcel->buildSheetgetReporteAutosVendidosPorVendedor( $entities );
 
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
-            }
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosEnStock.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+		return $response;
+	}
 
-    public function excelReporteVehiculosEnStockAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType($em));
+	public function indexReporteVehiculosEnStockAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosEnStockFilterType( $em ) );
 
-        $entities = array();
+		$entities = array();
+
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEnStock( $data );
+			}
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
+
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosEnStock.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
+
+	public function excelReporteVehiculosEnStockAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosEnStockFilterType( $em ) );
+
+		$entities = array();
 
 //        $reportesManager = $this->get('manager.reportes');
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
-            }
-        }
-        $filename = "reporte_vehiculos_en_stock.xls";
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEnStock( $data );
+			}
+		}
+		$filename = "reporte_vehiculos_en_stock.xls";
 
 
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos En Stock');
-        $exportExcel->setDescripcion('Listado de Vehiculos En Stock');
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos En Stock' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos En Stock' );
 
 
 //        $managerEncuestas = $this->get('manager.reportes');
 //        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
 
-        $response = $exportExcel->buildSheetgetReporteVehiculosEnStock($entities);
+		$response = $exportExcel->buildSheetgetReporteVehiculosEnStock( $entities );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    public function pdfReporteVehiculosEnStockAction(Request $request) {
+	public function pdfReporteVehiculosEnStockAction( Request $request ) {
 
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosEnStockFilterType($em));
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosEnStockFilterType( $em ) );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEnStock($data);
-            }
-        }
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEnStock( $data );
+			}
+		}
 
-        $title = 'Reporte de Vehiculos en Stock';
+		$title = 'Reporte de Vehiculos en Stock';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosEnStock.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosEnStock.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html, "H"), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    /*
-     * devuelve las entregas programadas en un rango de fechas.
-     */
+	/*
+	 * devuelve las entregas programadas en un rango de fechas.
+	 */
 
-    public function indexReporteAgendaEntregasAction(Request $request) {
+	public function indexReporteAgendaEntregasAction( Request $request ) {
 
-        $form = $this->createForm(new ReporteAgendaEntregasFilterType());
+		$form = $this->createForm( new ReporteAgendaEntregasFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
 //            $vendedor = $formData['vendedor'];
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
+			$entities = $reportesManager->getAgendaEntregas( $fechaDesde, $fechaHasta );
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
 
-        return $this->render('VehiculosBundle:Reporte:reporteAgendaEntregas.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+		return $this->render( 'VehiculosBundle:Reporte:reporteAgendaEntregas.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
 
-    /*
-     * 
-     */
+	/*
+	 *
+	 */
 
-    public function pdfReporteAgendaEntregasAction(Request $request) {
+	public function pdfReporteAgendaEntregasAction( Request $request ) {
 
-        $form = $this->createForm(new ReporteAgendaEntregasFilterType());
+		$form = $this->createForm( new ReporteAgendaEntregasFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->getAgendaEntregas( $fechaDesde, $fechaHasta );
+		}
 
-        $title = 'Reporte de Entregas Programadas';
+		$title = 'Reporte de Entregas Programadas';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteAgendaEntregas.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteAgendaEntregas.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html, 'H')
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html, 'H' )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function excelReporteAgendaEntregasAction(Request $request) {
+	public function excelReporteAgendaEntregasAction( Request $request ) {
 
-        $form = $this->createForm(new ReporteAgendaEntregasFilterType());
+		$form = $this->createForm( new ReporteAgendaEntregasFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->getAgendaEntregas($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->getAgendaEntregas( $fechaDesde, $fechaHasta );
+		}
 
-        $filename = "reporte_entregas_programadas.xls";
-
-
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Entregas Programadas');
-        $exportExcel->setDescripcion('Listado de Entregas Programadas');
+		$filename = "reporte_entregas_programadas.xls";
 
 
-        $response = $exportExcel->buildSheetgetReporteAgendaEntregas($entities);
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Entregas Programadas' );
+		$exportExcel->setDescripcion( 'Listado de Entregas Programadas' );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
 
-        return $response;
-    }
+		$response = $exportExcel->buildSheetgetReporteAgendaEntregas( $entities );
 
-    /*
-     * crea un pdf con los datos del show de un vehiculo
-     */
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-    public function resumenVehiculoPdfAction($vehiculoId) {
+		return $response;
+	}
 
-        $em = $this->getDoctrine()->getManager();
+	/*
+	 * crea un pdf con los datos del show de un vehiculo
+	 */
 
-        $entity = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+	public function resumenVehiculoPdfAction( $vehiculoId ) {
 
-        $title = 'Resumen de Vehículo';
-        $reportesManager = $this->get('manager.reportes');
-        $html = $this->render(
-                'VehiculosBundle:Reporte:resumenVehiculo.pdf.twig', array(
-            'entity' => $entity,
-            'title' => $title,
-                )
-        );
+		$em = $this->getDoctrine()->getManager();
 
-        return new Response(
-                $reportesManager->imprimir($html), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		$entity = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
 
-    public function indexReporteVehiculosCuponGarantiaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosCuponGarantiaFilterType());
+		$title           = 'Resumen de Vehículo';
+		$reportesManager = $this->get( 'manager.reportes' );
+		$html            = $this->render(
+			'VehiculosBundle:Reporte:resumenVehiculo.pdf.twig',
+			array(
+				'entity' => $entity,
+				'title'  => $title,
+			)
+		);
 
-        $entities = array();
+		return new Response(
+			$reportesManager->imprimir( $html ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-//        $reportesManager = $this->get('manager.reportes');
+	public function indexReporteVehiculosCuponGarantiaAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosCuponGarantiaFilterType() );
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
-            }
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
-
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
-
-    public function pdfReporteVehiculosCuponGarantiaAction(Request $request) {
-
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosCuponGarantiaFilterType());
-
-        $entities = array();
-
-        $reportesManager = $this->get('manager.reportes');
-
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
-            }
-        }
-        if ($data['conCupon'] == 'SI') {
-            $title = 'Reporte de Vehículos que tienen Cupon de Garantia';
-        } else {
-            $title = 'Reporte de Vehículos que NO tienen Cupon de Garantia';
-        }
-
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'tipo' => $data['conCupon'],
-                )
-        );
-
-        return new Response(
-                $reportesManager->imprimir($html), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
-
-    public function excelReporteVehiculosCuponGarantiaAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosCuponGarantiaFilterType());
-
-        $entities = array();
+		$entities = array();
 
 //        $reportesManager = $this->get('manager.reportes');
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosCuponGarantia($data);
-            }
-        }
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosCuponGarantia( $data );
+			}
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
 
-        $exportExcel = $this->get('excel.tool');
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
 
-        if ($data['conCupon'] == 'SI') {
-            $filename = "reporte_vehiculos_con_cupon_garantia.xls";
-            $exportExcel->setTitle('Vehiculos Con Cupon de Garantia');
-            $exportExcel->setDescripcion('Vehiculos Con Cupon de Garantia');
-            $response = $exportExcel->buildSheetgetReporteVehiculosConCuponGarantia($entities);
-        } else {
-            $filename = "reporte_vehiculos_sin_cupon_garantia.xls";
-            $exportExcel->setTitle('Vehiculos Sin Cupon de Garantia');
-            $exportExcel->setDescripcion('Vehiculos Sin Cupon de Garantia');
-            $response = $exportExcel->buildSheetgetReporteVehiculosSinCuponGarantia($entities);
-        }
+	public function pdfReporteVehiculosCuponGarantiaAction( Request $request ) {
 
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosCuponGarantiaFilterType() );
 
+		$entities = array();
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosCuponGarantia( $data );
+			}
+		}
+		if ( $data['conCupon'] == 'SI' ) {
+			$title = 'Reporte de Vehículos que tienen Cupon de Garantia';
+		} else {
+			$title = 'Reporte de Vehículos que NO tienen Cupon de Garantia';
+		}
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosCuponGarantia.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+				'tipo'     => $data['conCupon'],
+			)
+		);
+
+		return new Response(
+			$reportesManager->imprimir( $html ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	public function excelReporteVehiculosCuponGarantiaAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosCuponGarantiaFilterType() );
+
+		$entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosCuponGarantia( $data );
+			}
+		}
+
+		$exportExcel = $this->get( 'excel.tool' );
+
+		if ( $data['conCupon'] == 'SI' ) {
+			$filename = "reporte_vehiculos_con_cupon_garantia.xls";
+			$exportExcel->setTitle( 'Vehiculos Con Cupon de Garantia' );
+			$exportExcel->setDescripcion( 'Vehiculos Con Cupon de Garantia' );
+			$response = $exportExcel->buildSheetgetReporteVehiculosConCuponGarantia( $entities );
+		} else {
+			$filename = "reporte_vehiculos_sin_cupon_garantia.xls";
+			$exportExcel->setTitle( 'Vehiculos Sin Cupon de Garantia' );
+			$exportExcel->setDescripcion( 'Vehiculos Sin Cupon de Garantia' );
+			$response = $exportExcel->buildSheetgetReporteVehiculosSinCuponGarantia( $entities );
+		}
 
 
 //        $managerEncuestas = $this->get('manager.reportes');
 //        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
 
-        $response = $exportExcel->buildSheetgetReporteVehiculosConCuponGarantia($entities);
+		$response = $exportExcel->buildSheetgetReporteVehiculosConCuponGarantia( $entities );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    public function indexReporteVehiculosRecibidosConDaniosAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+	public function indexReporteVehiculosRecibidosConDaniosAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosConDaniosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->reporteVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta );
+		}
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView()
-        ));
-    }
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.html.twig',
+			array(
+				'entities' => $entities,
+				'form'     => $form->createView()
+			) );
+	}
 
-    public function pdfReporteVehiculosRecibidosConDaniosAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+	public function pdfReporteVehiculosRecibidosConDaniosAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosConDaniosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->reporteVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta );
+		}
 
-        $title = 'Reporte de Vehículos Recibidos Con Daños';
+		$title = 'Reporte de Vehículos Recibidos Con Daños';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function excelReporteVehiculosRecibidosConDaniosAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+	public function excelReporteVehiculosRecibidosConDaniosAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosConDaniosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->reporteVehiculosRecibidosConDanios($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->reporteVehiculosRecibidosConDanios( $fechaDesde, $fechaHasta );
+		}
 
-        $filename = "reporte_vehiculos_recibidos_con_danios.xls";
-
-
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Recibidos Con Daños');
-        $exportExcel->setDescripcion('Listado de Vehiculos Recibidos Con Daños');
-
-        $response = $exportExcel->buildSheetReporteVehiculosRecibidosConDanios($entities);
-
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-
-        return $response;
-    }
-
-    public function pdfCheckControlInternoAction($vehiculoId) {
-        $em = $this->getDoctrine()->getManager();
-
-        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
-        $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($vehiculo);
-
-        $preguntas = $em->getRepository('VehiculosBundle:CheckControlInternoPregunta')->findBy(array('estado' => 'true'), array('orden' => 'asc'));
+		$filename = "reporte_vehiculos_recibidos_con_danios.xls";
 
 
-        $preguntasSeleccionadas = null;
-        $respuestasGuardadas = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoRespuesta')->findByCheckControlInternoResultadoCabecera($controlInternoCabecera);
-        foreach ($respuestasGuardadas as $respuesta) {
-            $preguntasSeleccionadas[] = $respuesta->getCheckControlInternoPregunta()->getId();
-        }
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Recibidos Con Daños' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Recibidos Con Daños' );
 
-        $title = 'Inspeccion del vehículo Control Interno';
+		$response = $exportExcel->buildSheetReporteVehiculosRecibidosConDanios( $entities );
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:checkControlInterno.pdf.twig', array(
-            'preguntasSeleccionadas' => $preguntasSeleccionadas,
-            'vehiculo' => $vehiculo,
-            'title' => '',
-            'preguntasOriginales' => $preguntas,
-            'controlInternoCabecera' => $controlInternoCabecera,
-                )
-        );
-        $reportesManager = $this->get('manager.reportes');
-        return new Response(
-                $reportesManager->imprimirCheckControlInterno($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-    /*
-     * 
-     */
+		return $response;
+	}
 
-    public function indexReporteVehiculosPorDepositoAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosPorDepositoFilterType());
+	public function pdfCheckControlInternoAction( $vehiculoId ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $entities = array();
+		$vehiculo               = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
+		$controlInternoCabecera = $em->getRepository( 'VehiculosBundle:CheckControlInternoResultadoCabecera' )->findOneByVehiculo( $vehiculo );
 
-//        $reportesManager = $this->get('manager.reportes');
+		$preguntas = $em->getRepository( 'VehiculosBundle:CheckControlInternoPregunta' )->findBy( array( 'estado' => 'true' ),
+			array( 'orden' => 'asc' ) );
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
-            }
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosPorDeposito.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+		$preguntasSeleccionadas = null;
+		$respuestasGuardadas    = $em->getRepository( 'VehiculosBundle:CheckControlInternoResultadoRespuesta' )->findByCheckControlInternoResultadoCabecera( $controlInternoCabecera );
+		foreach ( $respuestasGuardadas as $respuesta ) {
+			$preguntasSeleccionadas[] = $respuesta->getCheckControlInternoPregunta()->getId();
+		}
 
-    public function excelReporteVehiculosPorDepositoAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosPorDepositoFilterType());
+		$title = 'Inspeccion del vehículo Control Interno';
 
-        $entities = array();
+		$html            = $this->renderView(
+			'VehiculosBundle:Reporte:checkControlInterno.pdf.twig',
+			array(
+				'preguntasSeleccionadas' => $preguntasSeleccionadas,
+				'vehiculo'               => $vehiculo,
+				'title'                  => '',
+				'preguntasOriginales'    => $preguntas,
+				'controlInternoCabecera' => $controlInternoCabecera,
+			)
+		);
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimirCheckControlInterno( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	/*
+	 *
+	 */
+
+	public function indexReporteVehiculosPorDepositoAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosPorDepositoFilterType() );
+
+		$entities = array();
 
 //        $reportesManager = $this->get('manager.reportes');
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
-            }
-        }
-        $filename = "reporte_vehiculos_por_deposito.xls";
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPorDeposito( $data );
+			}
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
+
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosPorDeposito.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
+
+	public function excelReporteVehiculosPorDepositoAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosPorDepositoFilterType() );
+
+		$entities = array();
+
+//        $reportesManager = $this->get('manager.reportes');
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPorDeposito( $data );
+			}
+		}
+		$filename = "reporte_vehiculos_por_deposito.xls";
 
 
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Por Deposito');
-        $exportExcel->setDescripcion('Listado de Vehiculos Por Deposito');
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Por Deposito' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Por Deposito' );
 
 
 //        $managerEncuestas = $this->get('manager.reportes');
 //        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
 
-        $response = $exportExcel->buildSheetgetReporteVehiculosPorDeposito($entities);
+		$response = $exportExcel->buildSheetgetReporteVehiculosPorDeposito( $entities );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    public function pdfReporteVehiculosPorDepositoAction(Request $request) {
+	public function pdfReporteVehiculosPorDepositoAction( Request $request ) {
 
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosPorDepositoFilterType());
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosPorDepositoFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPorDeposito($data);
-            }
-        }
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPorDeposito( $data );
+			}
+		}
 
-        $title = 'Reporte de Vehículos por Deposito';
+		$title = 'Reporte de Vehículos por Deposito';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosPorDeposito.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosPorDeposito.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function indexReporteVehiculosConDaniosInternosAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+	public function indexReporteVehiculosConDaniosInternosAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosConDaniosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->reporteVehiculosConDanios( $fechaDesde, $fechaHasta );
+		}
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosConDaniosInternos.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView()
-        ));
-    }
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosConDaniosInternos.html.twig',
+			array(
+				'entities' => $entities,
+				'form'     => $form->createView()
+			) );
+	}
 
-    public function pdfReporteVehiculosConDaniosInternosAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+	public function pdfReporteVehiculosConDaniosInternosAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosConDaniosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->reporteVehiculosConDanios( $fechaDesde, $fechaHasta );
+		}
 
-        $title = 'Reporte de Vehículos  Con Daños Internos';
+		$title = 'Reporte de Vehículos  Con Daños Internos';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosRecibidosConDanios.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function excelReporteVehiculosConDaniosInternosAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
+	public function excelReporteVehiculosConDaniosInternosAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosConDaniosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
 
-            $formData = $form->getData();
+			$formData = $form->getData();
 
-            $aFecha = explode(' - ', $formData['rango']);
+			$aFecha = explode( ' - ', $formData['rango'] );
 
-            $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-            $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+			$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+			$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
 
-            $entities = $reportesManager->reporteVehiculosConDanios($fechaDesde, $fechaHasta);
-        }
+			$entities = $reportesManager->reporteVehiculosConDanios( $fechaDesde, $fechaHasta );
+		}
 
-        $filename = "reporte_vehiculos_recibidos_con_danios.xls";
+		$filename = "reporte_vehiculos_recibidos_con_danios.xls";
 
 
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Con Daños Internos' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Con Daños Internos' );
 
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Con Daños Internos');
-        $exportExcel->setDescripcion('Listado de Vehiculos Con Daños Internos');
+		$response = $exportExcel->buildSheetReporteVehiculosRecibidosConDanios( $entities );
 
-        $response = $exportExcel->buildSheetReporteVehiculosRecibidosConDanios($entities);
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		return $response;
+	}
 
-        return $response;
-    }
+	public function indexReporteVehiculosAsignadosAReventaAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosAsignadosAReventaFilterType() );
 
-    public function indexReporteVehiculosAsignadosAReventaAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosAsignadosAReventaFilterType());
+		$entities = array();
 
-        $entities = array();
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        $reportesManager = $this->get('manager.reportes');
+		if ( $request->getMethod() == 'POST' ) {
 
-        if ($request->getMethod() == 'POST') {
+			$form->handleRequest( $request );
 
-            $form->handleRequest($request);
+			$formData = $form->getData();
+			if ( $formData['reventa'] ) {
+				if ( $formData['dias'] ) {
+					$dias = explode( ',', $formData['dias'] );
 
-            $formData = $form->getData();
-            if ($formData['reventa']) {
-                if ($formData['dias']) {
-                    $dias = explode(',', $formData['dias']);
+					$formData['diaInicio'] = abs( $dias[0] );
+					$formData['diaFin']    = abs( $dias[1] );
+				} else {
+					$formData['diaInicio'] = false;
+					$formData['diaFin']    = false;
+				}
+				$entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
+			}
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
 
-                    $formData['diaInicio'] = abs($dias[0]);
-                    $formData['diaFin'] = abs($dias[1]);
-                } else {
-                    $formData['diaInicio'] = false;
-                    $formData['diaFin'] = false;
-                }
-                $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
-            }
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+	public function pdfReporteVehiculosAsignadosAReventaAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosAsignadosAReventaFilterType() );
 
-    public function pdfReporteVehiculosAsignadosAReventaAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosAsignadosAReventaFilterType());
+		$entities = array();
 
-        $entities = array();
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        $reportesManager = $this->get('manager.reportes');
+		if ( $request->getMethod() == 'POST' ) {
 
-        if ($request->getMethod() == 'POST') {
+			$form->handleRequest( $request );
 
-            $form->handleRequest($request);
+			$formData = $form->getData();
+			if ( $formData['reventa'] ) {
 
-            $formData = $form->getData();
-            if ($formData['reventa']) {
+				if ( $formData['dias'] ) {
+					$dias = explode( ',', $formData['dias'] );
 
-                if ($formData['dias']) {
-                    $dias = explode(',', $formData['dias']);
+					$formData['diaInicio'] = abs( $dias[0] );
+					$formData['diaFin']    = abs( $dias[1] );
+				} else {
+					$formData['diaInicio'] = false;
+					$formData['diaFin']    = false;
+				}
 
-                    $formData['diaInicio'] = abs($dias[0]);
-                    $formData['diaFin'] = abs($dias[1]);
-                } else {
-                    $formData['diaInicio'] = false;
-                    $formData['diaFin'] = false;
-                }
+				$entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
+			}
+		}
 
-                $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
-            }
-        }
+		$title = 'Reporte de Vehículos Asignados a Reventa';
 
-        $title = 'Reporte de Vehículos Asignados a Reventa';
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+				'reventa'  => $formData['reventa']
+			)
+		);
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosAsignadosAReventa.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'reventa' => $formData['reventa']
-                )
-        );
+		return new Response(
+			$reportesManager->imprimir( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-        return new Response(
-                $reportesManager->imprimir($html)
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+	public function excelReporteVehiculosAsignadosAReventaAction( Request $request ) {
+		$form = $this->createForm( new ReporteVehiculosAsignadosAReventaFilterType() );
 
-    public function excelReporteVehiculosAsignadosAReventaAction(Request $request) {
-        $form = $this->createForm(new ReporteVehiculosAsignadosAReventaFilterType());
+		$entities = array();
 
-        $entities = array();
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        $reportesManager = $this->get('manager.reportes');
+		if ( $request->getMethod() == 'POST' ) {
 
-        if ($request->getMethod() == 'POST') {
+			$form->handleRequest( $request );
 
-            $form->handleRequest($request);
+			$formData = $form->getData();
+			if ( $formData['reventa'] ) {
+				if ( $formData['dias'] ) {
+					$dias = explode( ',', $formData['dias'] );
 
-            $formData = $form->getData();
-            if ($formData['reventa']) {
-                if ($formData['dias']) {
-                    $dias = explode(',', $formData['dias']);
+					$formData['diaInicio'] = abs( $dias[0] );
+					$formData['diaFin']    = abs( $dias[1] );
+				} else {
+					$formData['diaInicio'] = false;
+					$formData['diaFin']    = false;
+				}
 
-                    $formData['diaInicio'] = abs($dias[0]);
-                    $formData['diaFin'] = abs($dias[1]);
-                } else {
-                    $formData['diaInicio'] = false;
-                    $formData['diaFin'] = false;
-                }
+				$entities = $reportesManager->getVehiculosAsignadosAReventa( $formData );
+			}
+		}
 
-                $entities = $reportesManager->getVehiculosAsignadosAReventa($formData);
-            }
-        }
+		$filename = "reporte_vehiculos_asignados_a_reventa.xls";
 
-        $filename = "reporte_vehiculos_asignados_a_reventa.xls";
 
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Asignados a Reventa' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Asignados a Reventa' );
 
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Asignados a Reventa');
-        $exportExcel->setDescripcion('Listado de Vehiculos Asignados a Reventa');
+		$response = $exportExcel->buildSheetReporteVehiculosAsignadosAReventa( $entities );
 
-        $response = $exportExcel->buildSheetReporteVehiculosAsignadosAReventa($entities);
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		return $response;
+	}
 
-        return $response;
-    }
+	/*
+	 *
+	 */
 
-    /*
-     *
-     */
+	public function indexReporteVehiculosPatentamientosAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReportePatentamientosFilterType() );
 
-    public function indexReporteVehiculosPatentamientosAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReportePatentamientosFilterType());
+		$entities = array();
 
-        $entities = array();
+		if ( $request->getMethod() == 'POST' ) {
 
-        if ($request->getMethod() == 'POST') {
+			$form->handleRequest( $request );
 
-            $form->handleRequest($request);
+			$data = $form->getData();
 
-            $data = $form->getData();
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPatentamientos( $data );
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
 
-            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPatentamientos($data);
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosPatentamientos.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosPatentamientos.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+	public function pdfReporteVehiculosPatentamientosAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReportePatentamientosFilterType() );
 
-    public function pdfReporteVehiculosPatentamientosAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReportePatentamientosFilterType());
+		$entities = array();
 
-        $entities = array();
+		if ( $request->getMethod() == 'POST' ) {
 
-        if ($request->getMethod() == 'POST') {
+			$form->handleRequest( $request );
 
-            $form->handleRequest($request);
+			$data = $form->getData();
+			if ( $data['rango'] ) {
+				$aFecha = explode( ' - ', $data['rango'] );
 
-            $data = $form->getData();
-            if ($data['rango']) {
-                $aFecha = explode(' - ', $data['rango']);
+				$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+				$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+				$fecha      = true;
+			} else {
+				$fecha      = false;
+				$fechaDesde = null;
+				$fechaHasta = null;
+			}
+			$estado = $data['estado'];
 
-                $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-                $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-                $fecha = true;
-            } else {
-                $fecha = false;
-                $fechaDesde = null;
-                $fechaHasta = null;
-            }
-            $estado = $data['estado'];
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPatentamientos( $data );
+		}
 
-            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPatentamientos($data);
-        }
+		$title = 'Reporte de Patentamientos';
 
-        $title = 'Reporte de Patentamientos';
+		$html            = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosPatentamientos.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta,
+				'fecha'      => $fecha,
+				'estado'     => $estado
+			)
+		);
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosPatentamientos.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta,
-            'fecha' => $fecha,
-            'estado' => $estado
-                )
-        );
-        $reportesManager = $this->get('manager.reportes');
-        return new Response(
-                $reportesManager->imprimir($html, 'H')
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html, 'H' )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function excelReporteVehiculosPatentamientosAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReportePatentamientosFilterType());
+	public function excelReporteVehiculosPatentamientosAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReportePatentamientosFilterType() );
 
-        $entities = array();
+		$entities = array();
 
-        if ($request->getMethod() == 'POST') {
+		if ( $request->getMethod() == 'POST' ) {
 
-            $form->handleRequest($request);
+			$form->handleRequest( $request );
 
-            $data = $form->getData();
+			$data = $form->getData();
 
-            $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPatentamientos($data);
-        }
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPatentamientos( $data );
+		}
 
-        $filename = "reporte_vehiculos_patentamientos.xls";
+		$filename = "reporte_vehiculos_patentamientos.xls";
 
 
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Patentamientos' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Patentamientos' );
 
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Patentamientos');
-        $exportExcel->setDescripcion('Listado de Vehiculos Patentamientos');
+		$response = $exportExcel->buildSheetReporteVehiculosPatentamientos( $entities );
 
-        $response = $exportExcel->buildSheetReporteVehiculosPatentamientos($entities);
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		return $response;
+	}
 
-        return $response;
-    }
+	/*
+	 * reporte de vehiculos que tengan daños de gm sin solucionar
+	 */
 
-    /*
-     * reporte de vehiculos que tengan daños de gm sin solucionar
-     */
-
-    public function indexReporteVehiculosDaniosGmAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+	public function indexReporteVehiculosDaniosGmAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
 //        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
-        $form = $this->createForm(new ReporteVehiculosDaniosGmFilterType($em));
+		$form = $this->createForm( new ReporteVehiculosDaniosGmFilterType( $em ) );
 
 
-        $entities = array();
+		$entities = array();
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
 
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosGm($data);
-            }
-        }
-
-
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
-
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosDaniosGm.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
-
-    public function pdfReporteVehiculosDaniosGmAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReporteVehiculosDaniosGmFilterType($em));
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosDaniosGm( $data );
+			}
+		}
 
 
-        $entities = array();
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
+
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosDaniosGm.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
+
+	public function pdfReporteVehiculosDaniosGmAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReporteVehiculosDaniosGmFilterType( $em ) );
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                if ($data['rango']) {
-                    $aFecha = explode(' - ', $data['rango']);
-                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-                    $fecha = true;
-                } else {
-                    $fecha = false;
-                    $fechaDesde = null;
-                    $fechaHasta = null;
-                }
-                if ($data['tipoEstadoDanioGm']) {
-                    $estado = $data['tipoEstadoDanioGm']->getSlug();
-                } else {
-                    $estado = false;
-                }
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosGm($data);
-            }
-        }
-
-        $title = 'Reporte vehiculos con daños de GM';
-
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosDaniosGm.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta,
-            'fecha' => $fecha,
-            'estado' => $estado,
-                )
-        );
-        $reportesManager = $this->get('manager.reportes');
-        return new Response(
-                $reportesManager->imprimir($html, 'H')
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
-    
-     public function excelReporteVehiculosDaniosGmAction(Request $request) {
-       $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReporteVehiculosDaniosGmFilterType($em));
+		$entities = array();
 
 
-        $entities = array();
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha     = explode( ' - ', $data['rango'] );
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+					$fecha      = true;
+				} else {
+					$fecha      = false;
+					$fechaDesde = null;
+					$fechaHasta = null;
+				}
+				if ( $data['tipoEstadoDanioGm'] ) {
+					$estado = $data['tipoEstadoDanioGm']->getSlug();
+				} else {
+					$estado = false;
+				}
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosDaniosGm( $data );
+			}
+		}
+
+		$title = 'Reporte vehiculos con daños de GM';
+
+		$html            = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosDaniosGm.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta,
+				'fecha'      => $fecha,
+				'estado'     => $estado,
+			)
+		);
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, 'H' )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	public function excelReporteVehiculosDaniosGmAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReporteVehiculosDaniosGmFilterType( $em ) );
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();               
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosGm($data);
-            }
-        }
+		$entities = array();
 
 
-        $filename = "reporte_vehiculos_con_danios_gm.xls";
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosDaniosGm( $data );
+			}
+		}
 
 
+		$filename = "reporte_vehiculos_con_danios_gm.xls";
 
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Con Danios De GM');
-        $exportExcel->setDescripcion('Listado de Vehiculos Con Danios De GM');
 
-        $response = $exportExcel->buildSheetReporteVehiculosDaniosGm($entities);
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Con Danios De GM' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Con Danios De GM' );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		$response = $exportExcel->buildSheetReporteVehiculosDaniosGm( $entities );
 
-        return $response;
-    }
-    
-    /*
-     * reporte de vehiculos que tengan daños de gm sin solucionar
-     */
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-    public function indexReporteVehiculosDaniosInternosAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
+		return $response;
+	}
+
+	/*
+	 * reporte de vehiculos que tengan daños de gm sin solucionar
+	 */
+
+	public function indexReporteVehiculosDaniosInternosAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
 //        $form = $this->createForm(new ReporteVehiculosConDaniosFilterType());
-        $form = $this->createForm(new ReporteVehiculosDaniosInternosFilterType());
+		$form = $this->createForm( new ReporteVehiculosDaniosInternosFilterType() );
 
 
-        $entities = array();
+		$entities = array();
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
 
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosInternos($data);
-            }
-        }
-
-
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
-
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosDaniosInternos.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
-
-    public function pdfReporteVehiculosDaniosInternosAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReporteVehiculosDaniosInternosFilterType());
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosDaniosInternos( $data );
+			}
+		}
 
 
-        $entities = array();
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
+
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosDaniosInternos.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
+
+	public function pdfReporteVehiculosDaniosInternosAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReporteVehiculosDaniosInternosFilterType() );
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                if ($data['rango']) {
-                    $aFecha = explode(' - ', $data['rango']);
-                    $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
-                    $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
-                    $fecha = true;
-                } else {
-                    $fecha = false;
-                    $fechaDesde = null;
-                    $fechaHasta = null;
-                }
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosInternos($data);
-            }
-        }
-
-        $title = 'Reporte vehiculos con daños internos';
-
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosDaniosInternos.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-            'fechaDesde' => $fechaDesde,
-            'fechaHasta' => $fechaHasta,
-            'fecha' => $fecha,
-                )
-        );
-        $reportesManager = $this->get('manager.reportes');
-        return new Response(
-                $reportesManager->imprimir($html, 'H')
-                , 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
-    
-     public function excelReporteVehiculosDaniosInternosAction(Request $request) {
-       $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new ReporteVehiculosDaniosInternosFilterType());
+		$entities = array();
 
 
-        $entities = array();
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha     = explode( ' - ', $data['rango'] );
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+					$fecha      = true;
+				} else {
+					$fecha      = false;
+					$fechaDesde = null;
+					$fechaHasta = null;
+				}
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosDaniosInternos( $data );
+			}
+		}
+
+		$title = 'Reporte vehiculos con daños internos';
+
+		$html            = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosDaniosInternos.pdf.twig',
+			array(
+				'entities'   => $entities,
+				'title'      => $title,
+				'fechaDesde' => $fechaDesde,
+				'fechaHasta' => $fechaHasta,
+				'fecha'      => $fecha,
+			)
+		);
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, 'H' )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	public function excelReporteVehiculosDaniosInternosAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new ReporteVehiculosDaniosInternosFilterType() );
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();               
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosDaniosInternos($data);
-            }
-        }
+		$entities = array();
 
 
-        $filename = "reporte_vehiculos_con_danios_internos.xls";
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosDaniosInternos( $data );
+			}
+		}
 
 
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Con Danios Internos');
-        $exportExcel->setDescripcion('Listado de Vehiculos Con Danios Internos');
-
-        $response = $exportExcel->buildSheetReporteVehiculosDaniosInternos($entities);
-
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
-
-        return $response;
-    }
-    
-    /*
-     * reporte vehiculo plan de ahorro (tránsito, recibidos y pendientes por entregar)
-     */
-    
-     public function indexReporteVehiculosPlanAhorroAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosPlanAhorroFilterType($em));
-
-        $entities = array();
+		$filename = "reporte_vehiculos_con_danios_internos.xls";
 
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Con Danios Internos' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Con Danios Internos' );
 
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPlanAhorro($data);
-            }
-        }
-        $cantidadRegistros = count($entities);
-        $paginator = $this->get('knp_paginator');
-        $entities = $paginator->paginate(
-                $entities, $request->query->get('page', 1)/* page number */, 30/* limit per page */
-        );
+		$response = $exportExcel->buildSheetReporteVehiculosDaniosInternos( $entities );
 
-        return $this->render('VehiculosBundle:Reporte:reporteVehiculosPlanAhorro.html.twig', array(
-                    'entities' => $entities,
-                    'form' => $form->createView(),
-                    'cantidadRegistros' => $cantidadRegistros,
-        ));
-    }
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-    public function excelReporteVehiculosPlanAhorroAction(Request $request) {
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosPlanAhorroFilterType($em));
+		return $response;
+	}
 
-        $entities = array();
+	/*
+	 * reporte vehiculo plan de ahorro (tránsito, recibidos y pendientes por entregar)
+	 */
+
+	public function indexReporteVehiculosPlanAhorroAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosPlanAhorroFilterType( $em ) );
+
+		$entities = array();
+
+
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPlanAhorro( $data );
+			}
+		}
+		$cantidadRegistros = count( $entities );
+		$paginator         = $this->get( 'knp_paginator' );
+		$entities          = $paginator->paginate(
+			$entities,
+			$request->query->get( 'page', 1 )/* page number */,
+			30/* limit per page */
+		);
+
+		return $this->render( 'VehiculosBundle:Reporte:reporteVehiculosPlanAhorro.html.twig',
+			array(
+				'entities'          => $entities,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
+			) );
+	}
+
+	public function excelReporteVehiculosPlanAhorroAction( Request $request ) {
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosPlanAhorroFilterType( $em ) );
+
+		$entities = array();
 
 //        $reportesManager = $this->get('manager.reportes');
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPlanAhorro($data);
-            }
-        }
-        $filename = "reporte_vehiculos_plan_ahorro.xls";
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPlanAhorro( $data );
+			}
+		}
+		$filename = "reporte_vehiculos_plan_ahorro.xls";
 
 
-
-        $exportExcel = $this->get('excel.tool');
-        $exportExcel->setTitle('Vehiculos Plan de Ahorro');
-        $exportExcel->setDescripcion('Listado de Vehiculos Plan de Ahorro');
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( 'Vehiculos Plan de Ahorro' );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos Plan de Ahorro' );
 
 
 //        $managerEncuestas = $this->get('manager.reportes');
 //        $entities = $managerEncuestas->getAutosVendidosPorVendedor($vendedor, $fechaDesde, $fechaHasta);
 
 
-        $response = $exportExcel->buildSheetgetReporteVehiculosPlanAhorro($entities);
+		$response = $exportExcel->buildSheetgetReporteVehiculosPlanAhorro( $entities );
 
-        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
-        $response->headers->set('Pragma', 'public');
-        $response->headers->set('Cache-Control', 'maxage=1');
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
 
-        return $response;
-    }
+		return $response;
+	}
 
-    public function pdfReporteVehiculosPlanAhorroAction(Request $request) {
+	public function pdfReporteVehiculosPlanAhorroAction( Request $request ) {
 
-        $em = $this->getDoctrine()->getManager();
-        $form = $this->createForm(new VehiculosPlanAhorroFilterType($em));
+		$em   = $this->getDoctrine()->getManager();
+		$form = $this->createForm( new VehiculosPlanAhorroFilterType( $em ) );
 
-        $entities = array();
+		$entities = array();
 
-        $reportesManager = $this->get('manager.reportes');
+		$reportesManager = $this->get( 'manager.reportes' );
 
-        if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosPlanAhorro($data);
-            }
-        }
+		if ( $request->getMethod() == 'POST' ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosPlanAhorro( $data );
+			}
+		}
 
-        $title = 'Reporte de Vehiculos de Plan de ahorro';
+		$title = 'Reporte de Vehiculos de Plan de ahorro';
 
-        $html = $this->renderView(
-                'VehiculosBundle:Reporte:reporteVehiculosPlanAhorro.pdf.twig', array(
-            'entities' => $entities,
-            'title' => $title,
-                )
-        );
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosPlanAhorro.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
 
-        return new Response(
-                $reportesManager->imprimir($html, "H"), 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-                )
-        );
-    }
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
-    public function pdfCheckListPreEntregaAction($vehiculoId) {
-        $em = $this->getDoctrine()->getManager();
+	public function pdfCheckListPreEntregaAction( $vehiculoId ) {
+		$em = $this->getDoctrine()->getManager();
 
-        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
 
-        
-        $cuestionario = $em->getRepository('CuestionariosBundle:Cuestionario')->find(1);
 
-        $categorias = $em->getRepository('CuestionariosBundle:CuestionarioCategoria')->getCategoriasConCampos(
-            $cuestionario
-        );
+		$cuestionario = $em->getRepository( 'CuestionariosBundle:Cuestionario' )->find( 1 );
 
-        $resultadoCabecera = $em->getRepository('CuestionariosBundle:CuestionarioResultadoCabecera')->findOneByVehiculo($vehiculo);
+		$categorias = $em->getRepository( 'CuestionariosBundle:CuestionarioCategoria' )->getCategoriasConCampos(
+			$cuestionario
+		);
 
-        $formDaniosInternos = $this->createForm(new CheckListPreEntregaType(), $vehiculo);
+		$resultadoCabecera = $em->getRepository( 'CuestionariosBundle:CuestionarioResultadoCabecera' )->findOneByVehiculo( $vehiculo );
 
-        $title = 'Checklist Pre-Entrega';
+		$formDaniosInternos = $this->createForm( new CheckListPreEntregaType(), $vehiculo );
 
-        $html = $this->renderView(
-            'VehiculosBundle:Reporte:checklistPreEntrega.pdf.twig', array(
-                'categorias' => $categorias,
-                'cuestionario' => $cuestionario,
-                'vehiculo' => $vehiculo,
-                'formDanioInterno' => $formDaniosInternos->createView(),
-                'title' => $title,
-                'resultadoCabecera'=>$resultadoCabecera
-            )
-        );
-        $reportesManager = $this->get('manager.reportes');
-        return new Response(
-            $reportesManager->imprimirCheckControlInterno($html)
-            , 200, array(
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
-            )
-        );
-    }
+		$title = 'Checklist Pre-Entrega';
+
+		$html            = $this->renderView(
+			'VehiculosBundle:Reporte:checklistPreEntrega.pdf.twig',
+			array(
+				'categorias'        => $categorias,
+				'cuestionario'      => $cuestionario,
+				'vehiculo'          => $vehiculo,
+				'formDanioInterno'  => $formDaniosInternos->createView(),
+				'title'             => $title,
+				'resultadoCabecera' => $resultadoCabecera
+			)
+		);
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimirCheckControlInterno( $html )
+			, 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	/**
+	 *
+	 * Reporte excel vehiculos general
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function excelReporteVehiculosAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+
+		$form = $this->createForm( new VehiculoFilterType(), null, array( 'entity_manager' => $em ) );
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false, $data );
+			}
+		} else {
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false );
+		}
+
+		$filename = 'Reporte de Vehiculos';
+
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( $filename );
+		$exportExcel->setDescripcion( 'Listado de Vehiculos' );
+
+		$response = $exportExcel->buildSheetgetReporteVehiculos( $entities );
+
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
+
+		return $response;
+	}
+
+	/**
+	 *
+	 * Reporte PDF vehiculos general
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function pdfReporteVehiculosAction( Request $request ) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$form = $this->createForm( new VehiculoFilterType(), null, array( 'entity_manager' => $em ) );
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data     = $form->getData();
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false, $data );
+			}
+		} else {
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( false );
+		}
+
+		$title = 'Reporte de Vehiculos';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculos.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	/**
+	 *
+	 * Reporte excel vehiculos en transito
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function excelReporteVehiculosTransitoAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+
+		$estado = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findBySlug( 'transito' );
+		$form   = $this->createForm( new VehiculoFilterType(), null, array( 'entity_manager' => $em ) );
+
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha = explode( ' - ', $data['rango'] );
+
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+					$data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+				}
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estado, $data );
+			}
+		} else {
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estado );
+		}
+
+		$filename = 'Vehiculos en Tránsito';
+
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( $filename );
+		$exportExcel->setDescripcion( 'Vehiculos en Tránsito' );
+
+		$response = $exportExcel->buildSheetgetReporteVehiculosTransito( $entities );
+
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
+
+		return $response;
+	}
+
+	/**
+	 *
+	 * Reporte PDF vehiculos transito
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function pdfReporteVehiculosTransitoAction( Request $request ) {
+
+		$em = $this->getDoctrine()->getManager();
+
+		$estado = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findBySlug( 'transito' );
+		$form   = $this->createForm( new VehiculoFilterType(), null, array( 'entity_manager' => $em ) );
+
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha = explode( ' - ', $data['rango'] );
+
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+					$data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+				}
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estado, $data );
+			}
+		} else {
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estado );
+		}
+
+		$title = 'Reporte de Vehiculos en Tránsito';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosTransito.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+
+	/**
+	 *
+	 * Reporte excel vehiculos entregados
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function excelReporteVehiculosEntregadosAction( Request $request ) {
+		$em        = $this->getDoctrine()->getManager();
+		$form      = $this->createForm( new VehiculoFilterType(), null, array( 'entity_manager' => $em ) );
+		$estadoId1 = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug( 'entregado' );
+		$estados   = array( $estadoId1 );
+		$order     = " fecha_estado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha = explode( ' - ', $data['rango'] );
+
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+					$data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+				}
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados,
+					$data,
+					$order );
+			}
+		} else {
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados, null, $order );
+		}
+
+		$filename = 'Vehiculos Entregados';
+
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( $filename );
+		$exportExcel->setDescripcion( $filename );
+
+		$response = $exportExcel->buildSheetgetReporteVehiculosEntregados( $entities );
+
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
+
+		return $response;
+	}
+
+	/**
+	 *
+	 * Reporte PDF vehiculos entregados
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function pdfReporteVehiculosEntregadosAction( Request $request ) {
+		$em        = $this->getDoctrine()->getManager();
+		$form      = $this->createForm( new VehiculoFilterType(), null, array( 'entity_manager' => $em ) );
+		$estadoId1 = $em->getRepository( 'VehiculosBundle:TipoEstadoVehiculo' )->findOneBySlug( 'entregado' );
+		$estados   = array( $estadoId1 );
+		$order     = " fecha_estado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha = explode( ' - ', $data['rango'] );
+
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+					$data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+				}
+				$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados,
+					$data,
+					$order );
+			}
+		} else {
+			$entities = $em->getRepository( 'VehiculosBundle:Vehiculo' )->getVehiculosEstado( $estados, null, $order );
+		}
+
+		$title = 'Reporte de Vehiculos Entregados';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosEntregados.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	/**
+	 *
+	 * Reporte excel vehiculos pendientes de entrega
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function excelReporteVehiculosPendientesEntregaAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+		$form = $this->createForm(new VehiculoFilterType(), null, array('entity_manager'=> $em));
+		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('pendiente-por-entregar');
+		$estados = array($estadoId1);
+
+		$order = " fecha_entrega asc,hora_entrega asc,modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
+		if ($request->isMethod("post")) {
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data, $order);
+			}
+		} else {
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
+		}
+
+		$filename = 'Vehiculos_Pendientes_de_Entrega';
+		$descripcion = str_replace('_', ' ',$filename);
+
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( $descripcion );
+		$exportExcel->setDescripcion( $descripcion );
+
+		$response = $exportExcel->buildSheetgetReporteVehiculosPendientesEntrega( $entities );
+
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
+
+		return $response;
+	}
+
+	/**
+	 *
+	 * Reporte PDF vehiculos pendientes de entrega
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function pdfReporteVehiculosPendientesEntregaAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+		$form = $this->createForm(new VehiculoFilterType(), null, array('entity_manager'=> $em));
+		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('pendiente-por-entregar');
+		$estados = array($estadoId1);
+
+		$order = " fecha_entrega asc,hora_entrega asc,modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
+		if ($request->isMethod("post")) {
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data, $order);
+			}
+		} else {
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
+		}
+
+		$title = 'Reporte de Vehiculos Pendientes de Entrega';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosPendientesEntrega.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	/**
+	 *
+	 * Reporte excel vehiculos Recibidos
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function excelReporteVehiculosRecibidosAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido');
+		$estados = array($estadoId1);
+		$form = $this->createForm(new VehiculoFilterType(), null, array('entity_manager'=> $em));
+		if ($request->isMethod("post")) {
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				if ($data['rango']) {
+					$aFecha = explode(' - ', $data['rango']);
+
+					$fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+					$fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+					$data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+				}
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+			}
+		} else {
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+		}
+		$filename = 'Vehiculos_Recibidos';
+		$descripcion = str_replace('_', ' ',$filename);
+
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( $descripcion );
+		$exportExcel->setDescripcion( $descripcion );
+
+		$response = $exportExcel->buildSheetgetReporteVehiculosRecibidos( $entities );
+
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
+
+		return $response;
+	}
+
+	/**
+	 *
+	 * Reporte PDF vehiculos Recibidos
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function pdfReporteVehiculosRecibidosAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('recibido');
+		$estados = array($estadoId1);
+		$form = $this->createForm(new VehiculoFilterType(), null, array('entity_manager'=> $em));
+		if ($request->isMethod("post")) {
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				if ($data['rango']) {
+					$aFecha = explode(' - ', $data['rango']);
+
+					$fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+					$fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+					$data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+				}
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+			}
+		} else {
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+		}
+
+		$title = 'Reporte de Vehiculos Recibidos';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosPendientesEntrega.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
+
+	/**
+	 *
+	 * Reporte excel vehiculos en stock
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function excelReporteVehiculosStockAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+		$form = $this->createForm(new VehiculoFilterType(), null, array('entity_manager'=>$em));
+		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('stock');
+		$estados = array($estadoId1);
+
+		if ($request->isMethod("post")) {
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				if ($data['rango']) {
+					$aFecha = explode(' - ', $data['rango']);
+
+					$fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+					$fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+					$data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+				}
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+			}
+		} else {
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+		}
+		$filename = 'Vehiculos_Stock';
+		$descripcion = str_replace('_', ' ',$filename);
+
+		$exportExcel = $this->get( 'excel.tool' );
+		$exportExcel->setTitle( $descripcion );
+		$exportExcel->setDescripcion( $descripcion );
+
+		$response = $exportExcel->buildSheetgetReporteVehiculosStock( $entities );
+
+		$response->headers->set( 'Content-Type', 'text/vnd.ms-excel; charset=utf-8' );
+		$response->headers->set( 'Content-Disposition', 'attachment;filename=' . $filename . '' );
+		$response->headers->set( 'Pragma', 'public' );
+		$response->headers->set( 'Cache-Control', 'maxage=1' );
+
+		return $response;
+	}
+
+	/**
+	 *
+	 * Reporte PDF vehiculos Stock
+	 *
+	 * @param Request $request
+	 *
+	 * @return \UtilBundle\Services\type
+	 */
+	public function pdfReporteVehiculosStockAction( Request $request ) {
+		$em = $this->getDoctrine()->getManager();
+		$form = $this->createForm(new VehiculoFilterType(), null, array('entity_manager'=>$em));
+		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('stock');
+		$estados = array($estadoId1);
+
+		if ($request->isMethod("post")) {
+			$form->handleRequest($request);
+			if ($form->isValid()) {
+				$data = $form->getData();
+				if ($data['rango']) {
+					$aFecha = explode(' - ', $data['rango']);
+
+					$fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
+					$fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
+
+					$data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
+				}
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data);
+			}
+		} else {
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
+		}
+
+		$title = 'Reporte de Vehiculos en Stock';
+
+		$html = $this->renderView(
+			'VehiculosBundle:Reporte:reporteVehiculosStock.pdf.twig',
+			array(
+				'entities' => $entities,
+				'title'    => $title,
+			)
+		);
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html, "H" ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
+	}
 
 
 }
