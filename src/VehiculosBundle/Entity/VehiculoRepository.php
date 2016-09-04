@@ -85,7 +85,14 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega,age.hora as hora_entrega,encuesta.id as encuesta_alerta_temprana,
                                         (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar,
                                         (select id from danios_vehiculo_gm where vehiculo_id=v.id and tipo_estado_danio_gm_id!=3 limit 1) as danio_gm_sin_solucionar,
-                                        cli.reventa,estados_vehiculos.creado as fecha_estado
+                                        cli.reventa,personas.apellido ||', '||personas.nombre as cliente,
+                                        (select personas.apellido||', '||personas.nombre
+                                                from empleados
+                                                LEFT JOIN persona_tipos ON empleados.id = persona_tipos.empleado_id
+                                                LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+                                                where empleados.id = v.vendedor_id
+                                                ) as vendedor,
+                                        estados_vehiculos.creado as fecha_estado
 					FROM     estados_vehiculos
 					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
 					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
@@ -105,6 +112,8 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                                         LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
                                         LEFT JOIN encuesta_resultados_cabeceras encuesta ON v.id=encuesta.vehiculo_id
                                         LEFT JOIN clientes cli ON v.cliente_id=cli.id
+                                        LEFT JOIN persona_tipos ON cli.id = persona_tipos.cliente_id
+                                        LEFT JOIN personas ON persona_tipos.persona_id = personas.id
                                         WHERE " . $where .
                 " ORDER BY " . $order;
 
@@ -317,18 +326,20 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         } else {
             $where.=" AND v.cupon_garantia is null";
         }
-
+        if ($filters['tipoVentaEspecial']) {
+            $where.=" AND tv.id = " . $filters['tipoVentaEspecial']->getId();
+        }
 
         $query = "SELECT distinct(v.*),
- nm.nombre||'|'||cm.anio||'|'||cm.version as modelo,
- tv.nombre as tipo_venta_especial, tv.slug as venta_especial_slug,
- cv.color as color_vehiculo
-FROM vehiculos v
-INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
-LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
-LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
-LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id = tv.id
-WHERE " . $where .
+            nm.nombre||'|'||cm.anio||'|'||cm.version as modelo,
+            tv.nombre as tipo_venta_especial, tv.slug as venta_especial_slug,
+            cv.color as color_vehiculo
+           FROM vehiculos v
+           INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id = cv.id
+           LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
+           LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
+           LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id = tv.id
+           WHERE " . $where .
                 " ORDER BY modelo, color_vehiculo asc";
 
         $stmt = $db->prepare($query);
@@ -531,6 +542,14 @@ WHERE " . $where .
             $where .= " AND clientes.reventa = true";
         }
 
+        if ($filters['patentado']) {
+            if ($filters['patentado'] == 1) {
+                $where .= " AND pat.dominio is not null ";
+            } else {
+                $where .= " AND pat.dominio is null ";
+            }
+        }
+
         if ($filters['diaInicio']) {
             $where .= " AND (current_date-vehiculos.fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
         }
@@ -548,16 +567,92 @@ WHERE " . $where .
                      colores_vehiculos.color AS color_vehiculo,
                      personas.nombre AS personas_nombre,
                      personas.apellido AS personas_apellido,
-                     estados_patentamiento.estado AS estado_patentamiento
+                     epat.estado AS estado_patentamiento
                     FROM
                     colores_vehiculos colores_vehiculos INNER JOIN vehiculos vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
                     INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
                     LEFT OUTER JOIN clientes clientes ON vehiculos.cliente_id = clientes.id
-                    LEFT OUTER JOIN patentamientos patentamientos ON vehiculos.patentamiento_id = patentamientos.id
-                    LEFT OUTER JOIN estados_patentamiento estados_patentamiento ON patentamientos.estado_patentamiento_id = estados_patentamiento.id
+                    LEFT OUTER JOIN patentamientos pat ON vehiculos.patentamiento_id = pat.id
+                    LEFT OUTER JOIN estados_patentamiento epat ON pat.estado_patentamiento_id = epat.id
                     LEFT OUTER JOIN persona_tipos persona_tipos ON clientes.id = persona_tipos.cliente_id
                     LEFT OUTER JOIN personas personas ON persona_tipos.persona_id = personas.id
                     INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
+                    WHERE
+                    $where
+                    ";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /*
+     * devuelve los vehiculos que esten signados a algun cliente
+     */
+
+    public function getVehiculosAsignadosACliente($filters) {
+        $db = $this->getEntityManager()->getConnection();
+
+        $where = 'vehiculos.cliente_id IS NOT NULL AND clientes.reventa = false';
+
+        if ($filters['facturado'] == 1) {
+            $where .= " AND vehiculos.factura_id IS NOT NULL";
+        } else if ($filters['facturado'] == 2) {
+            $where .= " AND vehiculos.factura_id IS NULL";
+        }
+
+        if ($filters['cliente']) {
+            $where .= " AND vehiculos.cliente_id = " . $filters['cliente']->getId();
+        }
+
+        if ($filters['patentado']) {
+            if ($filters['patentado'] == 1) {
+                $where .= " AND pat.dominio is not null ";
+            } else {
+                $where .= " AND pat.dominio is null ";
+            }
+        }
+
+        if ($filters['diaInicio']) {
+            $where .= " AND (current_date-vehiculos.fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
+        }
+
+        if ($filters['diaFin']) {
+            $where .= " AND (current_date-vehiculos.fecha_emision_documento::date <= " . $filters['diaFin'] . ")";
+        }
+
+
+        $query = "
+                    SELECT
+                    vehiculos.*,
+                     current_date-vehiculos.fecha_emision_documento::date as dias_de_recibido,
+                     nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
+                     colores_vehiculos.color AS color_vehiculo,
+                     personas.nombre AS personas_nombre,
+                     personas.apellido AS personas_apellido,personas.celular,
+                     epat.estado AS estado_patentamiento,d.nombre as deposito,tv.slug as venta_especial_slug,
+                     (select personas.apellido||', '||personas.nombre
+                                                from empleados
+                                                LEFT JOIN persona_tipos ON empleados.id = persona_tipos.empleado_id
+                                                LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+                                                where empleados.id = vehiculos.vendedor_id
+                                                ) as vendedor
+                    FROM
+                    colores_vehiculos colores_vehiculos INNER JOIN vehiculos vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
+                    INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
+                    LEFT OUTER JOIN clientes clientes ON vehiculos.cliente_id = clientes.id
+                    LEFT OUTER JOIN patentamientos pat ON vehiculos.patentamiento_id = pat.id
+                    LEFT OUTER JOIN estados_patentamiento epat ON pat.estado_patentamiento_id = epat.id
+                    LEFT OUTER JOIN persona_tipos persona_tipos ON clientes.id = persona_tipos.cliente_id
+                    LEFT OUTER JOIN personas personas ON persona_tipos.persona_id = personas.id
+                    INNER JOIN nombres_modelo nombres_modelo ON codigos_modelo.nombre_modelo_id = nombres_modelo.id
+                    
+                     LEFT JOIN tipos_venta_especial tv ON vehiculos.tipo_venta_especial_id=tv.id
+
+                    LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on vehiculos.id =  mmdd.vehiculo_id
+                    LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
+                    LEFT JOIN depositos d ON md.deposito_destino_id=d.id
                     WHERE
                     $where
                     ";
@@ -650,8 +745,15 @@ WHERE " . $where .
         }
 
         $query = "select distinct(v.id),v.vin,d.nombre as deposito,cv.color,
-                        nm.nombre as nombre_modelo,cm.anio as anio_modelo,cm.version
-                        from vehiculos v
+                        nm.nombre as nombre_modelo,cm.anio as anio_modelo,cm.version,
+                         tipo_estado_vehiculo.estado as vehiculo_estado,tv.nombre as tipo_venta_especial
+                       
+                        FROM     estados_vehiculos
+                        INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+                        INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+                        INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+                         LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
+                         
                         inner join danios_vehiculo_gm dv on v.id=dv.vehiculo_id
                         inner join tipos_estado_danio_gm te on dv.tipo_estado_danio_gm_id=te.id
                         LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
@@ -669,22 +771,22 @@ WHERE " . $where .
         $stmt->execute();
         $result = $stmt->fetchAll();
         if ($danios) {
-            for ($i=0;$i<count($result) ;$i++) {
-                 $query = "select td.descripcion as tipo_danio,cd.descripcion as codigo_danio,dv.*,te.descripcion
+            for ($i = 0; $i < count($result); $i++) {
+                $query = "select td.descripcion as tipo_danio,cd.descripcion as codigo_danio,dv.*,te.descripcion
                             from danios_vehiculo_gm dv 
                             inner join tipos_estado_danio_gm te on dv.tipo_estado_danio_gm_id=te.id
                             INNER JOIN tipos_danio_gm td on dv.tipo_danio_id=td.id
                             INNER JOIN codigos_danio_gm cd on dv.codigo_danio_id=cd.id
                             where vehiculo_id=" . $result[$i]['id'];
 
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        $result[$i]['danios'] = $stmt->fetchAll();
+                $stmt = $db->prepare($query);
+                $stmt->execute();
+                $result[$i]['danios'] = $stmt->fetchAll();
             }
         }
         return $result;
     }
-    
+
     public function getVehiculosDaniosInternos($filters = null, $danios = true) {
 
         $db = $this->getEntityManager()->getConnection();
@@ -695,14 +797,21 @@ WHERE " . $where .
             $fechaDesde = \DateTime::createFromFormat('d/m/Y', $aFecha[0]);
             $fechaHasta = \DateTime::createFromFormat('d/m/Y', $aFecha[1]);
             $fechaDesde = $fechaDesde->format('Y-m-d') . ' 00:00:00';
-            $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59'; 
+            $fechaHasta = $fechaHasta->format('Y-m-d') . ' 23:59:59';
             $where.=" AND dv.creado BETWEEN '$fechaDesde' AND '$fechaHasta'";
         }
 
 
         $query = "select distinct(v.id),v.vin,d.nombre as deposito,cv.color,
-                        nm.nombre as nombre_modelo,cm.anio as anio_modelo,cm.version
-                        from vehiculos v
+                        nm.nombre as nombre_modelo,cm.anio as anio_modelo,cm.version,
+                        tipo_estado_vehiculo.estado as vehiculo_estado,tv.nombre as tipo_venta_especial
+                        
+                        FROM     estados_vehiculos
+                        INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+                        INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+                        INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+                         LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
+                        
                         inner join danios_vehiculos_interno dv on v.id=dv.vehiculo_id
                         LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id = cm.id
                         LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id = nm.id
@@ -719,23 +828,25 @@ WHERE " . $where .
         $stmt->execute();
         $result = $stmt->fetchAll();
         if ($danios) {
-            for ($i=0;$i<count($result) ;$i++) {
-                 $query = "select dv.id,dv.detalle,td.nombre as tipo_danio,cd.nombre as categoria_danio,dv.solucionado
+            for ($i = 0; $i < count($result); $i++) {
+                $query = "select dv.id,dv.detalle,td.nombre as tipo_danio,cd.nombre as categoria_danio,dv.solucionado
                             from danios_vehiculos_interno dv 
                             INNER JOIN tipos_danios_interno td on dv.tipo_danio_interno_id=td.id
                             inner join categorias_danios_interno cd on td.categoria_danio_interno_id=cd.id
                             where vehiculo_id=" . $result[$i]['id'];
 
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        $result[$i]['danios'] = $stmt->fetchAll();
+                $stmt = $db->prepare($query);
+                $stmt->execute();
+                $result[$i]['danios'] = $stmt->fetchAll();
             }
         }
         return $result;
     }
+
     /*
      * devuelve vehiculos de plan de ahorro para reporte plan de ahorro
      */
+
     public function getVehiculosPlanAhorro($filters = null) {
 
         $where = "tev.slug in ('transito', 'recibido', 'pendiente-por-entregar')";

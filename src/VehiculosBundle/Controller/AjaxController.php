@@ -397,4 +397,96 @@ class AjaxController extends Controller {
         return new JsonResponse($return);
     }
 
+    /*
+     * crea modal para asignar un vendedor al vehiculo
+     */
+
+    public function newAsignacionVendedorAjaxAction($vehiculoId) {
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+
+        $form = $this->createForm(new \VehiculosBundle\Form\AsignacionVendedorType(), $vehiculo);
+
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:newAsignacionVendedor.html.twig', array(
+            'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
+                )
+        );
+        return new JsonResponse($html);
+    }
+
+    /*
+     * Registra que se asigna a un vendedor a un vehiculo
+     */
+
+    public function asignacionVendedorUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $prueba = $request->request->get('vehiculosbundle_asignacion_vendedor');
+        $vendedor = $this->getDoctrine()->getManager()->getRepository("PersonasBundle:Empleado")->find($prueba['vendedor']);
+        $vehiculo->setVendedor($vendedor);
+        $em->persist($vehiculo);
+        $em->flush();
+        return new JsonResponse(true);
+    }
+
+    /**
+     *
+     * deja al vehiculo sin vendedor asignado
+     */
+    public function desasignacionVendedorUpdateAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+
+        $vehiculo->setVendedor(null);
+        $em->persist($vehiculo);
+        $em->flush();
+
+        return new JsonResponse(true);
+    }
+
+    /*
+     * crea modal para entregar vehiculo sin facturar
+     */
+
+    public function newEntregaSinFacturaAjaxAction($vehiculoId) {
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+
+        $form = $this->createForm(new \VehiculosBundle\Form\EntregarSinFacturarType(), $vehiculo);
+
+        $html = $this->renderView(
+                'VehiculosBundle:Vehiculo:newEntregaSinFactura.html.twig', array(
+            'form' => $form->createView(),
+            'vehiculo' => $vehiculo,
+                )
+        );
+        return new JsonResponse($html);
+    }
+
+    /*
+     * Registra que se entrego el vehiculo sin facturar y registra fecha y numero remito
+     * si lo tuviese
+     */
+
+    public function createEntregaSinFacturaAjaxAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $this->getDoctrine()->getManager()->getRepository("VehiculosBundle:Vehiculo")->find($vehiculoId);
+        $form = $this->createForm(new \VehiculosBundle\Form\EntregarSinFacturarType(), $vehiculo);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->persist($vehiculo);
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
+            $estadoVehiculo = new EstadoVehiculo();
+            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+            $estadoVehiculo->setVehiculo($vehiculo);
+            $vehiculo->addEstadoVehiculo($estadoVehiculo);
+
+            $em->flush();
+            return new JsonResponse(true);
+        } else {
+            return new JsonResponse(false);
+        }
+    }
+
 }

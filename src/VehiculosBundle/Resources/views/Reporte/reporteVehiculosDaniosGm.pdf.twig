@@ -38,6 +38,8 @@
                     <th>Modelo</th>
                     <th>Color veh&iacute;culo</th>                    
                     <th>Vin</th>
+                    <th>Estado</th>
+                    <th>Tipo venta especial</th>
                     <th>Deposito</th>
                     <th>Daños</th>
                 </tr>
@@ -49,6 +51,8 @@
                         <td>{{ entity.nombre_modelo~" | "~entity.anio_modelo~" | "~entity.version}}</td>
                         <td>{{ entity.color }}</td>                       
                         <td>{{ entity.vin }}</td>
+                        <td>{{ entity.vehiculo_estado }}</td>
+                        <td>{{ entity.tipo_venta_especial }}</td>  
                         <td>{{ entity.deposito }}</td>
                         <td>
                             {% for danio in entity.danios %}                        

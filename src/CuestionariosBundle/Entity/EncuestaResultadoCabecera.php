@@ -12,181 +12,186 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Entity
  */
 class EncuestaResultadoCabecera {
-	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	private $id;
 
-	/**
-	 * @ORM\OneToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
-	 * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
-	 */
-	private $vehiculo;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
-	/**
-	 * @var datetime $creado
-	 *
-	 * @Gedmo\Timestampable(on="create")
-	 * @ORM\Column(name="creado", type="datetime")
-	 */
-	private $creado;
+    /**
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo",inversedBy="encuestaResultadoCabecera")
+     * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
+     */
+    private $vehiculo;
 
-	/**
-	 * @var datetime $actualizado
-	 *
-	 * @Gedmo\Timestampable(on="update")
-	 * @ORM\Column(name="actualizado",type="datetime")
-	 */
-	private $actualizado;
+    /**
+     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\EncuestaResultadoRespuesta", mappedBy="encuestaResultadoCabecera", cascade={"remove"})
+     *
+     */
+    private $encuestaResultadoRespuesta;
 
-	/**
-	 * @var integer $creadoPor
-	 *
-	 * @Gedmo\Blameable(on="create")
-	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-	 * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
-	 */
-	private $creadoPor;
+    /**
+     * @var datetime $creado
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="creado", type="datetime")
+     */
+    private $creado;
 
-	/**
-	 * @var integer $actualizadoPor
-	 *
-	 * @Gedmo\Blameable(on="update")
-	 * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
-	 * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
-	 */
-	private $actualizadoPor;
+    /**
+     * @var datetime $actualizado
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="actualizado",type="datetime")
+     */
+    private $actualizado;
 
-	/**
-	 * @ORM\OneToOne(targetEntity="CuestionariosBundle\Entity\Encuesta")
-	 * @ORM\JoinColumn(name="encuesta_id", referencedColumnName="id")
-	 */
-	private $encuesta;
+    /**
+     * @var integer $creadoPor
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
+     */
+    private $creadoPor;
 
+    /**
+     * @var integer $actualizadoPor
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
+     */
+    private $actualizadoPor;
 
-	/**
-	 * Get id
-	 *
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * @ORM\OneToOne(targetEntity="CuestionariosBundle\Entity\Encuesta")
+     * @ORM\JoinColumn(name="encuesta_id", referencedColumnName="id")
+     */
+    private $encuesta;
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId() {
+        return $this->id;
+    }
 
-	/**
-	 * Set creado
-	 *
-	 * @param \DateTime $creado
-	 *
-	 * @return EncuestaResultadoCabecera
-	 */
-	public function setCreado( $creado ) {
-		$this->creado = $creado;
+    /**
+     * Set creado
+     *
+     * @param \DateTime $creado
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setCreado($creado) {
+        $this->creado = $creado;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get creado
-	 *
-	 * @return \DateTime
-	 */
-	public function getCreado() {
-		return $this->creado;
-	}
+    /**
+     * Get creado
+     *
+     * @return \DateTime
+     */
+    public function getCreado() {
+        return $this->creado;
+    }
 
-	/**
-	 * Set actualizado
-	 *
-	 * @param \DateTime $actualizado
-	 *
-	 * @return EncuestaResultadoCabecera
-	 */
-	public function setActualizado( $actualizado ) {
-		$this->actualizado = $actualizado;
+    /**
+     * Set actualizado
+     *
+     * @param \DateTime $actualizado
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setActualizado($actualizado) {
+        $this->actualizado = $actualizado;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get actualizado
-	 *
-	 * @return \DateTime
-	 */
-	public function getActualizado() {
-		return $this->actualizado;
-	}
+    /**
+     * Get actualizado
+     *
+     * @return \DateTime
+     */
+    public function getActualizado() {
+        return $this->actualizado;
+    }
 
-	/**
-	 * Set creadoPor
-	 *
-	 * @param \UsuariosBundle\Entity\Usuario $creadoPor
-	 *
-	 * @return EncuestaResultadoCabecera
-	 */
-	public function setCreadoPor( \UsuariosBundle\Entity\Usuario $creadoPor = null ) {
-		$this->creadoPor = $creadoPor;
+    /**
+     * Set creadoPor
+     *
+     * @param \UsuariosBundle\Entity\Usuario $creadoPor
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setCreadoPor(\UsuariosBundle\Entity\Usuario $creadoPor = null) {
+        $this->creadoPor = $creadoPor;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get creadoPor
-	 *
-	 * @return \UsuariosBundle\Entity\Usuario
-	 */
-	public function getCreadoPor() {
-		return $this->creadoPor;
-	}
+    /**
+     * Get creadoPor
+     *
+     * @return \UsuariosBundle\Entity\Usuario
+     */
+    public function getCreadoPor() {
+        return $this->creadoPor;
+    }
 
-	/**
-	 * Set actualizadoPor
-	 *
-	 * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
-	 *
-	 * @return EncuestaResultadoCabecera
-	 */
-	public function setActualizadoPor( \UsuariosBundle\Entity\Usuario $actualizadoPor = null ) {
-		$this->actualizadoPor = $actualizadoPor;
+    /**
+     * Set actualizadoPor
+     *
+     * @param \UsuariosBundle\Entity\Usuario $actualizadoPor
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setActualizadoPor(\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
+        $this->actualizadoPor = $actualizadoPor;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get actualizadoPor
-	 *
-	 * @return \UsuariosBundle\Entity\Usuario
-	 */
-	public function getActualizadoPor() {
-		return $this->actualizadoPor;
-	}
+    /**
+     * Get actualizadoPor
+     *
+     * @return \UsuariosBundle\Entity\Usuario
+     */
+    public function getActualizadoPor() {
+        return $this->actualizadoPor;
+    }
 
-	/**
-	 * Set vehiculo
-	 *
-	 * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
-	 *
-	 * @return EncuestaResultadoCabecera
-	 */
-	public function setVehiculo( \VehiculosBundle\Entity\Vehiculo $vehiculo = null ) {
-		$this->vehiculo = $vehiculo;
+    /**
+     * Set vehiculo
+     *
+     * @param \VehiculosBundle\Entity\Vehiculo $vehiculo
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setVehiculo(\VehiculosBundle\Entity\Vehiculo $vehiculo = null) {
+        $this->vehiculo = $vehiculo;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get vehiculo
-	 *
-	 * @return \VehiculosBundle\Entity\Vehiculo
-	 */
-	public function getVehiculo() {
-		return $this->vehiculo;
-	}
+    /**
+     * Get vehiculo
+     *
+     * @return \VehiculosBundle\Entity\Vehiculo
+     */
+    public function getVehiculo() {
+        return $this->vehiculo;
+    }
 
     /**
      * Set encuesta
@@ -195,8 +200,7 @@ class EncuestaResultadoCabecera {
      *
      * @return EncuestaResultadoCabecera
      */
-    public function setEncuesta(\CuestionariosBundle\Entity\Encuesta $encuesta = null)
-    {
+    public function setEncuesta(\CuestionariosBundle\Entity\Encuesta $encuesta = null) {
         $this->encuesta = $encuesta;
 
         return $this;
@@ -207,8 +211,8 @@ class EncuestaResultadoCabecera {
      *
      * @return \CuestionariosBundle\Entity\Encuesta
      */
-    public function getEncuesta()
-    {
+    public function getEncuesta() {
         return $this->encuesta;
     }
+
 }

@@ -52,7 +52,7 @@ class Vehiculo {
      * @ORM\Column(name="codigo_inmobilizador", type="string", length=255, nullable=true)
      */
     private $codigoInmobilizador;
-    
+
     /**
      * @var string
      *
@@ -101,6 +101,24 @@ class Vehiculo {
      * @ORM\Column(name="observacion", type="text", nullable=true, nullable=true)
      */
     private $observacion;
+
+//    /**
+//     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\CheckControlInternoResultadoCabecera", mappedBy="vehiculo", cascade={"remove"})
+//     *
+//     */
+//    private $checkControlInternoResultadoCabecera;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoCabecera", mappedBy="vehiculo", cascade={"remove"})
+     *
+     */
+    private $cuestionarioResultadoCabecera;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\AgendaEntrega", mappedBy="vehiculo", cascade={"remove"})
+     *
+     */
+    private $agendaEntrega;
 
     /**
      * @var datetime $creado
@@ -179,13 +197,13 @@ class Vehiculo {
     private $patentamiento;
 
     /**
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\EstadoVehiculo", mappedBy="vehiculo", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      */
     private $estadoVehiculo;
 
     /**
-     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\MovimientoDeposito", mappedBy="vehiculo", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\MovimientoDeposito", mappedBy="vehiculo", cascade={"persist","remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      */
     private $movimientoDeposito;
@@ -195,6 +213,12 @@ class Vehiculo {
      *
      */
     private $danioVehiculoGm;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\EncuestaResultadoCabecera", mappedBy="vehiculo", cascade={"remove"})
+     *
+     */
+    private $encuestaResultadoCabecera;
 
     /**
      * @ORM\OneToMany(targetEntity="VehiculosBundle\Entity\DanioVehiculoInterno", mappedBy="vehiculo", cascade={"persist", "remove"})
@@ -236,7 +260,7 @@ class Vehiculo {
      * @ORM\Column(name="pagado", type="boolean")
      */
     private $pagado = false;
-    
+
     /**
      * @var date
      *
@@ -291,7 +315,7 @@ class Vehiculo {
      * @ORM\Column(name="tiene_llaves", type="boolean",nullable=true)
      */
     private $tieneLlaves;
-
+    
     /**
      * @var string
      *
@@ -1194,7 +1218,6 @@ class Vehiculo {
         return $this->tieneLlaves;
     }
 
-
     /**
      * Set cuponGarantia
      *
@@ -1202,8 +1225,7 @@ class Vehiculo {
      *
      * @return Vehiculo
      */
-    public function setCuponGarantia($cuponGarantia)
-    {
+    public function setCuponGarantia($cuponGarantia) {
         $this->cuponGarantia = $cuponGarantia;
 
         return $this;
@@ -1214,8 +1236,7 @@ class Vehiculo {
      *
      * @return string
      */
-    public function getCuponGarantia()
-    {
+    public function getCuponGarantia() {
         return $this->cuponGarantia;
     }
 
@@ -1226,8 +1247,7 @@ class Vehiculo {
      *
      * @return Vehiculo
      */
-    public function setFechaPagoGm($fechaPagoGm)
-    {
+    public function setFechaPagoGm($fechaPagoGm) {
         $this->fechaPagoGm = $fechaPagoGm;
 
         return $this;
@@ -1238,8 +1258,7 @@ class Vehiculo {
      *
      * @return \DateTime
      */
-    public function getFechaPagoGm()
-    {
+    public function getFechaPagoGm() {
         return $this->fechaPagoGm;
     }
 
@@ -1250,8 +1269,7 @@ class Vehiculo {
      *
      * @return Vehiculo
      */
-    public function setCodigoInmobilizador($codigoInmobilizador)
-    {
+    public function setCodigoInmobilizador($codigoInmobilizador) {
         $this->codigoInmobilizador = $codigoInmobilizador;
 
         return $this;
@@ -1262,8 +1280,157 @@ class Vehiculo {
      *
      * @return string
      */
-    public function getCodigoInmobilizador()
-    {
+    public function getCodigoInmobilizador() {
         return $this->codigoInmobilizador;
     }
+
+    /**
+     * Add encuestaResultadoCabecera
+     *
+     * @param \CuestionariosBundle\Entity\EncuestaResultadoCabecera $encuestaResultadoCabecera
+     *
+     * @return Vehiculo
+     */
+    public function addEncuestaResultadoCabecera(\CuestionariosBundle\Entity\EncuestaResultadoCabecera $encuestaResultadoCabecera) {
+        $this->encuestaResultadoCabecera[] = $encuestaResultadoCabecera;
+
+        return $this;
+    }
+
+    /**
+     * Remove encuestaResultadoCabecera
+     *
+     * @param \CuestionariosBundle\Entity\EncuestaResultadoCabecera $encuestaResultadoCabecera
+     */
+    public function removeEncuestaResultadoCabecera(\CuestionariosBundle\Entity\EncuestaResultadoCabecera $encuestaResultadoCabecera) {
+        $this->encuestaResultadoCabecera->removeElement($encuestaResultadoCabecera);
+    }
+
+    /**
+     * Get encuestaResultadoCabecera
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEncuestaResultadoCabecera() {
+        return $this->encuestaResultadoCabecera;
+    }
+
+
+    /**
+     * Add checkControlInternoResultadoCabecera
+     *
+     * @param \VehiculosBundle\Entity\CheckControlInternoResultadoCabecera $checkControlInternoResultadoCabecera
+     *
+     * @return Vehiculo
+     */
+    public function addCheckControlInternoResultadoCabecera(\VehiculosBundle\Entity\CheckControlInternoResultadoCabecera $checkControlInternoResultadoCabecera)
+    {
+        $this->checkControlInternoResultadoCabecera[] = $checkControlInternoResultadoCabecera;
+
+        return $this;
+    }
+
+    /**
+     * Remove checkControlInternoResultadoCabecera
+     *
+     * @param \VehiculosBundle\Entity\CheckControlInternoResultadoCabecera $checkControlInternoResultadoCabecera
+     */
+    public function removeCheckControlInternoResultadoCabecera(\VehiculosBundle\Entity\CheckControlInternoResultadoCabecera $checkControlInternoResultadoCabecera)
+    {
+        $this->checkControlInternoResultadoCabecera->removeElement($checkControlInternoResultadoCabecera);
+    }
+
+    /**
+     * Add cuestionarioResultadoCabecera
+     *
+     * @param \CuestionariosBundle\Entity\CuestionarioResultadoCabecera $cuestionarioResultadoCabecera
+     *
+     * @return Vehiculo
+     */
+    public function addCuestionarioResultadoCabecera(\CuestionariosBundle\Entity\CuestionarioResultadoCabecera $cuestionarioResultadoCabecera)
+    {
+        $this->cuestionarioResultadoCabecera[] = $cuestionarioResultadoCabecera;
+
+        return $this;
+    }
+
+    /**
+     * Remove cuestionarioResultadoCabecera
+     *
+     * @param \CuestionariosBundle\Entity\CuestionarioResultadoCabecera $cuestionarioResultadoCabecera
+     */
+    public function removeCuestionarioResultadoCabecera(\CuestionariosBundle\Entity\CuestionarioResultadoCabecera $cuestionarioResultadoCabecera)
+    {
+        $this->cuestionarioResultadoCabecera->removeElement($cuestionarioResultadoCabecera);
+    }
+
+    /**
+     * Get cuestionarioResultadoCabecera
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCuestionarioResultadoCabecera()
+    {
+        return $this->cuestionarioResultadoCabecera;
+    }
+
+    /**
+     * Add agendaEntrega
+     *
+     * @param \VehiculosBundle\Entity\AgendaEntrega $agendaEntrega
+     *
+     * @return Vehiculo
+     */
+    public function addAgendaEntrega(\VehiculosBundle\Entity\AgendaEntrega $agendaEntrega)
+    {
+        $this->agendaEntrega[] = $agendaEntrega;
+
+        return $this;
+    }
+
+    /**
+     * Remove agendaEntrega
+     *
+     * @param \VehiculosBundle\Entity\AgendaEntrega $agendaEntrega
+     */
+    public function removeAgendaEntrega(\VehiculosBundle\Entity\AgendaEntrega $agendaEntrega)
+    {
+        $this->agendaEntrega->removeElement($agendaEntrega);
+    }
+
+    /**
+     * Get agendaEntrega
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAgendaEntrega()
+    {
+        return $this->agendaEntrega;
+    }
+
+    /**
+     * Set fechaRemitoGonzalez
+     *
+     * @param \DateTime $fechaRemitoGonzalez
+     *
+     * @return Vehiculo
+     */
+    public function setFechaRemitoGonzalez($fechaRemitoGonzalez)
+    {
+        $this->fechaRemitoGonzalez = $fechaRemitoGonzalez;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRemitoGonzalez
+     *
+     * @return \DateTime
+     */
+    public function getFechaRemitoGonzalez()
+    {
+        return $this->fechaRemitoGonzalez;
+    }
+
+   
 }

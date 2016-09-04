@@ -32,3 +32,11 @@ clientes_delete:
 clientes_buscar_persona:
     path:     /clientes_buscar_persona
     defaults: { _controller: "ClientesBundle:Cliente:nuevoCliente" }
+    
+pdf_listado_clientes:
+    path:     /pdf_listado_clientes
+    defaults: { _controller: "ClientesBundle:Cliente:pdfListadoClientes" }
+
+excel_listado_clientes:
+    path:     /excel_listado_clientes
+    defaults: { _controller: "ClientesBundle:Cliente:excelListadoClientes" }       

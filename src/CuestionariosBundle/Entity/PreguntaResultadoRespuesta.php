@@ -58,7 +58,7 @@ class PreguntaResultadoRespuesta
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoRespuesta", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoRespuesta", inversedBy="preguntaResultadoRespuestas",cascade={"persist"})
      * @ORM\JoinColumn(name="resultado_respuesta_id", referencedColumnName="id")
      */
     private $resultadoRespuesta;

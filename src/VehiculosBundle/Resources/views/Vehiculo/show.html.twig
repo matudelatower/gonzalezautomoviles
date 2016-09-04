@@ -93,6 +93,10 @@
                                 <td>{{ entity.impuestos }}</td>
                             </tr>
                             <tr>
+                                <th>Vendedor</th>
+                                <td>{{ entity.vendedor  | default ("") }}</td>
+                            </tr> 
+                            <tr>
                                 <th>Estado Pago</th>
                                 <td>
                                     {%if entity.pagado%}
@@ -247,6 +251,10 @@
                                 <tr>
                                     <th>Usuario</th>
                                     <td>{{ entity.Movimientodeposito.last.creadoPor | default ("") }}</td>
+                                </tr>                                 
+                                <tr>
+                                    <th>Fecha</th>
+                                    <td>{{ entity.Movimientodeposito.last.creado is not defined ? "" :entity.Movimientodeposito.last.creado | date('d/m/Y H:i:s') }}</td>
                                 </tr> 
                                 <tr>
                                     <th>Observacion</th>
@@ -263,7 +271,7 @@
             <div class="col-md-6">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Factura</h3>
+                        <h3 class="box-title">Factura</h3>                        
                     </div>
                     <div class="box-body">
                         <table class="record_properties">
@@ -280,12 +288,13 @@
                                     <th>Fecha</th>
                                     <td>{{ entity.factura.fecha is not defined ? "" :entity.factura.fecha|date('d/m/Y') }}</td>
                                 </tr> 
-                                <tr>
-                                    <th>Vendedor</th>
-                                    <td>{{ entity.vendedor  | default ("") }}</td>
-                                </tr> 
+
                             </tbody>
                         </table>
+                                {{ form(delete_factura_form) }}
+                        {#<a class="btn btn-danger" href="{{ path('vehiculos') }}">
+                            Eliminar factura
+                        </a>#}
                     </div>
 
                 </div>
@@ -488,19 +497,25 @@
         </div>
         <div class="col-md-12 no-print">
             <div class="box-footer">
-                <a class="btn btn-default" href="{{  app.request.headers.get('referer')  }}">
+                <a class="btn btn-default" href="{{ path('vehiculos') }}">
                     Volver
                 </a>
                 <a class="btn btn-default" target="_blank"  onclick="window.print();">
                     <i class="fa fa-print"></i>
-                    Imprimir Resumen
+                    Imprimir Resumen 
                 </a>
-
             </div>
         </div>
     </div>
-
-
+    {% if app.user.tienePermisoEspecial('eliminar-vehiculo') and entity.estadoVehiculo.last().tipoEstadoVehiculo.slug!='entregado' %}     
+        <div class="row"> 
+            <div class="col-md-12 no-print">
+                <div class="box-footer">
+                    {{ form(delete_form) }}
+                </div>
+            </div>
+        </div>
+    {%endif%}
 {% endblock %}
 
 {% block javascripts %}

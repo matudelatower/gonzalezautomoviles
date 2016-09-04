@@ -64,15 +64,15 @@
                                                 {% endif %}
                                             {% else %}
                                                 {% if app.user.tienePermisoEspecial('registrar_pago_gm') %}
-                                                <a
-                                                   class="btn btn-pagado"
-                                                   data-toggle="modal"
-                                                   data-target="#modalGeneric"
-                                                   data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
-                                                   title="Registrar pago">Gpat</a>
-                                                    {% else %}
-                                                        Gpat
-                                                    {% endif %}
+                                                    <a
+                                                        class="btn btn-pagado"
+                                                        data-toggle="modal"
+                                                        data-target="#modalGeneric"
+                                                        data-url="{{ path('new_registro_pago_a_gm_ajax', { 'vehiculoId': entity.id }) }}"
+                                                        title="Registrar pago">Gpat</a>
+                                                {% else %}
+                                                    Gpat
+                                                {% endif %}
                                             {% endif %}
                                         {% endif %}
                                     </td>
@@ -98,11 +98,20 @@
                                                    data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
                                                 {% endif %}
+
+                                            {% if (app.user.tienePermisoEspecial('asignar-vendedor')) %}
+                                                <a class="btn {% if(entity.vendedor_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
+                                                   data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_asignacion_vendedor_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Asignar vendedor"><i class="fa fa-vimeo-square"></i></a>
+                                                {% endif %}  
+
                                             <a class="btn btn-default btn-deposito" data-toggle="modal"
                                                data-target="#modalGeneric"
                                                data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                title="Mover de deposito"><i class="fa fa-exchange"></i></a>
-                                               {% if app.user.tienePermisoEspecial('agendar_entrega') %}
+                                                {% if app.user.tienePermisoEspecial('agendar_entrega') %}
                                                 <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
 
                                                    href="{{ path('agenda_entrega_new', { 'vehiculoId': entity.id }) }}"
@@ -111,14 +120,14 @@
                                             <a class="btn {% if(entity.danio_interno_sin_solucionar!='') %}btn-danger{% else %}btn-default{% endif %}"
                                                href="{{ path('editar_danio_vehiculo_interno', { 'vehiculoId': entity.id }) }}"
                                                title="Daños internos"><i class="fa fa-fire-extinguisher"></i></a>
-                                            {% if app.user.tienePermisoEspecial('registrar_patente') %}    
+                                                {% if app.user.tienePermisoEspecial('registrar_patente') %}    
                                                 <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
                                                    href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                                    title="Patente"><i class="fa icon-patente"></i></a>
                                                 {% endif %}   
-                                               {% if (entity.danio_gm_sin_solucionar!='') %}
-                                                   <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
-                                               {%endif%}   
+                                                {% if (entity.danio_gm_sin_solucionar!='') %}
+                                                <span data-toggle="tooltip" data-original-title="Daño de GM sin solucionar" title="" class="label label-danger">GM</span>
+                                            {%endif%}   
                                         </div>
                                     </td>
                                 </tr>
@@ -159,22 +168,22 @@
                         return false;
                     });
         {% endif %}
-            $('#btn-exportar-excel').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_recibidos') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
+                $('#btn-exportar-excel').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_recibidos') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
 
+                });
+                $('#btn-exportar-pdf').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_recibidos') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
+                });
             });
-            $('#btn-exportar-pdf').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_recibidos') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
-            });
-        });
 
     </script>
 {% endblock %}

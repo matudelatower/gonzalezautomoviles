@@ -58,10 +58,16 @@ class CuestionarioResultadoCabecera
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
+     * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo",inversedBy="cuestionarioResultadoCabecera")
      * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
      */
     private $vehiculo;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoRespuesta", mappedBy="resultadoCabecera", cascade={"remove"})
+     *
+     */
+    private $cuestionarioResultadoRespuestas;
 
     /**
      * Get id
