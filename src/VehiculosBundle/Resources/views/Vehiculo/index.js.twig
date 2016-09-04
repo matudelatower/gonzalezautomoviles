@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function () {
-        $('.btn-deposito,.btn-pagado,.btn-delete-pago,.btn-asignar,.btn-cupon-garantia,.btn-sesion-factura').click(function () {
+        $('.btn-deposito,.btn-pagado,.btn-delete-pago,.btn-asignar,.btn-cupon-garantia,.btn-sesion-factura,.btn-entregar-sin-factura').click(function () {
             url = $(this).data('url');
             $.ajax({
                 type: 'get',
@@ -95,6 +95,10 @@
 
     $(document).on('click', '#btn-desasignar-cliente', function () {
         $("#vehiculoIdAsignar").val($(this).data('url'));
+    });
+    
+     $(document).on('click', '#btn-desasignar-vendedor', function () {
+        $("#url").val($(this).data('url'));
     });
 
     $(document).on('submit', '#formAjax', function (ev) {

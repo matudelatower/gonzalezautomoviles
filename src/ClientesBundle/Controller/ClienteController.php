@@ -7,6 +7,7 @@ use ClientesBundle\Form\Filter\ClientesFilterType;
 use PersonasBundle\Entity\Persona;
 use PersonasBundle\Entity\PersonaTipo;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ClientesBundle\Entity\Cliente;
 use ClientesBundle\Form\ClienteType;
@@ -299,6 +300,76 @@ class ClienteController extends Controller implements TokenAuthenticatedControll
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm();
+    }
+
+    public function pdfListadoClientesAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new ClientesFilterType());
+
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('ClientesBundle:Cliente')->getClientesFilter($data);
+            }
+        } else {
+            $entities = $em->getRepository('ClientesBundle:Cliente')->getClientesFilter();
+        }
+        $title = 'Reporte de Clientes';
+
+        $html = $this->renderView(
+                'ClientesBundle:Cliente:listadoClientes.pdf.twig', array(
+            'entities' => $entities,
+            'title' => $title,
+                )
+        );
+
+        $reportesManager = $this->get('manager.reportes');
+
+        return new Response(
+                $reportesManager->imprimir($html, "H"), 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+                )
+        );
+    }
+
+    /**
+     *
+     * Listado clientes excel
+     *
+     * @param Request $request
+     *
+     * @return \UtilBundle\Services\type
+     */
+    public function excelListadoClientesAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(new ClientesFilterType());
+
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('ClientesBundle:Cliente')->getClientesFilter($data);
+            }
+        } else {
+            $entities = $em->getRepository('ClientesBundle:Cliente')->getClientesFilter();
+        }
+        $filename = 'Listado_clientes';
+        $descripcion = str_replace('_', ' ', $filename);
+
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle($descripcion);
+        $exportExcel->setDescripcion($descripcion);
+
+        $response = $exportExcel->buildSheetlistadoClientes($entities);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename=' . $filename . '');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
     }
 
 }

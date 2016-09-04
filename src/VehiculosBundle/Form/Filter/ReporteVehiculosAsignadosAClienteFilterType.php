@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
+class ReporteVehiculosAsignadosAClienteFilterType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('reventa', 'jqueryautocomplete', array(
+                ->add('cliente', 'jqueryautocomplete', array(
                     'class' => 'ClientesBundle:Cliente',
                     'search_method' => 'getClienteByApellido',
-                    'required' => true,
+                    'required' => false,
                     'route_name' => 'get_cliente_by_apellido',
                     'attr' => array('placeholder' => 'Ingrese Apellido'),
                 ))
@@ -80,7 +80,7 @@ class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
     }
 
     public function getName() {
-        return 'vehiculos_bundle_reporte_vehiculos_asignados_areventa_filter_type';
+        return 'vehiculos_bundle_reporte_vehiculos_asignados_acliente_filter_type';
     }
 
 }

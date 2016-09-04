@@ -42,6 +42,18 @@
                                     </span>
                                     Buscar
                                 </button>
+                                <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
+                                        title="exportar excel">
+                                    <span>
+                                        <i class="fa fa-file-excel-o"></i>
+                                    </span>
+                                </button>
+                                <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
+                                        title="exportar PDF">
+                                    <span>
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </span>
+                                </button>
                                 <button class="btn btn-default" type="reset">
                                     <span>
                                         <i></i>
@@ -127,4 +139,29 @@
         </div>
     </div>
     {{ knp_pagination_render(entities) }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            $('#btn-exportar-excel').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('excel_listado_clientes') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+
+            });
+            $('#btn-exportar-pdf').click(function () {
+                $('#form_listado').attr('target', '_blank');
+                $('#form_listado').attr('action', '{{ path('pdf_listado_clientes') }}');
+                $('#form_listado').submit();
+                $('#form_listado').removeAttr('target');
+                $('#form_listado').removeAttr('action');
+            });
+        });
+
+
+    </script>
 {% endblock %}

@@ -30,6 +30,7 @@
                     <th>Modelo</th>
                     <th>Color veh&iacute;culo</th>
                     <th>Vin</th>
+                    <th>Tipo venta especial</th>
                         {%if(tipo=='SI')%}
                         <th>Cupon</th>
                         {%endif%}
@@ -42,7 +43,7 @@
                         <td>{{ entity.modelo }}</td>
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
-                        
+                        <td>{{ entity.tipo_venta_especial }}</td>
                         {%if(tipo=='SI')%}
                             <th>{{entity.cupon_garantia}}</th>
                             {%endif%}

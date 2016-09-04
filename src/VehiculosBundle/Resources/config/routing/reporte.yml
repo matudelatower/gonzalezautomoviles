@@ -201,3 +201,15 @@ exportar_pdf_reporte_vehiculos_stock:
 exportar_excel_reporte_vehiculos_stock:
     path:     /exportar_excel_reporte_vehiculos_stock
     defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosStock" }
+    
+index_reporte_vehiculos_asignados_a_cliente:
+    path: /index_reporte_vehiculos_asignados_a_cliente
+    defaults: { _controller: "VehiculosBundle:Reporte:indexReporteVehiculosAsignadosACliente" }
+
+exportar_pdf_reporte_vehiculos_asignados_cliente:
+    path:     /exportar_pdf_reporte_vehiculos_asignados_cliente
+    defaults: { _controller: "VehiculosBundle:Reporte:pdfReporteVehiculosAsignadosACliente" }
+
+exportar_excel_reporte_vehiculos_asignados_cliente:
+    path:     /exportar_excel_reporte_vehiculos_asignados_cliente
+    defaults: { _controller: "VehiculosBundle:Reporte:excelReporteVehiculosAsignadosACliente" }    

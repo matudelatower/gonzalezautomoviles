@@ -80,6 +80,11 @@
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                     title="Ver resumen" class="fa fa-eye"></i></a>
+                                                {% if app.user.tienePermisoEspecial('editar-vehiculo-recibido') %}    
+                                                <a class="btn btn-default"
+                                                   href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
+                                                        title="Editar" class="fa fa-edit"></i></a>
+                                                {%endif%}
                                                 {% if app.user.tienePermisoEspecial('registrar_patente') %}   
                                                 <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
                                                    href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
@@ -99,6 +104,15 @@
                                                 {% endif %}
                                                 {% if (entity.danio_gm_sin_solucionar!='') %}
                                                 <span title="Daño de GM sin solucionar" class="label label-danger">GM</span>
+                                            {%endif%} 
+                                             {% if (entity.factura_id=='' and (entity.venta_especial_slug == 'convencional' or entity.venta_especial_slug == 'venta-especial-propia') ) %}
+                                                {% if app.user.tienePermisoEspecial('facturar_vehiculo')%}                                                   
+                                                <a class="btn btn-default"
+                                                   href="{{ path('vehiculos_new_factura', { 'vehiculoId': entity.id }) }}"
+                                                   title="Facturar"><i class="fa fa-usd"></i></a>
+                                                {% endif %}
+                                                 
+                                                 <span title="Vehiculo sin facturar" class="label label-danger">S/F</span>
                                             {%endif%} 
                                         </div>
                                     </td>
@@ -142,22 +156,22 @@
                         return false;
                     });
         {% endif %}
-            $('#btn-exportar-excel').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_entregados') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
+                $('#btn-exportar-excel').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_entregados') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
 
+                });
+                $('#btn-exportar-pdf').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_entregados') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
+                });
             });
-            $('#btn-exportar-pdf').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_entregados') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
-            });
-        });
 
 
     </script>

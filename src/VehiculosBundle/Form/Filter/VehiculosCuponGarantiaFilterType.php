@@ -14,7 +14,7 @@ class VehiculosCuponGarantiaFilterType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                 ->add('conCupon', 'choice', array(
+                ->add('conCupon', 'choice', array(
                     'choices' => array(
                         'SI' => 'SI',
                         'NO' => 'NO'
@@ -22,6 +22,11 @@ class VehiculosCuponGarantiaFilterType extends AbstractType {
                     'expanded' => true,
                     'multiple' => false,
                     'required' => true,
+                ))
+                ->add('tipoVentaEspecial', 'entity', array(
+                    'class' => 'VehiculosBundle:TipoVentaEspecial',
+                    'choice_label' => 'nombre',
+                    'required' => false,
                 ))
         ;
     }

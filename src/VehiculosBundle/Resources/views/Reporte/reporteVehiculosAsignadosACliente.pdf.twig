@@ -1,0 +1,90 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+
+{% block body %}
+    <style>
+        body {
+            font-size: 10pt !important;
+        }
+        table {
+            width: 100%;
+            page-break-inside: auto
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+    </style>
+    <div>
+
+        {#{%if(cliente is not null)%}
+            <label>Reventa: </label><span>{{ cliente }}</span>
+        {%endif%}#}
+    </div>
+    <br>
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
+
+                <tr>
+                    <th>N°</th>
+                    <th>Modelo</th>
+                    <th>Color vehiculo</th>
+                    <th>Vin</th>
+                    <th>Estado pago</th>
+                        {#<th>Facturado</th>
+                        <th>Estado Patentamiento</th>#}
+                    <th>Dias de recibido</th>
+                    <th>Cliente</th>
+                    <th>Celular</th>
+                    <th>Vendedor</th>
+                    <th>Deposito</th>
+                    <th>Observacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ entity.modelo }}</td>
+                        <td>{{ entity.color_vehiculo }}</td>
+                        <td>{{ entity.vin }}</td>
+                        <td>
+                            {% if entity.venta_especial_slug == 'convencional' %}
+                                {% if entity.pagado %}
+                                    Gonzalez
+                                {% else %}
+                                    Gpat
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        {#<td>
+                            {% if entity.factura_id %}
+                                SI
+                            {% else %}
+                                NO
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if entity.estado_patentamiento %}
+                                {{ entity.estado_patentamiento }}
+                            {% endif %}
+                        </td>#}
+                        <td>{{ entity.dias_de_recibido }}</td>
+                        <td>{{ entity.personas_apellido ~','~entity.personas_nombre |default("") }}</td>
+                        <td>{{ entity.celular }}</td>
+                        <td>{{ entity.vendedor }}</td>
+                        <td>{{ entity.deposito }}</td>
+                        <td>{{ entity.observacion }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -85,10 +85,12 @@
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_show', { 'id': entity.id }) }}"><i
                                                     title="Ver resumen" class="fa fa-eye"></i></a>
-                                            <a class="btn btn-default"
-                                               href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
-                                                    title="Editar" class="fa fa-edit"></i></a>
-                                             {% if entity.venta_especial_slug == 'venta-especial' %}
+                                                {% if app.user.tienePermisoEspecial('editar-vehiculo-recibido') %}    
+                                                <a class="btn btn-default"
+                                                   href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
+                                                        title="Editar" class="fa fa-edit"></i></a>
+                                                {%endif%}
+                                                {% if entity.venta_especial_slug == 'venta-especial' %}
                                                 <a class="btn btn-default btn-sesion-factura" data-toggle="modal"
                                                    data-target="#modalGeneric"
                                                    data-url="{{ path('new_sesion_factura_ajax', { 'vehiculoId': entity.id }) }}"
@@ -108,6 +110,14 @@
                                                data-target="#modalGeneric"
                                                data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}"
                                                title="Mover de Deposito"><i class="fa fa-exchange"></i></a>
+
+                                            {% if (app.user.tienePermisoEspecial('asignar-vendedor')) %}
+                                                <a class="btn {% if(entity.vendedor_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
+                                                   data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_asignacion_vendedor_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Asignar vendedor"><i class="fa fa-vimeo-square"></i></a>
+                                                {% endif %}  
 
                                             {#  <a class="btn {% if(entity.fecha_entrega!='') %}btn-success{% else %}btn-default{% endif %} btn-agenda"
                                                  data-toggle="modal" data-target="#modalGeneric"
@@ -162,37 +172,37 @@
     <script>
         $(document).ready(function () {
 
-            {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
+        {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
 
-            {% if formFilter is not null %}
-            $('.pagination li a').click(function () {
+        {% if formFilter is not null %}
+                $('.pagination li a').click(function () {
 
-                $('#form_listado').attr('action', this.href);
-                {% for row in form if formFilter[row.vars.name] is defined %}
-                $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
-                {% endfor %}
+                    $('#form_listado').attr('action', this.href);
+            {% for row in form if formFilter[row.vars.name] is defined %}
+                        $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
+            {% endfor %}
 
-                $('#form_listado').submit();
-                return false;
+                        $('#form_listado').submit();
+                        return false;
+                    });
+        {% endif %}
+
+                $('#btn-exportar-excel').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_pendiente_entrega') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
+
+                });
+                $('#btn-exportar-pdf').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_pendiente_entrega') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
+                });
             });
-            {% endif %}
-
-            $('#btn-exportar-excel').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_pendiente_entrega') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
-
-            });
-            $('#btn-exportar-pdf').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_pendiente_entrega') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
-            });
-        });
     </script>
     <script src="{{ asset('bundles/theme/js/moment.min.js') }}"></script>
     <script src="{{ asset('bundles/theme/AdminLTE-2.3.0/plugins/fullcalendar/fullcalendar.min.js') }}"></script>

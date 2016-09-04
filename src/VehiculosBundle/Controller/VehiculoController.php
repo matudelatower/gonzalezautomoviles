@@ -60,7 +60,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraFiltroEstado' => true,
-                    'muestraFiltroPlanAhorro'=>true,        
+                    'muestraFiltroPlanAhorro' => true,
                         )
         );
     }
@@ -427,6 +427,12 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         }
 
         $deleteForm = $this->createDeleteForm($id);
+        //si tiene faactura creamos el form como para poder eliminarla
+        if ($entity->getFactura()) {
+            $deletefacturaForm = $this->createDeleteFacturaForm($id);
+        } else {
+            $deletefacturaForm = null;
+        }
 
         return $this->render(
                         'VehiculosBundle:Vehiculo:show.html.twig', array(
@@ -435,6 +441,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'controlInternoCabecera' => $controlInternoCabecera,
                     'checklistPreEntrega' => $checklistPreEntrega,
                     'delete_form' => $deleteForm->createView(),
+                    'delete_factura_form' => ($deletefacturaForm) ? $deletefacturaForm->createView() : null,
                         )
         );
     }
@@ -736,8 +743,19 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                 throw $this->createNotFoundException('Unable to find Vehiculo entity.');
             }
 
+            //consulto si tiene hecho el check de control interno y lo elimino
+            $checkControlInterno = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($entity);
+            if ($checkControlInterno) {
+                $em->remove($checkControlInterno);
+            }
+
+            //elimino el vehiculo
             $em->remove($entity);
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Vehiculo eliminado correctamente.'
+            );
         }
 
         return $this->redirect($this->generateUrl('vehiculos'));
@@ -754,7 +772,10 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('vehiculos_delete', array('id' => $id)))
                         ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->add('submit', 'submit', array('label' => 'Eliminar vehiculo',
+                            'attr' => array(
+                                'class' => 'btn btn-danger',
+                                'onclick' => 'return confirm("Al eliminar el vehiculo se perderan todos los datos del mismo y no los podra recuperar, desea eliminar de todas formas?")')))
                         ->getForm();
     }
 
@@ -939,6 +960,22 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
                     $estadoVehiculo->setVehiculo($vehiculo);
                     $vehiculo->addEstadoVehiculo($estadoVehiculo);
+                } else {
+                    //si no es pendiente-por-entregar puede ser un check de un vehiculo que se va a un reventa 
+                    //o de una entrega sin factura, en caso de entrega sin factura debe pasar a listado entregado, para saber esto
+                    //preguntamos que el cliente no sea un reventa
+                    if ($vehiculo->getCliente()) {
+                        if ($vehiculo->getCliente()->getReventa() != true) {
+                            //pasa  a entregado
+                            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                                    'entregado'
+                            );
+                            $estadoVehiculo = new EstadoVehiculo();
+                            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+                            $estadoVehiculo->setVehiculo($vehiculo);
+                            $vehiculo->addEstadoVehiculo($estadoVehiculo);
+                        }
+                    }
                 }
             }
             if (!$nuevo) {
@@ -969,7 +1006,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             }
             $em->flush();
             if ($tipoTransaccion == 'cierre') {
-                return $this->redirectToRoute('vehiculos_entregados_index');
+                return $this->redirectToRoute('vehiculos');
             }
             $this->get('session')->getFlashBag()->add(
                     'success', 'Checklist Guardado Correctamente'
@@ -997,6 +1034,64 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'tipoTransaccion' => $tipoTransaccion,
                         )
         );
+    }
+
+    /**
+     * Elimina una factura de un vehiculo tipo convencional o venta epsecial propia
+     * y pone al vehiculo en estado stock.
+     *
+     */
+    public function vehiculosEliminarFacturaAction(Request $request, $vehiculoId) {
+        $em = $this->getDoctrine()->getManager();
+        $vehiculo = $em->getRepository('VehiculosBundle:Vehiculo')->find($vehiculoId);
+        if ($vehiculo->getFactura()) {
+
+            $factura = $em->getRepository('VehiculosBundle:Factura')->find($vehiculo->getFactura()->getId());
+            $em->remove($factura);
+            $vehiculo->setFactura(null);
+            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('stock');
+            $estadoVehiculo = new EstadoVehiculo();
+            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+            $estadoVehiculo->setVehiculo($vehiculo);
+            $vehiculo->addEstadoVehiculo($estadoVehiculo);
+
+            $em->flush();
+
+
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'La factura fue eliminada.'
+            );
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                    'error', 'No se encuentra la factura.'
+            );
+        }
+        return $this->redirect($this->generateUrl('vehiculos_show', array('id' => $vehiculoId)));
+//        return $this->render(
+//                        'VehiculosBundle:Vehiculo:show.html.twig', array(
+//                    'entity' => $entity,
+//                    'form' => $form->createView(),
+//                        )
+//        );
+    }
+
+    /**
+     * Creates a form to delete a Factura entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteFacturaForm($id) {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('vehiculos_eliminar_factura', array('vehiculoId' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Eliminar factura',
+                            'attr' => array(
+                                'class' => 'btn btn-danger',
+                                'onclick' => 'return confirm("Al eliminar la factura se perderan todos los datos de la misma y no los podra recuperar, desea eliminar de todas formas?")')))
+                        ->getForm()
+        ;
     }
 
 }

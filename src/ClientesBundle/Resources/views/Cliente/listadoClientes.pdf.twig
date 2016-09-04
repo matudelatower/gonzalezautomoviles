@@ -1,0 +1,86 @@
+{% extends 'ThemeBundle:Default:layout_base_reporte.pdf.twig' %}
+{% block stylesheets %}
+    <style>
+        body {
+            font-size: 10pt !important;
+        }
+        table {
+            width: 100%;
+            page-break-inside: auto
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+    </style>
+{% endblock stylesheets %}
+{% block body %}
+
+    <div class="box-body">
+        <table class="data-table table table-bordered table-striped">
+            <thead>
+
+                <tr>
+                    <th>&numero;</th>
+                    <th>Apellido y nombre</th>
+                    <th>Foraneo</th>
+                    <th>Reventa</th>
+                    <th>Tipo documento</th>
+                    <th>Num Documento</th>
+                    <th>Estado IVA</th>
+                        {#                    <th>Estado civil</th>#}
+                    <th>Celular</th>
+                    <th>Mail</th>
+                    <th>Fecha nacimiento</th>
+                    <th>Calle</th>
+                    <th>Num calle</th>
+                    <th>Barrio</th>
+                    <th>Localidad</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ entity.personaTipo.first().persona }}</td>
+                        <td>
+                            {% if entity.foraneo %}
+                                SI
+                            {% else %}
+                                NO
+                            {% endif %}
+
+                        </td>
+                        <td>
+                            {% if entity.reventa %}
+                                SI
+                            {% else %}
+                                NO
+                            {% endif %}
+
+                        </td>
+                        <td>{{ entity.personaTipo.first().persona.TipoDocumento }}</td>
+                        <td>{{ entity.personaTipo.first().persona.numeroDocumento }}</td>
+                        <td>{{ entity.estadoIva }}</td>
+                        {#                        <td>{{ entity.personaTipo.first().persona.estadoCivil }}</td>#}
+
+                        <td>{{ entity.personaTipo.first().persona.celular }}</td>
+                        <td>{{ entity.personaTipo.first().persona.mail }}</td>
+                        <td>{{ (entity.personaTipo.first().persona.fechaNacimiento!='')?entity.personaTipo.first().persona.fechaNacimiento |date("d-m-Y"):''}}</td>
+                        <td>{{ entity.personaTipo.first().persona.calle }}</td>
+                        <td>{{ entity.personaTipo.first().persona.numeroCalle }}</td>
+                        <td>{{ entity.personaTipo.first().persona.barrio }}</td>
+                        <td>{{ entity.personaTipo.first().persona.localidad }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

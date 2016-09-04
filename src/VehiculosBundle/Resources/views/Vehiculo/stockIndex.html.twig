@@ -77,7 +77,7 @@
                                     </td>
                                     <td>{{ entity.tipo_venta_especial }}</td>
                                     <td>{{ entity.deposito_actual | default ("") }}</td>
-                                     <td>{{ entity.fecha_estado | date ("d/m/Y") }}</td>
+                                    <td>{{ entity.fecha_estado | date ("d/m/Y") }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a class="btn btn-default"
@@ -86,7 +86,7 @@
                                             <a class="btn btn-default"
                                                href="{{ path('vehiculos_editar_recibido', { 'vehiculoId': entity.id }) }}"><i
                                                     title="Editar" class="fa fa-edit"></i></a>
-                                            {% if app.user.tienePermisoEspecial('registrar_patente') %}    
+                                                {% if app.user.tienePermisoEspecial('registrar_patente') %}    
                                                 <a class="btn {% if(entity.dominio!='') %}btn-success{% elseif(entity.estado_patentamiento=='iniciado') %}btn-warning{% else %}btn-default{% endif %}"
                                                    href="{{ path('vehiculos_edit_patente', { 'vehiculoId': entity.id }) }}"
                                                    title="Patente"><i class="fa icon-patente"></i></a>
@@ -96,7 +96,7 @@
                                                 <a class="btn btn-default"
                                                    href="{{ path('vehiculos_new_factura', { 'vehiculoId': entity.id }) }}"
                                                    title="Facturar"><i class="fa fa-usd"></i></a>
-                                                {% endif %}
+                                                {% endif %}                                               
                                                 {% if entity.venta_especial_slug == 'plan-de-ahorro-propio' %}
                                                 <a class="btn btn-default btn-sesion-factura" data-toggle="modal"
                                                    data-target="#modalGeneric"
@@ -110,9 +110,19 @@
                                                    data-url="{{ path('new_asignacion_vehiculo_ajax', { 'vehiculoId': entity.id }) }}"
                                                    title="Asignar vehiculo"><i class="fa fa-hand-pointer-o"></i></a>
                                                 {% endif %}
-                                                {#si esta asignado a un cliente y este es un reventa, se le puede hacer el
-                                                check de control interno#}
-                                                {% if entity.reventa and entity.firmado!=true %}
+
+                                            {% if (app.user.tienePermisoEspecial('asignar-vendedor')) %}
+                                                <a class="btn {% if(entity.vendedor_id!='') %}btn-success{% else %}btn-default{% endif %} btn-asignar"
+                                                   data-toggle="modal"
+                                                   data-target="#modalGeneric"
+                                                   data-url="{{ path('new_asignacion_vendedor_ajax', { 'vehiculoId': entity.id }) }}"
+                                                   title="Asignar vendedor"><i class="fa fa-vimeo-square"></i></a>
+                                                {% endif %}  
+
+
+                                            {#si esta asignado a un cliente se le puede hacer el
+                                            check de control interno tanto para entregar a un reventa o entregar a un cliente sin facturar#}
+                                            {% if entity.cliente and entity.firmado!=true %}
                                                 <a class="btn {% if(entity.check_control_interno_resultado_cabecera_id!='') %}btn-success{% else %}btn-default{% endif %}"
                                                    href="{{ path('check_control_interno', { 'vehiculoId': entity.id ,'tipoTransaccion':'edit'}) }}"
                                                    title="Checklist control interno"><i class="fa fa-check-square"></i></a>
@@ -175,22 +185,22 @@
                         return false;
                     });
         {% endif %}
-            $('#btn-exportar-excel').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_stock') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
+                $('#btn-exportar-excel').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_excel_reporte_vehiculos_stock') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
 
+                });
+                $('#btn-exportar-pdf').click(function () {
+                    $('#form_listado').attr('target', '_blank');
+                    $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_stock') }}');
+                    $('#form_listado').submit();
+                    $('#form_listado').removeAttr('target');
+                    $('#form_listado').removeAttr('action');
+                });
             });
-            $('#btn-exportar-pdf').click(function () {
-                $('#form_listado').attr('target', '_blank');
-                $('#form_listado').attr('action', '{{ path('exportar_pdf_reporte_vehiculos_stock') }}');
-                $('#form_listado').submit();
-                $('#form_listado').removeAttr('target');
-                $('#form_listado').removeAttr('action');
-            });
-        });
 
 
     </script>
