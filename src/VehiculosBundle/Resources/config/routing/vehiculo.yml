@@ -85,6 +85,11 @@ vehiculos_edit_patente:
 vehiculos_update_patente:
     path:     /{vehiculoId}/vehiculos_update_patente
     defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosUpdatePatente" }
-    methods:  POST    
+    methods:  POST 
+    
+vehiculos_eliminar_factura:
+    path:     /{vehiculoId}/vehiculos_eliminar_factura
+    defaults: { _controller: "VehiculosBundle:Vehiculo:vehiculosEliminarFactura" }
+#    methods:  POST        
 
    

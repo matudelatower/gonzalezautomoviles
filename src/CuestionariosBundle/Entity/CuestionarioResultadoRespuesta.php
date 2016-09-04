@@ -65,11 +65,19 @@ class CuestionarioResultadoRespuesta
     private $actualizadoPor;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoCabecera", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="CuestionariosBundle\Entity\CuestionarioResultadoCabecera",inversedBy="cuestionarioResultadoRespuestas", cascade={"persist"})
      * @ORM\JoinColumn(name="resultado_cabecera_id", referencedColumnName="id")
      */
     private $resultadoCabecera;
 
+     
+     /**
+     * @ORM\OneToMany(targetEntity="CuestionariosBundle\Entity\PreguntaResultadoRespuesta", mappedBy="resultadoRespuesta", cascade={"remove"})
+     *
+     */
+    private $preguntaResultadoRespuestas;
+    
+    
     /**
      * Get id
      *

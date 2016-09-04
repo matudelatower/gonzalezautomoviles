@@ -81,3 +81,24 @@ edit_observacion_ajax:
 observacion_update_ajax:
     path:     /observacion_update_ajax/{vehiculoId}
     defaults: { _controller: "VehiculosBundle:Ajax:observacionUpdateAjax" }       
+    
+    
+new_asignacion_vendedor_ajax:
+    path:     /new_asignacion_vendedor_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:newAsignacionVendedorAjax" }
+
+asignacion_vendedor_update_ajax:
+    path:     /asignacion_vendedor_update_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:asignacionVendedorUpdateAjax" }
+
+desasignacion_vendedor_update_ajax:
+    path:     /desasignacion_vendedor_update_ajax/{vehiculoId}
+    defaults: { _controller: "VehiculosBundle:Ajax:desasignacionVendedorUpdateAjax" }     
+    
+#new_entrega_sin_factura_ajax:
+#    path:     /new_entrega_sin_factura_ajax/{vehiculoId}
+#    defaults: { _controller: "VehiculosBundle:Ajax:newEntregaSinFacturaAjax" }
+#
+#create_entrega_sin_factura_ajax:
+#    path:     /create_entrega_sin_factura_ajax/{vehiculoId}
+#    defaults: { _controller: "VehiculosBundle:Ajax:createEntregaSinFacturaAjax" }    

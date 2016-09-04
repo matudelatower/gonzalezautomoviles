@@ -44,7 +44,7 @@ class AgendaEntrega {
 	private $descripcion;
 
 	/**
-	 * @ORM\OneToOne(targetEntity="VehiculosBundle\Entity\Vehiculo")
+	 * @ORM\ManyToOne(targetEntity="VehiculosBundle\Entity\Vehiculo",inversedBy="agendaEntrega")
 	 * @ORM\JoinColumn(name="vehiculo_id", referencedColumnName="id")
 	 */
 	private $vehiculo;
