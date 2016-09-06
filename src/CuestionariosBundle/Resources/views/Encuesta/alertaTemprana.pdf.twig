@@ -12,7 +12,9 @@
         #datos-clientes {
             font-size: 8pt;
         }
-
+        body {
+            font-size: 11pt !important;
+        }
         .resaltar {
             border: 1px dotted;
         }
@@ -23,14 +25,16 @@
         {% for item in encuestaResultadoRespuesta %}
             <div class="{{ item.encuestaPregunta.cssClass }}">
                 <p>
-                    <span class="pregunta">{{ item.encuestaPregunta }}</span> <br>
+                    <span class="pregunta">{{ item.encuestaPregunta }}</span>
+                </p>
+                <p>
                 <div>
                     {% for opcion in item.encuestaPregunta.opcionesRespuestas %}
                         {{ opcion }} <input
                             type="checkbox" {% if item.encuestaOpcionRespuesta.id == opcion.id %} checked {% endif %}>
                     {% endfor %}
                 </div>
-                <br>
+                {#                <br>#}
                 </p>
             </div>
         {% endfor %}
@@ -49,12 +53,16 @@
         <label>CP: </label><span>{{ cliente.localidad.codigoPostal | default('') }}</span>
         <label>VIN: </label> <span>{{ vehiculo.vin }}</span> <br>
         <label>Fecha Encuesta: </label> <span>{{ encuestaResultadoCabecera.creado | date('d/m/Y') }}</span> <br>
-    </div>
-    <div class="row">
         <br>
-        <br>
-        <label>Firma: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label><br><br>
+        <label>Firma: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label><br>
         <label>Aclaración: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label>
+
     </div>
+    {#    <div class="row">#}
+    {#        <br>#}
+    {#  <br>
+      <label>Firma: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label><br><br>
+      <label>Aclaración: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label>
+  </div>#}
 
 {% endblock %}

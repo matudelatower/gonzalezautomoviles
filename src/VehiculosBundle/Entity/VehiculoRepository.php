@@ -237,7 +237,8 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
 
     public function getVehiculosEnStock($filters = null) {
 
-        $where = "tev.slug in ('transito', 'recibido', 'stock') and (v.cliente_id is null or clientes.reventa = false)";
+//        $where = "tev.slug in ('transito', 'recibido', 'stock') and (v.cliente_id is null or clientes.reventa = false)";
+        $where = "tev.slug in ('transito', 'recibido', 'stock') and (v.cliente_id is null)";
         $where.=" AND tv.slug in ('convencional','plan-de-ahorro-propio','venta-especial-propia') ";
         $db = $this->getEntityManager()->getConnection();
 
@@ -594,7 +595,7 @@ WHERE " . $where .
     public function getVehiculosAsignadosACliente($filters) {
         $db = $this->getEntityManager()->getConnection();
 
-        $where = 'vehiculos.cliente_id IS NOT NULL AND clientes.reventa = false';
+        $where = "vehiculos.cliente_id IS NOT NULL AND clientes.reventa = false and tipo_estado_vehiculo.slug <> 'entregado' ";
 
         if ($filters['facturado'] == 1) {
             $where .= " AND vehiculos.factura_id IS NOT NULL";
@@ -613,6 +614,9 @@ WHERE " . $where .
                 $where .= " AND pat.dominio is null ";
             }
         }
+        if ($filters['tipoVentaEspecial']) {
+            $where.=" AND tv.id = " . $filters['tipoVentaEspecial']->getId();
+        }
 
         if ($filters['diaInicio']) {
             $where .= " AND (current_date-vehiculos.fecha_emision_documento::date >= " . $filters['diaInicio'] . ")";
@@ -630,7 +634,7 @@ WHERE " . $where .
                      nombres_modelo.nombre||'|'||codigos_modelo.anio||'|'||codigos_modelo.version as modelo,
                      colores_vehiculos.color AS color_vehiculo,
                      personas.nombre AS personas_nombre,
-                     personas.apellido AS personas_apellido,personas.celular,
+                     personas.apellido AS personas_apellido,personas.celular,personas.telefono,
                      epat.estado AS estado_patentamiento,d.nombre as deposito,tv.slug as venta_especial_slug,
                      (select personas.apellido||', '||personas.nombre
                                                 from empleados
@@ -638,8 +642,13 @@ WHERE " . $where .
                                                 LEFT JOIN personas ON persona_tipos.persona_id = personas.id
                                                 where empleados.id = vehiculos.vendedor_id
                                                 ) as vendedor
-                    FROM
-                    colores_vehiculos colores_vehiculos INNER JOIN vehiculos vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
+                    
+                    FROM     estados_vehiculos
+                    INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+                    INNER JOIN vehiculos vehiculos ON estados_vehiculos.vehiculo_id = vehiculos.id
+                    INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id                    
+
+                    INNER JOIN colores_vehiculos colores_vehiculos ON colores_vehiculos.id = vehiculos.color_vehiculo_id
                     INNER JOIN codigos_modelo codigos_modelo ON vehiculos.codigo_modelo_id = codigos_modelo.id
                     LEFT OUTER JOIN clientes clientes ON vehiculos.cliente_id = clientes.id
                     LEFT OUTER JOIN patentamientos pat ON vehiculos.patentamiento_id = pat.id
