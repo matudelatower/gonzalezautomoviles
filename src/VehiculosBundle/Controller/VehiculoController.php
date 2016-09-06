@@ -1006,7 +1006,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             }
             $em->flush();
             if ($tipoTransaccion == 'cierre') {
-                return $this->redirectToRoute('vehiculos');
+                return $this->redirectToRoute('vehiculos_entregados_index');
             }
             $this->get('session')->getFlashBag()->add(
                     'success', 'Checklist Guardado Correctamente'

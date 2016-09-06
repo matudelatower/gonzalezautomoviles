@@ -33,6 +33,12 @@ class ReporteVehiculosAsignadosAClienteFilterType extends AbstractType {
                         2 => 'NO',
                     )
                 ))
+                
+                ->add('tipoVentaEspecial', 'entity', array(
+                    'class' => 'VehiculosBundle:TipoVentaEspecial',
+                    'choice_label' => 'nombre',
+                    'required' => false,
+                ))
                 ->add('dias', 'text', array(
                     'required' => false,
                     'attr' => array(
