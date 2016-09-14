@@ -75,7 +75,14 @@
                             </div>
                         </div>
                     {% endif %}
-
+                    {% if muestraFiltroReventa is defined %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="reventa">Reventa</label>
+                            <div class="col-sm-4">
+                                {{ form_widget(form.reventa) }}
+                            </div>
+                        </div>
+                    {% endif %}
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-4">

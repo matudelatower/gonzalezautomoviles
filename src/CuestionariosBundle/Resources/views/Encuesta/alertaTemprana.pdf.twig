@@ -40,7 +40,7 @@
         {% endfor %}
 
     </div>
-
+    <br>
     <div class="row" id="datos-clientes">
         {% set cliente = vehiculo.cliente.personaTipo.first.persona %}
         <label>Apellido y Nombre: </label> <span>{{ vehiculo.cliente }}</span> <br>
@@ -54,7 +54,7 @@
         <label>VIN: </label> <span>{{ vehiculo.vin }}</span> <br>
         <label>Fecha Encuesta: </label> <span>{{ encuestaResultadoCabecera.creado | date('d/m/Y') }}</span> <br>
         <br>
-        <label>Firma: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label><br>
+        <label>Firma: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label><br><br>
         <label>Aclaración: _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </label>
 
     </div>
