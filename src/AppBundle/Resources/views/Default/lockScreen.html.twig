@@ -45,10 +45,12 @@
 
     {% endfor %}
     <!-- User name -->
+    {% if (vehiculoId is not null)%}
     <a href="{{ path('pdf_ver_encuesta_alta_temprana', {'vehiculoId':vehiculoId}) }}" target="_blank" class="btn btn-block btn-info">
                                             <i class="fa fa-commenting-o"></i>
                                             Ver Encuesta de Alerta Temprana
                                         </a>
+     {% endif%}                                       
     <div class="lockscreen-name">{{ nombreUsuario }}</div>
 
     <!-- START LOCK SCREEN ITEM -->

@@ -72,6 +72,14 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
             }
         }
+        
+        if ($filters['reventa']) {
+            if ($filters['reventa'] == 'si') {
+                $where .= " AND cli.reventa=true ";
+            } else {
+                $where .= " AND cli.reventa=false ";
+            }
+        }
 
         if (!$order) {
             $order = " modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
