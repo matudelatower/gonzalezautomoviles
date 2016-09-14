@@ -314,6 +314,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'form' => $form->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraRangoFecha' => true,
+                    'muestraFiltroReventa' => true,
                     'labelRangoFecha' => 'Fecha entregado',
                         )
         );
@@ -576,13 +577,14 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     );
                 } else {
                     //di tiene $controlInternoCabecera significa que se hizo el check de control interno
-                    //por ende pasa a estado estregado
+                    //por ende pasa a estado estregado 
                     $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
                             'entregado'
                     );
                 }
 
-
+                //controlo que el vehiculo ya no este en el estado al que queremos pasar, esto es en caso de 
+                //que el vehiculo haya pasado a entregado sin facturar
                 if ($vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo) {
                     $estadoVehiculo = new EstadoVehiculo();
                     $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
@@ -948,35 +950,42 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             if ($tipoTransaccion == 'cierre') {
                 $controlInternoCabecera->setFirmado('true');
                 $em->persist($controlInternoCabecera);
-                $estadoActualVehiculo = $vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo()->getSlug();
-                if ($estadoActualVehiculo == 'pendiente-por-entregar') {
-                    //si esta en estado 'pendiente-por-entregar' significa que el vehiculo se le esta haciendo 
-                    //un check para entregarlo al cliente final por lo tanto se pasa a estado 'entregado'
-                    //de lo contrario sigue en stock solo que se le hizo un check list para llevarlo a un reventa
-                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                            'entregado'
-                    );
-                    $estadoVehiculo = new EstadoVehiculo();
-                    $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-                    $estadoVehiculo->setVehiculo($vehiculo);
-                    $vehiculo->addEstadoVehiculo($estadoVehiculo);
-                } else {
-                    //si no es pendiente-por-entregar puede ser un check de un vehiculo que se va a un reventa 
-                    //o de una entrega sin factura, en caso de entrega sin factura debe pasar a listado entregado, para saber esto
-                    //preguntamos que el cliente no sea un reventa
-                    if ($vehiculo->getCliente()) {
-                        if ($vehiculo->getCliente()->getReventa() != true) {
-                            //pasa  a entregado
-                            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
-                                    'entregado'
-                            );
-                            $estadoVehiculo = new EstadoVehiculo();
-                            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
-                            $estadoVehiculo->setVehiculo($vehiculo);
-                            $vehiculo->addEstadoVehiculo($estadoVehiculo);
-                        }
-                    }
-                }
+                $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+                        'entregado'
+                );
+                $estadoVehiculo = new EstadoVehiculo();
+                $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+                $estadoVehiculo->setVehiculo($vehiculo);
+                $vehiculo->addEstadoVehiculo($estadoVehiculo);
+//                $estadoActualVehiculo = $vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo()->getSlug();
+//                if ($estadoActualVehiculo == 'pendiente-por-entregar') {
+//                    //si esta en estado 'pendiente-por-entregar' significa que el vehiculo se le esta haciendo 
+//                    //un check para entregarlo al cliente final por lo tanto se pasa a estado 'entregado'
+//                    //de lo contrario sigue en stock solo que se le hizo un check list para llevarlo a un reventa
+//                    $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+//                            'entregado'
+//                    );
+//                    $estadoVehiculo = new EstadoVehiculo();
+//                    $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+//                    $estadoVehiculo->setVehiculo($vehiculo);
+//                    $vehiculo->addEstadoVehiculo($estadoVehiculo);
+//                } else {
+//                    //si no es pendiente-por-entregar puede ser un check de un vehiculo que se va a un reventa 
+//                    //o de una entrega sin factura, en caso de entrega sin factura debe pasar a listado entregado, para saber esto
+//                    //preguntamos que el cliente no sea un reventa
+//                    if ($vehiculo->getCliente()) {
+//                        if ($vehiculo->getCliente()->getReventa() != true) {
+//                            //pasa  a entregado
+//                            $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
+//                                    'entregado'
+//                            );
+//                            $estadoVehiculo = new EstadoVehiculo();
+//                            $estadoVehiculo->setTipoEstadoVehiculo($tipoEstadoVehiculo);
+//                            $estadoVehiculo->setVehiculo($vehiculo);
+//                            $vehiculo->addEstadoVehiculo($estadoVehiculo);
+//                        }
+//                    }
+//                }
             }
             if (!$nuevo) {
                 $qb = $em->createQueryBuilder();

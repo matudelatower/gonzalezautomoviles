@@ -50,7 +50,7 @@ class DefaultController extends Controller {
 		}
 
 		return $this->render( 'AppBundle:Default:lockScreen.html.twig',
-			array() );
+			array('vehiculoId'=>null) );
 
 
 	}

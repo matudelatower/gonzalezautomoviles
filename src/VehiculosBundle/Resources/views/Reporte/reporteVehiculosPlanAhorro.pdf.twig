@@ -29,6 +29,7 @@
                     <th>Modelo</th>
                     <th>Color vehiculo</th>
                     <th>Vin</th>
+                    <th>Grupo/Orden</th>
                     <th>Estado</th>
                     <th>Fecha fact</th>
                     <th>Dias en stock</th> 
@@ -45,7 +46,7 @@
                         {% set modelo = entity.nombre_modelo%}
                         <tr>
                             <td></td>
-                            <td colspan="9" style="font-weight: bold; text-align: left">{{ entity.nombre_modelo }}</td>
+                            <td colspan="10" style="font-weight: bold; text-align: left">{{ entity.nombre_modelo }}</td>
                         </tr>
                     {%endif%}    
                     <tr>
@@ -53,11 +54,12 @@
                         <td style="text-align: left">{{ entity.modelo }}</td>
                         <td>{{ entity.color_vehiculo }}</td>
                         <td>{{ entity.vin }}</td>
+                        <td>{{ entity.numero_grupo~'/'~entity.numero_orden }}</td>
                         <td>{{ entity.vehiculo_estado }}</td>
                         <td>{{ entity.fecha_emision_documento|date("d-m-Y") }}</td>
                         <td>{{ entity.dias_en_stock }}</td>   
                         <td>
-                           {% if entity.estado_patentamiento_slug=="patentado" %}
+                            {% if entity.estado_patentamiento_slug=="patentado" %}
                                 SI
                             {% else %}
                                 NO
