@@ -31,6 +31,7 @@ class AppKernel extends Kernel {
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
+	        new Dizda\CloudBackupBundle\DizdaCloudBackupBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
