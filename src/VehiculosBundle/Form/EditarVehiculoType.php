@@ -36,7 +36,7 @@ class EditarVehiculoType extends AbstractType {
                     ),
                     'query_builder' => function ( EntityRepository $er ) {
                 return $er->createQueryBuilder('cm')
-                        ->where('cm.activo = true')
+//                        ->where('cm.activo = true')
                         ->orderBy('cm.nombreModelo', 'ASC');
             },
                         )
