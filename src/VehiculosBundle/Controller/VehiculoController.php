@@ -482,7 +482,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
      */
     private function createEditForm(Vehiculo $entity) {
         $form = $this->createForm(
-                new AltaVehiculoType(), $entity, array(
+                new AltaVehiculoType("edit"), $entity, array(
             'action' => $this->generateUrl('vehiculos_update', array('id' => $entity->getId())),
             'method' => 'PUT',
             'attr' => array('class' => 'box-body')
