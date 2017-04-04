@@ -1,0 +1,184 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Formulario de Edicion
+{% endblock %}
+
+{% block content -%}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Encuesta</h3>
+                </div>
+
+                {{ form_start(edit_form) }}
+
+                {{ form_row(edit_form.nombre) }}
+                {{ form_row(edit_form.descripcion) }}
+                {{ form_row(edit_form.activo) }}
+
+                <div class="hisotrial-preguntas">
+                    {# iterate over each existing tag and render its only field: name #}
+                    {% for pregunta in edit_form.preguntas %}
+                        <div {% if loop.index is even %}style="background-color: lightgray"{% endif %}>
+                            <div class="row">
+                                <div class="col-md-6">{{ form_row(pregunta.orden) }}</div>
+                                <div class="col-md-6">{{ form_row(pregunta.pregunta) }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">{{ form_row(pregunta.encuestaTipoPregunta) }}</div>
+                                <div class="col-md-4">{{ form_row(pregunta.ipc) }}</div>
+                                <div class="col-md-4">{{ form_row(pregunta.cssClass) }}</div>
+                            </div>
+                            {% for opcion in pregunta.opcionesRespuestas %}
+                                <div class="row">
+                                    <div class="col-md-4">{{ form_row(opcion.orden) }}</div>
+                                    <div class="col-md-4">{{ form_row(opcion.textoOpcion) }}</div>
+                                    <div class="col-md-4">{{ form_row(opcion.valorLiteral) }}</div>
+                                </div>
+                            {% endfor %}
+                            <ul class="opciones"
+                                data-prototype="{{ form_widget(edit_form.preguntas.vars.prototype.opcionesRespuestas.vars.prototype)|e('html_attr') }}">
+
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <ul class="preguntas"
+                    data-prototype="{{ form_widget(edit_form.preguntas.vars.prototype)|e('html_attr') }}">
+
+                </ul>
+
+
+                {{ form_end(edit_form) }}
+
+
+                <div class="box-footer">
+                    <a class="btn btn-default" href="{{ path('crm_encuesta') }}">
+                        Volver
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addPreguntaLink = $('<a href="#" class="add_tag_link">Agregar pregunta</a>');
+        var $newLinkLi = $('<li></li>').append($addPreguntaLink);
+
+        //add opcion
+        var $addOpcionLink = $('<a href="#" class="add_opcion_link">Agregar Opcion</a>');
+        var $newLinkLiOpcion = $('<li></li>').append($addOpcionLink);
+
+        jQuery(document).ready(function () {
+            // Get the ul that holds the collection of preguntas
+            $collectionHolder = $('ul.preguntas');
+
+            $collectionHolder.find('li').each(function () {
+                addPreguntaFormDeleteLink($(this));
+            });
+
+            // add the "add a tag" anchor and li to the preguntas ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addPreguntaLink.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addPreguntaForm($collectionHolder, $newLinkLi);
+            });
+
+//            opcion
+            $opcionCollectionHolder = $('ul.opciones');
+
+            $opcionCollectionHolder.find('li').each(function () {
+                addPreguntaFormDeleteLink($(this));
+            });
+
+            // add the "add a tag" anchor and li to the preguntas ul
+            $opcionCollectionHolder.append($newLinkLiOpcion);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $opcionCollectionHolder.data('index', $opcionCollectionHolder.find(':input').length);
+
+            $addOpcionLink.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addOpcionForm($opcionCollectionHolder, $newLinkLiOpcion);
+            });
+        });
+
+        function addPreguntaForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__ep__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+
+            addPreguntaFormDeleteLink($newFormLi);
+        }
+
+        function addOpcionForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__or__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+
+            addPreguntaFormDeleteLink($newFormLi);
+        }
+
+        function addPreguntaFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#">Eliminar</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $tagFormLi.remove();
+            });
+        }
+
+    </script>
+{% endblock javascripts %}

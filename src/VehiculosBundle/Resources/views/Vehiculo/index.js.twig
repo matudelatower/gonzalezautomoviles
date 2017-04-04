@@ -1,6 +1,7 @@
 <script>
     $(document).ready(function () {
-        $('.btn-deposito,.btn-pagado,.btn-delete-pago,.btn-asignar,.btn-cupon-garantia,.btn-sesion-factura,.btn-entregar-sin-factura').click(function () {
+        $('.btn-deposito,.btn-pagado,.btn-delete-pago,.btn-asignar,.btn-cupon-garantia,.btn-sesion-factura,' +
+            '.btn-entregar-sin-factura, .btn-crm-encuestas, .btn-crm-registrar-llamada').click(function () {
             url = $(this).data('url');
             $.ajax({
                 type: 'get',

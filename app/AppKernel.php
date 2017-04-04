@@ -32,6 +32,8 @@ class AppKernel extends Kernel {
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
 	        new Dizda\CloudBackupBundle\DizdaCloudBackupBundle(),
+            new CRMBundle\CRMBundle(),
+	        new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

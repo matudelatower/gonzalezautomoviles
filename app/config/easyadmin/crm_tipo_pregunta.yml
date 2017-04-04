@@ -1,0 +1,15 @@
+easy_admin:
+    entities:
+        EncuestaTipoPregunta:
+            class: CRMBundle\Entity\EncuestaTipoPregunta
+            form:
+                fields:
+                    - { property: 'tipo' }
+                    - { property: 'widgetType' }
+                    - { property: 'activo' }
+            edit:
+                title:  'Editar Tipo Pregunta'
+            new:
+                title:  'Alta Tipo Pregunta'
+            list:
+                title:  'Tipo Pregunta'
