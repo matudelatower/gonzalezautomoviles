@@ -18,15 +18,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="UsuariosBundle\Entity\Repository\UsuarioRepository")
  * @ORM\Table(name="fos_user")
  * @UniqueEntity("username")
- * @ORM\AttributeOverrides({
- * @ORM\AttributeOverride(name="enabled",
- *          column=@ORM\Column(
- *              name     = "enabled",
- *              type     = "boolean",
- *              nullable= true
- *          )
- *      )
- * })
  */
 class Usuario extends BaseUser {
 

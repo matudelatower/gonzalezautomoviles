@@ -1,0 +1,42 @@
+crm_encuesta:
+    path:     /
+    defaults: { _controller: "CRMBundle:Encuesta:index" }
+
+crm_encuesta_show:
+    path:     /{id}/show
+    defaults: { _controller: "CRMBundle:Encuesta:show" }
+
+crm_encuesta_new:
+    path:     /new
+    defaults: { _controller: "CRMBundle:Encuesta:new" }
+
+crm_encuesta_create:
+    path:     /create
+    defaults: { _controller: "CRMBundle:Encuesta:create" }
+    methods:  POST
+
+crm_encuesta_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CRMBundle:Encuesta:edit" }
+
+crm_encuesta_update:
+    path:     /{id}/update
+    defaults: { _controller: "CRMBundle:Encuesta:update" }
+    methods:  [POST, PUT]
+
+crm_encuesta_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CRMBundle:Encuesta:delete" }
+    methods:  [POST, DELETE]
+
+crm_encuesta_resultado:
+    path:   /encuesta
+    defaults: { _controller: "CRMBundle:Default:encuesta" }
+
+crm_nueva_encuesta_resultado:
+    path:   /{id}/encuesta/{vehiculoId}
+    defaults: { _controller: "CRMBundle:Default:nuevaEncuesta" }
+
+crm_crear_encuesta_resultado:
+    path:   /{id}/encuesta/{vehiculoId}/crear
+    defaults: { _controller: "CRMBundle:Default:crearEncuesta" }

@@ -1,0 +1,3 @@
+ajax_crm_get_encuesta:
+    path:     /get_encuestas/{id}
+    defaults: { _controller: "CRMBundle:Ajax:getEncuestas" }

@@ -1,0 +1,15 @@
+crm_ajax:
+    resource: "@CRMBundle/Resources/config/routing/ajax.yml"
+    prefix:   /ajax
+
+crm_preguntas:
+    resource: "@CRMBundle/Resources/config/routing/encuestapregunta.yml"
+    prefix:   /preguntas
+
+crm_encuesta:
+    resource: "@CRMBundle/Resources/config/routing/encuesta.yml"
+    prefix:   /encuesta
+
+crm_homepage:
+    path:     /
+    defaults: { _controller: CRMBundle:Default:index }

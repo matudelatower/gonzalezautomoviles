@@ -1,0 +1,122 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% block title %}
+    Vehiculos
+{% endblock title %}
+{% block content -%}
+    <!-- Modal -->
+    <div id="modalGeneric" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="cuerpoGeneric">
+
+            </div>
+
+        </div>
+    </div>
+    <!-- FILTROS -->
+    {% include "VehiculosBundle:Vehiculo:formVehiculoFiltros.html.twig" %}
+    <!-- FIN FILTROS -->
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Listado Vehiculos Entregados - {{ cantidadRegistros }} vehiculos
+                        encontrados</h3>
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="data-table table table-bordered table-striped" id="tabla-listado">
+                        <thead>
+                        <tr>
+                            <th data-width="3%">Id</th>
+                            <th data-width="18%">Cliente</th>
+                            <th data-width="18%">Contacto</th>
+                            <th data-width="10%">Modelo</th>
+                            <th data-width="8%">Vendedor</th>
+                            <th data-width="8%">Tipo de venta</th>
+                            <th data-width="5%">Fecha entregado</th>
+                            <th data-width="15%">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td>{{ entity.cliente }}</td>
+                                <td>
+                                    <b>Tel:</b><span>{{ entity.telefono }}</span><br>
+                                    <b>Tel laboral:</b><span>{{ entity.telefono_laboral }}</span><br>
+                                    <b>mail:</b><span>{{ entity.mail }}</span><br>
+                                    <b>Direccion:</b><span>{{ entity.calle }}{{ entity.numero_calle }}</span>
+                                </td>
+                                <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_version }}</td>
+                                <td>{{ entity.vendedor }}</td>
+                                <td>{{ entity.tipo_venta_especial }}</td>
+                                <td>{{ entity.fecha_estado|date("d/m/Y") }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="btn btn-default"
+                                           href="{{ path('vehiculos_show', { 'id': entity.id }) }}">
+                                            <i title="Ver resumen" class="fa fa-eye"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-crm-encuestas"
+                                           data-toggle="modal"
+                                           data-target="#modalGeneric"
+                                           data-url="{{ path('ajax_crm_get_encuesta', {'id': entity.id }) }}">
+                                            <i title="Realizar encuesta" class="fa fa-file-text"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-crm-registrar-llamada"
+                                           data-toggle="modal"
+                                           data-target="#modalGeneric"
+                                           data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}">
+                                            <i title="Registrar Llamada" class="fa fa-phone-square"></i>
+                                        </a>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <label class="control-label col-xs-1 col-xs-offset-9"> Registros:</label>
+                    <div class="col-xs-2">
+                        {{ form_widget(form.registrosPaginador) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ knp_pagination_render(entities) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include "VehiculosBundle:Vehiculo:index.js.twig" %}
+    <script>
+        $(document).ready(function () {
+
+
+            {% set formFilter = app.request.request.get('vehiculosbundle_vehiculo_filter') %}
+
+            {% if formFilter is not null %}
+            $('.pagination li a').click(function () {
+
+                $('#form_listado').attr('action', this.href);
+                {% for row in form if formFilter[row.vars.name] is defined %}
+                $('#{{ row.vars.id }}').val('{{ formFilter[row.vars.name] }}');
+                {% endfor %}
+
+                $('#form_listado').submit();
+                return false;
+            });
+            {% endif %}
+        });
+
+
+    </script>
+{% endblock %}

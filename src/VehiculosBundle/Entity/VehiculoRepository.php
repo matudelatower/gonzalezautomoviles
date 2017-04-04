@@ -72,7 +72,7 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
                 $where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
             }
         }
-        
+
         if ($filters['reventa']) {
             if ($filters['reventa'] == 'si') {
                 $where .= " AND cli.reventa=true ";
@@ -86,14 +86,38 @@ class VehiculoRepository extends \Doctrine\ORM\EntityRepository {
         }
 
         $query = "SELECT   distinct(v.*),
-                                        cm.codigo as modelo_codigo,cm.anio as modelo_anio,nm.nombre as modelo_nombre,cm.version as modelo_version,
-                                        tipo_estado_vehiculo.estado as vehiculo_estado,tipo_estado_vehiculo.slug as vehiculo_estado_slug,r.fecha as remito_fecha,
-                                        r.numero as remito_numero,r.fecha_recibido,v.numero_pedido,tv.nombre as tipo_venta_especial,tv.slug as venta_especial_slug,d.nombre as deposito_actual,
-                                        ch_ci.id as check_control_interno_resultado_cabecera_id,ch_ci.firmado,cv.color as color_vehiculo,epat.slug as estado_patentamiento,
-                                        pat.dominio,current_date-fecha_emision_documento::date as dias_en_stock,age.fecha as fecha_entrega,age.hora as hora_entrega,encuesta.id as encuesta_alerta_temprana,
+                                        cm.codigo as modelo_codigo,
+                                        cm.anio as modelo_anio,
+                                        nm.nombre as modelo_nombre,
+                                        cm.version as modelo_version,
+                                        tipo_estado_vehiculo.estado as vehiculo_estado,
+                                        tipo_estado_vehiculo.slug as vehiculo_estado_slug,
+                                        r.fecha as remito_fecha,
+                                        r.numero as remito_numero,
+										r.fecha_recibido,
+										v.numero_pedido,
+										tv.nombre as tipo_venta_especial,
+										tv.slug as venta_especial_slug,
+										d.nombre as deposito_actual,										
+										ch_ci.id as check_control_interno_resultado_cabecera_id,
+										ch_ci.firmado,
+										cv.color as color_vehiculo,
+										epat.slug as estado_patentamiento,										
+										pat.dominio,
+										current_date-fecha_emision_documento::date as dias_en_stock,
+										age.fecha as fecha_entrega,
+										age.hora as hora_entrega,
+										encuesta.id as encuesta_alerta_temprana,
+
                                         (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar,
                                         (select id from danios_vehiculo_gm where vehiculo_id=v.id and tipo_estado_danio_gm_id!=3 limit 1) as danio_gm_sin_solucionar,
-                                        cli.reventa,personas.apellido ||', '||personas.nombre as cliente,
+                                        cli.reventa,
+                                        personas.apellido ||', '||personas.nombre as cliente,
+                                        personas.telefono as telefono,
+                                        personas.telefono_laboral as telefono_laboral,
+                                        personas.mail as mail,
+                                        personas.calle as calle,
+                                        personas.numero_calle as numero_calle,
                                         (select personas.apellido||', '||personas.nombre
                                                 from empleados
                                                 LEFT JOIN persona_tipos ON empleados.id = persona_tipos.empleado_id

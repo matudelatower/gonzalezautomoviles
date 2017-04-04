@@ -25,7 +25,8 @@
         "knplabs/knp-snappy-bundle": "^1.4",
         "liuggio/ExcelBundle": "^2.0",
         "dizda/cloud-backup-bundle": "3.4.*",
-        "dropbox/dropbox-sdk": "^1.1"
+        "dropbox/dropbox-sdk": "^1.1",
+        "javiereguiluz/easyadmin-bundle": "^1.16"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
