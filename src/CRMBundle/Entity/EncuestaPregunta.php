@@ -329,4 +329,28 @@ class EncuestaPregunta extends BaseClass {
 	public function getIpc() {
 		return $this->ipc;
 	}
+
+    /**
+     * Set objetivo
+     *
+     * @param integer $objetivo
+     *
+     * @return EncuestaPregunta
+     */
+    public function setObjetivo($objetivo)
+    {
+        $this->objetivo = $objetivo;
+
+        return $this;
+    }
+
+    /**
+     * Get objetivo
+     *
+     * @return integer
+     */
+    public function getObjetivo()
+    {
+        return $this->objetivo;
+    }
 }

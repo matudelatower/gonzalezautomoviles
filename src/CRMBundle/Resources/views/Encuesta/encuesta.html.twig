@@ -12,8 +12,14 @@
                     <h3 class="box-title">{{ encuesta.nombre }}</h3>
                 </div>
 
-
-                {{ form(form) }}
+                {{ form_start(form) }}
+                {% for item in form.children %}
+                    {% if item.vars.block_prefixes.0 != 'button' %}
+                        <b>{{ loop.index }} - </b>
+                        {{ form_row(item) }}
+                    {% endif %}
+                {% endfor %}
+                {{ form_end(form) }}
 
                 <div class="box-footer">
                     <a class="btn btn-default" href="{{ path('crm_encuesta') }}">
