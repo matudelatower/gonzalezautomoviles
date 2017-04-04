@@ -10,7 +10,7 @@ use UtilBundle\Entity\Base\BaseClass;
  * Encuesta
  *
  * @ORM\Table(name="crm_encuestas")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CRMBundle\Repository\EncuestaRepository")
  */
 class Encuesta extends BaseClass {
 	/**

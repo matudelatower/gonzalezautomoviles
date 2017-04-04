@@ -37,37 +37,26 @@ class EncuestaParameterType extends AbstractType {
 				$arrayOptions['input']  = $value['input'];
 				$arrayOptions['format'] = $value['format'];
 				$arrayOptions['attr']   = array( 'class' => 'date' );
-//                $arrayOptions['data'] = new \DateTime();
+
 			}
 			if ( $value['value'] ) {
 				if ( $value['value'] instanceof \DateTime ) {
-//                    $arrayOptions['data'] = new \DateTime();
+
 					$arrayOptions['data'] = $value['value'];
 					unset( $arrayOptions['input'] );
 				} else {
 					$arrayOptions['data'] = $value['value'];
-//					if ( $value['type'] == 'checkbox' ) {
-//						$arrayOptions['data'] = true;
-//					}
+
 				}
 			}
 
 
 			$builder->add( $k, $value["type"], $arrayOptions );
-//            $builder->add(
-//                $k,
-//                'checkbox',
-//                array(
-//                    'data' => false,
-//                    'label' => $value["label"],
-//                    'required' => false,
-//                )
-//            );
+
 		}
 	}
 
-	public
-	function configureOptions(
+	public function configureOptions(
 		OptionsResolver $resolver
 	) {
 		$resolver->setDefaults(

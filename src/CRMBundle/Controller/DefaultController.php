@@ -80,7 +80,7 @@ class DefaultController extends Controller {
 
 	public function nuevaEncuestaAction( $id, $vehiculoId ) {
 		$em       = $this->getDoctrine()->getManager();
-		$encuesta = $em->getRepository( 'CRMBundle:Encuesta' )->find( $id );
+		$encuesta = $em->getRepository( 'CRMBundle:Encuesta' )->findOrdenado( $id );
 
 		$preguntas = $encuesta->getPreguntas();
 
