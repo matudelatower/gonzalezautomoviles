@@ -25,4 +25,15 @@ class EncuestaRepository extends EntityRepository {
 		return $qb->getQuery()->getSingleResult();
 
 	}
+
+	public function findEncuestasNoRelizadas( $ids ) {
+
+		$qb = $this->createQueryBuilder( 'e' );
+		$qb->where( 'e.id not in (:encuestas)' )
+		   ->andWhere( 'e.activo = true' );
+		$qb->setParameter( 'encuestas', $ids );
+
+		return $qb->getQuery()->getResult();
+
+	}
 }

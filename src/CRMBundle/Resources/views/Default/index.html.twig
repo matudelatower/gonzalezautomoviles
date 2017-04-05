@@ -46,10 +46,10 @@
                                 <td>{{ entity.id }}</td>
                                 <td>{{ entity.cliente }}</td>
                                 <td>
-                                    <b>Tel:</b><span>{{ entity.telefono }}</span><br>
-                                    <b>Tel laboral:</b><span>{{ entity.telefono_laboral }}</span><br>
-                                    <b>mail:</b><span>{{ entity.mail }}</span><br>
-                                    <b>Direccion:</b><span>{{ entity.calle }}{{ entity.numero_calle }}</span>
+                                    <b>Tel:</b> <span>{{ entity.telefono }}</span><br>
+                                    <b>Tel laboral:</b> <span>{{ entity.telefono_laboral }}</span><br>
+                                    <b>mail:</b> <span>{{ entity.mail }}</span><br>
+                                    <b>Direccion:</b> <span>{{ entity.calle }}{{ entity.numero_calle }}</span>
                                 </td>
                                 <td>{{ entity.modelo_nombre~' | '~entity.modelo_anio~' | '~entity.modelo_version }}</td>
                                 <td>{{ entity.vendedor }}</td>
@@ -70,7 +70,7 @@
                                         <a class="btn btn-default btn-crm-registrar-llamada"
                                            data-toggle="modal"
                                            data-target="#modalGeneric"
-                                           data-url="{{ path('new_movimiento_deposito_ajax', { 'vehiculoId': entity.id }) }}">
+                                           data-url="{{ path('ajax_crm_post_llamadas_no_concretadas', { 'id': entity.id }) }}">
                                             <i title="Registrar Llamada" class="fa fa-phone-square"></i>
                                         </a>
                                     </div>
