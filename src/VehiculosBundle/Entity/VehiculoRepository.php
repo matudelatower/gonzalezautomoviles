@@ -966,7 +966,7 @@ WHERE " . $where .
         return $stmt->fetchAll();
     }
 
-	public function getVehiculosEstadoCRM($estado, $filters = null, $order = false) {
+	public function getVehiculosEstadoCRM($estado, $filters = null, $order = false, $slugEncuesta) {
 		$ids = array();
 		if ($estado) {
 			foreach ($estado as $item) {
@@ -990,7 +990,7 @@ WHERE " . $where .
 
 
 		if ($filters['tipoVentaEspecial']) {
-			$where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
+			$where.=" AND vehiculos.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
 		}
 
 		if ($filters['numeroDocumento']) {
@@ -998,22 +998,25 @@ WHERE " . $where .
 		}
 
 		if ($filters['cliente']) {
-			$where.=" AND v.cliente_id=" . $filters['cliente']->getId();
+			$where.=" AND vehiculos.cliente_id=" . $filters['cliente']->getId();
 		}
 
 		if ($filters['vendedor']) {
-			$where.=" AND v.vendedor_id=" . $filters['vendedor']->getId();
+			$where.=" AND vehiculos.vendedor_id=" . $filters['vendedor']->getId();
 		}
 
 		if ($filters['rango']) {
-			if (isset($recibido)) {
-				$where.=" AND r.fecha_recibido BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
-			} elseif (isset($transito)) {
-				$where.=" AND r.fecha BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
-			} else {
-				$where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
-			}
+			$where .= " AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
 		}
+//		if ($filters['rango']) {
+//			if (isset($recibido)) {
+//				$where.=" AND r.fecha_recibido BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+//			} elseif (isset($transito)) {
+//				$where.=" AND r.fecha BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+//			} else {
+//				$where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+//			}
+//		}
 
 		if (!$order) {
 			$order = " modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
@@ -1082,6 +1085,48 @@ WHERE " . $where .
                                         LEFT JOIN personas ON persona_tipos.persona_id = personas.id
                                         WHERE " . $where .
 		         " ORDER BY " . $order;
+		
+		$query = "SELECT   
+					vehiculos.id as id,
+					crm_encuestas.id as encuesta_id,
+					cm.codigo as modelo_codigo,
+					cm.anio as modelo_anio,
+					nm.nombre as modelo_nombre,
+					cm.version as modelo_version,
+					personas.apellido ||', '||personas.nombre as cliente,
+					personas.telefono as telefono,
+					personas.telefono_laboral as telefono_laboral,
+					personas.mail as mail,
+					personas.calle as calle,
+					personas.numero_calle as numero_calle,
+					(select personas.apellido||', '||personas.nombre
+						from empleados
+						LEFT JOIN persona_tipos ON empleados.id = persona_tipos.empleado_id
+						LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+						where empleados.id = vehiculos.vendedor_id
+					) as vendedor,
+					tv.nombre as tipo_venta_especial,
+					(
+					SELECT estados_vehiculos.creado from estados_vehiculos
+					INNER JOIN tipo_estado_vehiculo ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+					where estados_vehiculos.vehiculo_id = vehiculos.id
+					ORDER by estados_vehiculos.id desc LIMIT 1
+					) as fecha_estado
+					FROM     vehiculos 
+					LEFT JOIN crm_encuesta_resultados_cabeceras  ON crm_encuesta_resultados_cabeceras.vehiculo_id = vehiculos.id 
+					LEFT JOIN crm_encuestas  ON crm_encuesta_resultados_cabeceras.encuesta_id = crm_encuestas.id 
+					LEFT JOIN clientes cli ON vehiculos.cliente_id=cli.id
+					LEFT JOIN persona_tipos ON cli.id = persona_tipos.cliente_id
+					LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+					LEFT JOIN codigos_modelo cm ON vehiculos.codigo_modelo_id=cm.id
+					LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
+					LEFT JOIN tipos_venta_especial tv ON vehiculos.tipo_venta_especial_id=tv.id
+					where vehiculos.id NOT in (
+						SELECT   crm_encuesta_resultados_cabeceras.vehiculo_id
+						FROM     crm_encuesta_resultados_cabeceras 
+						INNER JOIN crm_encuestas ON crm_encuesta_resultados_cabeceras.encuesta_id = crm_encuestas.id
+						WHERE crm_encuestas.slug = '$slugEncuesta'
+					) ";
 
 		$stmt = $db->prepare($query);
 		$stmt->execute();

@@ -2,6 +2,7 @@
 
 namespace CRMBundle\Controller;
 
+use CRMBundle\Entity\EncuestaResultadoCabecera;
 use CRMBundle\Entity\LlamadaNoConcretada;
 use CRMBundle\Form\LlamadaNoConcretadaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,6 +21,7 @@ class AjaxController extends Controller {
 		}
 
 		$encuestas = $this->getDoctrine()->getRepository( 'CRMBundle:Encuesta' )->findEncuestasNoRelizadas( $aEncuestasRealizadas );
+		$encuestas = $this->getDoctrine()->getRepository( 'CRMBundle:Encuesta' )->findAll();
 
 		return $this->render( 'CRMBundle:Ajax:encuestas.html.twig',
 			array(
@@ -30,22 +32,20 @@ class AjaxController extends Controller {
 
 	public function llamadasNoConcretadasAction( Request $request ) {
 
-		$id                   = $request->get( 'id' );
-		$vehiculo             = $this->getDoctrine()->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
-		$encuestasRealizadas  = $this->getDoctrine()->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByVehiculo( $vehiculo );
-		$aEncuestasRealizadas = array();
-		foreach ( $encuestasRealizadas as $encuestasRealizada ) {
-			$aEncuestasRealizadas[] = $encuestasRealizada->getEncuesta()->getId();
-		}
+		$id         = $request->get( 'id' );
+		$encuestaId = $request->get( 'encuestaId' );
+
+		$em = $this->getDoctrine()->getManager();
+
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
+		$encuesta = $em->getRepository( 'CRMBundle:Encuesta' )->find( $encuestaId );
 
 		$llamadaNoConcretada = new LlamadaNoConcretada();
 		$llamadaNoConcretada->setVehiculo( $vehiculo );
+		$llamadaNoConcretada->setEncuesta( $encuesta );
 
 		$form = $this->createForm( new LlamadaNoConcretadaType(),
-			$llamadaNoConcretada,
-			array(
-				'encuestas_realizadas' => $aEncuestasRealizadas
-			) );
+			$llamadaNoConcretada );
 
 		if ( $request->getMethod() == 'POST' ) {
 			$form->handleRequest( $request );
@@ -53,10 +53,18 @@ class AjaxController extends Controller {
 
 				$cancelarEncuesta = $form->get( 'cancelarEncuesta' )->getData();
 				if ( $cancelarEncuesta ) {
-					$this->get( 'manager.crm_encuestas' )->cancelarEncuesta( $llamadaNoConcretada->getEncuesta() );
+//					$this->get( 'manager.crm_encuestas' )->cancelarEncuesta( $llamadaNoConcretada->getEncuesta() );
+					$encuestaResultadoCabecera = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByVehiculo( $vehiculo );
+
+					if ( ! $encuestaResultadoCabecera ) {
+						$encuestaResultadoCabecera = new EncuestaResultadoCabecera();
+						$encuestaResultadoCabecera->setVehiculo( $vehiculo );
+					}
+					$encuestaResultadoCabecera->setEncuesta( $encuesta );
+					$encuestaResultadoCabecera->setCancelada( true );
+					$em->persist( $encuestaResultadoCabecera );
 				}
 
-				$em = $this->getDoctrine()->getManager();
 				$em->persist( $llamadaNoConcretada );
 				$em->flush();
 
@@ -65,15 +73,16 @@ class AjaxController extends Controller {
 					'Registro creado correctamente.'
 				);
 
-				return $this->redirectToRoute( 'crm_homepage' );
+				return $this->redirectToRoute( 'crm_homepage', array( 'slug' => $encuesta->getSlug() ) );
 			}
 		}
 
 
 		return $this->render( 'CRMBundle:Ajax:llamadasNoConcretadas.html.twig',
 			array(
-				'form' => $form->createView(),
-				'id'   => $id
+				'form'     => $form->createView(),
+				'id'       => $id,
+				'encuesta' => $encuesta
 			) );
 
 	}

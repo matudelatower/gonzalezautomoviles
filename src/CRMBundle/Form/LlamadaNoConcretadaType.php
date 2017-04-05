@@ -16,19 +16,20 @@ class LlamadaNoConcretadaType extends AbstractType {
 
 		$aEncuestasRealizadas = $options['encuestas_realizadas'];
 		$builder
-			->add( 'encuesta',
-				'entity',
-				array(
-					'class'         => 'CRMBundle\Entity\Encuesta',
-					'choice_label'  => 'nombre',
-					'query_builder' => function ( EntityRepository $er ) use ( $aEncuestasRealizadas ) {
-
-						return $er->createQueryBuilder( 'e' )
-						          ->where( 'e.activo = true' )
-						          ->andWhere( 'e.id not in (:encuestas)' )
-						          ->setParameter( 'encuestas', $aEncuestasRealizadas );
-					}
-				) )
+			->add('encuesta')
+//			->add( 'encuesta',
+//				'entity',
+//				array(
+//					'class'         => 'CRMBundle\Entity\Encuesta',
+//					'choice_label'  => 'nombre',
+//					'query_builder' => function ( EntityRepository $er ) use ( $aEncuestasRealizadas ) {
+//
+//						return $er->createQueryBuilder( 'e' )
+//						          ->where( 'e.activo = true' )
+//						          ->andWhere( 'e.id not in (:encuestas)' )
+//						          ->setParameter( 'encuestas', $aEncuestasRealizadas );
+//					}
+//				) )
 			->add( 'motivo' )
 			->add( 'cancelarEncuesta',
 				'checkbox',

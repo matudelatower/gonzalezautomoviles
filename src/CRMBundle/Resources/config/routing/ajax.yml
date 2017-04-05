@@ -1,5 +1,5 @@
 ajax_crm_post_llamadas_no_concretadas:
-    path:     /llamadas_no_concretadas/{id}
+    path:     /llamadas_no_concretadas/{id}/{encuestaId}
     defaults: { _controller: "CRMBundle:Ajax:llamadasNoConcretadas" }
 
 ajax_crm_get_encuesta:

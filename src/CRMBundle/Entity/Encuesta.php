@@ -50,12 +50,9 @@ class Encuesta extends BaseClass {
 	 */
 	private $preguntas;
 
-	/**
-	 * @var bool
-	 *
-	 * @ORM\Column(name="cancelada", type="boolean", nullable=true)
-	 */
-	protected $cancelada;
+	public function __toString() {
+		return $this->slug;
+	}
 
 
 	/**
@@ -224,27 +221,4 @@ class Encuesta extends BaseClass {
 		return $this->preguntas;
 	}
 
-    /**
-     * Set cancelada
-     *
-     * @param boolean $cancelada
-     *
-     * @return Encuesta
-     */
-    public function setCancelada($cancelada)
-    {
-        $this->cancelada = $cancelada;
-
-        return $this;
-    }
-
-    /**
-     * Get cancelada
-     *
-     * @return boolean
-     */
-    public function getCancelada()
-    {
-        return $this->cancelada;
-    }
 }
