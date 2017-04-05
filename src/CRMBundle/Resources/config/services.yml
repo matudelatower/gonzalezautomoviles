@@ -2,7 +2,9 @@ services:
 #    crm.example:
 #        class: CRMBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
-    form.type.crmbundle_encuestapregunta:
-        class: CRMBundle\Form\EncuestaPreguntaType
-        tags:
-            - { name: form.type, alias: crmbundle_encuestapregunta }
+    manager.crm_encuestas:
+        class: CRMBundle\Services\CRMEncuestasManager
+        arguments:
+            em: '@doctrine.orm.entity_manager'
+            tags:
+                - { name: manager.crm_encuestas, alias: manager.crm_encuestas }
