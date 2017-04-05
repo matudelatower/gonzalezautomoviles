@@ -14,6 +14,7 @@ class AjaxController extends Controller {
 
 		$vehiculo             = $this->getDoctrine()->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
 		$encuestasRealizadas  = $this->getDoctrine()->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByVehiculo( $vehiculo );
+		$aEncuestasRealizadas = array();
 		foreach ( $encuestasRealizadas as $encuestasRealizada ) {
 			$aEncuestasRealizadas[] = $encuestasRealizada->getEncuesta()->getId();
 		}
