@@ -1,5 +1,5 @@
 <form class="form-horizontal" id="form-registro-llamada-no-concretada" role="form" method="post"
-      action="{{ path('ajax_crm_post_llamadas_no_concretadas', {'id':id}) }}">
+      action="{{ path('ajax_crm_post_llamadas_no_concretadas', {'id':id, 'encuestaId': encuesta.id}) }}">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Registrar Llamada no concretada</h4>
@@ -8,7 +8,12 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
-                    {{ form_widget(form) }}
+                    <div class="hidden">
+                        {{ form_widget(form.encuesta) }}
+                    </div>
+                    {{ form_row(form.motivo) }}
+                    {{ form_row(form.cancelarEncuesta) }}
+                    {{ form_row(form._token) }}
                 </div>
             </div>
         </div>

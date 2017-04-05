@@ -61,7 +61,7 @@
 
                             </div>
                         </div>
-                    {#</form>#}
+                        {#</form>#}
                 </div>
             </div>
         </div>
@@ -112,16 +112,20 @@
                                            href="{{ path('vehiculos_show', { 'id': entity.id }) }}">
                                             <i title="Ver resumen" class="fa fa-eye"></i>
                                         </a>
-                                        <a class="btn btn-default btn-crm-encuestas"
-                                           data-toggle="modal"
-                                           data-target="#modalGeneric"
-                                           data-url="{{ path('ajax_crm_get_encuesta', {'id': entity.id }) }}">
+                                        <a class="btn btn-default"
+                                           href="{{ path('crm_nueva_encuesta_resultado', {'id': encuesta.id, 'vehiculoId': entity.id }) }}">
                                             <i title="Realizar encuesta" class="fa fa-file-text"></i>
                                         </a>
+                                        {#<a class="btn btn-default btn-crm-encuestas"#}
+                                        {#data-toggle="modal"#}
+                                        {#data-target="#modalGeneric"#}
+                                        {#data-url="{{ path('ajax_crm_get_encuesta', {'id': entity.id }) }}">#}
+                                        {#<i title="Realizar encuesta" class="fa fa-file-text"></i>#}
+                                        {#</a>#}
                                         <a class="btn btn-default btn-crm-registrar-llamada"
                                            data-toggle="modal"
                                            data-target="#modalGeneric"
-                                           data-url="{{ path('ajax_crm_post_llamadas_no_concretadas', { 'id': entity.id }) }}">
+                                           data-url="{{ path('ajax_crm_post_llamadas_no_concretadas', { 'id': entity.id , 'encuestaId': encuesta.id}) }}">
                                             <i title="Registrar Llamada" class="fa fa-phone-square"></i>
                                         </a>
                                     </div>
