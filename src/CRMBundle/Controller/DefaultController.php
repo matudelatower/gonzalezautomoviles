@@ -21,7 +21,7 @@ class DefaultController extends Controller {
 		$encuesta     = $em->getRepository( 'CRMBundle:Encuesta' )->findOneBySlug( $slugEncuesta );
 
 		if ( ! $encuesta ) {
-			exit;
+			throw $this->createNotFoundException( 'No existe la encuesta '. $slugEncuesta );
 		}
 
 		$form      = $this->createForm( new CRMFilterType() );
