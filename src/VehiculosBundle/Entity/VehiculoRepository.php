@@ -966,4 +966,127 @@ WHERE " . $where .
         return $stmt->fetchAll();
     }
 
+	public function getVehiculosEstadoCRM($estado, $filters = null, $order = false) {
+		$ids = array();
+		if ($estado) {
+			foreach ($estado as $item) {
+				$ids[] = $item->getId();
+				if ($item->getSlug() == 'recibido') {
+					$recibido = true;
+				} elseif ($item->getSlug() == 'transito') {
+					$transito = true;
+				}
+			}
+			$idsEstado = implode(',', $ids);
+			$where = "tipo_estado_vehiculo.id in ($idsEstado)";
+		} else {
+			$where = "0=0";
+		}
+
+
+		$db = $this->getEntityManager()->getConnection();
+
+
+
+
+		if ($filters['tipoVentaEspecial']) {
+			$where.=" AND v.tipo_venta_especial_id=" . $filters['tipoVentaEspecial']->getId();
+		}
+
+		if ($filters['numeroDocumento']) {
+			$where.=" AND personas.numero_documento=" . $filters['numeroDocumento'];
+		}
+
+		if ($filters['cliente']) {
+			$where.=" AND v.cliente_id=" . $filters['cliente']->getId();
+		}
+
+		if ($filters['vendedor']) {
+			$where.=" AND v.vendedor_id=" . $filters['vendedor']->getId();
+		}
+
+		if ($filters['rango']) {
+			if (isset($recibido)) {
+				$where.=" AND r.fecha_recibido BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+			} elseif (isset($transito)) {
+				$where.=" AND r.fecha BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+			} else {
+				$where.=" AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+			}
+		}
+
+		if (!$order) {
+			$order = " modelo_nombre asc,modelo_anio asc,color_vehiculo asc";
+		}
+
+		$query = "SELECT   distinct(v.*),
+                                        cm.codigo as modelo_codigo,
+                                        cm.anio as modelo_anio,
+                                        nm.nombre as modelo_nombre,
+                                        cm.version as modelo_version,
+                                        tipo_estado_vehiculo.estado as vehiculo_estado,
+                                        tipo_estado_vehiculo.slug as vehiculo_estado_slug,
+                                        r.fecha as remito_fecha,
+                                        r.numero as remito_numero,
+										r.fecha_recibido,
+										v.numero_pedido,
+										tv.nombre as tipo_venta_especial,
+										tv.slug as venta_especial_slug,
+										d.nombre as deposito_actual,										
+										ch_ci.id as check_control_interno_resultado_cabecera_id,
+										ch_ci.firmado,
+										cv.color as color_vehiculo,
+										epat.slug as estado_patentamiento,										
+										pat.dominio,
+										current_date-fecha_emision_documento::date as dias_en_stock,
+										age.fecha as fecha_entrega,
+										age.hora as hora_entrega,
+										encuesta.id as encuesta_alerta_temprana,
+
+                                        (select id from danios_vehiculos_interno where vehiculo_id=v.id and solucionado=false limit 1) as danio_interno_sin_solucionar,
+                                        (select id from danios_vehiculo_gm where vehiculo_id=v.id and tipo_estado_danio_gm_id!=3 limit 1) as danio_gm_sin_solucionar,
+                                        cli.reventa,
+                                        personas.apellido ||', '||personas.nombre as cliente,
+                                        personas.telefono as telefono,
+                                        personas.telefono_laboral as telefono_laboral,
+                                        personas.mail as mail,
+                                        personas.calle as calle,
+                                        personas.numero_calle as numero_calle,
+                                        (select personas.apellido||', '||personas.nombre
+                                                from empleados
+                                                LEFT JOIN persona_tipos ON empleados.id = persona_tipos.empleado_id
+                                                LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+                                                where empleados.id = v.vendedor_id
+                                                ) as vendedor,
+                                        estados_vehiculos.creado as fecha_estado
+					FROM     estados_vehiculos
+					INNER JOIN (SELECT max(id) as lastId, vehiculo_id from estados_vehiculos group by vehiculo_id) eevv on estados_vehiculos.id =  eevv.lastId
+					INNER JOIN vehiculos v ON estados_vehiculos.vehiculo_id = v.id
+					INNER JOIN tipo_estado_vehiculo  ON estados_vehiculos.tipo_estado_vehiculo_id = tipo_estado_vehiculo.id
+                                        INNER JOIN colores_vehiculos cv ON v.color_vehiculo_id=cv.id
+                                        LEFT JOIN codigos_modelo cm ON v.codigo_modelo_id=cm.id
+                                        LEFT JOIN nombres_modelo nm ON cm.nombre_modelo_id=nm.id
+                                        LEFT JOIN remitos r ON v.remito_id=r.id
+                                        LEFT JOIN tipos_venta_especial tv ON v.tipo_venta_especial_id=tv.id
+                                        
+                                        LEFT JOIN (SELECT max(id) as lastIdMd, vehiculo_id from movimientos_depositos group by vehiculo_id) mmdd on v.id =  mmdd.vehiculo_id
+                                        LEFT JOIN  movimientos_depositos md ON  mmdd.lastIdMd=md.id
+                                        LEFT JOIN depositos d ON md.deposito_destino_id=d.id
+                                        LEFT JOIN check_control_interno_resultado_cabeceras ch_ci ON v.id=ch_ci.vehiculo_id
+                                        LEFT JOIN patentamientos pat ON v.patentamiento_id=pat.id
+                                        LEFT JOIN estados_patentamiento epat ON pat.estado_patentamiento_id=epat.id
+                                        LEFT JOIN agenda_entregas age ON v.id=age.vehiculo_id
+                                        LEFT JOIN encuesta_resultados_cabeceras encuesta ON v.id=encuesta.vehiculo_id
+                                        LEFT JOIN clientes cli ON v.cliente_id=cli.id
+                                        LEFT JOIN persona_tipos ON cli.id = persona_tipos.cliente_id
+                                        LEFT JOIN personas ON persona_tipos.persona_id = personas.id
+                                        WHERE " . $where .
+		         " ORDER BY " . $order;
+
+		$stmt = $db->prepare($query);
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+	}
+
 }

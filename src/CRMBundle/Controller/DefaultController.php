@@ -6,6 +6,7 @@ use CRMBundle\Entity\EncuestaResultadoCabecera;
 use CRMBundle\Entity\EncuestaResultadoRespuesta;
 use CRMBundle\Form\EncuestaOpcionRespuestaType;
 use CRMBundle\Form\EncuestaParameterType;
+use CRMBundle\Form\Filter\CRMFilterType;
 use CRMBundle\Form\Model\EncuestaParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ class DefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
 		$em = $this->getDoctrine()->getManager();
-		$form = $this->createForm(new VehiculoFilterType($em));
+		$form = $this->createForm(new CRMFilterType());
 		$estadoId1 = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug('entregado');
 		$estados = array($estadoId1);
 		$order = " fecha_estado DESC, modelo_nombre ASC,color_vehiculo ASC, v.vin ASC";
@@ -32,16 +33,16 @@ class DefaultController extends Controller {
 					$data['fechaDesde'] = $fechaDesde->format('Y-m-d') . ' 00:00:00';
 					$data['fechaHasta'] = $fechaHasta->format('Y-m-d') . ' 23:59:59';
 				}
-				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, $data, $order);
+				$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstadoCRM($estados, $data, $order);
 			}
 		} else {
-			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados, null, $order);
+			$entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstadoCRM($estados, null, $order);
 		}
 		$cantidadRegistros = count($entities);
 
 		$paginator = $this->get('knp_paginator');
-		if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
-			$limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
+		if ($request->request->get('crmbundle_vehiculo_filter')['registrosPaginador'] != "") {
+			$limit = $request->request->get('crmbundle_vehiculo_filter')['registrosPaginador'];
 		} else {
 			$limit = 10;
 		}
