@@ -31,12 +31,12 @@ crm_encuesta_delete:
 
 crm_encuesta_resultado:
     path:   /encuesta
-    defaults: { _controller: "CRMBundle:Default:encuesta" }
+    defaults: { _controller: "CRMBundle:CRMDefault:encuesta" }
 
 crm_nueva_encuesta_resultado:
     path:   /{id}/encuesta/{vehiculoId}
-    defaults: { _controller: "CRMBundle:Default:nuevaEncuesta" }
+    defaults: { _controller: "CRMBundle:CRMDefault:nuevaEncuesta" }
 
 crm_crear_encuesta_resultado:
     path:   /{id}/encuesta/{vehiculoId}/crear
-    defaults: { _controller: "CRMBundle:Default:crearEncuesta" }
+    defaults: { _controller: "CRMBundle:CRMDefault:crearEncuesta" }

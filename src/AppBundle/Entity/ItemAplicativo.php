@@ -36,6 +36,13 @@ class ItemAplicativo
      */
     private $ruta;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="route_params", type="string", length=255, nullable=true)
+	 */
+	private $routeParams;
+
 
     /**
      * @var datetime $creado
@@ -259,5 +266,29 @@ class ItemAplicativo
     public function getAplicativo()
     {
         return $this->aplicativo;
+    }
+
+    /**
+     * Set routeParams
+     *
+     * @param string $routeParams
+     *
+     * @return ItemAplicativo
+     */
+    public function setRouteParams($routeParams)
+    {
+        $this->routeParams = $routeParams;
+
+        return $this;
+    }
+
+    /**
+     * Get routeParams
+     *
+     * @return string
+     */
+    public function getRouteParams()
+    {
+        return $this->routeParams;
     }
 }
