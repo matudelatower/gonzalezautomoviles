@@ -127,7 +127,7 @@ class EncuestaParameter {
 			"type"     => $widgetType,
 			"label"    => $value->getPregunta(),
 			"value"    => false,
-			"required" => false,
+			"required" => true,
 			$attr
 
 //            "required" => $value->getRequerido() ? true : false,

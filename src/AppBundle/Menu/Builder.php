@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
@@ -48,14 +49,15 @@ class Builder extends ContainerAware {
 					$aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['icono'] =
 						$permisoApp->getItemAplicativo()->getAplicativo()->getIcono();
 
-					$aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['hijo'] = $permisoApp->getItemAplicativo()->getNombre();
-					$aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['ruta'] = $permisoApp->getItemAplicativo()->getRuta();
+					$aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['hijo']            = $permisoApp->getItemAplicativo()->getNombre();
+					$aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['ruta']            = $permisoApp->getItemAplicativo()->getRuta();
+					$aplicativo[ $permisoApp->getItemAplicativo()->getAplicativo()->getNombre() ]['hijos'][ $i ]['routeParameters'] = $permisoApp->getItemAplicativo()->getRouteParams();
 					$i ++;
 				}
 			}
 		}
 
-		ksort($aplicativo);
+		ksort( $aplicativo );
 		foreach ( $aplicativo as $key => $value ) {
 			$menu->addChild(
 				$key,
@@ -69,73 +71,34 @@ class Builder extends ContainerAware {
 			     ->setExtra( 'icon', $value['icono'] )
 			     ->setAttribute( 'class', 'treeview' );
 			foreach ( $value['hijos'] as $indice => $valor ) {
-				$menu[ $key ]
-					->addChild(
-						$valor['hijo'],
-						array(
-							'route' => $valor['ruta'],
-						)
-					);
+
+				if ( $valor['routeParameters'] ) {
+					$aParams = json_decode( $valor['routeParameters'], true );
+					foreach ( $aParams as $paramKey => $paramValue ) {
+
+						$menu[ $key ]
+							->addChild(
+								$valor['hijo'],
+								array(
+									'route'           => $valor['ruta'],
+									'routeParameters' => array( $paramKey => $paramValue )
+								)
+							);
+					}
+
+				} else {
+					$menu[ $key ]
+						->addChild(
+							$valor['hijo'],
+							array(
+								'route' => $valor['ruta'],
+							)
+						);
+				}
 			}
 
 		}
 
-
-//administracion
-//        $menu->addChild(
-//            'Administracion',
-//            array(
-//                'childrenAttributes' => array(
-//                    'class' => 'treeview-menu',
-//                ),
-//            )
-//        )
-//            ->setUri('#')
-//            ->setExtra('icon', 'fa fa-dashboard')
-//            ->setAttribute('class', 'treeview');
-//
-//        $menu['Administracion']
-//            ->addChild(
-//                'Aplicativos',
-//                array(
-//                    'route' => 'aplicativo',
-//                )
-//            );
-//        $menu['Administracion']
-//            ->addChild(
-//                'Item Aplicativos',
-//                array(
-//                    'route' => 'item_aplicativo',
-//                )
-//            );
-//
-////vehiculos
-//        $menu->addChild(
-//            'Vehiculos'
-//        )->setUri('#')
-//            ->setAttribute('class', 'treeview');
-//
-//        $menu->addChild(
-//            'Checklist',
-//            array(
-//                'childrenAttributes' => array(
-//                    'class' => 'treeview-menu',
-//                ),
-//            )
-//        )
-//            ->setUri('#')
-//            ->setExtra('icon', 'fa fa-check-square-o')
-//            ->setAttribute('class', 'treeview');
-//
-//        $menu['Checklist']
-//            ->addChild(
-//                'Listado',
-//                array(
-//                    'route' => 'cuestionarios',
-//                )
-//            );
-//
-//
 		if ( $usuario->hasRole( 'ROLE_ADMIN' ) ) {
 			//administracion
 			$menu->addChild(

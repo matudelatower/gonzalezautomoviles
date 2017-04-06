@@ -3,26 +3,43 @@
 {% block content_title %}
     Formulario de Alta
 {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="{{ asset('bundles/theme/plugins/iconpicker/css/fontawesome-iconpicker.min.css') }}">
+{% endblock stylesheets %}
 
 {% block content -%}
-<div class="row">
-    <div class="col-md-12">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">Aplicativo</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Aplicativo</h3>
+                </div>
+
+
+                {{ form(form) }}
+
+                <div class="box-footer">
+                    <a class="btn btn-default" href="{{ path('aplicativo') }}">
+                        Volver
+                    </a>
+
+                </div>
             </div>
+        </div>
+    </div>
 
-
-    {{ form(form) }}
-
-        <div class="box-footer">
-<a class="btn btn-default" href="{{ path('aplicativo') }}">
-    Volver
-</a>
-
-</div>
-</div>
-</div>
-</div>
-
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/theme/plugins/iconpicker/js/fontawesome-iconpicker.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.iconpicker').iconpicker(
+                {
+                    inputSearch: true
+                }
+            );
+        });
+    </script>
 {% endblock %}

@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use VehiculosBundle\Form\VehiculoFilterType;
 
-class DefaultController extends Controller {
+class CRMDefaultController extends Controller {
 
 	public function indexAction( Request $request ) {
 
