@@ -21,7 +21,7 @@ class DefaultController extends Controller {
 		$encuesta     = $em->getRepository( 'CRMBundle:Encuesta' )->findOneBySlug( $slugEncuesta );
 
 		if ( ! $encuesta ) {
-			throw $this->createNotFoundException( 'No existe la encuesta '. $slugEncuesta );
+			throw $this->createNotFoundException( 'No existe la encuesta ' . $slugEncuesta );
 		}
 
 		$form      = $this->createForm( new CRMFilterType() );
@@ -69,12 +69,48 @@ class DefaultController extends Controller {
 		return $this->render(
 			'CRMBundle:Default:index.html.twig',
 			array(
-				'entities'             => $entities,
-				'encuesta'             => $encuesta,
-				'form'                 => $form->createView(),
-				'cantidadRegistros'    => $cantidadRegistros,
+				'entities'          => $entities,
+				'encuesta'          => $encuesta,
+				'form'              => $form->createView(),
+				'cantidadRegistros' => $cantidadRegistros,
 			)
 		);
+	}
+
+	public function indexEncuestasRealizadasAction( Request $request ) {
+
+		$em           = $this->getDoctrine()->getManager();
+		$slugEncuesta = $request->get( 'slug' );
+		$encuesta     = $em->getRepository( 'CRMBundle:Encuesta' )->findOneBySlug( $slugEncuesta );
+
+		if ( ! $encuesta ) {
+			throw $this->createNotFoundException( 'No existe la encuesta ' . $slugEncuesta );
+		}
+
+		$encuestaResultadoCabecera = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuesta( $encuesta );
+
+		$paginator = $this->get( 'knp_paginator' );
+		$entities  = $paginator->paginate(
+			$encuestaResultadoCabecera,
+			$request->query->get( 'page', 1 )/* page number */,
+			10/* limit per page */
+		);
+
+		return $this->render( '@CRM/Default/encuestasRealizadas.html.twig',
+			array(
+				'entities' => $entities
+			) );
+	}
+
+	public function verEncuestaAction( $resultadoCabeceraId ) {
+
+		$em                        = $this->getDoctrine()->getManager();
+		$encuestaResultadoCabecera = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->find( $resultadoCabeceraId );
+
+		return $this->render( '@CRM/Default/ver.html.twig',
+			array(
+				'encuestaResultadoCabecera' => $encuestaResultadoCabecera
+			) );
 	}
 
 	public function encuestaAction( Request $request ) {
@@ -163,7 +199,7 @@ class DefaultController extends Controller {
 				'Encuesta creada correctamente'
 			);
 
-			return $this->redirectToRoute( 'crm_homepage',  array( 'slug' => $encuesta->getSlug() )  );
+			return $this->redirectToRoute( 'crm_homepage', array( 'slug' => $encuesta->getSlug() ) );
 		}
 
 		return $this->redirectToRoute( 'crm_crear_encuesta_resultado',
