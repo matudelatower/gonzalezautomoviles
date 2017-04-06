@@ -208,4 +208,60 @@ class CRMDefaultController extends Controller {
 				'id'         => $id
 			) );
 	}
+
+	public function reporteEncuestasRealizadasAction( Request $request ) {
+
+		$em           = $this->getDoctrine()->getManager();
+		$slugEncuesta = $request->get( 'slug' );
+		$encuesta     = $em->getRepository( 'CRMBundle:Encuesta' )->findOneBySlug( $slugEncuesta );
+
+		if ( ! $encuesta ) {
+			throw $this->createNotFoundException( 'No existe la encuesta ' . $slugEncuesta );
+		}
+
+		$encuestaResultadoCabecera             = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuesta( $encuesta );
+		$encuestaResultadoCabeceraNoCanceladas = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaNoCancelada( $encuesta );
+		$cantidadEncuestas                     = count( $encuestaResultadoCabeceraNoCanceladas );
+		$preguntas                             = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
+		$aOpciones                             = array();
+		foreach ( $preguntas as $pregunta ) {
+			foreach ( $pregunta->getOpcionesRespuestas() as $opcionesRespuesta ) {
+				if ( $opcionesRespuesta->getValorLiteral() ) {
+					$aOpciones[ $opcionesRespuesta->getId() ] = $opcionesRespuesta->getValorLiteral();
+				} else {
+
+					$aOpciones[ $opcionesRespuesta->getId() ] = $opcionesRespuesta->getTextoOpcion();
+				}
+			}
+		}
+//		$preguntas = $em->getRepository('CRMBundle:EncuestaOpcionRespuesta')->findByEncuesta($encuesta);
+
+
+		$aResultados = array();
+		foreach ( $encuestaResultadoCabecera as $cabecera ) {
+			foreach ( $cabecera->getEncuestaResultadoRespuesta() as $resultdoRespuesta ) {
+				if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+					$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+				} else {
+					$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+				}
+				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
+				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media'] = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
+			}
+
+		}
+
+//		echo '<pre>';
+////		print_r( $aOpciones );
+//		print_r( $aResultados );
+//		exit;
+
+		return $this->render( '@CRM/Default/reporteEncuestasRealizadas.html.twig',
+			array(
+				'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
+				'resultados'                => $aResultados,
+				'cantidadEncuestas'         => $cantidadEncuestas,
+				'opciones'                  => $aOpciones
+			) );
+	}
 }

@@ -9,7 +9,7 @@ use UtilBundle\Entity\Base\BaseClass;
  * EncuestaResultadoCabecera
  *
  * @ORM\Table(name="crm_encuesta_resultados_cabeceras")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="CRMBundle\Repository\EncuestaResultadoCabeceraRepository")
  */
 class EncuestaResultadoCabecera extends BaseClass {
 
