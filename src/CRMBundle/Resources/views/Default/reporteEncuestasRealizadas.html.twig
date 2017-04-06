@@ -1,0 +1,93 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% block title %}
+    Reporte Encuestas Realizadas
+{% endblock title %}
+{% block content_title %}
+    Reporte Encuesta {{ app.request.get('slug') }}
+{% endblock content_title %}
+{% block content -%}
+    <!-- Modal -->
+    <div id="modalGeneric" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" id="cuerpoGeneric">
+
+            </div>
+
+        </div>
+    </div>
+    <!-- FILTROS -->
+
+    <!-- FIN FILTROS -->
+
+    {% for key, resultado in resultados %}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">{{ key }}</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>Respuesta</th>
+                                <th>Cantidad</th>
+                                <th>%</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set objetivo = 0 %}
+                            {% set media = 0 %}
+                            {% for keyR, itemR in resultado %}
+                                {% if keyR == 'objetivo' %}
+                                    {% set objetivo = itemR %}
+                                {% elseif keyR =='media' %}
+                                    {% set media = itemR %}
+                                {% else %}
+                                    <tr>
+                                        <td width="10">
+
+                                        </td>
+                                        <td>
+                                            {{ opciones[keyR] }}
+                                        </td>
+                                        <td>
+                                            {{ itemR }}
+                                        </td>
+                                        <td>
+                                            {{ (itemR * 100 )/cantidadEncuestas }}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <span class="label bg-gray">Indice IPC</span>
+                                {#<span class="label bg-gray"></span>#}
+
+                            </div>
+                            <div class="col-md-4">
+                                <span class="label bg-green">+ {{ objetivo }}</span>
+                                <span class="label bg-yellow">{{ media }}</span>
+                                <span class="label bg-red">- {{ media }}</span>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="label bg-gray">Objetivo: {{ objetivo }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+

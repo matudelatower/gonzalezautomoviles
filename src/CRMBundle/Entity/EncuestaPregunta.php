@@ -69,16 +69,22 @@ class EncuestaPregunta extends BaseClass {
 	protected $ipc;
 
 	/**
-	 * @var integer
+	 * @var decimal
 	 *
-	 * @ORM\Column(name="objetivo", type="integer", nullable=true)
+	 * @ORM\Column(name="objetivo", type="decimal", scale=2, nullable=true)
 	 */
 	private $objetivo;
+
+	/**
+	 * @var decimal
+	 *
+	 * @ORM\Column(name="media", type="decimal", scale=2, nullable=true)
+	 */
+	private $media;
 
 	public function __toString() {
 		return $this->pregunta;
 	}
-
 
 	/**
 	 * Constructor
@@ -116,28 +122,6 @@ class EncuestaPregunta extends BaseClass {
 	 */
 	public function getPregunta() {
 		return $this->pregunta;
-	}
-
-	/**
-	 * Set estado
-	 *
-	 * @param boolean $estado
-	 *
-	 * @return EncuestaPregunta
-	 */
-	public function setEstado( $estado ) {
-		$this->estado = $estado;
-
-		return $this;
-	}
-
-	/**
-	 * Get estado
-	 *
-	 * @return boolean
-	 */
-	public function getEstado() {
-		return $this->estado;
 	}
 
 	/**
@@ -182,6 +166,72 @@ class EncuestaPregunta extends BaseClass {
 	 */
 	public function getCssClass() {
 		return $this->cssClass;
+	}
+
+	/**
+	 * Set ipc
+	 *
+	 * @param boolean $ipc
+	 *
+	 * @return EncuestaPregunta
+	 */
+	public function setIpc( $ipc ) {
+		$this->ipc = $ipc;
+
+		return $this;
+	}
+
+	/**
+	 * Get ipc
+	 *
+	 * @return boolean
+	 */
+	public function getIpc() {
+		return $this->ipc;
+	}
+
+	/**
+	 * Set objetivo
+	 *
+	 * @param string $objetivo
+	 *
+	 * @return EncuestaPregunta
+	 */
+	public function setObjetivo( $objetivo ) {
+		$this->objetivo = $objetivo;
+
+		return $this;
+	}
+
+	/**
+	 * Get objetivo
+	 *
+	 * @return string
+	 */
+	public function getObjetivo() {
+		return $this->objetivo;
+	}
+
+	/**
+	 * Set media
+	 *
+	 * @param string $media
+	 *
+	 * @return EncuestaPregunta
+	 */
+	public function setMedia( $media ) {
+		$this->media = $media;
+
+		return $this;
+	}
+
+	/**
+	 * Get media
+	 *
+	 * @return string
+	 */
+	public function getMedia() {
+		return $this->media;
 	}
 
 	/**
@@ -262,8 +312,7 @@ class EncuestaPregunta extends BaseClass {
 	 * @return EncuestaPregunta
 	 */
 	public function addOpcionesRespuesta( \CRMBundle\Entity\EncuestaOpcionRespuesta $opcionesRespuesta ) {
-		$opcionesRespuesta->setEncuestaPregunta( $this );
-		$this->opcionesRespuestas->add( $opcionesRespuesta );
+		$this->opcionesRespuestas[] = $opcionesRespuesta;
 
 		return $this;
 	}
@@ -311,50 +360,4 @@ class EncuestaPregunta extends BaseClass {
 
 		return $this;
 	}
-
-	/**
-	 * Set ipc
-	 *
-	 * @param boolean $ipc
-	 *
-	 * @return EncuestaPregunta
-	 */
-	public function setIpc( $ipc ) {
-		$this->ipc = $ipc;
-
-		return $this;
-	}
-
-	/**
-	 * Get ipc
-	 *
-	 * @return boolean
-	 */
-	public function getIpc() {
-		return $this->ipc;
-	}
-
-    /**
-     * Set objetivo
-     *
-     * @param integer $objetivo
-     *
-     * @return EncuestaPregunta
-     */
-    public function setObjetivo($objetivo)
-    {
-        $this->objetivo = $objetivo;
-
-        return $this;
-    }
-
-    /**
-     * Get objetivo
-     *
-     * @return integer
-     */
-    public function getObjetivo()
-    {
-        return $this->objetivo;
-    }
 }
