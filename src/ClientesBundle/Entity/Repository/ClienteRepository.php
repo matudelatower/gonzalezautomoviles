@@ -51,7 +51,7 @@ class ClienteRepository extends EntityRepository {
             $qb->setParameter('numeroDocumento',  $filter['numeroDocumento'] );
         }
         if ($filter['apellido']) {
-            $qb->andWhere("pers.apellido like :apellido");
+            $qb->andWhere("UPPER(pers.apellido) like UPPER(:apellido)");
             $qb->setParameter('apellido', '%' . $filter['apellido'] . '%');
         }
 
