@@ -109,25 +109,20 @@
                                 <td>
                                     <div class="btn-group">
                                         <a class="btn btn-default"
-                                           href="{{ path('vehiculos_show', { 'id': entity.id }) }}">
-                                            <i title="Ver resumen" class="fa fa-eye"></i>
-                                        </a>
-                                        <a class="btn btn-default"
                                            href="{{ path('crm_nueva_encuesta_resultado', {'id': encuesta.id, 'vehiculoId': entity.id }) }}">
                                             <i title="Realizar encuesta" class="fa fa-file-text"></i>
                                         </a>
-                                        {#<a class="btn btn-default btn-crm-encuestas"#}
-                                        {#data-toggle="modal"#}
-                                        {#data-target="#modalGeneric"#}
-                                        {#data-url="{{ path('ajax_crm_get_encuesta', {'id': entity.id }) }}">#}
-                                        {#<i title="Realizar encuesta" class="fa fa-file-text"></i>#}
-                                        {#</a>#}
                                         <a class="btn btn-default btn-crm-registrar-llamada"
+                                           data-id="{{ entity.id }}"
+                                           data-encuesta-id="{{ encuesta.id }}"
                                            data-toggle="modal"
                                            data-target="#modalGeneric"
                                            data-url="{{ path('ajax_crm_post_llamadas_no_concretadas', { 'id': entity.id , 'encuestaId': encuesta.id}) }}">
                                             <i title="Registrar Llamada" class="fa fa-phone-square"></i>
                                         </a>
+                                        <span class="badge-{{ entity.id }} label label-warning hidden"
+                                              data-toggle="tooltip"
+                                              title="" data-original-title="Cantidad de llamadas"></span>
                                     </div>
                                 </td>
 
@@ -170,6 +165,27 @@
                 return false;
             });
             {% endif %}
+
+            $(".btn-crm-registrar-llamada").each(function (index) {
+                var id = $(this).data('id');
+                var encuestaid = $(this).data('encuesta-id');
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('ajax_crm_cantidad_llamadas_no_concretadas') }}',
+                    data: {encuestaId: encuestaid, id: id},
+                    success: function (data) {
+                        if (data !== 0) {
+                            $('.badge-' + id).removeClass('hidden');
+                            $('.badge-' + id).html(data);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+
+                    }
+                });
+
+            });
         });
 
 
