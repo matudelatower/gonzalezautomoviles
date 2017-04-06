@@ -75,6 +75,10 @@ class EncuestaPregunta extends BaseClass {
 	 */
 	private $objetivo;
 
+	public function __toString() {
+		return $this->pregunta;
+	}
+
 
 	/**
 	 * Constructor

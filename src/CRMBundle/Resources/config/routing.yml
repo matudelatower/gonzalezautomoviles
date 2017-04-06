@@ -10,6 +10,14 @@ crm_encuesta:
     resource: "@CRMBundle/Resources/config/routing/encuesta.yml"
     prefix:   /encuesta
 
+crm_ver_encuesta_realizada:
+    path:     /ver_encuesta_realizada/{resultadoCabeceraId}
+    defaults: { _controller: CRMBundle:Default:verEncuesta }
+
+crm_encuestas_realizadas:
+    path:     /encuestas_realizadas
+    defaults: { _controller: CRMBundle:Default:indexEncuestasRealizadas }
+
 crm_homepage:
     path:     /
     defaults: { _controller: CRMBundle:Default:index }
