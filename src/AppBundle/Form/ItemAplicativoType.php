@@ -37,7 +37,8 @@ class ItemAplicativoType extends AbstractType {
 			->add( 'routeParams',
 				'text',
 				array(
-					'attr' => array( 'placeholder' => '{"slug":"postventa"}' )
+					'attr'  => array( 'placeholder' => '{"slug":"postventa"}' ),
+					'label' => 'Parametros de ruta',
 				) )
 			->add(
 				'aplicativo'

@@ -63,7 +63,7 @@ class CRMFilterType extends AbstractType {
 					'label'         => 'Vendedor (Por Apellido)',
 					'class'         => 'PersonasBundle:Empleado',
 					'search_method' => 'getEmpleadoByApellido',
-					'required'      => true,
+					'required'      => false,
 					'route_name'    => 'get_empleado_by_apellido'
 				) )
 			->add( 'registrosPaginador',
