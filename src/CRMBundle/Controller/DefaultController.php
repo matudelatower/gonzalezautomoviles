@@ -73,11 +73,6 @@ class DefaultController extends Controller {
 				'encuesta'             => $encuesta,
 				'form'                 => $form->createView(),
 				'cantidadRegistros'    => $cantidadRegistros,
-				'muestraRangoFecha'    => true,
-				'muestraFiltroReventa' => true,
-				'labelRangoFecha'      => 'Fecha entregado',
-				'muestraExportarExcel' => false,
-				'muestraExportarPdf'   => false,
 			)
 		);
 	}

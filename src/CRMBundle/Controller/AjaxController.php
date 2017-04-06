@@ -6,6 +6,7 @@ use CRMBundle\Entity\EncuestaResultadoCabecera;
 use CRMBundle\Entity\LlamadaNoConcretada;
 use CRMBundle\Form\LlamadaNoConcretadaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AjaxController extends Controller {
@@ -85,5 +86,22 @@ class AjaxController extends Controller {
 				'encuesta' => $encuesta
 			) );
 
+	}
+
+	public function getCantidadLlamadasNoConcretadasAction( Request $request ) {
+		$id         = $request->get( 'id' );
+		$encuestaId = $request->get( 'encuestaId' );
+
+		$em = $this->getDoctrine()->getManager();
+
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $id );
+		$encuesta = $em->getRepository( 'CRMBundle:Encuesta' )->find( $encuestaId );
+		$criteria = array(
+			'vehiculo' => $vehiculo,
+			'encuesta' => $encuesta
+		);
+		$cantidad = $em->getRepository( 'CRMBundle:LlamadaNoConcretada' )->findBy( $criteria );
+
+		return new JsonResponse(count($cantidad));
 	}
 }
