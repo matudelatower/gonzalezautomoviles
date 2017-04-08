@@ -234,19 +234,55 @@ class CRMDefaultController extends Controller {
 				}
 			}
 		}
-//		$preguntas = $em->getRepository('CRMBundle:EncuestaOpcionRespuesta')->findByEncuesta($encuesta);
+		$aOpciones['promotores']  = 'Promotores';
+		$aOpciones['neutros']     = 'Neutros';
+		$aOpciones['detractores'] = 'Detractores';
 
 
 		$aResultados = array();
 		foreach ( $encuestaResultadoCabecera as $cabecera ) {
+
 			foreach ( $cabecera->getEncuestaResultadoRespuesta() as $resultdoRespuesta ) {
-				if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
-					$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
-				} else {
-					$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+				if ( $resultdoRespuesta->getEncuestaPregunta()->getIpc() ) {
+					if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+					} else {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+					}
+				} elseif ( $resultdoRespuesta->getEncuestaPregunta()->getNps() ) {
+					if ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() >= 9 ) {
+						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
+							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] += 1;
+						} else {
+							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 1;
+						}
+					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() >= 7 ) {
+						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
+							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] += 1;
+						} else {
+							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 1;
+						}
+					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() <= 7 ) {
+						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
+							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] += 1;
+						} else {
+							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 1;
+						}
+					}
+					 if (!isset($aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'])){
+						 $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 0;
+					 }
+					 if (!isset($aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'])){
+						 $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 0;
+					 }
+					 if (!isset($aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'])){
+						 $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 0;
+					 }
 				}
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
-				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media'] = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
+				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media']    = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
+				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['ipc']      = $resultdoRespuesta->getEncuestaPregunta()->getIpc();
+				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['nps']      = $resultdoRespuesta->getEncuestaPregunta()->getNps();
 			}
 
 		}

@@ -82,6 +82,13 @@ class EncuestaPregunta extends BaseClass {
 	 */
 	private $media;
 
+	/**
+	 * @var bool
+	 *
+	 * @ORM\Column(name="nps", type="boolean", nullable=true)
+	 */
+	protected $nps;
+
 	public function __toString() {
 		return $this->pregunta;
 	}
@@ -360,4 +367,28 @@ class EncuestaPregunta extends BaseClass {
 
 		return $this;
 	}
+
+    /**
+     * Set nps
+     *
+     * @param boolean $nps
+     *
+     * @return EncuestaPregunta
+     */
+    public function setNps($nps)
+    {
+        $this->nps = $nps;
+
+        return $this;
+    }
+
+    /**
+     * Get nps
+     *
+     * @return boolean
+     */
+    public function getNps()
+    {
+        return $this->nps;
+    }
 }

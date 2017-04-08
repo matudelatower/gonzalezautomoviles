@@ -135,7 +135,7 @@ class EncuestaParameter {
 
 		if ( $widgetType == 'choice' ) {
 			foreach ( $value->getOpcionesRespuestas()->toArray() as $opcion ) {
-				$this->data[ $name ]['choices'][ $opcion->getId() ] = $opcion->getTextoOpcion();
+				$this->data[ $name ]['choices'][ $opcion->getId() ] = $opcion->getTextoOpcion() . ' - ' . $opcion->getValorLiteral();
 			}
 
 			$this->data[ $name ]['expanded'] = true;

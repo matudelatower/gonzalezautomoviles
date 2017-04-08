@@ -24,6 +24,7 @@ class EncuestaPreguntaType extends AbstractType {
 			->add( 'cssClass')
 			->add( 'encuestaTipoPregunta' )
 			->add( 'ipc' )
+			->add( 'nps' )
 //			->add( 'activo' )
 			->add( 'opcionesRespuestas',
 				$type,
