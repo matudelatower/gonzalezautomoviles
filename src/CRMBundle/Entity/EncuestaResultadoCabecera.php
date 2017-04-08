@@ -47,6 +47,13 @@ class EncuestaResultadoCabecera extends BaseClass {
 	 */
 	protected $cancelada;
 
+	/**
+	 * @var bool
+	 *
+	 * @ORM\Column(name="bloqueado", type="boolean", nullable=true)
+	 */
+	protected $bloqueado;
+
 
 	/**
 	 * Constructor
@@ -216,4 +223,28 @@ class EncuestaResultadoCabecera extends BaseClass {
 
 		return $this;
 	}
+
+    /**
+     * Set bloqueado
+     *
+     * @param boolean $bloqueado
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setBloqueado($bloqueado)
+    {
+        $this->bloqueado = $bloqueado;
+
+        return $this;
+    }
+
+    /**
+     * Get bloqueado
+     *
+     * @return boolean
+     */
+    public function getBloqueado()
+    {
+        return $this->bloqueado;
+    }
 }

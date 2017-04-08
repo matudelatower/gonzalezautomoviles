@@ -41,12 +41,31 @@
                             <tbody>
                             {% set objetivo = 0 %}
                             {% set media = 0 %}
+                            {% set ipc = 0 %}
+                            {% set nps = 0 %}
+                            {% set promotores = 0 %}
+                            {% set neutros = 0 %}
+                            {% set detractores = 0 %}
+
                             {% for keyR, itemR in resultado %}
                                 {% if keyR == 'objetivo' %}
                                     {% set objetivo = itemR %}
                                 {% elseif keyR =='media' %}
                                     {% set media = itemR %}
+                                {% elseif keyR =='ipc' %}
+                                    {% set ipc = itemR %}
+                                {% elseif keyR =='nps' %}
+                                    {% set nps = itemR %}
                                 {% else %}
+                                    {% if keyR =='promotores' %}
+                                        {% set promotores = itemR %}
+                                    {% endif %}
+                                    {% if keyR =='detractores' %}
+                                        {% set detractores = itemR %}
+                                    {% endif %}
+                                    {% if keyR =='neutros' %}
+                                        {% set neutros = itemR %}
+                                    {% endif %}
                                     <tr>
                                         <td width="10">
 
@@ -58,7 +77,7 @@
                                             {{ itemR }}
                                         </td>
                                         <td>
-                                            {{ (itemR * 100 )/cantidadEncuestas }}
+                                            {{ ((itemR * 100 )/cantidadEncuestas) |round(2)  }}
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -70,18 +89,26 @@
                     <div class="box-footer">
                         <div class="row">
                             <div class="col-md-5">
-                                <span class="label bg-gray">Indice IPC</span>
+                                {% if ipc %}
+                                    <span class="label bg-gray">Indice IPC</span>
+                                    <span class="label bg-gray">{{ ipc }}</span>
+                                {% elseif nps %}
+                                    <span class="label bg-gray">NPS</span>
+                                    <span class="label bg-gray">{{ promotores - detractores }}</span>
+                                {% endif %}
                                 {#<span class="label bg-gray"></span>#}
 
                             </div>
-                            <div class="col-md-4">
-                                <span class="label bg-green">+ {{ objetivo }}</span>
-                                <span class="label bg-yellow">{{ media }}</span>
-                                <span class="label bg-red">- {{ media }}</span>
-                            </div>
-                            <div class="col-md-3">
-                                <span class="label bg-gray">Objetivo: {{ objetivo }}</span>
-                            </div>
+                            {% if ipc %}
+                                <div class="col-md-4">
+                                    <span class="label bg-green">+ {{ objetivo }}</span>
+                                    <span class="label bg-yellow">{{ media }}</span>
+                                    <span class="label bg-red">- {{ media }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="label bg-gray">Objetivo: {{ objetivo }}</span>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
