@@ -71,20 +71,32 @@
                                         {% set detractores = itemR %}
                                         {% set color =  '#ff3333' %}
                                     {% endif %}
+                                    {% set pregunta = '' %}
+                                    {% if opciones[keyR]['texto_opcion'] is defined and aValoresIpc[opciones[keyR]['texto_opcion']] is defined %}
+                                        {% set pregunta = opciones[keyR]['texto_opcion'] ~' - '~ opciones[keyR]['valor_literal'] %}
+                                        {% set sumaIpc = sumaIpc + aValoresIpc[opciones[keyR]['texto_opcion']] %}
+                                        {% if opciones[keyR]['texto_opcion'] == 1 %}
+                                            {% set color =  '#ff3333' %}
+                                        {% elseif opciones[keyR]['texto_opcion'] == 2 %}
+                                            {% set color =  '#ffffb3' %}
+                                        {% elseif opciones[keyR]['texto_opcion'] == 3 %}
+                                            {% set color =  '#d9f2e6' %}
+                                        {% elseif opciones[keyR]['texto_opcion'] == 4 %}
+                                            {% set color =  '#8cd9b3' %}
+                                        {% elseif opciones[keyR]['texto_opcion'] == 5 %}
+                                            {% set color =  '#39ac73' %}
+                                        {% endif %}
+                                    {% elseif opciones[keyR]['texto_opcion'] is defined %}
+                                        {% set pregunta = opciones[keyR]['texto_opcion'] %}
+                                    {% else %}
+                                        {% set pregunta = opciones[keyR] %}
+                                    {% endif %}
                                     <tr>
                                         <td width="10" style="background-color: {{ color }}">
 
                                         </td>
                                         <td>
-                                            {% if opciones[keyR]['texto_opcion'] is defined and aValoresIpc[opciones[keyR]['texto_opcion']] is defined %}
-                                                {{ opciones[keyR]['texto_opcion'] }} -
-                                                {{ opciones[keyR]['valor_literal'] }}
-                                                {% set sumaIpc = sumaIpc + aValoresIpc[opciones[keyR]['texto_opcion']] %}
-                                            {% elseif opciones[keyR]['texto_opcion'] is defined %}
-                                                {{ opciones[keyR]['texto_opcion'] }}
-                                            {% else %}
-                                                {{ opciones[keyR] }}
-                                            {% endif %}
+                                            {{ pregunta }}
                                         </td>
                                         <td>
                                             {{ itemR }}
