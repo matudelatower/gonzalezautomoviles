@@ -27,10 +27,14 @@
                                 <div class="col-md-6">{{ form_row(pregunta.pregunta) }}</div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">{{ form_row(pregunta.encuestaTipoPregunta) }}</div>
+                                <div class="col-md-6">{{ form_row(pregunta.encuestaTipoPregunta) }}</div>
+                                <div class="col-md-6">{{ form_row(pregunta.cssClass) }}</div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-3">{{ form_row(pregunta.ipc) }}</div>
                                 <div class="col-md-3">{{ form_row(pregunta.nps) }}</div>
-                                <div class="col-md-3">{{ form_row(pregunta.cssClass) }}</div>
+                                <div class="col-md-3">{{ form_row(pregunta.objetivo) }}</div>
+                                <div class="col-md-3">{{ form_row(pregunta.media) }}</div>
                             </div>
                             {% for opcion in pregunta.opcionesRespuestas %}
                                 <div class="row">

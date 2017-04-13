@@ -42,10 +42,12 @@
                             {% set objetivo = 0 %}
                             {% set media = 0 %}
                             {% set ipc = 0 %}
+                            {% set sumaIpc = 0 %}
                             {% set nps = 0 %}
                             {% set promotores = 0 %}
                             {% set neutros = 0 %}
                             {% set detractores = 0 %}
+                            {% set color =  '#FFF' %}
 
                             {% for keyR, itemR in resultado %}
                                 {% if keyR == 'objetivo' %}
@@ -59,25 +61,36 @@
                                 {% else %}
                                     {% if keyR =='promotores' %}
                                         {% set promotores = itemR %}
-                                    {% endif %}
-                                    {% if keyR =='detractores' %}
-                                        {% set detractores = itemR %}
+                                        {% set color =  '#39ac73' %}
                                     {% endif %}
                                     {% if keyR =='neutros' %}
                                         {% set neutros = itemR %}
+                                        {% set color =  '#f2f2f2' %}
+                                    {% endif %}
+                                    {% if keyR =='detractores' %}
+                                        {% set detractores = itemR %}
+                                        {% set color =  '#ff3333' %}
                                     {% endif %}
                                     <tr>
-                                        <td width="10">
+                                        <td width="10" style="background-color: {{ color }}">
 
                                         </td>
                                         <td>
-                                            {{ opciones[keyR] }}
+                                            {% if opciones[keyR]['texto_opcion'] is defined and aValoresIpc[opciones[keyR]['texto_opcion']] is defined %}
+                                                {{ opciones[keyR]['texto_opcion'] }} -
+                                                {{ opciones[keyR]['valor_literal'] }}
+                                                {% set sumaIpc = sumaIpc + aValoresIpc[opciones[keyR]['texto_opcion']] %}
+                                            {% elseif opciones[keyR]['texto_opcion'] is defined %}
+                                                {{ opciones[keyR]['texto_opcion'] }}
+                                            {% else %}
+                                                {{ opciones[keyR] }}
+                                            {% endif %}
                                         </td>
                                         <td>
                                             {{ itemR }}
                                         </td>
                                         <td>
-                                            {{ ((itemR * 100 )/cantidadEncuestas) |round(2)  }}
+                                            {{ ((itemR * 100 )/cantidadEncuestas) |round(2) }}
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -91,13 +104,21 @@
                             <div class="col-md-5">
                                 {% if ipc %}
                                     <span class="label bg-gray">Indice IPC</span>
-                                    <span class="label bg-gray">{{ ipc }}</span>
+                                    {% set ipc = sumaIpc / cantidadEncuestas %}
+                                    {% set colorIpc = 'bg-gray' %}
+
+                                    {% if ipc >= objetivo %}
+                                        {% set colorIpc = 'bg-green' %}
+                                    {% elseif ipc < objetivo and ipc > media %}
+                                        {% set colorIpc = 'bg-yellow' %}
+                                    {% elseif ipc < media %}
+                                        {% set colorIpc = 'bg-red' %}
+                                    {% endif %}
+                                    <span class="label {{ colorIpc }}">{{ ipc }}</span>
                                 {% elseif nps %}
                                     <span class="label bg-gray">NPS</span>
                                     <span class="label bg-gray">{{ promotores - detractores }}</span>
                                 {% endif %}
-                                {#<span class="label bg-gray"></span>#}
-
                             </div>
                             {% if ipc %}
                                 <div class="col-md-4">

@@ -226,14 +226,22 @@ class CRMDefaultController extends Controller {
 		$aOpciones                             = array();
 		foreach ( $preguntas as $pregunta ) {
 			foreach ( $pregunta->getOpcionesRespuestas() as $opcionesRespuesta ) {
-				if ( $opcionesRespuesta->getValorLiteral() ) {
-					$aOpciones[ $opcionesRespuesta->getId() ] = $opcionesRespuesta->getValorLiteral();
-				} else {
-
-					$aOpciones[ $opcionesRespuesta->getId() ] = $opcionesRespuesta->getTextoOpcion();
-				}
+				$aOpciones[ $opcionesRespuesta->getId() ] = array(
+					'texto_opcion'  => $opcionesRespuesta->getTextoOpcion(),
+					'valor_literal' => $opcionesRespuesta->getValorLiteral(),
+				);
 			}
 		}
+
+		$aValoresIpc = array(
+			1 => 0,
+			2 => 25,
+			3 => 50,
+			4 => 75,
+			5 => 100,
+		);
+
+
 		$aOpciones['promotores']  = 'Promotores';
 		$aOpciones['neutros']     = 'Neutros';
 		$aOpciones['detractores'] = 'Detractores';
@@ -269,15 +277,21 @@ class CRMDefaultController extends Controller {
 							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 1;
 						}
 					}
-					 if (!isset($aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'])){
-						 $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 0;
-					 }
-					 if (!isset($aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'])){
-						 $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 0;
-					 }
-					 if (!isset($aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'])){
-						 $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 0;
-					 }
+					if ( ! isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 0;
+					}
+					if ( ! isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 0;
+					}
+					if ( ! isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 0;
+					}
+				} else {
+					if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+					} else {
+						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+					}
 				}
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media']    = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
@@ -288,7 +302,7 @@ class CRMDefaultController extends Controller {
 		}
 
 //		echo '<pre>';
-////		print_r( $aOpciones );
+//		print_r( $aOpciones );
 //		print_r( $aResultados );
 //		exit;
 
@@ -297,7 +311,8 @@ class CRMDefaultController extends Controller {
 				'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
 				'resultados'                => $aResultados,
 				'cantidadEncuestas'         => $cantidadEncuestas,
-				'opciones'                  => $aOpciones
+				'opciones'                  => $aOpciones,
+				'aValoresIpc'               => $aValoresIpc
 			) );
 	}
 }

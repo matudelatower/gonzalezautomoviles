@@ -17,6 +17,7 @@ easy_admin:
         brand_color: '#3c8dbc'
         form_theme: ['bootstrap_3_layout.html.twig']
         menu:
+            - Encuesta
             - { label: 'Tipo Pregunta', entity: EncuestaTipoPregunta}
         assets:
             favicon: 'bundles/theme/images/favicon.ico'
