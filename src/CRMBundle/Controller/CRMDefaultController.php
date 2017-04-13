@@ -293,6 +293,9 @@ class CRMDefaultController extends Controller {
 						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
 					}
 				}
+				
+				krsort( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ] );
+
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media']    = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['ipc']      = $resultdoRespuesta->getEncuestaPregunta()->getIpc();
@@ -302,7 +305,7 @@ class CRMDefaultController extends Controller {
 		}
 
 //		echo '<pre>';
-//		print_r( $aOpciones );
+////		print_r( $aOpciones );
 //		print_r( $aResultados );
 //		exit;
 
