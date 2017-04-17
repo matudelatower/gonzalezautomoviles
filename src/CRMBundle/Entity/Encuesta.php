@@ -50,6 +50,13 @@ class Encuesta extends BaseClass {
 	 */
 	private $preguntas;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="texto_encuesta", type="text", nullable=true)
+	 */
+	private $textoEncuesta;
+
 	public function __toString() {
 		return $this->slug;
 	}
@@ -221,4 +228,28 @@ class Encuesta extends BaseClass {
 		return $this->preguntas;
 	}
 
+
+    /**
+     * Set textoEncuesta
+     *
+     * @param string $textoEncuesta
+     *
+     * @return Encuesta
+     */
+    public function setTextoEncuesta($textoEncuesta)
+    {
+        $this->textoEncuesta = $textoEncuesta;
+
+        return $this;
+    }
+
+    /**
+     * Get textoEncuesta
+     *
+     * @return string
+     */
+    public function getTextoEncuesta()
+    {
+        return $this->textoEncuesta;
+    }
 }

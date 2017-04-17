@@ -5,6 +5,38 @@
 {% endblock %}
 
 {% block content -%}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header with-border">
+
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Vendedor:</label> {{ vehiculo.vendedor }}<br>
+                            <label>Cliente:</label> {{ vehiculo.cliente }}
+                        </div>
+                        <div class="col-md-6">
+                            <label>Vehículo:</label> {{ vehiculo.modelo }}<br>
+                            <label>VIN:</label> {{ vehiculo.vin }}
+                        </div>
+                    </div>
+                    {#<div class="row">#}
+                    <hr>
+                    <p>
+                        <label>Texto introductorio:</label> {{ encuesta.textoEncuesta }}
+                    </p>
+                    {#</div>#}
+                </div>
+
+                <div class="box-footer">
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">

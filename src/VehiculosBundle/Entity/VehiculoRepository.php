@@ -1009,6 +1009,8 @@ WHERE " . $where .
 		}
 		if ( $filters['rango'] ) {
 			$where .= " AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
+		}else{
+			$where .= " AND estados_vehiculos.creado > '2017-04-01'";
 		}
 
 		if ( ! $order ) {

@@ -21,6 +21,7 @@ class EncuestaType extends AbstractType {
 		$builder
 			->add( 'nombre' )
 			->add( 'descripcion' )
+			->add( 'textoEncuesta' )
 			->add( 'activo' )
 			->add( 'preguntas',
 				$type,

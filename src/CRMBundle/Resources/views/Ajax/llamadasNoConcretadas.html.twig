@@ -8,6 +8,11 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
+                    <p>
+                        {% for historial in llamadaNoConcretadaHistorial %}
+                            {{ historial.fechaCreacion |date('d/m/Y') }} - {{ historial.motivo }} |
+                        {% endfor %}
+                    </p>
                     <div class="hidden">
                         {{ form_widget(form.encuesta) }}
                     </div>

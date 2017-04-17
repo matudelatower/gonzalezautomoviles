@@ -488,6 +488,16 @@
                                     </td>
                                 </tr>
                             {%endif%}
+                            {% if encuestaPostVenta is not null %}
+                                <tr>
+                                    <td>
+                                        <a class="btn btn-block btn-default" target="_blank" href="{{ path('crm_ver_encuesta_realizada', {'resultadoCabeceraId': encuestaPostVenta.id , 'slug': slug } ) }}">
+                                            <i class="fa fa-check-square"></i>
+                                            Ver Encuesta Postventa
+                                        </a>
+                                    </td>
+                                </tr>
+                            {%endif%}
 
                         </tbody>
                     </table>
