@@ -108,21 +108,25 @@
                                     {% set nps = itemR %}
                                 {% else %}
                                     {% if keyR =='promotores' %}
-                                        {% set promotores = itemR %}
+                                        {#{% set promotores = itemR %}#}
+                                        {% set promotores = ((itemR * 100 )/cantidadEncuestas) %}
                                         {% set color =  '#39ac73' %}
                                     {% endif %}
                                     {% if keyR =='neutros' %}
-                                        {% set neutros = itemR %}
+                                        {#{% set neutros = itemR %}#}
+                                        {% set neutros = ((itemR * 100 )/cantidadEncuestas) %}
                                         {% set color =  '#f2f2f2' %}
                                     {% endif %}
                                     {% if keyR =='detractores' %}
-                                        {% set detractores = itemR %}
+                                        {#{% set detractores = itemR %}#}
+                                        {% set detractores = ((itemR * 100 )/cantidadEncuestas) %}
                                         {% set color =  '#ff3333' %}
                                     {% endif %}
                                     {% set pregunta = '' %}
                                     {% if opciones[keyR]['texto_opcion'] is defined and aValoresIpc[opciones[keyR]['texto_opcion']] is defined %}
                                         {% set pregunta = opciones[keyR]['texto_opcion'] ~' - '~ opciones[keyR]['valor_literal'] %}
-                                        {% set sumaIpc = sumaIpc + aValoresIpc[opciones[keyR]['texto_opcion']] %}
+                                        {# suma ipc basada en tabla de valor#}
+                                        {% set sumaIpc = sumaIpc + (aValoresIpc[opciones[keyR]['texto_opcion']] * itemR) %}
                                         {% if opciones[keyR]['texto_opcion'] == 1 %}
                                             {% set color =  '#ff3333' %}
                                         {% elseif opciones[keyR]['texto_opcion'] == 2 %}
