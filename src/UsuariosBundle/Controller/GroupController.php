@@ -39,8 +39,10 @@ class GroupController extends BaseController {
 			foreach ( $group->getPermisoAplicacion() as $permisoAplicacion ) {
 				$permisoAplicacion->setGrupo( $group );
 			}
-			foreach ( $group->getPermisoEspecialGrupo() as $permisoEspecial ) {
-				$permisoEspecial->setGrupo( $group );
+			if ( $group->getPermisoEspecialGrupo() ) {
+				foreach ( $group->getPermisoEspecialGrupo() as $permisoEspecial ) {
+					$permisoEspecial->setGrupo( $group );
+				}
 			}
 
 			$event = new FormEvent( $form, $request );

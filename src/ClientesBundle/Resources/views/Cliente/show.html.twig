@@ -14,98 +14,98 @@
                 <div class="box-body">
                     <table class="record_properties">
                         <tbody>
-                            <tr>
-                                <th>Id</th>
-                                <td>{{ entity.id }}</td>
-                            </tr>
-                            <tr>
-                                <th>Foraneo</th>
-                                    {% if entity.foraneo %}
-                                    <td>SI</td>
-                                {% else %}
-                                    <td>NO</td>
-                                {% endif %}
-                            </tr>
-                            <tr>
-                                <th>Reventa</th>
-                                    {% if entity.reventa %}
-                                    <td>SI</td>
-                                {% else %}
-                                    <td>NO</td>
-                                {% endif %}
-                            </tr>
-                            <tr>
-                                <th>Nombre</th>
-                                <td>{{ entity.personaTipo.first().persona.nombre }}</td>
-                            </tr>
-                            <tr>
-                                <th>Apellido</th>
-                                <td>{{ entity.personaTipo.first().persona.apellido }}</td>
-                            </tr>
-                            <tr>
-                                <th>Tipo documento</th>
-                                <td>{{ entity.personaTipo.first().persona.tipoDocumento }}</td>
-                            </tr>
-                            <tr>
-                                <th>Numero documento</th>
-                                <td>{{ entity.personaTipo.first().persona.numeroDocumento }}</td>
-                            </tr>
-                            <tr>
-                                <th>Estado IVA</th>
-                                <td>{{ entity.estadoIva }}</td>
-                            </tr>
-                            <tr>
-                                <th>Estado civil</th>
-                                <td>{{ entity.personaTipo.first().persona.estadoCivil }}</td>
-                            </tr>
-                             <tr>
-                                <th>Ocupacion</th>
-                                <td>{{ entity.ocupacion }}</td>
-                            </tr>
-                            <tr>
-                                <th>Telefono</th>
-                                <td>{{ entity.personaTipo.first().persona.telefono }}</td>
-                            </tr>
-                            <tr>
-                                <th>Telefono laboral</th>
-                                <td>{{ entity.personaTipo.first().persona.telefonoLaboral }}</td>
-                            </tr>
-                            <tr>
-                                <th>Celular</th>
-                                <td>{{ entity.personaTipo.first().persona.celular }}</td>
-                            </tr>
-                            <tr>
-                                <th>Mail</th>
-                                <td>{{ entity.personaTipo.first().persona.mail }}</td>
-                            </tr>
-                            <tr>
-                                <th>Web</th>
-                                <td>{{ entity.personaTipo.first().persona.web }}</td>
-                            </tr>
-                            <tr>
-                                <th>Fecha nacimiento</th>
-                                <td>{{ entity.personaTipo.first().persona.fechaNacimiento|date('d/m/Y') }}</td>
-                            </tr>
-                            <tr>
-                                <th>Calle</th>
-                                <td>{{ entity.personaTipo.first().persona.calle }}</td>
-                            </tr>
-                            <tr>
-                                <th>Numero calle</th>
-                                <td>{{ entity.personaTipo.first().persona.numeroCalle }}</td>
-                            </tr>
-                            <tr>
-                                <th>Barrio</th>
-                                <td>{{ entity.personaTipo.first().persona.barrio }}</td>
-                            </tr>
-                            <tr>
-                                <th>Localidad</th>
-                                <td>{{ entity.personaTipo.first().persona.localidad }}</td>
-                            </tr>
-                            <tr>
-                                <th>Observacion</th>
-                                <td>{{ entity.personaTipo.first().persona.observacion }}</td>
-                            </tr>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ entity.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Foraneo</th>
+                            {% if entity.foraneo %}
+                                <td>SI</td>
+                            {% else %}
+                                <td>NO</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <th>Reventa</th>
+                            {% if entity.reventa %}
+                                <td>SI</td>
+                            {% else %}
+                                <td>NO</td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <td>{{ entity.personaTipo.first().persona.nombre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Apellido</th>
+                            <td>{{ entity.personaTipo.first().persona.apellido }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo documento</th>
+                            <td>{{ entity.personaTipo.first().persona.tipoDocumento }}</td>
+                        </tr>
+                        <tr>
+                            <th>Numero documento</th>
+                            <td>{{ entity.personaTipo.first().persona.numeroDocumento }}</td>
+                        </tr>
+                        <tr>
+                            <th>Estado IVA</th>
+                            <td>{{ entity.estadoIva }}</td>
+                        </tr>
+                        <tr>
+                            <th>Estado civil</th>
+                            <td>{{ entity.personaTipo.first().persona.estadoCivil }}</td>
+                        </tr>
+                        <tr>
+                            <th>Ocupacion</th>
+                            <td>{{ entity.ocupacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Telefono</th>
+                            <td>{{ entity.personaTipo.first().persona.telefono }}</td>
+                        </tr>
+                        <tr>
+                            <th>Telefono laboral</th>
+                            <td>{{ entity.personaTipo.first().persona.telefonoLaboral }}</td>
+                        </tr>
+                        <tr>
+                            <th>Celular</th>
+                            <td>{{ entity.personaTipo.first().persona.celular }}</td>
+                        </tr>
+                        <tr>
+                            <th>Mail</th>
+                            <td>{{ entity.personaTipo.first().persona.mail }}</td>
+                        </tr>
+                        <tr>
+                            <th>Web</th>
+                            <td>{{ entity.personaTipo.first().persona.web }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha nacimiento</th>
+                            <td>{{ entity.personaTipo.first().persona.fechaNacimiento|date('d/m/Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Calle</th>
+                            <td>{{ entity.personaTipo.first().persona.calle }}</td>
+                        </tr>
+                        <tr>
+                            <th>Numero calle</th>
+                            <td>{{ entity.personaTipo.first().persona.numeroCalle }}</td>
+                        </tr>
+                        <tr>
+                            <th>Barrio</th>
+                            <td>{{ entity.personaTipo.first().persona.barrio }}</td>
+                        </tr>
+                        <tr>
+                            <th>Localidad</th>
+                            <td>{{ entity.personaTipo.first().persona.localidad }}</td>
+                        </tr>
+                        <tr>
+                            <th>Observacion</th>
+                            <td>{{ entity.personaTipo.first().persona.observacion }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -125,7 +125,6 @@
             </div>
         </div>
     </div>
-    {{ form(delete_form) }}
 
 
 {% endblock %}

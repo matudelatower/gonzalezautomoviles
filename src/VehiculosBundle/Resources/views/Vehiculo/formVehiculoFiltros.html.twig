@@ -92,18 +92,28 @@
                                 </span>
                                 Buscar
                             </button>
+                            {% if muestraExportarExcel is not defined %}
+                                {% set muestraExportarExcel = true %}
+                            {% endif %}
+                            {% if muestraExportarPdf is not defined %}
+                                {% set muestraExportarPdf = true %}
+                            {% endif %}
+                            {% if muestraExportarExcel %}
                             <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-excel"
                                     title="exportar excel">
                                 <span>
                                     <i class="fa fa-file-excel-o"></i>
                                 </span>
                             </button>
+                            {% endif %}
+                            {% if muestraExportarPdf %}
                             <button class="btn btn-primary btn-label-left" type="button" id="btn-exportar-pdf"
                                     title="exportar PDF">
                                 <span>
                                     <i class="fa fa-file-pdf-o"></i>
                                 </span>
                             </button>
+                            {% endif %}
                             <button class="btn btn-default" type="reset">
                                 <span>
                                     <i></i>

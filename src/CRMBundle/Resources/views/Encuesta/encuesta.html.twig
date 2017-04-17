@@ -1,0 +1,66 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block content_title %}
+    Encuesta
+{% endblock %}
+
+{% block content -%}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default">
+                <div class="box-header with-border">
+
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Vendedor:</label> {{ vehiculo.vendedor }}<br>
+                            <label>Cliente:</label> {{ vehiculo.cliente }}
+                        </div>
+                        <div class="col-md-6">
+                            <label>Vehículo:</label> {{ vehiculo.modelo }}<br>
+                            <label>VIN:</label> {{ vehiculo.vin }}
+                        </div>
+                    </div>
+                    {#<div class="row">#}
+                    <hr>
+                    <p>
+                        <label>Texto introductorio:</label> {{ encuesta.textoEncuesta }}
+                    </p>
+                    {#</div>#}
+                </div>
+
+                <div class="box-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ encuesta.nombre }}</h3>
+                </div>
+
+                {{ form_start(form) }}
+                {% for item in form.children %}
+                    {% if item.vars.block_prefixes.0 != 'button' %}
+                        <b>{{ loop.index }} - </b>
+                        {{ form_row(item) }}
+                    {% endif %}
+                {% endfor %}
+                {{ form_end(form) }}
+
+                <div class="box-footer">
+                    <a class="btn btn-default" href="{{ path('crm_homepage', {'slug':encuesta.slug}) }}">
+                        Volver
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

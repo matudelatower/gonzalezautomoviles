@@ -167,11 +167,9 @@ class ClienteController extends Controller implements TokenAuthenticatedControll
             throw $this->createNotFoundException('Unable to find Cliente entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('ClientesBundle:Cliente:show.html.twig', array(
                     'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),
         ));
     }
 

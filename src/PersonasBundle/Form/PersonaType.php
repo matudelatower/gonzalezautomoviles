@@ -37,7 +37,9 @@ class PersonaType extends AbstractType {
 			->add( 'telefono' )
                         ->add( 'telefonoLaboral' )
 			->add( 'celular' )
-			->add( 'mail' )
+			->add( 'mail', 'email', array(
+				'required'=>false
+			) )
 			->add( 'web' )
 			
 			->add( 'calle' )

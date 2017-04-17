@@ -1,3 +1,12 @@
+easy_admin_bundle:
+    resource: "@EasyAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+crm:
+    resource: "@CRMBundle/Resources/config/routing.yml"
+    prefix:   /crm
+
 app:
     resource: "@AppBundle/Resources/config/routing.yml"
     prefix:   /

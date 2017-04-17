@@ -1,0 +1,30 @@
+<form class="form-horizontal" id="form-registro-llamada-no-concretada" role="form" method="post"
+      action="{{ path('ajax_crm_post_llamadas_no_concretadas', {'id':id, 'encuestaId': encuesta.id}) }}">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Registrar Llamada no concretada</h4>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        {% for historial in llamadaNoConcretadaHistorial %}
+                            {{ historial.fechaCreacion |date('d/m/Y') }} - {{ historial.motivo }} |
+                        {% endfor %}
+                    </p>
+                    <div class="hidden">
+                        {{ form_widget(form.encuesta) }}
+                    </div>
+                    {{ form_row(form.motivo) }}
+                    {{ form_row(form.cancelarEncuesta) }}
+                    {{ form_row(form._token) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    </div>
+</form>

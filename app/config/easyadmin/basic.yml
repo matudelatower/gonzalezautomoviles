@@ -1,0 +1,38 @@
+#easy admin
+easy_admin:
+    disabled_actions: ['delete']
+    site_name: 'Gonzalez Automóviles'
+    show:
+        max_results: 20
+    list:
+        actions:
+            - { name: 'show', icon: 'eye', label: '' }
+            - { name: 'edit', icon: 'pencil', label: '' }
+
+#    entities:
+#        Encuesta:
+#            class: CRMBundle\Entity\Encuesta
+
+    design:
+        brand_color: '#3c8dbc'
+        form_theme: ['bootstrap_3_layout.html.twig']
+        menu:
+            - Encuesta
+            - { label: 'Tipo Pregunta', entity: EncuestaTipoPregunta}
+        assets:
+            favicon: 'bundles/theme/images/favicon.ico'
+
+#    assets:
+#        css:
+#            - 'bundles/app/plugins/datepicker/datepicker3.css'
+#            - 'bundles/app/plugins/daterangepicker/daterangepicker.css'
+#            - 'bundles/app/plugins/timepicker/bootstrap-timepicker.min.css'
+#            - 'bundles/app/plugins/fontawesome-iconpicker/css/fontawesome-iconpicker.min.css'
+#            - 'bundles/app/css/admin.css'
+#        js:
+#            - "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"
+#            - 'bundles/app/plugins/daterangepicker/daterangepicker.js'
+#            - 'bundles/app/plugins/datepicker/bootstrap-datepicker.js'
+#            - 'bundles/app/plugins/datepicker/locales/bootstrap-datepicker.es.js'
+#            - 'bundles/app/plugins/fontawesome-iconpicker/js/fontawesome-iconpicker.min.js'
+#            - 'bundles/app/js/admin.js'

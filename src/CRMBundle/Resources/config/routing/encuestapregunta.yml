@@ -1,0 +1,30 @@
+crm_preguntas:
+    path:     /
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:index" }
+
+crm_preguntas_show:
+    path:     /{id}/show
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:show" }
+
+crm_preguntas_new:
+    path:     /new
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:new" }
+
+crm_preguntas_create:
+    path:     /create
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:create" }
+    methods:  POST
+
+crm_preguntas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:edit" }
+
+crm_preguntas_update:
+    path:     /{id}/update
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:update" }
+    methods:  [POST, PUT]
+
+crm_preguntas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CRMBundle:EncuestaPregunta:delete" }
+    methods:  [POST, DELETE]

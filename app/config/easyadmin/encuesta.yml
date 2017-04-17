@@ -1,0 +1,18 @@
+easy_admin:
+    entities:
+        Encuesta:
+            class: CRMBundle\Entity\Encuesta
+            form:
+                fields:
+                    - { property: 'nombre' }
+                    - { property: 'descripcion' }
+#                    - { property: 'preguntas', type: 'collection' }
+#                    - { property: 'preguntas',type: 'collection', type_options: { by_reference: true, type: CRMBundle\Form\EncuestaOpcionRespuestaType } }
+#                    - { property: 'preguntas',type: 'collection', type_options: { 'entry_type': CRMBundle\Form\EncuestaOpcionRespuestaType, by_reference: false } }
+                    - { property: 'activo' }
+            edit:
+                title:  'Editar Encuesta'
+            new:
+                title:  'Alta Encuesta'
+            list:
+                title:  'Encuesta'
