@@ -45,6 +45,12 @@ class AjaxController extends Controller {
 		$llamadaNoConcretada->setVehiculo( $vehiculo );
 		$llamadaNoConcretada->setEncuesta( $encuesta );
 
+		$criteria                     = [
+			'vehiculo' => $vehiculo,
+			'encuesta' => $encuesta
+		];
+		$llamadaNoConcretadaHistorial = $em->getRepository( 'CRMBundle:LlamadaNoConcretada' )->findBy( $criteria );
+
 		$form = $this->createForm( new LlamadaNoConcretadaType(),
 			$llamadaNoConcretada );
 
@@ -83,7 +89,10 @@ class AjaxController extends Controller {
 			array(
 				'form'     => $form->createView(),
 				'id'       => $id,
-				'encuesta' => $encuesta
+				'encuesta' => $encuesta,
+				'llamadaNoConcretadaHistorial' => $llamadaNoConcretadaHistorial,
+
+
 			) );
 
 	}
@@ -102,6 +111,6 @@ class AjaxController extends Controller {
 		);
 		$cantidad = $em->getRepository( 'CRMBundle:LlamadaNoConcretada' )->findBy( $criteria );
 
-		return new JsonResponse(count($cantidad));
+		return new JsonResponse( count( $cantidad ) );
 	}
 }

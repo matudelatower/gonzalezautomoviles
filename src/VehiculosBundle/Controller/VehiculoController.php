@@ -423,6 +423,16 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         $controlInternoCabecera = $em->getRepository('VehiculosBundle:CheckControlInternoResultadoCabecera')->findOneByVehiculo($entity);
         $checklistPreEntrega = $em->getRepository('CuestionariosBundle:CuestionarioResultadoCabecera')->findOneByVehiculo($entity);
 
+
+	    //CRM encuestas
+	    $slug = 'postventa';
+        $encuesta = $em->getRepository('CRMBundle:Encuesta')->findBySlug($slug);
+        $criteriaPostVenta= [
+        	'vehiculo'=>$entity,
+        	'encuesta'=>$encuesta
+        ];
+        $encuestaPostVenta = $em->getRepository('CRMBundle:EncuestaResultadoCabecera')->findOneBy($criteriaPostVenta);
+
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Vehiculo entity.');
         }
@@ -441,6 +451,8 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
                     'controlInternoCabecera' => $controlInternoCabecera,
                     'checklistPreEntrega' => $checklistPreEntrega,
+                    'encuestaPostVenta' => $encuestaPostVenta,
+                    'slug' => $slug,
                     'delete_form' => $deleteForm->createView(),
                     'delete_factura_form' => ($deletefacturaForm) ? $deletefacturaForm->createView() : null,
                         )
@@ -577,13 +589,13 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                     );
                 } else {
                     //di tiene $controlInternoCabecera significa que se hizo el check de control interno
-                    //por ende pasa a estado estregado 
+                    //por ende pasa a estado estregado
                     $tipoEstadoVehiculo = $em->getRepository('VehiculosBundle:TipoEstadoVehiculo')->findOneBySlug(
                             'entregado'
                     );
                 }
 
-                //controlo que el vehiculo ya no este en el estado al que queremos pasar, esto es en caso de 
+                //controlo que el vehiculo ya no este en el estado al que queremos pasar, esto es en caso de
                 //que el vehiculo haya pasado a entregado sin facturar
                 if ($vehiculo->getEstadoVehiculo()->last()->getTipoEstadoVehiculo() !== $tipoEstadoVehiculo) {
                     $estadoVehiculo = new EstadoVehiculo();
@@ -924,7 +936,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
     }
 
     /*
-     * 
+     *
      */
 
     public function checkControlInternoAction(Request $request, $vehiculoId, $tipoTransaccion = "edit") {

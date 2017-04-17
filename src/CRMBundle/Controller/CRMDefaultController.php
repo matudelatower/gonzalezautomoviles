@@ -7,6 +7,7 @@ use CRMBundle\Entity\EncuestaResultadoRespuesta;
 use CRMBundle\Form\EncuestaOpcionRespuestaType;
 use CRMBundle\Form\EncuestaParameterType;
 use CRMBundle\Form\Filter\CRMFilterType;
+use CRMBundle\Form\Filter\CRMReporteFilterType;
 use CRMBundle\Form\Model\EncuestaParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -130,6 +131,7 @@ class CRMDefaultController extends Controller {
 	public function nuevaEncuestaAction( $id, $vehiculoId ) {
 		$em       = $this->getDoctrine()->getManager();
 		$encuesta = $em->getRepository( 'CRMBundle:Encuesta' )->findOrdenado( $id );
+		$vehiculo = $em->getRepository( 'VehiculosBundle:Vehiculo' )->find( $vehiculoId );
 
 		$preguntas = $encuesta->getPreguntas();
 
@@ -157,7 +159,8 @@ class CRMDefaultController extends Controller {
 		return $this->render( 'CRMBundle:Encuesta:encuesta.html.twig',
 			array(
 				'form'     => $form->createView(),
-				'encuesta' => $encuesta
+				'encuesta' => $encuesta,
+				'vehiculo' => $vehiculo,
 			) );
 	}
 
@@ -215,15 +218,40 @@ class CRMDefaultController extends Controller {
 		$slugEncuesta = $request->get( 'slug' );
 		$encuesta     = $em->getRepository( 'CRMBundle:Encuesta' )->findOneBySlug( $slugEncuesta );
 
+
 		if ( ! $encuesta ) {
 			throw $this->createNotFoundException( 'No existe la encuesta ' . $slugEncuesta );
 		}
 
-		$encuestaResultadoCabecera             = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuesta( $encuesta );
-		$encuestaResultadoCabeceraNoCanceladas = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaNoCancelada( $encuesta );
-		$cantidadEncuestas                     = count( $encuestaResultadoCabeceraNoCanceladas );
-		$preguntas                             = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
-		$aOpciones                             = array();
+		$form = $this->createForm( new CRMReporteFilterType() );
+
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha = explode( ' - ', $data['rango'] );
+
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+					$data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+				}
+				$encuestaResultadoCabecera             = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaFiltrada( $encuesta,
+					$data );
+				$encuestaResultadoCabeceraNoCanceladas = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaNoCancelada( $encuesta,
+					$data );
+			}
+		} else {
+			$encuestaResultadoCabecera             = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuesta( $encuesta );
+			$encuestaResultadoCabeceraNoCanceladas = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaNoCancelada( $encuesta );
+		}
+
+
+		$cantidadEncuestas = count( $encuestaResultadoCabeceraNoCanceladas );
+		$preguntas         = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
+		$aOpciones         = array();
 		foreach ( $preguntas as $pregunta ) {
 			foreach ( $pregunta->getOpcionesRespuestas() as $opcionesRespuesta ) {
 				$aOpciones[ $opcionesRespuesta->getId() ] = array(
@@ -270,7 +298,7 @@ class CRMDefaultController extends Controller {
 						} else {
 							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 1;
 						}
-					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() <= 7 ) {
+					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() < 7 ) {
 						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
 							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] += 1;
 						} else {
@@ -293,7 +321,7 @@ class CRMDefaultController extends Controller {
 						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
 					}
 				}
-				
+
 				krsort( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ] );
 
 				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
@@ -315,7 +343,8 @@ class CRMDefaultController extends Controller {
 				'resultados'                => $aResultados,
 				'cantidadEncuestas'         => $cantidadEncuestas,
 				'opciones'                  => $aOpciones,
-				'aValoresIpc'               => $aValoresIpc
+				'aValoresIpc'               => $aValoresIpc,
+				'form'                      => $form->createView(),
 			) );
 	}
 }

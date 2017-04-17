@@ -12,7 +12,37 @@ namespace CRMBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 
 class EncuestaResultadoCabeceraRepository extends EntityRepository {
-	public function findByEncuestaNoCancelada( $encuesta ) {
+
+	public function findByEncuestaFiltrada( $encuesta, $filtros = null ) {
+
+		$qb = $this->createQueryBuilder( 'erc' );
+
+		$qb->join( 'erc.encuesta', 'e' )
+		   ->where( "e = :encuesta" )
+		   ->setParameter( 'encuesta', $encuesta )
+		   ->andWhere( $qb->expr()->andx(
+			   $qb->expr()->isNull( 'erc.cancelada' )
+		   ) );
+
+		if ( $filtros ) {
+			if ( $filtros['vendedor'] ) {
+				$qb->join( 'erc.vehiculo', 'v' )
+				   ->andWhere( 'v.vendedor = :vendedor' )
+				   ->setParameter( 'vendedor', $filtros['vendedor'] );
+			}
+			if ( $filtros['rango'] ) {
+				$qb
+					->andWhere( 'erc.fechaCreacion between :fecha_desde and :fecha_hasta' )
+					->setParameter( 'fecha_desde', $filtros['fechaDesde'] )
+					->setParameter( 'fecha_hasta', $filtros['fechaHasta'] );
+			}
+		}
+
+		return $qb->getQuery()->getResult();
+
+	}
+
+	public function findByEncuestaNoCancelada( $encuesta, $filtros = null ) {
 
 		$qb = $this->createQueryBuilder( 'erc' );
 
