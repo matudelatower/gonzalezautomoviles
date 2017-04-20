@@ -54,7 +54,7 @@
                                         {{ resultado.encuestaPregunta }}
                                     </td>
                                     <td>
-                                        <b>{{ resultado.encuestaOpcionRespuesta }}</b>
+                                        <b>{{ resultado.encuestaOpcionRespuesta }} {{ resultado.encuestaOpcionRespuesta.valorLiteral }}</b>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -73,7 +73,7 @@
 
                 <div class="box-footer">
                     <a class="btn btn-default"
-                       href="{{ path('crm_encuestas_realizadas', {'slug': app.request.get('slug')}) }}">
+                       href="{{ path('vehiculos') }}">
                         Volver
                     </a>
                 </div>
