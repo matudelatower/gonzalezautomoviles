@@ -36,6 +36,17 @@ class EncuestaResultadoCabeceraRepository extends EntityRepository {
 					->setParameter( 'fecha_desde', $filtros['fechaDesde'] )
 					->setParameter( 'fecha_hasta', $filtros['fechaHasta'] );
 			}
+			if ( $filtros['cliente'] ) {
+				$qb->join( 'erc.vehiculo', 'v' )
+				   ->andWhere( 'v.cliente = :cliente' )
+				   ->setParameter( 'cliente', $filtros['cliente'] );
+			}
+
+			if ( $filtros['tipoVenta'] ) {
+				$qb->join( 'erc.vehiculo', 'v' )
+				   ->andWhere( 'v.tipoVentaEspecial = :tipoVentaEspecial' )
+				   ->setParameter( 'tipoVentaEspecial', $filtros['tipoVenta'] );
+			}
 		}
 
 		return $qb->getQuery()->getResult();

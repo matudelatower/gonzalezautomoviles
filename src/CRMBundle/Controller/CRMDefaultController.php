@@ -11,6 +11,7 @@ use CRMBundle\Form\Filter\CRMReporteFilterType;
 use CRMBundle\Form\Model\EncuestaParameter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use VehiculosBundle\Form\VehiculoFilterType;
 
 class CRMDefaultController extends Controller {
@@ -148,6 +149,13 @@ class CRMDefaultController extends Controller {
 				'attr'   => array( 'class' => 'box-body' )
 			) );
 
+		$form->add( 'observacion',
+			'textarea',
+			array(
+				'mapped'   => false,
+				'required' => false
+			) );
+
 		$form->add( 'submit',
 			'submit',
 			array(
@@ -178,7 +186,7 @@ class CRMDefaultController extends Controller {
 			$resultadoCabecera = new EncuestaResultadoCabecera();
 
 			foreach ( $resultado as $k => $value ) {
-				if ( $k !== 'submit' ) {
+				if ( $k !== 'submit' && $k !== 'observacion' ) {
 					$resultadoRespuesta = new EncuestaResultadoRespuesta();
 					$pregunta           = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->find( $k );
 					$resultadoRespuesta->setEncuestaPregunta( $pregunta );
@@ -191,6 +199,7 @@ class CRMDefaultController extends Controller {
 				}
 			}
 
+			$resultadoCabecera->setObservacion( $resultado['observacion'] ? $resultado['observacion'] : null );
 			$resultadoCabecera->setVehiculo( $vehiculo );
 			$resultadoCabecera->setEncuesta( $encuesta );
 			$em->persist( $resultadoCabecera );
@@ -250,7 +259,7 @@ class CRMDefaultController extends Controller {
 
 
 		$cantidadEncuestas = count( $encuestaResultadoCabeceraNoCanceladas );
-		$preguntas         = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->findByEncuesta( $encuesta );
+		$preguntas         = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->findByEncuestaOrdenadaPorPreguntas( $encuesta );
 		$aOpciones         = array();
 		foreach ( $preguntas as $pregunta ) {
 			foreach ( $pregunta->getOpcionesRespuestas() as $opcionesRespuesta ) {
@@ -280,60 +289,62 @@ class CRMDefaultController extends Controller {
 
 			foreach ( $cabecera->getEncuestaResultadoRespuesta() as $resultdoRespuesta ) {
 				if ( $resultdoRespuesta->getEncuestaPregunta()->getIpc() ) {
-					if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+					if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
 					} else {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
 					}
 				} elseif ( $resultdoRespuesta->getEncuestaPregunta()->getNps() ) {
 					if ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() >= 9 ) {
-						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
-							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] += 1;
+						if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] += 1;
 						} else {
-							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 1;
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 1;
 						}
 					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() >= 7 ) {
-						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
-							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] += 1;
+						if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] += 1;
 						} else {
-							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 1;
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 1;
 						}
 					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() < 7 ) {
-						if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
-							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] += 1;
+						if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] += 1;
 						} else {
-							$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 1;
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 1;
 						}
 					}
-					if ( ! isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 0;
+					if ( ! isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 0;
 					}
-					if ( ! isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 0;
+					if ( ! isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 0;
 					}
-					if ( ! isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 0;
+					if ( ! isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 0;
 					}
 				} else {
-					if ( isset( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+					if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
 					} else {
-						$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
 					}
 				}
 
-				krsort( $aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ] );
+				krsort( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ] );
 
-				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
-				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media']    = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
-				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['ipc']      = $resultdoRespuesta->getEncuestaPregunta()->getIpc();
-				$aResultados[ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['nps']      = $resultdoRespuesta->getEncuestaPregunta()->getNps();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media']    = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['ipc']      = $resultdoRespuesta->getEncuestaPregunta()->getIpc();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['nps']      = $resultdoRespuesta->getEncuestaPregunta()->getNps();
 			}
 
 		}
 
+		ksort( $aResultados);
 //		echo '<pre>';
 ////		print_r( $aOpciones );
+//
 //		print_r( $aResultados );
 //		exit;
 
@@ -346,5 +357,152 @@ class CRMDefaultController extends Controller {
 				'aValoresIpc'               => $aValoresIpc,
 				'form'                      => $form->createView(),
 			) );
+	}
+
+	public function pdfReporteEncuestasRealizadasAction( Request $request ) {
+		$em           = $this->getDoctrine()->getManager();
+		$slugEncuesta = $request->get( 'slug' );
+		$encuesta     = $em->getRepository( 'CRMBundle:Encuesta' )->findOneBySlug( $slugEncuesta );
+
+
+		if ( ! $encuesta ) {
+			throw $this->createNotFoundException( 'No existe la encuesta ' . $slugEncuesta );
+		}
+
+		$form = $this->createForm( new CRMReporteFilterType() );
+
+		if ( $request->isMethod( "post" ) ) {
+			$form->handleRequest( $request );
+			if ( $form->isValid() ) {
+				$data = $form->getData();
+				if ( $data['rango'] ) {
+					$aFecha = explode( ' - ', $data['rango'] );
+
+					$fechaDesde = \DateTime::createFromFormat( 'd/m/Y', $aFecha[0] );
+					$fechaHasta = \DateTime::createFromFormat( 'd/m/Y', $aFecha[1] );
+
+					$data['fechaDesde'] = $fechaDesde->format( 'Y-m-d' ) . ' 00:00:00';
+					$data['fechaHasta'] = $fechaHasta->format( 'Y-m-d' ) . ' 23:59:59';
+				}
+				$encuestaResultadoCabecera             = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaFiltrada( $encuesta,
+					$data );
+				$encuestaResultadoCabeceraNoCanceladas = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaNoCancelada( $encuesta,
+					$data );
+			}
+		} else {
+			$encuestaResultadoCabecera             = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuesta( $encuesta );
+			$encuestaResultadoCabeceraNoCanceladas = $em->getRepository( 'CRMBundle:EncuestaResultadoCabecera' )->findByEncuestaNoCancelada( $encuesta );
+		}
+
+
+		$cantidadEncuestas = count( $encuestaResultadoCabeceraNoCanceladas );
+		$preguntas         = $em->getRepository( 'CRMBundle:EncuestaPregunta' )->findByEncuestaOrdenadaPorPreguntas( $encuesta );
+		$aOpciones         = array();
+		foreach ( $preguntas as $pregunta ) {
+			foreach ( $pregunta->getOpcionesRespuestas() as $opcionesRespuesta ) {
+				$aOpciones[ $opcionesRespuesta->getId() ] = array(
+					'texto_opcion'  => $opcionesRespuesta->getTextoOpcion(),
+					'valor_literal' => $opcionesRespuesta->getValorLiteral(),
+				);
+			}
+		}
+
+		$aValoresIpc = array(
+			1 => 0,
+			2 => 25,
+			3 => 50,
+			4 => 75,
+			5 => 100,
+		);
+
+
+		$aOpciones['promotores']  = 'Promotores';
+		$aOpciones['neutros']     = 'Neutros';
+		$aOpciones['detractores'] = 'Detractores';
+
+
+		$aResultados = array();
+		foreach ( $encuestaResultadoCabecera as $cabecera ) {
+
+			foreach ( $cabecera->getEncuestaResultadoRespuesta() as $resultdoRespuesta ) {
+				if ( $resultdoRespuesta->getEncuestaPregunta()->getIpc() ) {
+					if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+					} else {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+					}
+				} elseif ( $resultdoRespuesta->getEncuestaPregunta()->getNps() ) {
+					if ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() >= 9 ) {
+						if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] += 1;
+						} else {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 1;
+						}
+					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() >= 7 ) {
+						if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] += 1;
+						} else {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 1;
+						}
+					} elseif ( $resultdoRespuesta->getEncuestaOpcionRespuesta()->getTextoOpcion() < 7 ) {
+						if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] += 1;
+						} else {
+							$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 1;
+						}
+					}
+					if ( ! isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['promotores'] = 0;
+					}
+					if ( ! isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['neutros'] = 0;
+					}
+					if ( ! isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['detractores'] = 0;
+					}
+				} else {
+					if ( isset( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] ) ) {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] += 1;
+					} else {
+						$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ][ $resultdoRespuesta->getEncuestaOpcionRespuesta()->getId() ] = 1;
+					}
+				}
+
+				krsort( $aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ] );
+
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['objetivo'] = $resultdoRespuesta->getEncuestaPregunta()->getObjetivo();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['media']    = $resultdoRespuesta->getEncuestaPregunta()->getMedia();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['ipc']      = $resultdoRespuesta->getEncuestaPregunta()->getIpc();
+				$aResultados[$resultdoRespuesta->getEncuestaPregunta()->getOrden()][ $resultdoRespuesta->getEncuestaPregunta()->getPregunta() ]['nps']      = $resultdoRespuesta->getEncuestaPregunta()->getNps();
+			}
+
+		}
+
+		ksort( $aResultados);
+
+//		echo '<pre>';
+////		print_r( $aOpciones );
+//		print_r( $aResultados );
+//		exit;
+		$title = 'Reporte Encuesta ' . $slugEncuesta;
+
+		$html = $this->renderView( '@CRM/Default/reporteEncuestasRealizadas.pdf.twig',
+			array(
+				'encuestaResultadoCabecera' => $encuestaResultadoCabecera,
+				'resultados'                => $aResultados,
+				'cantidadEncuestas'         => $cantidadEncuestas,
+				'opciones'                  => $aOpciones,
+				'aValoresIpc'               => $aValoresIpc,
+				'title'                     => $title,
+			) );
+
+		$reportesManager = $this->get( 'manager.reportes' );
+
+		return new Response(
+			$reportesManager->imprimir( $html ), 200, array(
+				'Content-Type'        => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="' . $title . '.pdf"'
+			)
+		);
 	}
 }

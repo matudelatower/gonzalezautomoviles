@@ -33,7 +33,9 @@ class EncuestaType extends AbstractType {
 					'options'  => array(
 						'edit' => $options['edit'],
 					),
-				) );
+				) )
+			->add( 'textoCierre' )
+		;
 	}
 
 	/**
