@@ -54,6 +54,13 @@ class EncuestaResultadoCabecera extends BaseClass {
 	 */
 	protected $bloqueado;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="observacion", type="text", nullable=true)
+	 */
+	private $observacion;
+
 
 	/**
 	 * Constructor
@@ -246,5 +253,29 @@ class EncuestaResultadoCabecera extends BaseClass {
     public function getBloqueado()
     {
         return $this->bloqueado;
+    }
+
+    /**
+     * Set observacion
+     *
+     * @param string $observacion
+     *
+     * @return EncuestaResultadoCabecera
+     */
+    public function setObservacion($observacion)
+    {
+        $this->observacion = $observacion;
+
+        return $this;
+    }
+
+    /**
+     * Get observacion
+     *
+     * @return string
+     */
+    public function getObservacion()
+    {
+        return $this->observacion;
     }
 }
