@@ -9,6 +9,28 @@
         <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border">
+                    <h3 class="box-title">Datos del vehículo</h3>
+                </div>
+                <div class="box-body">
+                    <label>Vendedor:</label> {{ encuestaResultadoCabecera.vehiculo.vendedor }}<br>
+                    <label>Cliene:</label> {{ encuestaResultadoCabecera.vehiculo.cliente }}<br>
+                    <label>Vehículo:</label> {{ encuestaResultadoCabecera.vehiculo.modelo }}<br>
+                    <label>VIM:</label> {{ encuestaResultadoCabecera.vehiculo.vin }}<br>
+                </div>
+            </div>
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Datos del Entrevistador</h3>
+                </div>
+                <div class="box-body">
+                    <label>Usuario:</label> {{ encuestaResultadoCabecera.creadoPor.personaTipo.first.persona }}<br>
+                    <label>Realizado el:</label> {{ encuestaResultadoCabecera.fechaCreacion | date('d/m/Y H:i') }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header with-border">
                     <h3 class="box-title">Encuesta</h3>
                 </div>
                 {% if encuestaResultadoCabecera.cancelada %}
@@ -23,8 +45,6 @@
                     <div class="box-body table-responsive no-padding">
 
                         <table class="table table-hover">
-
-
                             {% for resultado in encuestaResultadoCabecera.encuestaResultadoRespuesta %}
                                 <tr>
                                     <td>
@@ -38,7 +58,14 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-
+                            <tr>
+                                <td>
+                                    Observación
+                                </td>
+                                <td colspan="2">
+                                    {{ encuestaResultadoCabecera.observacion }}
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 {% endif %}

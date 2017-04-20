@@ -14,6 +14,10 @@ crm_reporte_encuesta:
     path:   /reporte_encuesta
     defaults: { _controller: "CRMBundle:CRMDefault:reporteEncuestasRealizadas" }
 
+crm_reporte_encuesta_pdf:
+    path:   /reporte_encuesta_pdf
+    defaults: { _controller: "CRMBundle:CRMDefault:pdfReporteEncuestasRealizadas" }
+
 crm_ver_encuesta_realizada:
     path:     /ver_encuesta_realizada/{resultadoCabeceraId}
     defaults: { _controller: CRMBundle:CRMDefault:verEncuesta }

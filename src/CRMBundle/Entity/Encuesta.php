@@ -46,6 +46,7 @@ class Encuesta extends BaseClass {
 
 	/**
 	 * @ORM\OneToMany(targetEntity="CRMBundle\Entity\EncuestaPregunta", mappedBy="encuesta", cascade={"persist", "remove"})
+	 * @ORM\OrderBy({"orden"= "ASC"})
 	 *
 	 */
 	private $preguntas;
@@ -56,6 +57,13 @@ class Encuesta extends BaseClass {
 	 * @ORM\Column(name="texto_encuesta", type="text", nullable=true)
 	 */
 	private $textoEncuesta;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="texto_cierre", type="text", nullable=true)
+	 */
+	private $textoCierre;
 
 	public function __toString() {
 		return $this->slug;
@@ -251,5 +259,29 @@ class Encuesta extends BaseClass {
     public function getTextoEncuesta()
     {
         return $this->textoEncuesta;
+    }
+
+    /**
+     * Set textoCierre
+     *
+     * @param string $textoCierre
+     *
+     * @return Encuesta
+     */
+    public function setTextoCierre($textoCierre)
+    {
+        $this->textoCierre = $textoCierre;
+
+        return $this;
+    }
+
+    /**
+     * Get textoCierre
+     *
+     * @return string
+     */
+    public function getTextoCierre()
+    {
+        return $this->textoCierre;
     }
 }

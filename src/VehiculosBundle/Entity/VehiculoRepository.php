@@ -1046,6 +1046,7 @@ WHERE " . $where .
                                         cli.reventa,
                                         personas.apellido ||', '||personas.nombre as cliente,
                                         personas.telefono as telefono,
+                                        personas.celular as celular,
                                         personas.telefono_laboral as telefono_laboral,
                                         personas.mail as mail,
                                         personas.calle as calle,
