@@ -41,6 +41,12 @@ class CRMReporteFilterType extends AbstractType {
 					'required'      => false,
 					'route_name'    => 'get_cliente_by_apellido',
 				) )
+            ->add( 'vin',
+                'text',
+                array(
+                    'required' => false,
+                    'label'         => 'VIN',
+                ) )
 			->add( 'rango',
 				'text',
 				array(
