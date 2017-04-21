@@ -35,6 +35,7 @@
                             <div class="col-md-6">
                                 {{ form_row(form.numeroDocumento) }}
                                 {{ form_row(form.cliente) }}
+                                {{ form_row(form.vin) }}
                             </div>
 
                             <div class="col-md-6">
@@ -128,6 +129,11 @@
                                         <span class="badge-{{ entity.id }} label label-warning hidden"
                                               data-toggle="tooltip"
                                               title="" data-original-title="Cantidad de llamadas"></span>
+
+                                        {% if (entity.factura_id=='' and (entity.venta_especial_slug == 'convencional' or entity.venta_especial_slug == 'venta-especial-propia') ) %}
+                                            <span title="Vehiculo sin facturar" class="label label-danger">S/F</span>
+                                        {%endif%}
+
                                     </div>
                                 </td>
 
