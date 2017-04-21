@@ -48,6 +48,12 @@ class CRMFilterType extends AbstractType {
 				array(
 					'required' => false
 				) )
+            ->add( 'vin',
+                'text',
+                array(
+                    'required' => false,
+                    'label'         => 'VIN',
+                ) )
 			->add( 'cliente',
 				'jqueryautocomplete',
 				array(

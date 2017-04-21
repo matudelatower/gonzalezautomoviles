@@ -1007,6 +1007,9 @@ WHERE " . $where .
 		if ( $filters['vendedor'] ) {
 			$where .= " AND v.vendedor_id=" . $filters['vendedor']->getId();
 		}
+        if ( $filters['vin'] ) {
+            $where .= " AND v.vin like '%" . $filters['vin']."%'";
+        }
 		if ( $filters['rango'] ) {
 			$where .= " AND estados_vehiculos.creado BETWEEN '" . $filters['fechaDesde'] . "' AND '" . $filters['fechaHasta'] . "'";
 		}else{
