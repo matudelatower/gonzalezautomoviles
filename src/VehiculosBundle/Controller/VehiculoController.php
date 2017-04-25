@@ -425,7 +425,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
 
 
 	    //CRM encuestas
-	    $slug = 'postventa';
+	    $slug = 'venta';
         $encuesta = $em->getRepository('CRMBundle:Encuesta')->findBySlug($slug);
         $criteriaPostVenta= [
         	'vehiculo'=>$entity,
