@@ -2,6 +2,7 @@
 
 namespace CRMBundle\Form\Filter;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -62,6 +63,10 @@ class CRMFilterType extends AbstractType {
 					'search_method' => 'getClienteByApellido',
 					'required'      => false,
 					'route_name'    => 'get_cliente_by_apellido',
+					'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('c')
+						          ->setMaxResults(1);
+					},
 				) )
 			->add( 'vendedor',
 				'jqueryautocomplete',
