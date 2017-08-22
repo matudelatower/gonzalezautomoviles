@@ -42,7 +42,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado(false);
         }
         $cantidadRegistros = count($entities);
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+//        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
             $limit = $request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'];
@@ -57,7 +57,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                         'VehiculosBundle:Vehiculo:index.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+//                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraFiltroEstado' => true,
                     'muestraFiltroPlanAhorro' => true,
