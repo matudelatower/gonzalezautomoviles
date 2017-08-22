@@ -88,7 +88,11 @@ class EditarVehiculoType extends AbstractType {
                     'required' => false,
                     'route_name' => 'get_cliente_by_apellido',
                     'label_attr' => array('class' => 'hidden cliente'),
-                    'attr' => array('class' => 'hidden cliente')
+                    'attr' => array('class' => 'hidden cliente'),
+                    'query_builder' => function (EntityRepository $er) {
+	                    return $er->createQueryBuilder('c')
+	                              ->setMaxResults(1);
+                    },
                 ))
                 ->add('remito', new RemitoEditType())
                 ->add('tieneLlaves', 'checkbox', array(
