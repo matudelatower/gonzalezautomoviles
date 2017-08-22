@@ -40,6 +40,10 @@ class CRMReporteFilterType extends AbstractType {
 					'search_method' => 'getClienteByApellido',
 					'required'      => false,
 					'route_name'    => 'get_cliente_by_apellido',
+					'query_builder' => function (EntityRepository $er) {
+						return $er->createQueryBuilder('c')
+						          ->setMaxResults(1);
+					},
 				) )
             ->add( 'vin',
                 'text',

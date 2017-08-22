@@ -2,6 +2,7 @@
 
 namespace VehiculosBundle\Form\Filter;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +19,10 @@ class ReporteVehiculosAsignadosAReventaFilterType extends AbstractType {
                     'required' => true,
                     'route_name' => 'get_cliente_by_apellido',
                     'attr' => array('placeholder' => 'Ingrese Apellido'),
+                    'query_builder' => function (EntityRepository $er) {
+	                    return $er->createQueryBuilder('c')
+	                              ->setMaxResults(1);
+                    },
                 ))
                 ->add('facturado', 'choice', array(
                     'required' => false,
