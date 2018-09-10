@@ -94,7 +94,6 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estado);
         }
         $cantidadRegistros = count($entities);
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
@@ -110,7 +109,6 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                         'VehiculosBundle:Vehiculo:transitoIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraRangoFecha' => true,
                     'labelRangoFecha' => 'Fecha remito',
