@@ -2,6 +2,7 @@
 
 namespace VehiculosBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,11 +22,19 @@ class MovimientoDepositoType extends AbstractType {
 			->add( 'depositoDestino',
 				'entity',
 				array(
-					'class'    => 'VehiculosBundle:Deposito',
+					'class'        => 'VehiculosBundle:Deposito',
 					'choice_label' => 'nombre',
 				) )
 			->add( 'tipoMovimiento' )
-			->add( 'vehiculo' );
+			->add( 'vehiculo',
+				'entity',
+				[
+					'class'         => 'VehiculosBundle:Vehiculo',
+					'query_builder' => function ( EntityRepository $er ) {
+						return $er->createQueryBuilder( 'c' )
+						          ->setMaxResults( 1 );
+					},
+				] );
 	}
 
 	/**
