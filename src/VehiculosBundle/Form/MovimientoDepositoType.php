@@ -13,6 +13,8 @@ class MovimientoDepositoType extends AbstractType {
 	 * @param array $options
 	 */
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
+
+	    $vehiculo = $options['data']->getVehiculo();
 		$builder
 			->add( 'fechaIngreso' )
 //            ->add('fechaEgreso')
@@ -26,15 +28,24 @@ class MovimientoDepositoType extends AbstractType {
 					'choice_label' => 'nombre',
 				) )
 			->add( 'tipoMovimiento' )
-			->add( 'vehiculo',
-				'entity',
-				[
-					'class'         => 'VehiculosBundle:Vehiculo',
-					'query_builder' => function ( EntityRepository $er ) {
-						return $er->createQueryBuilder( 'c' )
-						          ->setMaxResults( 1 );
-					},
-				] );
+
+        ;
+
+        if ($vehiculo) {
+            $builder->add('vehiculo',
+                'entity',
+                [
+                    'class' => 'VehiculosBundle:Vehiculo',
+                    'query_builder' => function (EntityRepository $er) use ($vehiculo) {
+                        return $er->createQueryBuilder('v')
+                            ->where('v = :vehiculo')
+                            ->setParameter('vehiculo', $vehiculo)
+                            ->setMaxResults(1);
+                    },
+                ]);
+        } else {
+            $builder->add('vehiculo');
+        }
 	}
 
 	/**
