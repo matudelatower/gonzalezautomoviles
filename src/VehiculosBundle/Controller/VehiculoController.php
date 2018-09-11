@@ -144,7 +144,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
             $entities = $em->getRepository('VehiculosBundle:Vehiculo')->getVehiculosEstado($estados);
         }
         $cantidadRegistros = count($entities);
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+//        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
@@ -159,7 +159,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                         'VehiculosBundle:Vehiculo:recibidosIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+//                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraRangoFecha' => true,
                     'labelRangoFecha' => 'Fecha recibido',
@@ -197,7 +197,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         }
         $cantidadRegistros = count($entities);
 
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+//        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
 
         $paginator = $this->get('knp_paginator');
@@ -214,7 +214,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                         'VehiculosBundle:Vehiculo:stockIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+//                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                     'muestraRangoFecha' => true,
                     'labelRangoFecha' => 'Fecha pre-entrega',
@@ -244,7 +244,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
         }
         $cantidadRegistros = count($entities);
 
-        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
+//        $formMovimientoDeposito = $this->createForm(new \VehiculosBundle\Form\MovimientoDepositoType());
 
         $paginator = $this->get('knp_paginator');
         if ($request->request->get('vehiculosbundle_vehiculo_filter')['registrosPaginador'] != "") {
@@ -260,7 +260,7 @@ class VehiculoController extends Controller implements TokenAuthenticatedControl
                         'VehiculosBundle:Vehiculo:pendientesPorEntregarIndex.html.twig', array(
                     'entities' => $entities,
                     'form' => $form->createView(),
-                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
+//                    'form_movimiento_deposito' => $formMovimientoDeposito->createView(),
                     'cantidadRegistros' => $cantidadRegistros,
                         )
         );
