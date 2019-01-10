@@ -123,7 +123,11 @@ class AgendaEntregaController extends Controller implements TokenAuthenticatedCo
         if (!$agendaEntrega) {
             $agendaEntrega = new \VehiculosBundle\Entity\AgendaEntrega();
         }
-        $form = $this->createForm(new \VehiculosBundle\Form\AgendaEntregaType, $agendaEntrega);
+        $form = $this->createForm(new AgendaEntregaType(), $agendaEntrega, array(
+	        'action' => $this->generateUrl('agenda_entrega_update', array('vehiculoId' => $vehiculoId)),
+	        'method' => 'POST',
+	        'attr' => array('class' => 'box-body')
+        ));
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -134,7 +138,7 @@ class AgendaEntregaController extends Controller implements TokenAuthenticatedCo
             );
         } else {
             $this->get('session')->getFlashBag()->add(
-                    'danger', 'Hubo un error al actualizar la agenda.'
+                    'error', 'Hubo un error al actualizar la agenda.'
             );
         }
 

@@ -2,6 +2,7 @@
 
 namespace VehiculosBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,12 +14,13 @@ class AgendaEntregaType extends AbstractType {
 	 * @param array $options
 	 */
 	public function buildForm( FormBuilderInterface $builder, array $options ) {
+		$vehiculo = $options['data']->getVehiculo();
 		$builder
 			->add( 'fecha',
 				'date',
 				array(
 					'widget' => 'single_text',
-					'format' => 'dd-MM-yyyy',
+					'format' => 'dd/MM/yyyy',
 					'attr'   => array(
 						'class' => 'datepicker',
 					),
@@ -31,8 +33,23 @@ class AgendaEntregaType extends AbstractType {
 						'class' => 'timepicker'
 					)
 				) )
-			->add( 'descripcion' )
-			->add( 'vehiculo' );
+			->add( 'descripcion' );
+
+		if ($vehiculo) {
+			$builder->add('vehiculo',
+				'entity',
+				[
+					'class' => 'VehiculosBundle:Vehiculo',
+					'query_builder' => function (EntityRepository $er) use ($vehiculo) {
+						return $er->createQueryBuilder('v')
+						          ->where('v = :vehiculo')
+						          ->setParameter('vehiculo', $vehiculo)
+						          ->setMaxResults(1);
+					},
+				]);
+		} else {
+			$builder->add('vehiculo');
+		}
 	}
 
 	/**
